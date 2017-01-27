@@ -167,10 +167,10 @@ class GUI:
         tileset_path = os.path.abspath(os.path.join('./data/textures', Map.TILES_THEME, "tiles.png"))
         sheet = pygame.image.load(tileset_path).convert()
 
-        result = [[None for x in range(self.game.map.tiles.shape[0])] for y in range(self.game.map.tiles.shape[1])]
+        result = [[None for x in range(self.game.map.tile_map.shape[0])] for y in range(self.game.map.tile_map.shape[1])]
 
         # Predefine sprites for each tile
-        for (x, y), tile_type in np.ndenumerate(self.game.map.tiles):
+        for (x, y), tile_type in np.ndenumerate(self.game.map.tile_map):
             tile_info = MapC.TILE_DATA[tile_type]
             tile_choice = random.choice(tile_info['id'])
             sprite = SpriteUtil.image_at(sheet, tile_choice, MapC.TILE_SIZE).convert()
@@ -346,12 +346,12 @@ class GUI:
             pygame.draw.rect(self.canvas, (0, 0, 0), (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE, MapC.TILE_SIZE, Map.TILE_SIZE))
 
     def draw_tilemap(self):
-        for (x, y), elem in np.ndenumerate(self.game.map.tiles):
+        for (x, y), elem in np.ndenumerate(self.game.map.tile_map):
             self.canvas.blit(self.tiles_sprite[x][y], (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE))
 
     def draw_units(self, dt):
 
-        for unit in self.game.units.values():
+        for unit in self.game.units().values():
             sprite_arr = self.unit_sprite[unit.id][unit.direction] # Selection
             sprite = sprite_arr[unit.animation_iterator % len(sprite_arr)] # Selection based on frame
 

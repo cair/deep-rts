@@ -1,59 +1,48 @@
-import pygame
-import sys
-
 from Event import Event
+from GameClock import GameClock
 from Mechanics.Map import Map
 from Mechanics.Player import Player
-from GUI import GUI
+from GUI.GUI import GUI
+from GUI.NoGUI import NoGUI
 from Mechanics.Constants import Config
 
 
-import numpy as np
+class Game(object):
 
+    def __init__(self, map_name="simple", players=2):
 
-class NoGUI:
-    def __init__(self, game):
-        self.game = game
+        # Create Map
+        self.map = Map(self, map_name)
 
-    def draw(self, dt):
-        pass
+        # Unit Map
+        self.units = {}
 
-    def process(self):
-        pass
-
-    def caption(self, dt):
-        print(
-            ' '.join(('Loop=GameClock Tab:[TPS=%d MaxFPS=%d]',
-                      'Runtime:[FPS=%d UPS=%d]')) % (
-                self.game.clock.max_ups,
-                self.game.clock.max_fps,
-                self.game.clock.fps,
-                self.game.clock.ups))
-
-
-class Game:
-
-    def __init__(self, map_name=None, players=None, clock=None):
-
-        self.clock = clock
-        self.map = Map(self, map_name, players)                  # Initialize Map
-        self.units = {}                                    # All Units of the game
-        self.unit_map = np.zeros((self.map.MAP_WIDTH, self.map.MAP_HEIGHT), dtype=np.int)  # Map of all units (uniq id)
+        # Create Players
         self.players = [Player(self, "Player %s" % x) for x in range(players)]
+        [player.spawn() for player in self.players]
 
+        # Create GUI
         self.gui = NoGUI(self) if not Config.HAS_GUI else GUI(self, self.players[0])
 
+        # Create game clock
+        self.clock = GameClock()
+        self.clock.shedule(self.gui.caption, 1.0)
+        self.clock.update(self.process, 90000)  # 16
+        self.clock.render(self.render, 60) # 60
 
-    def get_unit(self, x, y):
-        return self.unit_map[x][y]
+        self.loop()
 
-    def process(self, dt, frame):
+    def loop(self):
+        while Config.IS_RUNNING:
+            self.clock.tick()
+
+    def process(self, tick, frame):
+
         for p in self.players:
-            p.process(dt)
-        self.gui.process()
+            p.process(tick)
 
         Event.notify(Event.New_State, frame)
 
-    def draw(self, dt):
-        self.gui.draw(dt)
+    def render(self, tick):
+        self.gui.render(tick)
 

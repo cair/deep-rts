@@ -15,28 +15,21 @@ class Map:
 
     TILES_THEME = "summer"
 
-    def __init__(self, game, map_name, n_players):
-        self.tiles = None       # Raw tile data (Numbers)
+    def __init__(self, game, map_name):
         self.game = game
 
-        # Parse Map
+        # Parse raw map
         with open(os.path.join('./data/maps/', map_name + ".map")) as f:
-            self.tiles = [[int(digit) for digit in line.split()] for line in f]
-            self.tiles = np.array(self.tiles, dtype=np.int)   # Convert to np.array
-            self.spawn_points = self._spawn_points()
+            int_map = [[int(digit) for digit in line.split()] for line in f]
 
-        self.MAP_WIDTH = len(self.tiles[0])
-        self.MAP_HEIGHT = len(self.tiles)
+        self.tile_map = np.array(int_map, dtype=np.int)   # Convert to np.array
+        self.height, self.width = self.tile_map.shape
+        self.unit_map = np.zeros(self.tile_map.shape, dtype=np.int)
+        self.spawn_tiles = self._spawn_points()
 
-    def _spawn_points(self):
-        spawn_tiles = np.where(self.tiles == MapC.SPAWN_POINT)
-        spawn_tiles = list(zip(*spawn_tiles))
 
-        # Remove spawn points
-        for (x, y) in spawn_tiles:
-            self.tiles[x][y] = MapC.GRASS
-
-        return spawn_tiles
+    def get_spawn_tile(self):
+        return self.spawn_tiles.pop(0)
 
     def free_tiles(self):
         """
@@ -70,11 +63,8 @@ class Map:
         return neighbors
 
     def can_build_here(self, builder, x, y, d):
-
         neighbors = ArrayUtil.neighbors(self.tiles, x, y, d)
-
         common = list(set(neighbors).intersection(set(self.free_tiles())))
-
         return len(common) == len(neighbors)
 
     def get_tile(self, x, y):
@@ -83,4 +73,13 @@ class Map:
         return tile
 
 
+    def _spawn_points(self):
+        spawn_tiles = np.where(self.tile_map == MapC.SPAWN_POINT)
+        spawn_tiles = list(zip(*spawn_tiles))
+
+        # Remove spawn points
+        for (x, y) in spawn_tiles:
+            self.tile_map[x][y] = MapC.GRASS
+
+        return spawn_tiles
 

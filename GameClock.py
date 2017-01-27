@@ -20,7 +20,7 @@ class GameClock:
         self.fps = 1
         self.ups = 1
         self._stats_next = time.time()
-        self._stats_interval = 1.0
+        self._stats_interval = 1
         self._stats_render = 0
         self._stats_update = 0
 
@@ -30,7 +30,7 @@ class GameClock:
         self._render_ticks = 0
 
     def shedule(self, func, interval):
-        self._shedules.append((func, interval, time.time()))
+        self._shedules.append([func, interval, time.time(), len(self._shedules)])
 
     def render(self, func, interval):
         self._render = func
@@ -48,20 +48,20 @@ class GameClock:
 
         current_time = time.time()
 
-        if current_time >= self._update_next:
-            self._update(1, self._update_ticks)
-            self._update_next = current_time + self._update_interval
-            self._update_ticks += 1
+        #if current_time >= self._update_next:
+        self._update(1, self._update_ticks)
+        self._update_next = current_time + self._update_interval
+        self._update_ticks += 1
 
         if current_time >= self._render_next:
             self._render(1)
             self._render_next = current_time + self._render_interval
             self._render_ticks += 1
 
-        for (shedule_func, interval, next) in self._shedules:
-
+        for (shedule_func, interval, next, idx) in self._shedules:
             if current_time > next:
                 shedule_func(1)
+                self._shedules[idx][2] = current_time + interval
 
         if current_time >= self._stats_next:
             du = self._update_ticks - self._stats_update

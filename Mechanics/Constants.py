@@ -4,7 +4,7 @@ import pygame
 
 class Config:
     IS_RUNNING = True
-    HAS_GUI = True
+    HAS_GUI = False
 
     FRAME_MULTIPLIER = 8
 
@@ -51,7 +51,8 @@ class Unit:
     Combat = 3
     Walking = 4
     Dead = 5
-    Uncomplete = 6
+    Spawning = 6
+    Despawned = 7
 
     to_string = {
         Idle: "Idle",
@@ -60,7 +61,8 @@ class Unit:
         Combat: "Combat",
         Walking: "Walking",
         Dead: "Dead",
-        Uncomplete: "Uncomplete"
+        Spawning: "Spawning",
+        Despawned: "Despawned"
     }
 
     @staticmethod

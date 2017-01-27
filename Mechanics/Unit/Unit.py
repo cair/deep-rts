@@ -5,7 +5,7 @@ from math import *
 from AI.Pathfinding import a_star_search
 from Event import Event
 from Mechanics.Constants import Unit as UnitC, Config
-from Mechanics.Unit.States import Unspawned, Building, Combat, Idle, Dead, Harvesting
+from Mechanics.Unit.States import Despawned, Building, Combat, Idle, Dead, Harvesting, Spawning
 from Mechanics.Util import ArrayUtil
 
 
@@ -79,7 +79,8 @@ class Unit:
 
 
         self.states = {
-            UnitC.Uncomplete: Unspawned(self),
+            UnitC.Spawning: Spawning(self),
+            UnitC.Despawned: Despawned(self),
             UnitC.Building: Building(self),
             UnitC.Combat: Combat(self),
             UnitC.Idle: Idle(self),
@@ -88,13 +89,13 @@ class Unit:
 
         }
 
-        self.current_state = self.get_state_2(UnitC.Uncomplete)
+        self.current_state = self.get_state_2(UnitC.Spawning)
 
 
         self.player = player
         self.game = player.game
         self.map = player.game.map
-        self.unit_map = player.game.unit_map
+        self.unit_map = self.map.unit_map
 
         Event.notify(Event.Unit_Spawn, data=self.unit_id)
 
@@ -250,7 +251,7 @@ class Unit:
         self.set_direction(self.x - prev_x, self.y - prev_y)
 
         for tile in self.unit_area():
-            self.player.game.unit_map[tile[0]][tile[1]] = self.unit_id
+            self.unit_map[tile[0]][tile[1]] = self.unit_id
 
     def generate_path(self, x, y):
         path = a_star_search(
@@ -328,9 +329,9 @@ class Unit:
 
     def process(self, tick):
         self.process_path(tick)
-        self.process_harvest(tick)
+        """self.process_harvest(tick)
         self.process_building(tick)
-        self.process_attack(tick)
+        self.process_attack(tick)"""
 
     def process_attack(self, tick):
         self.attack_timer += tick
@@ -573,10 +574,6 @@ class Unit:
     def spawn(self):
         for x, y in ArrayUtil.get_area(self.x, self.y, self.width, self.height):
             self.unit_map[x][y] = self.unit_id
-        self.game.units[self.unit_id] = self
-
-        if self not in self.player.units:
-            self.player.units.append(self)
 
         self.player.consumed_food += self.food_cost
         self.player.food += self.food
@@ -612,7 +609,9 @@ class Unit:
 
     def right_click(self, x, y):
 
-        # Do not allow out of bounds clicks
+
+
+
         try:
             self.unit_map[x][y]
         except:
