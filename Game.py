@@ -1,7 +1,7 @@
 # https://www.spriters-resource.com/pc_computer/warcraft2/sheet/29501/
 import logging
-import virtualtime
-virtualtime.enable()
+
+from AI.HardCoded.AI_1.AI import AI
 
 logging.basicConfig(level=logging.DEBUG)
 from WarC2 import Game
@@ -23,20 +23,17 @@ import time
 select_map = "simple"
 select_players = 2
 
-clock = GameClock(
-    max_fps=0,
-    max_ups=1000,
-    use_wait=True
-)
+clock = GameClock()
 
 g = Game(map_name=select_map, players=select_players, clock=clock)
 
-clock.update_callback = g.process,
-clock.frame_callback = g.draw
+# Set AI for AI xD
+for player in g.players[1:]:
+    ai = AI(player)
 
-clock.schedule_interval(g.gui.caption, 1.0)
-clock.use_wait = False
-
+clock.shedule(g.gui.caption, 1.0)
+clock.update(g.process, 16)  # 16
+clock.render(g.draw, 60) # 60
 
 while Config.IS_RUNNING:
     clock.tick()

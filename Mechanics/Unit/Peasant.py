@@ -1,4 +1,4 @@
-from Mechanics.Constants import Unit as UnitC
+from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
 
@@ -15,6 +15,7 @@ class Peasant(Unit):
     # Economics
     cost_lumber = 0
     cost_gold = 400
+    build_duration = 45 * Config.FRAME_MULTIPLIER
 
     # Stats
     name = "Peasant"
@@ -37,6 +38,18 @@ class Peasant(Unit):
             player.unit_manager.UNITS[player.unit_manager.FARM][player.race],
             player.unit_manager.UNITS[player.unit_manager.BARRACKS][player.race]
         ]
+
+    def build_town_hall(self):
+        self.build(0)
+
+    def build_farm(self):
+        self.build(1)
+
+    def build_barracks(self):
+        self.build(2)
+
+    def harvest(self, x, y):
+        self.move(x, y, True)
 
 
 

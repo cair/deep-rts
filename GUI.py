@@ -10,7 +10,7 @@ from Mechanics.Unit.Footman import Footman
 from Mechanics.Unit.Peasant import Peasant
 from Mechanics.Unit.TownHall import TownHall
 from Mechanics.Util import SpriteUtil
-from Mechanics.Constants import Unit
+from Mechanics.Constants import Unit, Config
 from Mechanics.Constants import Mouse as MouseC
 from Mechanics.Constants import Map as MapC
 from pygame.locals import *
@@ -53,16 +53,22 @@ class GUISelectionPanel:
             (0, 0, gui.display.get_width(), 25)
         )
 
-        lbl_unit_lumber = font.render("Lumber: %s" % gui.player.lumber, 1, (255, 255, 0))
-        lbl_unit_gold = font.render("Gold: %s" % gui.player.gold, 1, (255, 255, 0))
-        lbl_unit_food = font.render("Food: %s/%s" % (gui.player.consumed_food, gui.player.food), 1, (255, 255, 0))
-        lbl_unit_units = font.render("Units: %s" % len(gui.player.units), 1, (255, 255, 0))
-        lbl_game_time = font.render("Elapsed: %s" % int(gui.game.clock.elapsed), 1, (255, 255, 0))
-        gui.display.blit(lbl_unit_lumber, (10, 5))
-        gui.display.blit(lbl_unit_gold, (135, 5))
-        gui.display.blit(lbl_unit_food, (240, 5))
-        gui.display.blit(lbl_unit_units, (340, 5))
-        gui.display.blit(lbl_game_time, (550, 5))
+        lbl = font.render(
+            "Lumber %s "
+            "Gold: %s "
+            "Food %s/%s "
+            "Units: %s "
+            "Seconds: %s  "
+            "Frames: %s"
+            % (
+                gui.player.lumber,
+                gui.player.gold,
+                gui.player.consumed_food, gui.player.food,
+                len(gui.player.units),
+                int(gui.game.clock.elapsed_update / Config.FRAME_MULTIPLIER),
+                int(gui.game.clock.elapsed_update)
+            ), 1, (255, 255, 0))
+        gui.display.blit(lbl, (10, 5))
 
 
     @staticmethod
@@ -358,13 +364,13 @@ class GUI:
 
     def scroll_process(self):
         if self.gstate.SCROLL_UP:
-            self.camera_y = min(0, self.camera_y + 5)
+            self.camera_y = min(0, self.camera_y + 20)
         if self.gstate.SCROLL_DOWN:
-            self.camera_y -= 5
+            self.camera_y -= 20
         if self.gstate.SCROLL_LEFT:
-            self.camera_x = min(0, self.camera_x + 5)
+            self.camera_x = min(0, self.camera_x + 20)
         if self.gstate.SCROLL_RIGHT:
-            self.camera_x -= 5
+            self.camera_x -= 20
 
     def left_click(self, t_x, t_y):
 
@@ -467,11 +473,10 @@ class GUI:
 
     def caption(self, dt):
         pygame.display.set_caption(
-            ' '.join(('Loop=GameClock Tab:[TPS=%d MaxFPS=%d] Wait=%s',
+            ' '.join(('Loop=GameClock Tab:[TPS=%d MaxFPS=%d]',
                       'Runtime:[FPS=%d UPS=%d]')) % (
                 self.game.clock.max_ups,
                 self.game.clock.max_fps,
-                self.game.clock.use_wait,
                 self.game.clock.fps,
                 self.game.clock.ups))
 

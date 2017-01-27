@@ -1,8 +1,8 @@
 import pygame
 import sys
 
+from Event import Event
 from Mechanics.Map import Map
-from Mechanics.State import State
 from Mechanics.Player import Player
 from GUI import GUI
 from Mechanics.Constants import Config
@@ -23,11 +23,10 @@ class NoGUI:
 
     def caption(self, dt):
         print(
-            ' '.join(('Loop=GameClock Tab:[TPS=%d MaxFPS=%d] Wait=%s',
+            ' '.join(('Loop=GameClock Tab:[TPS=%d MaxFPS=%d]',
                       'Runtime:[FPS=%d UPS=%d]')) % (
                 self.game.clock.max_ups,
                 self.game.clock.max_fps,
-                self.game.clock.use_wait,
                 self.game.clock.fps,
                 self.game.clock.ups))
 
@@ -48,10 +47,12 @@ class Game:
     def get_unit(self, x, y):
         return self.unit_map[x][y]
 
-    def process(self, dt):
+    def process(self, dt, frame):
         for p in self.players:
             p.process(dt)
         self.gui.process()
+
+        Event.notify(Event.New_State, frame)
 
     def draw(self, dt):
         self.gui.draw(dt)

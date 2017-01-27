@@ -4,21 +4,9 @@ import pygame
 
 class Config:
     IS_RUNNING = True
-    HAS_GUI = False
+    HAS_GUI = True
 
-    # GameClock control.
-    TICKS_PER_SECOND = 30.0
-    MAX_FRAME_SKIP = 5.0
-
-    SETTINGS = {
-        "MAX": (TICKS_PER_SECOND, 0),                     # unlimited FPS
-        "MAX_DOUBLE_TPS": (TICKS_PER_SECOND, TICKS_PER_SECOND * 2),  # max FPS is double TPS
-        "MAX_FPS_MAP_TPS": (TICKS_PER_SECOND, TICKS_PER_SECOND),      # max FPS is TPS
-        "MAX_FRPS_6TPS":(TICKS_PER_SECOND / 5, 0),                 # TPS is 6; unlimited FPS
-    }
-
-
-
+    FRAME_MULTIPLIER = 8
 
 class Mouse:
     LEFT = 1
@@ -63,6 +51,7 @@ class Unit:
     Combat = 3
     Walking = 4
     Dead = 5
+    Uncomplete = 6
 
     to_string = {
         Idle: "Idle",
@@ -70,7 +59,8 @@ class Unit:
         Harvesting: "Harvesting",
         Combat: "Combat",
         Walking: "Walking",
-        Dead: "Dead"
+        Dead: "Dead",
+        Uncomplete: "Uncomplete"
     }
 
     @staticmethod

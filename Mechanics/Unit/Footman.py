@@ -1,6 +1,6 @@
 
 
-from Mechanics.Constants import Unit as UnitC
+from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
 
@@ -17,6 +17,7 @@ class Footman(Unit):
     # Economics
     cost_lumber = 0
     cost_gold = 600
+    build_duration = 60 * Config.FRAME_MULTIPLIER
 
     # Stats
     name = "Footman"

@@ -1,9 +1,18 @@
 import math
 import pygame
 import numpy as np
+import time
 
 from Mechanics.Constants import Map as MapC
 import itertools
+
+class FakeTime:
+
+    def __init__(self):
+        self.multiplier = 1
+
+
+
 
 
 class ArrayUtil:

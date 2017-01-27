@@ -1,4 +1,4 @@
-from Mechanics.Constants import Unit as UnitC
+from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
 
@@ -15,6 +15,7 @@ class TownHall(Unit):
     # Economics
     cost_lumber = 800
     cost_gold = 1200
+    build_duration = 255 * Config.FRAME_MULTIPLIER
 
     # Stats
     name = "Town Hall"
@@ -38,6 +39,10 @@ class TownHall(Unit):
         self.can_build = [
             player.unit_manager.UNITS[player.unit_manager.WORKER][player.race]
         ]
+
+
+    def build_peasant(self):
+        self.build(0)
 
 
 

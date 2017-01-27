@@ -1,9 +1,12 @@
+import itertools
 import random
 from math import *
-import itertools
-from Mechanics.Constants import Unit as UnitC
+
+from AI.Pathfinding import a_star_search
+from Event import Event
+from Mechanics.Constants import Unit as UnitC, Config
+from Mechanics.Unit.States import Unspawned, Building, Combat, Idle, Dead, Harvesting
 from Mechanics.Util import ArrayUtil
-from Mechanics.AI.Pathfinding import a_star_search
 
 
 class Unit:
@@ -14,7 +17,7 @@ class Unit:
     height = 1
 
     # Animation
-    animation_interval = 2
+    animation_interval = .2 * Config.FRAME_MULTIPLIER
     animation_timer = 0
     animation_iterator = 0
 
@@ -45,13 +48,13 @@ class Unit:
 
     # Walking
     path_timer = 0
-    path_interval = .1
+    path_interval = .001 * Config.FRAME_MULTIPLIER
     path = []
     path_goal = None
 
     # Harvesting
     harvest_working = False
-    harvest_interval = .5
+    harvest_interval = .5 * Config.FRAME_MULTIPLIER
     harvest_timer = 0
     harvest_iterator = 0
     harvest_tile = None
@@ -66,7 +69,7 @@ class Unit:
     # Attacking
     attack_target = None
     attack_timer = 0
-    attack_interval = 1
+    attack_interval = 1.25 * Config.FRAME_MULTIPLIER
 
     def __init__(self, player):
         self.unit_id = self.generate_id()
@@ -74,10 +77,29 @@ class Unit:
         self.y = None
         self.direction = UnitC.DOWN
 
+
+        self.states = {
+            UnitC.Uncomplete: Unspawned(self),
+            UnitC.Building: Building(self),
+            UnitC.Combat: Combat(self),
+            UnitC.Idle: Idle(self),
+            UnitC.Dead: Dead(self),
+            UnitC.Harvesting: Harvesting(self)
+
+        }
+
+        self.current_state = self.get_state_2(UnitC.Uncomplete)
+
+
         self.player = player
         self.game = player.game
         self.map = player.game.map
         self.unit_map = player.game.unit_map
+
+        Event.notify(Event.Unit_Spawn, data=self.unit_id)
+
+    def get_state_2(self, state):
+        return self.states[state]
 
     def get_damage(self, unit):
         # http://classic.battle.net/war2/basic/combat.shtml
@@ -87,11 +109,13 @@ class Unit:
     def attack(self, unit):
         my_damage = self.get_damage(unit)
         unit.health = max(0, unit.health - my_damage)
+        Event.notify(Event.Attack, data=(self.unit_id, unit.unit_id))
 
         # if victim is idle (no path) it should retalliate)
         if unit.get_state() == UnitC.Idle:
             enemy_damage = unit.get_damage(self)
             self.health = max(0, self.health - enemy_damage)
+            Event.notify(Event.Retaliate, data=(unit.unit_id, self.unit_id))
 
         if self.health == 0:
             self.die()
@@ -111,6 +135,8 @@ class Unit:
         self.x = None
         self.y = None
 
+        Event.notify(Event.Unit_Died, data=self.unit_id)
+
     def get_state(self):
 
         # self.harvest_working
@@ -118,6 +144,8 @@ class Unit:
         # self.built_by + self.built_by.build_complete
         # self.path
         # dead
+        if not self.build_complete:
+            return UnitC.Uncomplete
         if self.health == 0:
             return UnitC.Dead
         elif self.path:
@@ -135,16 +163,21 @@ class Unit:
         tiles = ArrayUtil.neighbor_features_4(self.map.tiles, x, y)['harvestable']
         return tiles.pop()
 
-    def start_harvesting(self, x, y):
+    def start_harvesting(self, x, y, no_event=False):
         # Set harvest_work to true
         self.harvest_working = True
         self.harvest_iterator = UnitC.HARVEST_GOTO
         self.harvest_tile = self.nearby_harvestable_tile(x, y)
 
+        if not no_event:
+            Event.notify(Event.Unit_Start_Harvesting, data=self.unit_id)
+
     def end_harvesting(self):
         self.harvest_working = False
         self.harvest_iterator = UnitC.HARVEST_GOTO
         self.harvest_tile = None
+
+        Event.notify(Event.Unit_Stop_Harvesting, data=self.unit_id)
 
     def distance(self, x, y, dim=0):
         center_tile = self.center_tile()
@@ -170,7 +203,6 @@ class Unit:
         """
         mid_x = floor(self.width / 2)
         mid_y = floor(self.height / 2)
-
         return self.x - mid_x, self.y - mid_y
 
     def dimension(self):
@@ -211,6 +243,8 @@ class Unit:
         # Set new position
         self.x = x
         self.y = y
+
+        Event.notify(Event.Unit_Set_Position, data=(self.unit_id, self.x, self.y))
 
         # Set direction of step
         self.set_direction(self.x - prev_x, self.y - prev_y)
@@ -260,9 +294,14 @@ class Unit:
                 x = new_goal[0]
                 y = new_goal[1]
 
+                Event.notify(Event.Unit_Move_Harvestable, data=(self.unit_id, x, y))
+
                 self.path = self.generate_path(x, y)
 
-                self.start_harvesting(x, y)
+                if not self.harvest_tile:
+                    self.start_harvesting(x, y)
+                else:
+                    self.start_harvesting(x, y, True)
 
             elif harvestable:
                 # No walkable tile at (x, y) resource, select next available
@@ -275,24 +314,26 @@ class Unit:
             # Ground, typically grass
             self.path = self.generate_path(x, y)
 
-            if not is_harvesting:
+            if not is_harvesting and self.harvest_tile:
                 self.end_harvesting()
 
+            Event.notify(Event.Unit_Move, data=(self.unit_id, x, y))
             return
 
         elif target_tile_unit != UnitC.NONE:
             # Clicked a unit, go to and set attack state
-            self.harvest_working = None  # Cannot attack and harvest at the same time
+            self.end_harvesting()
             self.attack_target = self.game.units[target_tile_unit]
+            Event.notify(Event.Unit_Move_Attack, data=(self.unit_id, x, y))
 
-    def process(self, dt):
-        self.process_path(dt)
-        self.process_harvest(dt)
-        self.process_building(dt)
-        self.process_attack(dt)
+    def process(self, tick):
+        self.process_path(tick)
+        self.process_harvest(tick)
+        self.process_building(tick)
+        self.process_attack(tick)
 
-    def process_attack(self, dt):
-        self.attack_timer += dt
+    def process_attack(self, tick):
+        self.attack_timer += tick
 
         if self.attack_target:
 
@@ -319,9 +360,6 @@ class Unit:
                         self.attack_target.dimension())
 
                 tile = self.shortest_distance(adjacent_tiles)
-
-
-
                 self.path = self.generate_path(*tile)
             else:
                 # Distance must be 0 or 1 aka can attack
@@ -329,10 +367,10 @@ class Unit:
                     self.attack(self.attack_target)
                     self.attack_timer = 0
 
-    def process_path(self, dt):
+    def process_path(self, tick):
         if self.path:
 
-            self.path_timer += dt
+            self.path_timer += tick
             if self.path_timer > self.path_interval:
 
                 next_step = self.path.pop()
@@ -347,7 +385,7 @@ class Unit:
                 self.set_position(*next_step)
                 self.path_timer = 0
 
-    def process_harvest(self, dt):
+    def process_harvest(self, tick):
 
         if self.harvest_working:
 
@@ -361,7 +399,7 @@ class Unit:
                     self.move(*self.harvest_tile, True)
 
             elif self.harvest_iterator == UnitC.HARVEST_WORK:
-                self.harvest_timer += dt
+                self.harvest_timer += tick
 
                 if self.harvest_timer >= self.harvest_interval:
                     tile_data = self.map.get_tile(*self.harvest_tile)
@@ -407,6 +445,9 @@ class Unit:
                         recall_target.dimension()
                     )
 
+                    if not available_tiles:
+                        return
+
                     # Find path to the shortest one
                     recall_tile = self.shortest_distance(available_tiles)
 
@@ -438,10 +479,10 @@ class Unit:
                     # Failed to deliver (collision most likely)
                     self.harvest_iterator = UnitC.HARVEST_RECALL
 
-    def process_building(self, dt):
+    def process_building(self, tick):
 
         if not self.build_complete:
-            self.build_timer += dt
+            self.build_timer += tick
             if self.build_timer >= self.build_duration:
                 self.build_complete = True
                 self.built_by.building_entity = None  # Remove reference because builder is DONE
@@ -507,11 +548,10 @@ class Unit:
             entity.dimension()
         )
 
-        print("build")
-
         entity.x, entity.y = entity.center_tile()
 
         if can_build:
+            Event.notify(Event.Unit_Build, data=(self.unit_id, entity.unit_id, entity.id))
 
             self.player.gold -= entity.cost_gold
             self.player.lumber -= entity.cost_lumber
@@ -525,6 +565,7 @@ class Unit:
             elif entity.structure == UnitC.UNIT and self.structure == UnitC.STRUCTURE:
 
                 # Spawn Entity into game
+                self.game.units[entity.unit_id] = entity # TODO ??
                 self.player.units.append(entity)
 
             return True

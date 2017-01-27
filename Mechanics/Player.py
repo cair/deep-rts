@@ -2,14 +2,18 @@ import numpy as np
 import logging
 import random
 
+from Event import Event
 from Mechanics.Unit.UnitManager import UnitManager
 from Mechanics.Constants import Race as RaceConstant
 from Mechanics.Constants import Map as MapC
 from Mechanics.Constants import Unit as UnitC
 
 class Player:
+    index = 0
 
     def __init__(self, game, name="[NO-NAME]"):
+        self.id = Player.index
+        Player.index += 1
         self.name = name
         self.race = RaceConstant.HUMAN
         self.game = game
@@ -22,7 +26,9 @@ class Player:
         self.units = []
         self.fow = self.calculate_fow()
 
-        logging.debug("Created player %s" % (name))
+        self.map = self.game.map
+
+        logging.debug("Created player %s" % name)
 
         self.spawn()
 
@@ -31,7 +37,7 @@ class Player:
         for unit in self.units:
             unit.process(dt)
 
-        self.calculate_fow
+        #self.calculate_fow
 
     def spawn(self):
         """
@@ -50,6 +56,8 @@ class Player:
         #self.add_unit(unit)
 
         logging.debug("Player %s spawned at %s with 1 worker", self.name, tile)
+
+        Event.notify(Event.Player_Spawn, data=self.index)
 
     def calculate_fow(self):
         fow = np.zeros((self.game.map.MAP_WIDTH, self.game.map.MAP_HEIGHT), dtype=np.int)

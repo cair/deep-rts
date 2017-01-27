@@ -1,7 +1,6 @@
-from Mechanics.AI.PriorityQueue import PriorityQueue
+from AI.PriorityQueue import PriorityQueue
 from Mechanics.Constants import Map as MapC
 from Mechanics.Util import ArrayUtil
-import math
 
 
 def heuristic(a, b):
