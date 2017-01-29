@@ -37,15 +37,13 @@ class UnitManager:
         }
     }
 
-    def __init__(self, race, game):
-        self.race = race
-        self.game = game
+    @staticmethod
+    def worker(player):
+        return UnitManager.UNITS[UnitManager.WORKER][player.race](player)
 
-    def worker(self):
-        return UnitManager.UNITS[UnitManager.WORKER][self.race](self.game)
-
-    def soldier(self):
-        return UnitManager.UNITS[UnitManager.SOLDIER][self.race](self.game)
+    @staticmethod
+    def soldier(player):
+        return UnitManager.UNITS[UnitManager.SOLDIER][player.race](player)
 
 
 

@@ -4,7 +4,10 @@ import numpy as np
 import time
 
 from Mechanics.Constants import Map as MapC
+from Mechanics.Constants import Unit as UnitC
 import itertools
+
+
 
 class FakeTime:
 
@@ -59,17 +62,29 @@ class ArrayUtil:
         return data
 
     @staticmethod
-    def walkable_cell_neighbors(arr, i, j, d):
-        possible_coords = ArrayUtil.neighbors(arr, i, j, d)
+    def adjacent_tiles(arr, i, j, d, type=MapC.WALKABLE):
+        possible_coord = ArrayUtil.neighbors(arr, i, j, d)
         valid = []
-        for possible_coord in possible_coords:
+        for possible_coord in possible_coord:
             tile_id = arr[possible_coord[0]][possible_coord[1]]
             tile = MapC.TILE_DATA[tile_id]
-            if tile['ground']:
+            if tile['type'] == type:
                 valid.append(possible_coord)
 
         return valid
 
+    @staticmethod
+    def adjacent_walkable_tiles(unit, i, j, d, type=MapC.WALKABLE):
+        tiles = ArrayUtil.adjacent_tiles(unit.game.data['tile'], i, j, d,type)
+        tiles = [x for x in tiles if ArrayUtil.is_walkable_tile(unit, *x)]
+        return tiles
+
+    @staticmethod
+    def is_walkable_tile(unit, x, y):
+        tile_walkable = unit.game.data['tile_collision'][x][y] == MapC.WALKABLE
+        unit_walkable = unit.game.data['unit'][x][y] == UnitC.NONE
+
+        return tile_walkable and unit_walkable
 
 
 class SpriteUtil:

@@ -1,7 +1,6 @@
 from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
-
 class Peasant(Unit):
 
     # Identifier
@@ -29,14 +28,16 @@ class Peasant(Unit):
     speed = 10
     sight = 4
 
-    def __init__(self, player):
-        super().__init__(player)
+    can_harvest = True
+
+    def __init__(self, player, attrs={}):
+        super().__init__(player, attrs)
         self.player = player
 
-        self.can_build = [
-            player.unit_manager.UNITS[player.unit_manager.BASE_1][player.race],
-            player.unit_manager.UNITS[player.unit_manager.FARM][player.race],
-            player.unit_manager.UNITS[player.unit_manager.BARRACKS][player.race]
+        self.buildable = [
+            self.game.UnitManager.UNITS[self.game.UnitManager.BASE_1][player.race],
+            self.game.UnitManager.UNITS[self.game.UnitManager.FARM][player.race],
+            self.game.UnitManager.UNITS[self.game.UnitManager.BARRACKS][player.race]
         ]
 
     def build_town_hall(self):
@@ -47,9 +48,6 @@ class Peasant(Unit):
 
     def build_barracks(self):
         self.build(2)
-
-    def harvest(self, x, y):
-        self.move(x, y, True)
 
 
 

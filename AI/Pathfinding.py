@@ -23,7 +23,7 @@ def a_star_search(graph, unit_graph, start, goal, is_ground=True, is_water=False
     if start == goal:
         return []
 
-    frontier = PriorityQueue()
+    frontier = PriorityQueue(None)
     frontier.put(start, 0)
     came_from = {}
     cost_so_far = {}
@@ -36,13 +36,13 @@ def a_star_search(graph, unit_graph, start, goal, is_ground=True, is_water=False
         if current == goal:
             break
 
-        neighbors = [x for x in ArrayUtil.walkable_cell_neighbors(graph, *current, 1) if unit_graph[x[0]][x[1]] == 0]
+        neighbors = [x for x in ArrayUtil.adjacent_tiles(graph, *current, 1) if unit_graph[x[0]][x[1]] == 0]
 
         for next in neighbors:
             tile_id = graph[next[0]][next[1]]
             tile = MapC.TILE_DATA[tile_id]
-            ground_cost = 0 if is_ground and tile['ground'] else 1000
-            water_cost = 0 if is_water and tile['water'] else 1000
+            ground_cost = 0 if is_ground and tile['type'] == MapC.WALKABLE else 1000
+            water_cost = 0 if is_water and tile['type'] == MapC.SWIMABLE else 1000
 
             new_cost = cost_so_far[current] + ground_cost + water_cost
             if next not in cost_so_far or new_cost < cost_so_far[next]:
@@ -51,6 +51,7 @@ def a_star_search(graph, unit_graph, start, goal, is_ground=True, is_water=False
                 priority = new_cost + heuristic(goal, next) + crossover(next, start, goal)  # TODO is crossover required?
                 frontier.put(next, priority)
                 came_from[next] = current
+
     return list(reversed(determine_path(came_from, start, goal)))
 
 

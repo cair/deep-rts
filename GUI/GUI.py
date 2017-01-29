@@ -40,20 +40,50 @@ class Button:
         gui.display.blit(lbl_text, (x, y))
 
 
-class GUISelectionPanel:
+class Overlay:
+    font = None
+    font_h1 = None
+
+    overlay = None
 
     @staticmethod
-    def top_panel(gui):
-        font = pygame.font.SysFont("monospace", 15)
+    def init(gui):
+        Overlay.font = pygame.font.SysFont("monospace", 15)
+        Overlay.font_h1 = pygame.font.SysFont("monospace", 24)
+
+        # Overlay surface
+        overlay = pygame.Surface(gui.window_size)
 
         # Panel background
         pygame.draw.rect(
-            gui.display,
+            overlay,
             pygame.locals.Color('black'),
-            (0, 0, gui.display.get_width(), 25)
+            (0, 0, gui.window_size[0], 25)
         )
 
-        lbl = font.render(
+        # Border
+        pygame.draw.rect(
+            overlay,
+            pygame.locals.Color('green'),
+            (0, gui.display.get_height() - 102, gui.window_size[0], 10)
+        )
+        # Panel background
+        pygame.draw.rect(
+            overlay,
+            pygame.locals.Color('black'),
+            (0, gui.display.get_height() - 100, gui.window_size[0], 100)
+        )
+
+        overlay = overlay.convert_alpha()
+        Overlay.overlay = overlay
+
+
+    @staticmethod
+    def render_top_panel(gui):
+        """
+        TOP PANEL
+        """
+        lbl = Overlay.font.render(
             "Lumber %s "
             "Gold: %s "
             "Food %s/%s "
@@ -70,58 +100,45 @@ class GUISelectionPanel:
             ), 1, (255, 255, 0))
         gui.display.blit(lbl, (10, 5))
 
-
     @staticmethod
-    def unit_panel(gui):
+    def render_bottom_panel(gui):
+        """
+        BOTTOM PANEL
+        """
         if not gui.gstate.selected_unit:
             return
 
-        font = pygame.font.SysFont("monospace", 15)
-        font_h1 = pygame.font.SysFont("monospace", 24)
+        lbl_unit_name = Overlay.font_h1.render("%s (%s) - %s" % (gui.gstate.selected_unit.name, gui.gstate.selected_unit.unit_id, gui.gstate.selected_unit.state.id), 1, (255, 255, 0))
 
-        # Border
-        pygame.draw.rect(
-            gui.display,
-            pygame.locals.Color('green'),
-            (0, gui.display.get_height() - 102, gui.display.get_width(), 10)
-        )
-        # Panel background
-        pygame.draw.rect(
-            gui.display,
-            pygame.locals.Color('black'),
-            (0, gui.display.get_height() - 100, gui.display.get_width(), 100)
+        line_1 = "Lumber: %s Health: %s/%s   Ground: %s" % (
+            gui.gstate.selected_unit.inventory_lumber,
+            gui.gstate.selected_unit.health, gui.gstate.selected_unit.health_max,
+            gui.gstate.selected_unit.ground_unit
         )
 
-        lbl_unit_name = font_h1.render("%s (%s) - %s" % (gui.gstate.selected_unit.name, gui.gstate.selected_unit.unit_id, Unit.state_name(gui.gstate.selected_unit.get_state())), 1, (255, 255, 0))
-        lbl_unit_health = font.render("Health: %s/%s" % (gui.gstate.selected_unit.health, gui.gstate.selected_unit.health_max) , 1, (255, 255, 0))
-        lbl_unit_attack = font.render("Damage: %s - %s" % (gui.gstate.selected_unit.damage_min, gui.gstate.selected_unit.damage_max), 1, (255, 255, 0))
-        lbl_unit_defence = font.render("Armor: %s" % gui.gstate.selected_unit.armor, 1, (255, 255, 0))
+        line_2 = "Gold: %s   Damage: %s - %s   Water: %s" % (
+            gui.gstate.selected_unit.inventory_gold,
+            gui.gstate.selected_unit.damage_min, gui.gstate.selected_unit.damage_max,
+            gui.gstate.selected_unit.water_unit,
+        )
 
-        lbl_unit_is_ground = font.render("Ground Unit: %s" % gui.gstate.selected_unit.ground_unit, 1, (255, 255, 0))
-        lbl_unit_is_water = font.render("Water Unit: %s" % gui.gstate.selected_unit.water_unit, 1, (255, 255, 0))
-        lbl_unit_speed = font.render("Speed: %s" % gui.gstate.selected_unit.speed, 1, (255, 255, 0))
+        line_3 = "Oil: %s    Armor: %s        Speed: %s" % (
+            gui.gstate.selected_unit.inventory_oil,
+            gui.gstate.selected_unit.armor,
+            gui.gstate.selected_unit.speed
+        )
 
-        lbl_unit_lumber = font.render("Lumber: %s" % gui.gstate.selected_unit.inventory_lumber, 1, (255, 255, 0))
-        lbl_unit_gold = font.render("Gold: %s" % gui.gstate.selected_unit.inventory_gold, 1, (255, 255, 0))
-        lbl_unit_oil = font.render("Oil: %s" % gui.gstate.selected_unit.inventory_oil, 1, (255, 255, 0))
-
-        gui.display.blit(lbl_unit_name, (250, 500))
-        gui.display.blit(lbl_unit_lumber, (50, 530))
-        gui.display.blit(lbl_unit_gold, (50, 545))
-        gui.display.blit(lbl_unit_health, (200, 530))
-        gui.display.blit(lbl_unit_attack, (200, 545))
-        gui.display.blit(lbl_unit_defence, (200, 560))
-        gui.display.blit(lbl_unit_is_ground, (350, 530))
-        gui.display.blit(lbl_unit_is_water, (350, 545))
-        gui.display.blit(lbl_unit_speed, (350, 560))
-
-        # Buildings (Can build)
-        btn_x = 615
-        btn_y = 510
         buttons = []
-        for building in gui.gstate.selected_unit.can_build:
-            btn = Button(gui, building, btn_x, btn_y + (20 * len(buttons)))
-            buttons.append(btn)
+        thestr = ""
+        for building in gui.gstate.selected_unit.buildable:
+            buttons.append(building)
+            thestr += "%s [%s|%s]" % (building.name, building.cost_lumber, building.cost_gold)
+
+        gui.display.blit(lbl_unit_name, (200, 500))
+        gui.display.blit(Overlay.font.render(line_1, 1, (255, 255, 0)), (150, 525))
+        gui.display.blit(Overlay.font.render(line_2, 1, (255, 255, 0)), (150, 545))
+        gui.display.blit(Overlay.font.render(line_3, 1, (255, 255, 0)), (150, 565))
+        gui.display.blit(Overlay.font.render(thestr, 1, (255, 255, 0)), (150, 585))
 
 
 
@@ -135,14 +152,17 @@ class GUI:
         self.gstate = GUIState()
 
         # Calculate window size
-        self.window_size = (self.game.map.MAP_WIDTH * MapC.TILE_SIZE, self.game.map.MAP_HEIGHT * MapC.TILE_SIZE)
+        self.window_size = (Map.width * MapC.TILE_SIZE, Map.height * MapC.TILE_SIZE)
 
         pygame.init()
         pygame.display.set_caption('WarC2Sim')
 
+
         # Canvas's
         self.display = pygame.display.set_mode((800, 600)) # Window
         self.canvas = pygame.Surface(self.window_size)
+        Overlay.init(self)
+
 
         self.tiles_sprite = self.tile_sprites()  # tile sprites (images)
         self.unit_sprite = self.unit_sprites()
@@ -167,14 +187,16 @@ class GUI:
         tileset_path = os.path.abspath(os.path.join('./data/textures', Map.TILES_THEME, "tiles.png"))
         sheet = pygame.image.load(tileset_path).convert()
 
-        result = [[None for x in range(self.game.map.tile_map.shape[0])] for y in range(self.game.map.tile_map.shape[1])]
+        result = [[None for x in range(Map.width)] for y in range(Map.height)]
 
         # Predefine sprites for each tile
-        for (x, y), tile_type in np.ndenumerate(self.game.map.tile_map):
-            tile_info = MapC.TILE_DATA[tile_type]
-            tile_choice = random.choice(tile_info['id'])
-            sprite = SpriteUtil.image_at(sheet, tile_choice, MapC.TILE_SIZE).convert()
-            result[x][y] = sprite
+        for x in range(Map.height):
+            for y in range(Map.width):
+                tile_type = self.game.data['tile'][x][y]
+                tile_info = MapC.TILE_DATA[tile_type]
+                tile_choice = random.choice(tile_info['id'])
+                sprite = SpriteUtil.image_at(sheet, tile_choice, MapC.TILE_SIZE).convert()
+                result[x][y] = sprite
 
         return result
 
@@ -310,7 +332,8 @@ class GUI:
                     SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height),
                     SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height),
                     SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height)
-                ]
+                ],
+
             },
             Unit.TOWN_HALL:  {
                 Unit.DOWN: [
@@ -340,25 +363,27 @@ class GUI:
 
         return sprites
 
-    def draw_fow(self):
-        vision = np.nonzero(self.player.fow == 0)
-        for x, y in zip(vision[0], vision[1]):
-            pygame.draw.rect(self.canvas, (0, 0, 0), (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE, MapC.TILE_SIZE, Map.TILE_SIZE))
+    def render_tiles(self):
 
-    def draw_tilemap(self):
-        for (x, y), elem in np.ndenumerate(self.game.map.tile_map):
+        pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, Map.height * MapC.TILE_SIZE, Map.width * MapC.TILE_SIZE))
+
+        for x, y in self.player.vision:
             self.canvas.blit(self.tiles_sprite[x][y], (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE))
 
-    def draw_units(self, dt):
+    def render_units(self, dt):
+        for unit in self.game.units.values():
+            coordinates = (unit.x, unit.y)
 
-        for unit in self.game.units().values():
+            if not unit.x or coordinates not in self.player.vision:
+                continue
+
             sprite_arr = self.unit_sprite[unit.id][unit.direction] # Selection
             sprite = sprite_arr[unit.animation_iterator % len(sprite_arr)] # Selection based on frame
 
             self.canvas.blit(sprite, (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE))
 
             unit.animation_timer += dt
-            if unit.animation_timer > unit.animation_interval and unit.path:
+            if unit.animation_timer > unit.animation_interval and unit.state == unit.state.Walking:
                 unit.animation_iterator += 1
                 unit.animation_timer = 0
 
@@ -372,18 +397,19 @@ class GUI:
         if self.gstate.SCROLL_RIGHT:
             self.camera_x -= 20
 
-    def left_click(self, t_x, t_y):
+    def left_click(self, x, y):
+
+        x = max(0, min(Map.width - 1, x))
+        y = max(0, min(Map.height - 1, y))
 
         # Propagate first to Units
-        try:
-            unit_id = self.game.unit_map[t_x][t_y]
-        except:
-            return
+        unit_id = self.game.data['unit'][x][y]
 
         if unit_id != 0:
             # Unit selection
             unit = self.game.units[unit_id]
             self.gstate.selected_unit = unit
+            self.player.left_click(x, y, unit_id)
             return
         else:
             # Click on tile
@@ -391,11 +417,14 @@ class GUI:
 
             pass
 
-    def right_click(self, t_x, t_y):
+    def right_click(self, x, y):
+
+        x = max(0, min(Map.width - 1, x))
+        y = max(0, min(Map.height - 1, y))
 
         # Right click and hav a selected unit, move it!
         if self.gstate.selected_unit:
-            self.gstate.selected_unit.right_click(t_x, t_y)
+            self.player.right_click(x, y, self.gstate.selected_unit.unit_id)
 
 
 
@@ -441,7 +470,7 @@ class GUI:
 
                 # Hotkeys for building
                 if self.gstate.selected_unit:
-                    num_options = len(self.gstate.selected_unit.can_build)
+                    num_options = len(self.gstate.selected_unit.buildable)
                     keys = [K_1, K_2, K_3, K_4, K_5, K_6]
                     for idx, key in enumerate(keys[:num_options]):
                         if event.key == key:
@@ -454,22 +483,20 @@ class GUI:
         # Processes
         self.scroll_process()
 
-    def draw(self, dt):
+    def render(self, dt):
 
-                # Draw Tile map
-                self.draw_tilemap()
-                self.draw_units(dt)
-                #self.draw_fow()
+        # Draw Tile map
+        self.render_tiles()
+        self.render_units(dt)
+
+        self.display.blit(self.canvas, (self.camera_x, self.camera_y))
 
 
+        Overlay.render_top_panel(self)
+        Overlay.render_bottom_panel(self)
 
-                self.display.blit(self.canvas, (self.camera_x, self.camera_y))
-
-                GUISelectionPanel.unit_panel(self)
-                GUISelectionPanel.top_panel(self)
-
-                #pygame.display.flip()
-                pygame.display.update()
+        #pygame.display.flip()
+        pygame.display.update()
 
     def caption(self, dt):
         pygame.display.set_caption(

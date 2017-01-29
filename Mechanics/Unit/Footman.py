@@ -17,7 +17,7 @@ class Footman(Unit):
     # Economics
     cost_lumber = 0
     cost_gold = 600
-    build_duration = 60 * Config.FRAME_MULTIPLIER
+    build_duration = 255 * Config.FRAME_MULTIPLIER
 
     # Stats
     name = "Footman"
@@ -31,13 +31,11 @@ class Footman(Unit):
     speed = 10
     sight = 4
 
-    def __init__(self, player):
-        super().__init__(player)
+    def __init__(self, player, attrs={}):
+        super().__init__(player, attrs)
         self.player = player
 
-        self.can_build = [
-            player.unit_manager.UNITS[player.unit_manager.BASE_1][player.race],
-            player.unit_manager.UNITS[player.unit_manager.FARM][player.race]
+        self.buildable = [
         ]
 
 

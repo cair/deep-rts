@@ -4,7 +4,7 @@ import pygame
 
 class Config:
     IS_RUNNING = True
-    HAS_GUI = False
+    HAS_GUI = True
 
     FRAME_MULTIPLIER = 8
 
@@ -45,31 +45,6 @@ class Unit:
     HARVEST_RECALL = 2
     HARVEST_DELIVER = 3
 
-    Idle = 0
-    Building = 1
-    Harvesting = 2
-    Combat = 3
-    Walking = 4
-    Dead = 5
-    Spawning = 6
-    Despawned = 7
-
-    to_string = {
-        Idle: "Idle",
-        Building: "Building",
-        Harvesting: "Harvesting",
-        Combat: "Combat",
-        Walking: "Walking",
-        Dead: "Dead",
-        Spawning: "Spawning",
-        Despawned: "Despawned"
-    }
-
-    @staticmethod
-    def state_name(state):
-        return Unit.to_string[state]
-
-
 
 
 
@@ -79,6 +54,7 @@ class Race:
 
 
 class Map:
+    # Tile Ids
     SPAWN_POINT = 9
     WALL = 0
     GRASS = 1
@@ -86,64 +62,53 @@ class Map:
     WATER = 3
     GOLD = 4
     OIL = 5
+
+    # Tile Types
+    BLOCKED = 0
+    WALKABLE = 1
+    HARVESTABLE = 2
+    SWIMABLE = 3
+
     TILE_SIZE = 32
     TILE_DATA = {
 
         WALL: {
-            'ground': False,
-            'water': False,
+            'type': BLOCKED,
             'id': [51],
             'name': 'wall',
-            'harvestable': False,
-            'buildable': False
         },
         GRASS: {
-            'ground': True,
-            'water': False,
+            'type': WALKABLE,
             'id': [i for i in range(238, 238 + 32)],
             'name': 'grass',
-            'harvestable': False,
-            'buildable': True
         },
         WOOD: {
-            'ground': False,
-            'water': False,
+            'type': HARVESTABLE,
             'id': [i for i in range(102, 102 + 32)],
             'name': 'wood',
-            'harvestable': True,
             'gold_yield': 0,
             'lumber_yield': 1,
             'oil_yield': 0,
-            'buildable': False
         },
         WATER: {
-            'ground': False,
-            'water': True,
+            'type': BLOCKED, # todo SWIMABLE?
             'id': [i for i in range(300, 300 + 32)],
             'name': 'water',
-            'harvestable': False,
-            'buildable': False
         },
         GOLD: {
-            'ground': False,
-            'water': False,
+            'type': HARVESTABLE,
             'id': [i for i in range(88, 88 + 14)],
             'name': 'wood',
-            'harvestable': True,
             'gold_yield': 1,
             'lumber_yield': 0,
             'oil_yield': 0,
-            'buildable': False
         },
         OIL: {
-            'ground': False,
-            'water': False,
+            'type': HARVESTABLE,
             'id': [i for i in range(102, 102 + 32)],
             'name': 'oil',
-            'harvestable': True,
             'gold_yield': 0,
             'lumber_yield': 0,
             'oil_yield': 1,
-            'buildable': False
         }
     }

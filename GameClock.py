@@ -38,7 +38,7 @@ class GameClock:
 
     def update(self, func, interval):
         self._update = func
-        self._update_interval = 1.0 / interval
+        self._update_interval = 0 if interval >= 2000 else 1.0 / interval
 
     @property
     def elapsed_update(self):
@@ -48,10 +48,10 @@ class GameClock:
 
         current_time = time.time()
 
-        #if current_time >= self._update_next:
-        self._update(1, self._update_ticks)
-        self._update_next = current_time + self._update_interval
-        self._update_ticks += 1
+        if current_time >= self._update_next:
+            self._update(1, self._update_ticks)
+            self._update_next = current_time + self._update_interval
+            self._update_ticks += 1
 
         if current_time >= self._render_next:
             self._render(1)

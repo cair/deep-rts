@@ -32,12 +32,12 @@ class TownHall(Unit):
     food_cost = 0
 
 
-    def __init__(self, player):
-        super().__init__(player)
+    def __init__(self, player, attrs={}):
+        super().__init__(player, attrs)
         self.player = player
 
-        self.can_build = [
-            player.unit_manager.UNITS[player.unit_manager.WORKER][player.race]
+        self.buildable = [
+            self.game.UnitManager.UNITS[self.game.UnitManager.WORKER][player.race]
         ]
 
 

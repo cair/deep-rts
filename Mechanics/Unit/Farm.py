@@ -30,12 +30,11 @@ class Farm(Unit):
     food = 4
     food_cost = 0
 
-
-    def __init__(self, player):
-        super().__init__(player)
+    def __init__(self, player, attrs={}):
+        super().__init__(player, attrs)
         self.player = player
 
-        self.can_build = []
+        self.buildable = []
 
 
 
