@@ -30,6 +30,9 @@ class State:
     def type_of(state_constant):
         return State.mapping[state_constant]
 
+    def clear_next(self):
+        self.next_states = PriorityQueue(self.unit)
+
     def has_next_state(self, state_constant):
         for s in self.next_states:
             if self.type_of(state_constant) == type(s):

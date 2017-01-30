@@ -41,8 +41,8 @@ class Game(object):
         # Create game clock
         self.clock = GameClock()
         self.clock.shedule(self.gui.caption, 1.0)
-        self.clock.update(self.process, 51000)  # 16
-        self.clock.render(self.render, 1)  # 60
+        self.clock.update(self.process, 8)  # 16
+        self.clock.render(self.render, 60)  # 60
 
         self.loop()
 

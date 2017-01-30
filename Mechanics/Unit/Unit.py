@@ -309,6 +309,7 @@ class Unit:
         elif not self.structure and self.game.Map.is_harvestable_tile(self, x, y):
             self.harvest(x, y)
         elif self.game.Map.is_walkable_tile(self, x, y):
+            self.state.clear_next()
             self.move(*(x, y))
 
     def build(self, idx):

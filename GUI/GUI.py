@@ -381,7 +381,16 @@ class GUI:
             sprite_arr = self.unit_sprite[unit.id][unit.direction] # Selection
             sprite = sprite_arr[unit.animation_iterator % len(sprite_arr)] # Selection based on frame
 
+            # Render Sprite
             self.canvas.blit(sprite, (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE))
+
+            # Render State List
+            self.canvas.blit(
+                Overlay.font.render('->'.join([x.id for x in unit.state.next_states]), 1, (255, 255, 0)),
+                (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE)
+            )
+
+
 
             unit.animation_timer += dt
             if unit.animation_timer > unit.animation_interval and unit.state == unit.state.Walking:
