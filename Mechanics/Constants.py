@@ -7,6 +7,7 @@ class Config:
     HAS_GUI = True
     INTERFACE = "Local"
     NO_FOG = True
+    DEBUG = False
 
     FRAME_MULTIPLIER = 8
 

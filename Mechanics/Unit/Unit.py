@@ -47,6 +47,7 @@ class Unit:
     food = 0
     food_cost = 1
     range = 1
+    spawned = False
 
     can_harvest = False
 
@@ -138,17 +139,21 @@ class Unit:
             self.game.data['unit'][x][y] = self.unit_id
             self.game.data['unit_pid'][x][y] = self.player.id
 
-    def spawn(self):
+    def add_to_game(self):
         self.game.units[self.unit_id] = self
         self.player.units.append(self.unit_id)
+
+    def remove_from_game(self):
+        del self.game.units[self.unit_id]
+        self.player.units.remove(self.unit_id)
+
+    def spawn(self):
         self.update_position_matrix()
         self.player.consumed_food += self.food_cost
         self.player.food += self.food
+        self.spawned = True
 
     def despawn(self):
-
-        del self.game.units[self.unit_id]
-        self.player.units.remove(self.unit_id)
         self.clear_position_matrix()
 
         self.x = None
@@ -156,6 +161,8 @@ class Unit:
 
         self.player.consumed_food -= self.food_cost
         self.player.food -= self.food
+
+        self.spawned = False
 
     def generate_path(self, x, y):
         path = a_star_search(
@@ -312,6 +319,34 @@ class Unit:
             self.state.clear_next()
             self.move(*(x, y))
 
+    def can_build_here(self, subject):
+        """
+        This determines weither this unit can build a unit at current location
+        :param subject:
+        :param x:
+        :param y:
+        :return:
+        """
+
+        if self.structure:
+            adjacent_tiles = self.Map.AdjacentMap.adjacent_walkable(
+                self.x + self.dimension,
+                self.y + self.dimension,
+                self.dimension + 1
+            )
+            return len(adjacent_tiles) > 0
+        else:
+            # A unit builds a structure
+            adjacent_tiles = self.Map.AdjacentMap.adjacent_walkable(self.x, self.y, Unit._dimension(subject))
+            adjacent_tiles.append((self.x, self.y))
+            subject_area = list(
+                itertools.product(
+                    list(range(self.x - Unit._dimension(subject), self.x - Unit._dimension(subject) + subject.height)),
+                    list(range(self.y - Unit._dimension(subject), self.y - Unit._dimension(subject) + subject.width))
+                ))
+            common = list(set(adjacent_tiles).intersection(set(subject_area)))
+            return len(common) == len(subject_area)
+
     def build(self, idx):
 
         entity_class = self.buildable[idx]
@@ -324,39 +359,18 @@ class Unit:
             print("Cannot afford this unit")
             return False
 
-        can_build = self.Map.buildable_here(
-            self,
-            self.x,
-            self.y,
-            self._dimension(entity_class)
-        )
-
-        if can_build:
+        if self.can_build_here(entity_class):
             # All tests passed, unit can be built
-
-            # Created a entity (Either a building or a unit (ie: worker))
-            entity = entity_class(self.player, {
-                'spawned_by': self
-            })
-            entity.x, entity.y = self.x - entity.dimension, self.y - entity.dimension
-
             # Subtract resources
             self.player.gold -= entity_class.cost_gold
             self.player.lumber -= entity_class.cost_lumber
 
-            if self.structure and not entity.structure:
-                # Building constructs Unit
-                self.state.transition(State.new(self, State.Building, {
-                    'target': entity,
-                }))
-
-            elif not self.structure and entity.structure:
-                # Unit constructs Building
-                self.state.transition(State.new(self, State.Building, {
-                    'target': entity
-                }))
-                self.despawn()
-                entity.spawn()
+            self.state.transition(State.new(self, State.Building, {
+                'target': entity_class,
+            }))
+        else:
+            # TODO feedback could not build
+            pass
 
     @staticmethod
     def generate_id():

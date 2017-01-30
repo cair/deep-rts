@@ -141,7 +141,6 @@ class Map:
         return neighbors
 
     def buildable_here(self, unit, x, y, d):
-        tiles = unit.game.data['tile']
 
         neighbors = ArrayUtil.neighbors(x, y, d)
         common = list(set(neighbors).intersection(set(self.free_tiles(unit))))

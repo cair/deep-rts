@@ -1,4 +1,4 @@
-from Mechanics.Constants import Unit as UnitC
+from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
 
@@ -15,6 +15,7 @@ class Farm(Unit):
     # Economics
     cost_lumber = 250
     cost_gold = 500
+    build_duration = 255 * Config.FRAME_MULTIPLIER
 
     # Stats
     name = "Farm"

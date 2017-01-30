@@ -24,7 +24,11 @@ class State:
         state = State.mapping[state_constant](unit)
         for key in properties:
             setattr(state, key, properties[key])
+        state.init()
         return state
+
+    def init(self):
+        pass
 
     @staticmethod
     def type_of(state_constant):
@@ -60,7 +64,7 @@ class State:
 
         if next_state:
             next_state.next_states = self.next_states
-            # print("%s. Transition from %s | %s => %s (%s => %s)" % (self.unit.tick, self.unit, self.id, next_state.id, self, next_state))
+            print("%s. Transition from %s | %s => %s (%s => %s)" % (self.unit.tick, self.unit, self.id, next_state.id, self, next_state))
             self.unit.state = next_state
         else:
             # No next state, Idle
@@ -87,53 +91,7 @@ class Spawning(State):
         super().__init__(unit)
 
     def update(self, tick):
-        self.build_timer += tick
-
-        if self.build_timer >= self.build_duration:
-            # Build done
-            self.unit.build_complete = True
-            self.unit.direction = UnitC.UP
-            self.build_timer = 0
-
-            # No unit spawned this unit.
-            if not self.spawned_by:
-                self.transition()
-                return
-
-            if self.unit.structure and not self.spawned_by.structure:
-                # This Structure is built by a unit
-                adjacent_tiles = self.game.Map.AdjacentMap.adjacent_walkable(
-                    self.unit.x + self.unit.dimension,
-                    self.unit.y + self.unit.dimension,
-                    self.unit.dimension + 1
-                )
-                tile = self.unit.shortest_distance(adjacent_tiles)
-                self.spawned_by.x, self.spawned_by.y = tile
-                self.spawned_by.spawn()
-                self.spawned_by.state.transition()
-                self.transition()
-
-            elif not self.unit.structure and self.spawned_by.structure:
-                # This Unit is built by a structure
-                adjacent_tiles = ArrayUtil.adjacent_walkable_tiles(
-                    self.spawned_by,
-                    self.spawned_by.x + self.spawned_by.dimension,
-                    self.spawned_by.y + self.spawned_by.dimension,
-                    self.spawned_by.dimension + 1
-                )
-
-                if not adjacent_tiles:
-                    # Wait for available tile
-                    print(self.unit.unit_id)
-                    return
-
-                tile = self.spawned_by.shortest_distance(adjacent_tiles)
-
-                self.unit.x = tile[0]
-                self.unit.y = tile[1]
-                self.unit.spawn()
-                self.spawned_by.state.transition()
-                self.transition()
+        pass
 
 
 class Despawned(State):
@@ -189,7 +147,7 @@ class Combat(State):
 
     # Attacking
     attack_target = None
-    attack_timer = 0
+    attack_timer = 1000
     attack_interval = 1.25 * Config.FRAME_MULTIPLIER
 
     def __init__(self, unit):
@@ -258,8 +216,12 @@ class Dead(State):
     def __init__(self, unit):
         super().__init__(unit)
 
-    def update(self, tick):
+    def init(self):
         self.unit.despawn()
+        self.unit.remove_from_game()
+
+    def update(self, tick):
+        pass
 
 
 class Harvesting(State):
@@ -282,6 +244,19 @@ class Harvesting(State):
 
     def __init__(self, unit):
         super().__init__(unit)
+
+    def stage_goto_harvest(self):
+        tiles = self.Map.AdjacentMap.adjacent_walkable(*self.harvest_target, 1)
+
+        if not tiles:
+            return
+        tile = self.unit.shortest_distance(tiles)
+
+        if not self.has_next_state(State.Harvesting):
+            self.add_next(State.new(self.unit, State.Harvesting, {
+                'harvest_target': self.harvest_target
+            }), 1)
+            self.unit.move(*tile)
 
     def stage_harvest(self):
         if self.harvest_timer >= self.harvest_interval:
@@ -307,8 +282,29 @@ class Harvesting(State):
 
             self.harvest_timer = 0
 
-    def stage_recall(self):
-        pass
+    def stage_recall(self, recall_building):
+        # Must walk
+        tiles = self.Map.AdjacentMap.adjacent_walkable(recall_building.x + recall_building.dimension,
+                                                       recall_building.y + recall_building.dimension,
+                                                       recall_building.dimension + 1)
+
+        if tiles:
+            # Wait for free spot to deliver
+            tile = self.unit.shortest_distance(tiles)
+            if not self.has_next_state(State.Harvesting):
+                self.add_next(State.new(self.unit, State.Harvesting, {
+                    'harvest_iterator': Harvesting.RETURN,
+                    'harvest_target': self.harvest_target
+                }), 1)
+                self.unit.move(*tile)
+
+    def stage_deliver(self):
+        self.unit.player.gold += self.unit.inventory_gold
+        self.unit.player.lumber += self.unit.inventory_lumber
+        self.unit.player.oil += self.unit.inventory_oil
+        self.unit.inventory_gold = 0
+        self.unit.inventory_lumber = 0
+        self.unit.inventory_oil = 0
 
     def update(self, tick):
         self.harvest_timer += tick
@@ -316,26 +312,21 @@ class Harvesting(State):
         if self.harvest_iterator == Harvesting.HARVEST:
 
             distance = self.unit.distance(*self.harvest_target)
-
             if distance > 1:
-
-                tiles = self.Map.AdjacentMap.adjacent_walkable(*self.harvest_target, 1)
-
-                if not tiles:
-                    return
-                tile = self.unit.shortest_distance(tiles)
-
-                if not self.has_next_state(State.Harvesting):
-                    self.add_next(State.new(self.unit, State.Harvesting, {
-                        'harvest_target': self.harvest_target
-                    }), 1)
-                    self.unit.move(*tile)
-
+                """
+                # Unit cannot reach the harvest tile, It therefore must trigger a Walking state to get to the tile
+                """
+                self.stage_goto_harvest()
             else:
+                """
+                # Unit can reach the harvest tile. Start harvesting
+                """
                 self.stage_harvest()
 
         elif self.harvest_iterator == Harvesting.RETURN:
-
+            """
+            # Find closest recall building (Typically a town-center or lumber mill
+            """
             recall_building = self.unit.closest_recall_building()
             distance = self.unit.distance(
                 recall_building.x,
@@ -344,66 +335,88 @@ class Harvesting(State):
             )
 
             if distance > 1:
-                # Must walk
-                tiles = self.Map.AdjacentMap.adjacent_walkable(recall_building.x + recall_building.dimension,
-                                                               recall_building.y + recall_building.dimension,
-                                                               recall_building.dimension + 1)
-
-                if tiles:
-                    # Wait for free spot to deliver
-                    tile = self.unit.shortest_distance(tiles)
-                    if not self.has_next_state(State.Harvesting):
-                        self.add_next(State.new(self.unit, State.Harvesting, {
-                            'harvest_iterator': Harvesting.RETURN,
-                            'harvest_target': self.harvest_target
-                        }), 1)
-                        self.unit.move(*tile)
+                """
+                # Unit cannot reach the recall building, This means that the unit must move towards it
+                # Triggers Walking state
+                """
+                self.stage_recall(recall_building)
             else:
-                self.unit.player.gold += self.unit.inventory_gold
-                self.unit.player.lumber += self.unit.inventory_lumber
-                self.unit.player.oil += self.unit.inventory_oil
-                self.unit.inventory_gold = 0
-                self.unit.inventory_lumber = 0
-                self.unit.inventory_oil = 0
-
+                """
+                # Unit are ready for delivering goods to the selected recall building
+                # When delivery is done, trigger new harvesting round
+                """
+                self.stage_deliver()
                 self.unit.harvest(*self.harvest_target)
 
 
 class Building(State):
     id = "Building"
     target = None
+    entity = None  # Set by init()
     type = State.Building
+
+    build_timer = 20
+    build_duration = 20
 
     def __init__(self, unit):
         super().__init__(unit)
 
+    def init(self):
+        self.build_timer = 0
+        self.build_duration = self.target.build_duration
+        # Create initial instance of unit
+        entity = self.target(self.unit.player)
+        entity.add_to_game()
+        if not self.unit.structure:
+            entity.x = self.unit.x - entity.dimension
+            entity.y = self.unit.y - entity.dimension
+            self.unit.despawn()
+            entity.spawn()
+
+        self.entity = entity
+
+    def spawn_subject(self, unit1, unit2):
+        """
+        This functions spawns a unit (unit1) given unit2's position
+        :param unit1:
+        :param unit2:
+        :return: Returns True if successful
+        """
+        adjacent_tiles = self.game.Map.AdjacentMap.adjacent_walkable(
+            unit1.x + unit1.dimension,
+            unit1.y + unit1.dimension,
+            unit1.dimension + 1
+        )
+
+        if not adjacent_tiles:
+            return False
+
+        unit2.x,unit2.y = adjacent_tiles.pop()
+        unit2.spawn()
+
+        return True
+
+
     def update(self, tick):
+        self.build_timer += tick
 
-        if not self.unit.structure and self.target.structure:
-            # Peasant building a structure
+        if self.build_timer >= self.build_duration:
+            # Build is done
+            self.entity.direction = UnitC.UP
 
-            if type(self.target.state) != Spawning:
-                # If structure is done
-                adjacent_tiles = ArrayUtil.adjacent_walkable_tiles(
-                    self.target,
-                    self.target.x,
-                    self.target.y,
-                    self.target.dimension + 2
-                )
-                tile = self.target.shortest_distance(adjacent_tiles)
+            did_spawn = False
+            if not self.unit.spawned:
+                # Builder is despawned, Spawn unit adjacent to newly built entity
+                did_spawn = self.spawn_subject(self.entity, self.unit)
+            elif not self.entity.spawned:
+                # Entity is despawned, Spawn entity (for example TownHall spawns Peasant)
+                did_spawn = self.spawn_subject(self.unit, self.entity)
 
-                self.unit.despawn()
-                self.unit.x = tile[0]
-                self.unit.y = tile[1]
 
+            if did_spawn:
+                self.entity.state.transition()
                 self.transition()
-        elif self.unit.structure and not self.target.structure:
-            # Town Hall building a worker
 
-            if type(self.target.state) == Spawning:
-                # When a Unit (Peasant) is beeing spawned from a building, it is not yet in the game (at all)
-                # This means that we have to run state process from this loop
-                self.target.state.update(1)
 
 
 # Create mapping

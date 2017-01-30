@@ -73,9 +73,11 @@ class Player:
         spawn_tile = self.Map.get_spawn_tile()
 
         # Create new unit
-        unit = UnitManager.worker(self)
-        unit.set_position(*spawn_tile)
-        unit.spawn()
+        unit = UnitManager.worker(self)      # 1. Create a worker
+        unit.set_position(*spawn_tile)       # 2. Set worker position
+        unit.add_to_game()                   # 3. Add worker to game
+        unit.spawn()                         # 4. Spawn worker
+        unit.state.transition()              # 5. Transition from Spawning to Idle state
 
         logging.debug("Player %s spawned at %s with 1 worker", self.name, spawn_tile)
 

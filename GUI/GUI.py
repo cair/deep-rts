@@ -43,12 +43,14 @@ class Button:
 class Overlay:
     font = None
     font_h1 = None
+    small = None
 
     overlay = None
 
     @staticmethod
     def init(gui):
         Overlay.font = pygame.font.SysFont("monospace", 15)
+        Overlay.small = pygame.font.SysFont("arial", 10)
         Overlay.font_h1 = pygame.font.SysFont("monospace", 24)
 
         # Overlay surface
@@ -371,6 +373,13 @@ class GUI:
         for x, y in self.player.vision:
             self.canvas.blit(self.tiles_sprite[x][y], (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE))
 
+            # Render State List
+            if Config.DEBUG:
+                self.canvas.blit(
+                    Overlay.small.render("(%s,%s)" % (x,y), 1, (255, 255, 0)),
+                    (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE)
+                )
+
     def render_units(self, dt):
         for unit in self.game.units.values():
             coordinates = (unit.x, unit.y)
@@ -380,17 +389,32 @@ class GUI:
 
             sprite_arr = self.unit_sprite[unit.id][unit.direction] # Selection
             sprite = sprite_arr[unit.animation_iterator % len(sprite_arr)] # Selection based on frame
+            pos = (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE)
 
             # Render Sprite
-            self.canvas.blit(sprite, (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE))
+            self.canvas.blit(sprite, pos)
+
+            # Render healthbar
+            health_percent = (unit.health / unit.health_max)
+            pygame.draw.rect(self.canvas, (255, 0, 0),
+                             (pos[0] - 10,
+                              pos[1] - 5,
+                              50,
+                              5
+                              ))
+            pygame.draw.rect(self.canvas, (0, 255, 0),
+                             (pos[0] - 10,
+                              pos[1] - 5,
+                              50 * health_percent,
+                              5
+                              ))
 
             # Render State List
-            self.canvas.blit(
-                Overlay.font.render('->'.join([x.id for x in unit.state.next_states]), 1, (255, 255, 0)),
-                (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE)
-            )
-
-
+            if Config.DEBUG:
+                self.canvas.blit(
+                    Overlay.font.render('->'.join([x.id for x in unit.state.next_states]) + str(unit.spawned), 1, (255, 255, 0)),
+                    (unit.x * MapC.TILE_SIZE, unit.y * MapC.TILE_SIZE)
+                )
 
             unit.animation_timer += dt
             if unit.animation_timer > unit.animation_interval and unit.state == unit.state.Walking:
@@ -510,10 +534,7 @@ class GUI:
 
     def caption(self, dt):
         pygame.display.set_caption(
-            ' '.join(('Loop=GameClock Tab:[TPS=%d MaxFPS=%d]',
-                      'Runtime:[FPS=%d UPS=%d]')) % (
-                self.game.clock.max_ups,
-                self.game.clock.max_fps,
+            ' '.join(('WarC2Sim', '[FPS=%d UPS=%d]')) % (
                 self.game.clock.fps,
                 self.game.clock.ups))
 
