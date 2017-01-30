@@ -9,11 +9,14 @@ from Mechanics.Constants import Config
 select_map = "simple"
 select_players = 2
 
-# Create game instance
-game = Game(
-    map_name=select_map,
-    players=select_players
-)
+
+
+if __name__ == "__main__":
+    # Create game instance
+    game = Game(
+        map_name=select_map,
+        players=select_players
+    )
 
 
 

@@ -2,12 +2,12 @@ import itertools
 import random
 from math import *
 
-from AI.Pathfinding import a_star_search
-from Event import Event
-from Mechanics.Constants import Unit as UnitC, Config, Map as MapC
+from Mechanics.API.Event import Event
+from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Map import Map
-from Mechanics.Unit.States import Despawned, Building, Combat, Idle, Dead, Harvesting, Spawning, Walking, State
+from Mechanics.Unit.States import State
 from Mechanics.Util import ArrayUtil
+from Pathfinding import a_star_search
 
 
 class Unit:
@@ -50,10 +50,6 @@ class Unit:
 
     can_harvest = False
 
-
-
-    harvest_target = None
-
     def __init__(self, player, attrs={}):
         self.unit_id = self.generate_id()
         self.x = None
@@ -64,12 +60,13 @@ class Unit:
 
         self.player = player
         self.game = player.game
+        self.Map = self.game.Map
         self.data = player.game.data
-
+        self.Event = player.Event
         self.state = State.new(self, State.Despawned)
         self.state.transition(State.new(self, State.Spawning, properties=attrs))
 
-        Event.notify(Event.Unit_Spawn, data=self.unit_id)
+        self.Event.notify(Event.Unit_Spawn, data=self.unit_id)
 
     def get_state(self):
         return self.current_state
@@ -102,7 +99,7 @@ class Unit:
         # Set direction of step
         self.set_direction(self.x - prev_x, self.y - prev_y)
 
-        Event.notify(Event.Unit_Set_Position, data=(self.unit_id, self.x, self.y))
+        self.Event.notify(Event.Unit_Set_Position, data=(self.unit_id, self.x, self.y))
 
     def set_direction(self, dx, dy):
         data = {
@@ -162,12 +159,10 @@ class Unit:
 
     def generate_path(self, x, y):
         path = a_star_search(
+            self.game.Map,
             self.game.data['tile'],
-            self.game.data['unit'],
             (self.x, self.y),
-            (x, y),
-            is_ground=self.ground_unit,
-            is_water=self.water_unit
+            (x, y)
         )
 
         if path:
@@ -187,7 +182,7 @@ class Unit:
             'path_goal': (x, y)
         }))
 
-        Event.notify(Event.Unit_Move, data=(self.unit_id, x, y))
+        self.Event.notify(Event.Unit_Move, data=(self.unit_id, x, y))
 
     def distance(self, x, y, dim=0):
         d = hypot(self.x - (x + dim), self.y - (y + dim))
@@ -233,7 +228,8 @@ class Unit:
 
         distance = self.distance(x, y)
         if distance > 1:
-            tiles = ArrayUtil.adjacent_walkable_tiles(self, x, y, 1)
+            tiles = self.game.Map.AdjacentMap.adjacent_walkable(x, y, 1)
+
             if not tiles:
                 return
             tile = self.shortest_distance(tiles)
@@ -327,7 +323,7 @@ class Unit:
             print("Cannot afford this unit")
             return False
 
-        can_build = Map.buildable_here(
+        can_build = self.Map.buildable_here(
             self,
             self.x,
             self.y,

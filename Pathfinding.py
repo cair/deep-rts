@@ -1,6 +1,7 @@
-from AI.PriorityQueue import PriorityQueue
 from Mechanics.Constants import Map as MapC
+from Mechanics.Map import Map
 from Mechanics.Util import ArrayUtil
+from PriorityQueue import PriorityQueue
 
 
 def heuristic(a, b):
@@ -18,7 +19,7 @@ def crossover(current, start, goal):
     cross = abs(dx1*dy2 - dx2*dy1)
     return cross*0.001
 
-def a_star_search(graph, unit_graph, start, goal, is_ground=True, is_water=False):
+def a_star_search(Map, graph, start, goal):
 
     if start == goal:
         return []
@@ -36,15 +37,9 @@ def a_star_search(graph, unit_graph, start, goal, is_ground=True, is_water=False
         if current == goal:
             break
 
-        neighbors = [x for x in ArrayUtil.adjacent_tiles(graph, *current, 1) if unit_graph[x[0]][x[1]] == 0]
-
+        neighbors = Map.AdjacentMap.adjacent_walkable(*current, 1)
         for next in neighbors:
-            tile_id = graph[next[0]][next[1]]
-            tile = MapC.TILE_DATA[tile_id]
-            ground_cost = 0 if is_ground and tile['type'] == MapC.WALKABLE else 1000
-            water_cost = 0 if is_water and tile['type'] == MapC.SWIMABLE else 1000
-
-            new_cost = cost_so_far[current] + ground_cost + water_cost
+            new_cost = cost_so_far[current]
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
 

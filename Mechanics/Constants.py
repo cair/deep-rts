@@ -5,6 +5,8 @@ import pygame
 class Config:
     IS_RUNNING = True
     HAS_GUI = True
+    INTERFACE = "Local"
+    NO_FOG = True
 
     FRAME_MULTIPLIER = 8
 

@@ -108,7 +108,7 @@ class Overlay:
         if not gui.gstate.selected_unit:
             return
 
-        lbl_unit_name = Overlay.font_h1.render("%s (%s) - %s" % (gui.gstate.selected_unit.name, gui.gstate.selected_unit.unit_id, gui.gstate.selected_unit.state.id), 1, (255, 255, 0))
+        lbl_unit_name = Overlay.font_h1.render("%s (%s) - %s (%s,%s)" % (gui.gstate.selected_unit.name, gui.gstate.selected_unit.unit_id, gui.gstate.selected_unit.state.id, gui.gstate.selected_unit.x, gui.gstate.selected_unit.y), 1, (255, 255, 0))
 
         line_1 = "Lumber: %s Health: %s/%s   Ground: %s" % (
             gui.gstate.selected_unit.inventory_lumber,
@@ -149,10 +149,11 @@ class GUI:
         self.camera_y = 0
         self.game = game
         self.player = player
+        self.Map = self.game.Map
         self.gstate = GUIState()
 
         # Calculate window size
-        self.window_size = (Map.width * MapC.TILE_SIZE, Map.height * MapC.TILE_SIZE)
+        self.window_size = (self.Map.width * MapC.TILE_SIZE, self.Map.height * MapC.TILE_SIZE)
 
         pygame.init()
         pygame.display.set_caption('WarC2Sim')
@@ -184,14 +185,14 @@ class GUI:
             pass
 
     def tile_sprites(self):
-        tileset_path = os.path.abspath(os.path.join('./data/textures', Map.TILES_THEME, "tiles.png"))
+        tileset_path = os.path.abspath(os.path.join('./data/textures', self.Map.TILES_THEME, "tiles.png"))
         sheet = pygame.image.load(tileset_path).convert()
 
-        result = [[None for x in range(Map.width)] for y in range(Map.height)]
+        result = [[None for x in range(self.Map.width)] for y in range(self.Map.height)]
 
         # Predefine sprites for each tile
-        for x in range(Map.height):
-            for y in range(Map.width):
+        for x in range(self.Map.height):
+            for y in range(self.Map.width):
                 tile_type = self.game.data['tile'][x][y]
                 tile_info = MapC.TILE_DATA[tile_type]
                 tile_choice = random.choice(tile_info['id'])
@@ -365,7 +366,7 @@ class GUI:
 
     def render_tiles(self):
 
-        pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, Map.height * MapC.TILE_SIZE, Map.width * MapC.TILE_SIZE))
+        pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, self.Map.height * MapC.TILE_SIZE, self.Map.width * MapC.TILE_SIZE))
 
         for x, y in self.player.vision:
             self.canvas.blit(self.tiles_sprite[x][y], (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE))
@@ -399,8 +400,8 @@ class GUI:
 
     def left_click(self, x, y):
 
-        x = max(0, min(Map.width - 1, x))
-        y = max(0, min(Map.height - 1, y))
+        x = max(0, min(self.Map.width - 1, x))
+        y = max(0, min(self.Map.height - 1, y))
 
         # Propagate first to Units
         unit_id = self.game.data['unit'][x][y]
@@ -419,8 +420,8 @@ class GUI:
 
     def right_click(self, x, y):
 
-        x = max(0, min(Map.width - 1, x))
-        y = max(0, min(Map.height - 1, y))
+        x = max(0, min(self.Map.width - 1, x))
+        y = max(0, min(self.Map.height - 1, y))
 
         # Right click and hav a selected unit, move it!
         if self.gstate.selected_unit:

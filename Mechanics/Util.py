@@ -21,14 +21,13 @@ class FakeTime:
 class ArrayUtil:
 
     @staticmethod
-    def neighbors(im, i, j, d=1):
-
+    def neighbors(i, j, d=1):
         xs = [x for x in range(i-d, i+d+1)]
         ys = [y for y in range(j-d, j+d+1)]
-
         neighbors = list(itertools.product(xs, ys))
         neighbors.remove((i, j))
         return neighbors
+
 
     @staticmethod
     def get_area(x, y, width, height):
@@ -38,32 +37,8 @@ class ArrayUtil:
         return all_tiles
 
     @staticmethod
-    def neighbor_features_4(arr, i, j):
-        possible_coords = [
-            (i + 1, j),
-            (i - 1, j),
-            (i, j + 1),
-            (i, j - 1)
-        ]
-
-        data = {
-            "walkable": [],
-            "harvestable": []
-        }
-
-        for possible_coord in possible_coords:
-            tile_id = arr[possible_coord[0]][possible_coord[1]]
-            tile = MapC.TILE_DATA[tile_id]
-            if tile['ground']:
-                data['walkable'].append(possible_coord)
-            if tile['harvestable']:
-                data['harvestable'].append(possible_coord)
-
-        return data
-
-    @staticmethod
     def adjacent_tiles(arr, i, j, d, type=MapC.WALKABLE):
-        possible_coord = ArrayUtil.neighbors(arr, i, j, d)
+        possible_coord = ArrayUtil.neighbors(i, j, d)
         valid = []
         for possible_coord in possible_coord:
             tile_id = arr[possible_coord[0]][possible_coord[1]]
@@ -78,6 +53,7 @@ class ArrayUtil:
         tiles = ArrayUtil.adjacent_tiles(unit.game.data['tile'], i, j, d,type)
         tiles = [x for x in tiles if ArrayUtil.is_walkable_tile(unit, *x)]
         return tiles
+
 
     @staticmethod
     def is_walkable_tile(unit, x, y):

@@ -5,34 +5,71 @@ from Mechanics.Constants import Unit as UnitC
 from Mechanics.Util import ArrayUtil
 import logging
 
+class AdjacentMap:
+
+    def __init__(self, game, width, height, d=3):
+        self.game = game
+        self._map = {}
+        self.width = width
+        self.height = height
+        self.dim = d
+
+        self._generate()
+
+    def _generate(self):
+
+        for x in range(self.width):
+            for y in range(self.height):
+                for dim in range(1, self.dim):
+                    key = (x, y, dim)
+                    adjacent_tiles = ArrayUtil.neighbors(*key)
+
+                    self._map[key] = adjacent_tiles
+
+    def adjacent(self, x, y, dim):
+        return self._map[(x, y, dim)]
+
+    def adjacent_walkable(self, x, y, dim):
+        potential_tiles = self.adjacent(x, y, dim)
+
+        tiles = [t for t in potential_tiles if
+                 self.game.data['tile_collision'][t[0]][t[1]] == MapC.WALKABLE and
+                 self.game.data['unit'][t[0]][t[1]] == UnitC.NONE
+                 ]
+
+        return tiles
+
 
 class Map:
 
-    TILES_THEME = "summer"
-    width = None
-    height = None
-    raw_data = None
-    spawn_tiles = []
+    def __init__(self, game):
+        self.TILES_THEME = "summer"
+        self.width = None
+        self.height = None
+        self.raw_data = None
+        self.spawn_tiles = []
+        self.AdjacentMap = None
+        self.game = game
 
-    @staticmethod
-    def preload(map_name):
+    def preload(self, map_name):
         # Parse raw map
         logging.debug("Loading map %s" % map_name)
         with open(os.path.join('./data/maps/', map_name + ".map")) as f:
-            Map.raw_data = [[int(digit) for digit in line.split()] for line in f]
+            self.raw_data = [[int(digit) for digit in line.split()] for line in f]
 
-        Map.height, Map.width = len(Map.raw_data[0]), len(Map.raw_data)
-        logging.debug("Loaded %s, a %sX%s sized map!" % (map_name, Map.height, Map.width))
+        self.height, self.width = len(self.raw_data[0]), len(self.raw_data)
+        self.AdjacentMap = AdjacentMap(self.game, self.height, self.width)
 
-    @staticmethod
-    def load(tiles, tile_collision):
+        logging.debug("Loaded %s, a %sX%s sized map!" % (map_name, self.height, self.width))
 
-        for y, val in enumerate(Map.raw_data):
+    def load(self, tiles, tile_collision):
+
+        for y, val in enumerate(self.raw_data):
             for x, tile_id in enumerate(val):
 
                 # If spawn point, add to spawn_point list
                 if tile_id == MapC.SPAWN_POINT:
-                    Map.spawn_tiles.append((x, y))
+                    self.spawn_tiles.append((x, y))
                     tile_id = MapC.GRASS
 
                 tile = MapC.TILE_DATA[tile_id]
@@ -40,9 +77,8 @@ class Map:
                 tiles[x][y] = tile_id
                 tile_collision[x][y] = tile['type']
 
-    @staticmethod
-    def get_spawn_tile():
-        return Map.spawn_tiles.pop(0)
+    def get_spawn_tile(self):
+        return self.spawn_tiles.pop(0)
 
     @staticmethod
     def is_harvestable_tile(unit, x, y):
@@ -104,17 +140,15 @@ class Map:
 
         return neighbors
 
-    @staticmethod
-    def buildable_here(unit, x, y, d):
+    def buildable_here(self, unit, x, y, d):
         tiles = unit.game.data['tile']
 
-        neighbors = ArrayUtil.neighbors(tiles, x, y, d)
-        common = list(set(neighbors).intersection(set(Map.free_tiles(unit))))
+        neighbors = ArrayUtil.neighbors(x, y, d)
+        common = list(set(neighbors).intersection(set(self.free_tiles(unit))))
         return len(common) == len(neighbors)
 
-    @staticmethod
-    def get_tile(game, x, y):
-        tile_id = game.data['tile'][x][y]
+    def get_tile(self, x, y):
+        tile_id = self.game.data['tile'][x][y]
         tile = MapC.TILE_DATA[tile_id]
         return tile
 
