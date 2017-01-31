@@ -25,9 +25,9 @@ class Player:
 
         self.id = Player.index
         Player.index += 1
-
-        self.Event = Event()
-        self.Interface = Interface(self)
+        self.defeated = False
+        self.Event = Event(self)
+        self.Interface = Interface(self, self.Event)
         self.Interface.start()
 
         self.name = name
@@ -38,8 +38,13 @@ class Player:
         #self.calculate_fow()
 
         logging.debug("Created player %s" % name)
+        self.game.clock.shedule(self.check_defeat, 1.0)  # Regularly check for defeat
 
         self.spawn()
+        self.Event.notify_start({
+            'player_id': self.id,
+            'worker': self.units[0]
+        })
 
     def _base_vision(self):
         """
@@ -57,8 +62,12 @@ class Player:
             base_vision = list(zip(tiles[0], tiles[1]))
             return base_vision
 
-    def is_defeated(self):
-        return not self.units
+    def check_defeat(self, tick):
+        has_units = True if self.units else False
+        self.defeated = has_units
+
+    def get_units(self):
+        return [self.game.units[x] for x in self.units]
 
     def process(self, dt):
 
@@ -88,6 +97,8 @@ class Player:
 
         for unit_id in self.units:
             unit = self.game.units[unit_id]
+            if not unit.x:
+                continue
 
             range_x = range(unit.x - 2 + unit.dimension, min(unit.x + 3 + unit.dimension, self.Map.height))
             range_y = range(unit.y - 2 + unit.dimension, min(unit.y + 3 + unit.dimension, self.Map.width))

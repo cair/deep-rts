@@ -1,29 +1,23 @@
-import threading
-import random
-
+from Mechanics.API.LocalAI import LocalAI
+from Mechanics.API.RemoteAI import RemoteAI
 from Mechanics import Constants
+import threading
+import logging
+log = logging.getLogger('root')
 
 
 class Interface(threading.Thread):
-    PORT = 20000
 
-    def __init__(self, player):
-        """port = Interface.PORT
-        Interface.PORT += 1
-        address = 'localhost'"""
+    def __init__(self, player, event):
         threading.Thread.__init__(self)
 
         if Constants.Config.INTERFACE == "Local":
-            print("Hooking AI on player (Local)")
-            from AI.AI import AI
-            AI(player)
-
-
+            log.info("Hooking AI on player (Local)")
+            self.ai = LocalAI(player, event)
         else:
-            print("Remote AI")
-
-
+            log.info("Hooking AI on player (Remote)")
+            self.ai = RemoteAI(player, event)
 
     def run(self):
-        pass
+        self.ai.init()
 

@@ -1,4 +1,3 @@
-from Mechanics.API.Event import Event
 from Mechanics.Constants import Config
 from Mechanics.Constants import Unit as UnitC
 from Mechanics.Map import Map
@@ -64,7 +63,7 @@ class State:
 
         if next_state:
             next_state.next_states = self.next_states
-            print("%s. Transition from %s | %s => %s (%s => %s)" % (self.unit.tick, self.unit, self.id, next_state.id, self, next_state))
+            #print("%s. Transition from %s | %s => %s (%s => %s)" % (self.unit.tick, self.unit, self.id, next_state.id, self, next_state))
             self.unit.state = next_state
         else:
             # No next state, Idle
@@ -157,18 +156,16 @@ class Combat(State):
         self.attack_timer += tick
 
         if self.attack_timer >= self.attack_interval:
-            distance = self.unit.distance(self.attack_target.x, self.attack_target.y)
-
+            distance = self.unit.distance(self.attack_target.x, self.attack_target.y, self.attack_target.dimension)
             if distance > self.unit.range:
                 # Too far away, Walk
 
                 # Find adjacent tile to the attack target
-                tiles = ArrayUtil.adjacent_walkable_tiles(
-                    self.attack_target,
-                    self.attack_target.x,
-                    self.attack_target.y, 1
+                tiles = self.Map.AdjacentMap.adjacent_walkable(
+                    self.attack_target.x + self.attack_target.dimension,
+                    self.attack_target.y + self.attack_target.dimension,
+                    self.attack_target.dimension + 1
                 )
-
                 # No tiles are available around the target
                 if not tiles:
                     return
@@ -187,7 +184,7 @@ class Combat(State):
                 # Can attack (Distance < Range)
                 my_damage = self.unit.get_damage(self.unit)
                 self.attack_target.afflict_damage(my_damage)
-                self.Event.notify(Event.Attack, data=(self.unit.unit_id, self.attack_target.unit_id))
+                self.Event.notify(self.Event.Attack, data=(self.unit.unit_id, self.attack_target.unit_id))
 
                 # If attack target is dead, transition to next state
                 if self.attack_target.is_dead():
@@ -328,6 +325,8 @@ class Harvesting(State):
             # Find closest recall building (Typically a town-center or lumber mill
             """
             recall_building = self.unit.closest_recall_building()
+            if not recall_building or not recall_building.x:
+                self.transition()
             distance = self.unit.distance(
                 recall_building.x,
                 recall_building.y,

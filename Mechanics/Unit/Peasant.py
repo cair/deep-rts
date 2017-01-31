@@ -1,6 +1,7 @@
 from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
+
 class Peasant(Unit):
 
     # Identifier
@@ -39,16 +40,6 @@ class Peasant(Unit):
             self.game.UnitManager.UNITS[self.game.UnitManager.FARM][player.race],
             self.game.UnitManager.UNITS[self.game.UnitManager.BARRACKS][player.race]
         ]
-
-    def build_town_hall(self):
-        self.build(0)
-
-    def build_farm(self):
-        self.build(1)
-
-    def build_barracks(self):
-        self.build(2)
-
 
 
 

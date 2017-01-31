@@ -281,7 +281,6 @@ class Unit:
         if self.health <= 0:
             self.state.transition(State.new(self, State.Dead))
 
-
     def is_dead(self):
         return self.state.type == self.state.Dead
 
@@ -292,10 +291,16 @@ class Unit:
         if self.damage_min <= 0:
             return
 
-        attack_target = Map.get_unit(self, x, y)
+        attack_target = self.Map.get_unit(x, y)
         distance = self.distance(x, y)
         if distance > 1:
-            tiles = ArrayUtil.adjacent_walkable_tiles(self, x, y, 1)
+
+            tiles = self.Map.AdjacentMap.adjacent_walkable(
+                attack_target.x + attack_target.dimension,
+                attack_target.y + attack_target.dimension,
+                attack_target.dimension + 1
+            )
+
             if not tiles:
                 return
             tile = self.shortest_distance(tiles)
@@ -311,13 +316,16 @@ class Unit:
             }))
 
     def right_click(self, x, y):
+        if not self.x or not self.y:
+            return
+
         if self.game.Map.is_attackable(self, x, y):
             self.attack(x, y)
         elif not self.structure and self.game.Map.is_harvestable_tile(self, x, y):
             self.harvest(x, y)
         elif self.game.Map.is_walkable_tile(self, x, y):
             self.state.clear_next()
-            self.move(*(x, y))
+            self.move(x, y)
 
     def can_build_here(self, subject):
         """

@@ -1,15 +1,7 @@
 import os
 import pygame
+import Config
 
-
-class Config:
-    IS_RUNNING = True
-    HAS_GUI = True
-    INTERFACE = "Local"
-    NO_FOG = True
-    DEBUG = False
-
-    FRAME_MULTIPLIER = 8
 
 class Mouse:
     LEFT = 1
@@ -30,9 +22,9 @@ class Unit:
     PEASANT = 20
     FOOTMAN = 21
 
-    PEASANT_SPRITE = pygame.image.load(os.path.abspath("./data/textures/human/peasant.png"))
-    FOOTMAN_SPRITE = pygame.image.load(os.path.abspath("./data/textures/human/footman.png"))
-    BUILDING_SPRITESHEET = pygame.image.load(os.path.abspath("./data/textures/human/buildings.png"))
+    PEASANT_SPRITE = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/peasant.png"))
+    FOOTMAN_SPRITE = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/footman.png"))
+    BUILDING_SPRITESHEET = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/buildings.png"))
 
     LEFT = 0
     UP = 1
@@ -47,8 +39,6 @@ class Unit:
     HARVEST_WORK = 1
     HARVEST_RECALL = 2
     HARVEST_DELIVER = 3
-
-
 
 
 class Race:

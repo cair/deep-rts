@@ -1,9 +1,7 @@
 import pygame
 import sys
-import numpy as np
 import random
 import os
-from Mechanics.Map import Map
 from Mechanics.Unit.Barracks import Barracks
 from Mechanics.Unit.Farm import Farm
 from Mechanics.Unit.Footman import Footman
@@ -14,7 +12,7 @@ from Mechanics.Constants import Unit, Config
 from Mechanics.Constants import Mouse as MouseC
 from Mechanics.Constants import Map as MapC
 from pygame.locals import *
-import itertools
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 class GUIState:
 
@@ -155,15 +153,16 @@ class GUI:
         self.gstate = GUIState()
 
         # Calculate window size
-        self.window_size = (self.Map.width * MapC.TILE_SIZE, self.Map.height * MapC.TILE_SIZE)
+        self.canvas_size = (self.Map.width * MapC.TILE_SIZE, self.Map.height * MapC.TILE_SIZE)
+        self.window_size = (800, 600)
 
         pygame.init()
         pygame.display.set_caption('WarC2Sim')
 
 
         # Canvas's
-        self.display = pygame.display.set_mode((800, 600)) # Window
-        self.canvas = pygame.Surface(self.window_size)
+        self.display = pygame.display.set_mode(self.window_size) # Window
+        self.canvas = pygame.Surface(self.canvas_size)
         Overlay.init(self)
 
 
@@ -187,7 +186,7 @@ class GUI:
             pass
 
     def tile_sprites(self):
-        tileset_path = os.path.abspath(os.path.join('./data/textures', self.Map.TILES_THEME, "tiles.png"))
+        tileset_path = os.path.abspath(os.path.join(dir_path, '../data/textures', self.Map.TILES_THEME, "tiles.png"))
         sheet = pygame.image.load(tileset_path).convert()
 
         result = [[None for x in range(self.Map.width)] for y in range(self.Map.height)]
@@ -425,11 +424,11 @@ class GUI:
         if self.gstate.SCROLL_UP:
             self.camera_y = min(0, self.camera_y + 20)
         if self.gstate.SCROLL_DOWN:
-            self.camera_y -= 20
+            self.camera_y = max(self.window_size[1] - self.canvas_size[1], self.camera_y - 20)
         if self.gstate.SCROLL_LEFT:
             self.camera_x = min(0, self.camera_x + 20)
         if self.gstate.SCROLL_RIGHT:
-            self.camera_x -= 20
+            self.camera_x = max(self.window_size[0] - self.canvas_size[0], self.camera_x - 20)
 
     def left_click(self, x, y):
 

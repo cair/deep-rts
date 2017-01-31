@@ -1,4 +1,4 @@
-from Mechanics.Constants import Unit as UnitC
+from Mechanics.Constants import Unit as UnitC, Config
 from Mechanics.Unit.Unit import Unit
 
 
@@ -15,6 +15,7 @@ class Barracks(Unit):
     # Economics
     cost_lumber = 450
     cost_gold = 700
+    build_duration = 200 * Config.FRAME_MULTIPLIER
 
     # Stats
     name = "Barracks"

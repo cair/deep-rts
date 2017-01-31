@@ -40,9 +40,3 @@ class TownHall(Unit):
             self.game.UnitManager.UNITS[self.game.UnitManager.WORKER][player.race]
         ]
 
-
-    def build_peasant(self):
-        self.build(0)
-
-
-

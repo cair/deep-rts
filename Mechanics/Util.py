@@ -1,21 +1,9 @@
 import math
 import pygame
-import numpy as np
-import time
 
 from Mechanics.Constants import Map as MapC
 from Mechanics.Constants import Unit as UnitC
 import itertools
-
-
-
-class FakeTime:
-
-    def __init__(self):
-        self.multiplier = 1
-
-
-
 
 
 class ArrayUtil:
@@ -54,7 +42,6 @@ class ArrayUtil:
         tiles = [x for x in tiles if ArrayUtil.is_walkable_tile(unit, *x)]
         return tiles
 
-
     @staticmethod
     def is_walkable_tile(unit, x, y):
         tile_walkable = unit.game.data['tile_collision'][x][y] == MapC.WALKABLE
@@ -64,13 +51,6 @@ class ArrayUtil:
 
 
 class SpriteUtil:
-    def add_sprite(self, direction, x, y, width, height, tile_width=1, tile_height=1):
-        w = tile_width * MapC.TILE_SIZE
-        h = tile_height * MapC.TILE_SIZE
-
-        sprite = SpriteUtil.get_sprite(self.spritesheet, x, y, width, height, w, h)
-        self.sprite_map[direction].append(sprite)
-
 
     @staticmethod
     def image_at(sheet, tile_n, tile_size=32):

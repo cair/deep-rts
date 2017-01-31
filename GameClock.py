@@ -45,7 +45,6 @@ class GameClock:
         return self._update_ticks
 
     def tick(self):
-
         current_time = time.time()
 
         if current_time >= self._update_next:
@@ -71,6 +70,7 @@ class GameClock:
             self._stats_next = current_time + self._stats_interval
             self.ups = du
             self.fps = dr
+
 
 
 

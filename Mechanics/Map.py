@@ -1,10 +1,10 @@
 import os
-import numpy as np
 from Mechanics.Constants import Map as MapC
 from Mechanics.Constants import Unit as UnitC
 from Mechanics.Util import ArrayUtil
 import logging
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
 class AdjacentMap:
 
     def __init__(self, game, width, height, d=3):
@@ -20,7 +20,7 @@ class AdjacentMap:
 
         for x in range(self.width):
             for y in range(self.height):
-                for dim in range(1, self.dim):
+                for dim in range(0, self.dim):
                     key = (x, y, dim)
                     adjacent_tiles = ArrayUtil.neighbors(*key)
 
@@ -54,7 +54,7 @@ class Map:
     def preload(self, map_name):
         # Parse raw map
         logging.debug("Loading map %s" % map_name)
-        with open(os.path.join('./data/maps/', map_name + ".map")) as f:
+        with open(os.path.join(dir_path, '../data/maps/', map_name + ".map")) as f:
             self.raw_data = [[int(digit) for digit in line.split()] for line in f]
 
         self.height, self.width = len(self.raw_data[0]), len(self.raw_data)
@@ -101,50 +101,8 @@ class Map:
 
         return unit_data != UnitC.NONE and unit_player != unit.player.id
 
-    @staticmethod
-    def free_tiles(unit):
-        """
-
-        :return: all tiles that units can be placed on
-        """
-
-        tiles = unit.game.data['tile']
-        units = unit.game.data['unit']
-
-        # Environment tiles
-        env_tiles = np.where(tiles == MapC.GRASS)
-        env_tiles = set(zip(*env_tiles))
-
-        # Unit tiles
-        unit_tiles = np.where(units == UnitC.NONE)
-        unit_tiles = set(zip(*unit_tiles))
-
-        common = list(env_tiles.intersection(unit_tiles))
-
-        return common
-
-    @staticmethod
-    def get_unit(unit, x, y):
-        return unit.game.units[unit.game.data['unit_pid'][x][y]]
-
-    def walkable_neighbor_tiles(self, x, y, d):
-        # All possible tiles
-        neighbors = ArrayUtil.neighbors(self.tiles, x, y, d + 1)
-        neighbors.append((x, y))
-
-        # Filter occupied tiles
-        neighbors = [(x, y) for x, y in neighbors if self.game.unit_map[x][y] == UnitC.NONE]
-
-        # Filter non walkable tiles
-        neighbors = [(x, y) for x, y in neighbors if self.tiles[x][y] == MapC.GRASS]
-
-        return neighbors
-
-    def buildable_here(self, unit, x, y, d):
-
-        neighbors = ArrayUtil.neighbors(x, y, d)
-        common = list(set(neighbors).intersection(set(self.free_tiles(unit))))
-        return len(common) == len(neighbors)
+    def get_unit(self, x, y):
+        return self.game.units[self.game.data['unit'][x][y]]
 
     def get_tile(self, x, y):
         tile_id = self.game.data['tile'][x][y]
