@@ -241,10 +241,12 @@ class Unit:
                 return
             tile = self.shortest_distance(tiles)
 
-            if not self.state.has_next_state(State.Harvesting):
-                self.state.add_next(State.new(self, State.Harvesting, {
-                    'harvest_target': (x, y)
-                }), 1)
+            if self.state.has_next_state(State.Harvesting):
+                self.state.clear_next()
+
+            self.state.add_next(State.new(self, State.Harvesting, {
+                'harvest_target': (x, y)
+            }), 1)
             self.move(*tile)
         else:
             self.state.transition(State.new(self, State.Harvesting, {
@@ -269,6 +271,9 @@ class Unit:
 
     def is_walking(self):
         return self.state == self.states[UnitC.Walking]
+
+    def is_worker(self):
+        return self.can_harvest
 
     def get_damage(self, unit):
         # http://classic.battle.net/war2/basic/combat.shtml
@@ -305,10 +310,12 @@ class Unit:
                 return
             tile = self.shortest_distance(tiles)
 
-            if not self.state.has_next_state(State.Harvesting):
-                self.state.add_next(State.new(self, State.Combat, {
-                    'attack_target': attack_target
-                }), 1)
+            if self.state.has_next_state(State.Combat):
+                self.state.clear_next()
+
+            self.state.add_next(State.new(self, State.Combat, {
+                'attack_target': attack_target
+            }), 1)
             self.move(*tile)
         else:
             self.state.transition(State.new(self, State.Combat, {
@@ -373,11 +380,16 @@ class Unit:
             self.player.gold -= entity_class.cost_gold
             self.player.lumber -= entity_class.cost_lumber
 
+            self.player.statistics['unit_count'] += 1
+
             self.state.transition(State.new(self, State.Building, {
                 'target': entity_class,
             }))
+
+            return True
         else:
             # TODO feedback could not build
+            return False
             pass
 
     @staticmethod

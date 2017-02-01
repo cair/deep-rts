@@ -50,6 +50,7 @@ class State:
 
     def __init__(self, unit):
         self.unit = unit
+        self.player = self.unit.player
         self.Event = self.unit.Event
         self.game = unit.game
         self.Map = self.game.Map
@@ -188,6 +189,7 @@ class Combat(State):
 
                 # If attack target is dead, transition to next state
                 if self.attack_target.is_dead():
+                    self.player.statistics['kill_count'] += 1
                     self.transition()
                     return
 
@@ -226,13 +228,9 @@ class Harvesting(State):
     type = State.Harvesting
 
     # Harvesting
-    harvest_working = False
     harvest_interval = .5 * Config.FRAME_MULTIPLIER
     harvest_timer = 0
     harvest_iterator = 1
-
-    failures = 0
-    failures_max = 3  # Num failures before moving to new harvestable
 
     RETURN = 0
     HARVEST = 1
@@ -276,6 +274,11 @@ class Harvesting(State):
             self.unit.inventory_gold += tile_data['gold_yield']
             self.unit.inventory_lumber += tile_data['lumber_yield']
             self.unit.inventory_oil += tile_data['oil_yield']
+
+            # Todo, adding statistics here becaue its thought to be better for RL????
+            self.player.statistics['gold_count'] += tile_data['gold_yield']
+            self.player.statistics['lumber_count'] += tile_data['lumber_yield']
+            self.player.statistics['oil_count'] += tile_data['oil_yield']
 
             self.harvest_timer = 0
 

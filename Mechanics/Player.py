@@ -13,10 +13,10 @@ from Mechanics.Unit.UnitManager import UnitManager
 class Player:
     index = 1
 
-    lumber = 800
-    gold = 1200 * 100
-    oil = 0
-    food = 200
+    lumber = 1000
+    gold = 2000
+    oil = 1000
+    food = 1
     consumed_food = 0
 
     def __init__(self, game, name="[NO-NAME]"):
@@ -33,6 +33,14 @@ class Player:
         self.name = name
         self.race = RaceConstant.HUMAN
 
+        self.statistics = {
+            'kill_count': 0,
+            'death_count': 0,
+            'unit_count': 0,
+            'gold_count': 0,
+            'lumber_count': 0,
+            'oil_count': 0
+        }
         self.units = []
         self.vision = [x for x in self._base_vision()]
         #self.calculate_fow()

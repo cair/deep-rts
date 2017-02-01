@@ -3,6 +3,7 @@ from Mechanics.Constants import Unit
 from Mechanics.Unit.States import State
 import numpy as np
 
+
 class Action:
 
     def __init__(self, player):
@@ -14,7 +15,6 @@ class Action:
 
         self.environment_tiles = np.where(self.game.data['tile'] == Map.GRASS)
         self.environment_tiles = set(zip(*self.environment_tiles))
-
 
     def _edge_tiles(self, type=None):
         tiles = self.game.data['tile']
@@ -30,8 +30,24 @@ class Action:
                 eligble_tiles.append((x, y))
         return eligble_tiles
 
+    def workers(self):
+        return [x for x in self.player.get_units() if (x.state.type != State.Dead or x.state.type != State.Despawned or x.state.type != State.Spawning) and x.is_worker()]
+
+    def idle_units(self, type):
+        return [x for x in self.player.get_units() if x.state.type == State.Idle and x.id == type]
+
     def idle_workers(self):
-        return [x for x in self.player.get_units() if x.state.type == State.Idle]
+        return [x for x in self.player.get_units() if x.state.type == State.Idle and x.is_worker()]
+
+    def idle_barracks(self):
+        return [x for x in self.player.get_units() if x.state.type == State.Idle and x.id == Unit.BARRACKS]
+
+    def idle_worker(self):
+        workers = self.idle_workers()
+        if workers:
+            return workers.pop()
+        else:
+            return None
 
     def move_actions(self, unit):
         """

@@ -49,8 +49,8 @@ class Game:
 
         self.clock.shedule(self.gui.caption, 1.0)
         self.clock.shedule(self.gameover_check, 1.0)
-        self.clock.update(self.process, 100000)  # 16
-        self.clock.render(self.render, 1)  # 607
+        self.clock.update(self.process, 656656)  # 16
+        self.clock.render(self.render, 2)  # 607
 
         self.winner = None  # Winner of the game
 
