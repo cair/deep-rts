@@ -1,12 +1,12 @@
-from Mechanics.Constants import Unit as UnitC, Config
-from Mechanics.Unit.Unit import Unit
+from Mechanics.Constants import Config
+from Mechanics.Unit import Unit
 
 
-class Farm(Unit):
+class Farm(Unit.Unit):
 
     # Identifier
-    id = UnitC.FARM
-    structure = UnitC.STRUCTURE
+    id = Unit.FARM
+    structure = Unit.STRUCTURE
 
     # Tile Data
     width = 1

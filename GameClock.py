@@ -1,9 +1,8 @@
 import time
+import uuid
 
 
 class GameClock:
-
-
     def __init__(self):
 
         self._render = None
@@ -24,13 +23,26 @@ class GameClock:
         self._stats_render = 0
         self._stats_update = 0
 
-        self._shedules = []
+        self._schedule = {}
 
         self._update_ticks = 0
         self._render_ticks = 0
 
-    def shedule(self, func, interval):
-        self._shedules.append([func, interval, time.time(), len(self._shedules)])
+    def reset(self):
+        self._update_ticks = 0
+        self._render_ticks = 0
+        self._stats_render = 0
+        self._stats_update = 0
+
+    def remove_schedule(self, id):
+        if id is None:
+            return
+        del self._schedule[id]
+
+    def schedule(self, func, interval):
+        id = str(uuid.uuid1())
+        self._schedule[id] = [func, interval, time.time(), len(self._schedule), True]
+        return id
 
     def render(self, func, interval):
         self._render = func
@@ -57,10 +69,13 @@ class GameClock:
             self._render_next = current_time + self._render_interval
             self._render_ticks += 1
 
-        for (shedule_func, interval, next, idx) in self._shedules:
+        for idx in self._schedule:
+            schedule_func = self._schedule[idx][0]
+            interval = self._schedule[idx][1]
+            next = self._schedule[idx][2]
             if current_time > next:
-                shedule_func(1)
-                self._shedules[idx][2] = current_time + interval
+                schedule_func(1)
+                self._schedule[idx][2] = current_time + interval
 
         if current_time >= self._stats_next:
             du = self._update_ticks - self._stats_update
@@ -70,12 +85,3 @@ class GameClock:
             self._stats_next = current_time + self._stats_interval
             self.ups = du
             self.fps = dr
-
-
-
-
-
-
-
-
-

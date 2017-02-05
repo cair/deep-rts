@@ -1,14 +1,14 @@
 
 
-from Mechanics.Constants import Unit as UnitC, Config
-from Mechanics.Unit.Unit import Unit
+from Mechanics.Constants import Config
+from Mechanics.Unit import Unit
 
 
-class Footman(Unit):
+class Footman(Unit.Unit):
 
     # Identifier
-    id = UnitC.FOOTMAN
-    structure = UnitC.UNIT
+    id = Unit.FOOTMAN
+    structure = Unit.UNIT
 
     # Tile Data
     width = 1

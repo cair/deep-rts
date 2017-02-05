@@ -2,10 +2,14 @@
 
 class LocalAI:
 
+    hooks = []
+
     def __init__(self, player, event):
         self.player = player
-        self.Event = event
+        self.event = event
+        self.action = self.event.Action
 
     def init(self):
-        pass
+        for hook in LocalAI.hooks:
+            hook(self)
 

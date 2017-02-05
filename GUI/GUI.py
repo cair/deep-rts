@@ -2,13 +2,14 @@ import pygame
 import sys
 import random
 import os
+from Mechanics.Unit import Unit
 from Mechanics.Unit.Barracks import Barracks
 from Mechanics.Unit.Farm import Farm
 from Mechanics.Unit.Footman import Footman
 from Mechanics.Unit.Peasant import Peasant
 from Mechanics.Unit.TownHall import TownHall
 from Mechanics.Util import SpriteUtil
-from Mechanics.Constants import Unit, Config
+from Mechanics.Constants import Config
 from Mechanics.Constants import Mouse as MouseC
 from Mechanics.Constants import Map as MapC
 from pygame.locals import *
@@ -144,6 +145,11 @@ class Overlay:
 
 class GUI:
 
+    PEASANT_SPRITE = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/peasant.png"))
+    FOOTMAN_SPRITE = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/footman.png"))
+    BUILDING_SPRITESHEET = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/buildings.png"))
+
+
     def __init__(self, game, player):
         self.camera_x = 0
         self.camera_y = 0
@@ -217,148 +223,148 @@ class GUI:
         :return:
         """
 
-        Unit.PEASANT_SPRITE = Unit.PEASANT_SPRITE.convert_alpha()
+        GUI.PEASANT_SPRITE = GUI.PEASANT_SPRITE.convert_alpha()
 
         sprites = {
             Unit.PEASANT:  {
                 Unit.LEFT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 4, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 42, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 82, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 118, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 155, 32, 32, Peasant.width, Peasant.height, True)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 4, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 42, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 82, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 118, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 155, 32, 32, Peasant.width, Peasant.height, True)
                 ],
                 Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 155, 32, 32, Peasant.width, Peasant.height)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 15, 4, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 15, 42, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 15, 82, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 15, 118, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 15, 155, 32, 32, Peasant.width, Peasant.height)
                 ],
                 Unit.RIGHT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 155, 32, 32, Peasant.width, Peasant.height)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 4, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 42, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 82, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 118, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 85, 155, 32, 32, Peasant.width, Peasant.height)
                 ],
                 Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 155, 32, 32, Peasant.width, Peasant.height)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 164, 4, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 164, 42, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 164, 82, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 164, 118, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 164, 155, 32, 32, Peasant.width, Peasant.height)
                 ],
                 Unit.UP_LEFT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 4, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 42, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 82, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 118, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 155, 32, 32, Peasant.width, Peasant.height, True)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 4, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 42, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 82, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 118, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 155, 32, 32, Peasant.width, Peasant.height, True)
                 ],
                 Unit.UP_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 155, 32, 32, Peasant.width, Peasant.height)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 4, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 42, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 82, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 118, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 50, 155, 32, 32, Peasant.width, Peasant.height)
                 ],
                 Unit.DOWN_LEFT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 4, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 42, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 82, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 118, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 155, 32, 32, Peasant.width, Peasant.height, True)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 4, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 42, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 82, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 118, 32, 32, Peasant.width, Peasant.height, True),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 155, 32, 32, Peasant.width, Peasant.height, True)
                 ],
                 Unit.DOWN_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 155, 32, 32, Peasant.width, Peasant.height)
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 4, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 42, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 82, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 118, 32, 32, Peasant.width, Peasant.height),
+                    SpriteUtil.get_sprite(GUI.PEASANT_SPRITE, 120, 155, 32, 32, Peasant.width, Peasant.height)
                 ]
             },
             Unit.FOOTMAN:  {
                 Unit.LEFT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 7, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 56, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 99, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 138, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 176, 32, 32, Footman.width, Footman.height, True)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 7, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 56, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 99, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 138, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 176, 32, 32, Footman.width, Footman.height, True)
                 ],
                 Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 176, 32, 32, Footman.width, Footman.height)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 21, 7, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 21, 56, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 21, 99, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 21, 138, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 21, 176, 32, 32, Footman.width, Footman.height)
                 ],
                 Unit.RIGHT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 176, 32, 32, Footman.width, Footman.height)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 7, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 56, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 99, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 138, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 170, 176, 32, 32, Footman.width, Footman.height)
                 ],
                 Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 56, 32, 36, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 138, 32, 36, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 176, 32, 32, Footman.width, Footman.height)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 315, 7, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 315, 56, 32, 36, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 315, 99, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 315, 138, 32, 36, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 315, 176, 32, 32, Footman.width, Footman.height)
                 ],
                 Unit.UP_LEFT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 7, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 56, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 99, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 138, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 176, 32, 32, Footman.width, Footman.height, True)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 7, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 56, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 99, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 138, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 176, 32, 32, Footman.width, Footman.height, True)
                 ],
                 Unit.UP_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 176, 32, 32, Footman.width, Footman.height)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 7, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 56, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 99, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 138, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 96, 176, 32, 32, Footman.width, Footman.height)
                 ],
                 Unit.DOWN_LEFT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 7, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 56, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height, True)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 7, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 56, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height, True),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height, True)
                 ],
                 Unit.DOWN_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height)
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 7, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 56, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height),
+                    SpriteUtil.get_sprite(GUI.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height)
                 ],
 
             },
             Unit.TOWN_HALL:  {
                 Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 270, 156, 111, 93, TownHall.width, TownHall.height),
+                    SpriteUtil.get_sprite(GUI.BUILDING_SPRITESHEET, 270, 156, 111, 93, TownHall.width, TownHall.height),
                 ],
                 Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 270, 20, 111, 93, TownHall.width, TownHall.height)
+                    SpriteUtil.get_sprite(GUI.BUILDING_SPRITESHEET, 270, 20, 111, 93, TownHall.width, TownHall.height)
                 ]
             },
             Unit.FARM:  {
                 Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 398, 70, 66, 66, Farm.width, Farm.height)
+                    SpriteUtil.get_sprite(GUI.BUILDING_SPRITESHEET, 398, 70, 66, 66, Farm.width, Farm.height)
                 ],
                 Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 398, 1, 66, 66, Farm.width, Farm.height),
+                    SpriteUtil.get_sprite(GUI.BUILDING_SPRITESHEET, 398, 1, 66, 66, Farm.width, Farm.height),
                 ]
             },
             Unit.BARRACKS:  {
                 Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 304, 560, 102, 102, Barracks.width, Barracks.height)
+                    SpriteUtil.get_sprite(GUI.BUILDING_SPRITESHEET, 304, 560, 102, 102, Barracks.width, Barracks.height)
                 ],
                 Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 304, 457, 102, 102, Barracks.width, Barracks.height),
+                    SpriteUtil.get_sprite(GUI.BUILDING_SPRITESHEET, 304, 457, 102, 102, Barracks.width, Barracks.height),
                 ]
             }
         }
@@ -369,7 +375,7 @@ class GUI:
 
         pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, self.Map.height * MapC.TILE_SIZE, self.Map.width * MapC.TILE_SIZE))
 
-        for x, y in self.player.vision:
+        for x, y in self.player.vision_map:
             self.canvas.blit(self.tiles_sprite[x][y], (x * MapC.TILE_SIZE, y * MapC.TILE_SIZE))
 
             # Render State List
@@ -383,7 +389,7 @@ class GUI:
         for unit in self.game.units.values():
             coordinates = (unit.x, unit.y)
 
-            if not unit.x or coordinates not in self.player.vision:
+            if not unit.x or coordinates not in self.player.vision_map:
                 continue
 
             sprite_arr = self.unit_sprite[unit.id][unit.direction] # Selection
@@ -533,7 +539,8 @@ class GUI:
 
     def caption(self, dt):
         pygame.display.set_caption(
-            ' '.join(('WarC2Sim', '[FPS=%d UPS=%d]')) % (
+            ' '.join(('WarC2Sim', '[FPS=%d UPS=%d]', '[GAME=%s]')) % (
                 self.game.clock.fps,
-                self.game.clock.ups))
+                self.game.clock.ups,
+                self.game.game_id))
 

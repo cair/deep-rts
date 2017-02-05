@@ -2,7 +2,6 @@ import math
 import pygame
 
 from Mechanics.Constants import Map as MapC
-from Mechanics.Constants import Unit as UnitC
 import itertools
 
 
@@ -58,10 +57,10 @@ class SpriteUtil:
         n_cols = math.floor(size[0] / tile_size)
         n_rows = math.floor(tile_n / n_cols)
         mod_id = tile_n % n_cols
-    
+
         x_start = (mod_id * tile_size) + mod_id
         y_start = (n_rows * tile_size) + n_rows
-    
+
         rect = pygame.Rect((x_start, y_start, tile_size, tile_size))
         image = pygame.Surface(rect.size).convert()
         image.blit(sheet, (0, 0), rect)

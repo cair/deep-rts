@@ -1,12 +1,12 @@
-from Mechanics.Constants import Unit as UnitC, Config
-from Mechanics.Unit.Unit import Unit
+from Mechanics.Constants import Config
+from Mechanics.Unit import Unit
 
 
-class TownHall(Unit):
+class TownHall(Unit.Unit):
 
     # Identifier
-    id = UnitC.TOWN_HALL
-    structure = UnitC.STRUCTURE
+    id = Unit.TOWN_HALL
+    structure = Unit.STRUCTURE
 
     # Tile Data
     width = 3
@@ -28,7 +28,7 @@ class TownHall(Unit):
     health_max = 1200
     speed = 0
     sight = 4
-    food = 1
+    food = 5
     food_cost = 0
 
 

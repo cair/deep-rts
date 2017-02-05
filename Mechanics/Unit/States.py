@@ -1,7 +1,6 @@
 from Mechanics.Constants import Config
-from Mechanics.Constants import Unit as UnitC
 from Mechanics.Map import Map
-from Mechanics.Util import ArrayUtil
+from Mechanics.Unit import Unit
 from PriorityQueue import PriorityQueue
 
 
@@ -65,7 +64,7 @@ class State:
         if next_state:
             next_state.next_states = self.next_states
             #print("%s. Transition from %s | %s => %s (%s => %s)" % (self.unit.tick, self.unit, self.id, next_state.id, self, next_state))
-            self.unit.state = next_state
+            self.unit.state.current = next_state
         else:
             # No next state, Idle
             self.transition(State.new(self.unit, State.Idle))
@@ -404,7 +403,7 @@ class Building(State):
 
         if self.build_timer >= self.build_duration:
             # Build is done
-            self.entity.direction = UnitC.UP
+            self.entity.direction = Unit.UP
 
             did_spawn = False
             if not self.unit.spawned:

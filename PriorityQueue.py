@@ -1,8 +1,5 @@
 import heapq
 
-from Mechanics.Constants import Unit
-
-
 class PriorityQueue:
     def __init__(self,player):
         self.elements = []

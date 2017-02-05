@@ -1,4 +1,6 @@
 from Mechanics.API.Action import Action
+
+
 class Event:
     handles = []   # List of all hooked Event instances (All players) Used for broadcasts
 
@@ -21,6 +23,7 @@ class Event:
     c_defeat = None
     c_victory = None
     c_event = None
+    c_frame = None
 
     def __init__(self, player):
         Event.handles.append(self)
@@ -28,6 +31,8 @@ class Event:
 
 
 # Callback setters
+    def on_frame(self, callback):
+        self.c_frame = callback
 
     def on_start(self, callback):
         self.c_start = callback
@@ -55,6 +60,11 @@ class Event:
     def notify_broadcast(event_type, data=None):
         for e in Event.handles:
             e.notify(event_type, data)
+
+    @staticmethod
+    def notify_frame(data):
+        for e in Event.handles:
+            e.c_frame(data)
 
     def notify_victory(self, data):
         if not self.c_victory: return

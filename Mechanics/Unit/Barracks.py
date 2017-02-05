@@ -1,12 +1,12 @@
-from Mechanics.Constants import Unit as UnitC, Config
-from Mechanics.Unit.Unit import Unit
+from Mechanics.Constants import Config
+from Mechanics.Unit import Unit
 
 
-class Barracks(Unit):
+class Barracks(Unit.Unit):
 
     # Identifier
-    id = UnitC.BARRACKS
-    structure = UnitC.STRUCTURE
+    id = Unit.BARRACKS
+    structure = Unit.STRUCTURE
 
     # Tile Data
     width = 3
@@ -27,7 +27,7 @@ class Barracks(Unit):
     health = 800
     health_max = 800
     speed = 0
-    sight = 3
+    sight = 4
     food = 1
 
     def __init__(self, player, attrs={}):

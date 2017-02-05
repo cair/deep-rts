@@ -1,6 +1,6 @@
 import random
 
-from Mechanics.Constants import Unit
+from Mechanics.Unit import Unit
 
 
 class ChainCommand:

@@ -1,12 +1,12 @@
-from Mechanics.Constants import Unit as UnitC, Config
-from Mechanics.Unit.Unit import Unit
+from Mechanics.Constants import Config
+from Mechanics.Unit import Unit
 
 
-class Peasant(Unit):
+class Peasant(Unit.Unit):
 
     # Identifier
-    id = UnitC.PEASANT
-    structure = UnitC.UNIT
+    id = Unit.PEASANT
+    structure = Unit.UNIT
 
     # Tile Data
     width = 1
@@ -27,7 +27,7 @@ class Peasant(Unit):
     health = 30
     health_max = 30
     speed = 10
-    sight = 4
+    sight = 2 # 4 in WC2
 
     can_harvest = True
 

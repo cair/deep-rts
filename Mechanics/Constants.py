@@ -8,37 +8,6 @@ class Mouse:
     RIGHT = 3
 
 
-class Unit:
-    UNIT = 0 # Peasant, Footman. etc
-    STRUCTURE = 1 # Town Hall, Keep. etc
-
-    NONE = 0
-    TOWN_HALL = 1
-    KEEP = 2
-    CASTLE = 3
-    FARM = 4
-    BARRACKS = 5
-
-    PEASANT = 20
-    FOOTMAN = 21
-
-    PEASANT_SPRITE = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/peasant.png"))
-    FOOTMAN_SPRITE = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/footman.png"))
-    BUILDING_SPRITESHEET = pygame.image.load(os.path.join(Config.BASE_PATH, "./data/textures/human/buildings.png"))
-
-    LEFT = 0
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    UP_LEFT = 4
-    UP_RIGHT = 5
-    DOWN_LEFT = 6
-    DOWN_RIGHT = 7
-
-    HARVEST_GOTO = 0
-    HARVEST_WORK = 1
-    HARVEST_RECALL = 2
-    HARVEST_DELIVER = 3
 
 
 class Race:
@@ -72,12 +41,12 @@ class Map:
         },
         GRASS: {
             'type': WALKABLE,
-            'id': [i for i in range(238, 238 + 32)],
+            'id': [250], # i for i in range(238, 238 + 32)
             'name': 'grass',
         },
         WOOD: {
             'type': HARVESTABLE,
-            'id': [i for i in range(102, 102 + 32)],
+            'id': [105], # i for i in range(102, 102 + 32)
             'name': 'wood',
             'gold_yield': 0,
             'lumber_yield': 1,

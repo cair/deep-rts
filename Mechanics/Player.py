@@ -6,32 +6,21 @@ from Mechanics.API.Event import Event
 from Mechanics.API.Interface import Interface
 from Mechanics.Constants import Map as MapC, Config
 from Mechanics.Constants import Race as RaceConstant
-from Mechanics.Map import Map
 from Mechanics.Unit.UnitManager import UnitManager
 
-
-class Player:
-    index = 1
-
-    lumber = 1000
-    gold = 2000
-    oil = 1000
-    food = 1
-    consumed_food = 0
-
-    def __init__(self, game, name="[NO-NAME]"):
-        self.game = game
-        self.Map = game.Map
-
-        self.id = Player.index
-        Player.index += 1
-        self.defeated = False
-        self.Event = Event(self)
-        self.Interface = Interface(self, self.Event)
-        self.Interface.start()
-
+class PlayerState:
+    def __init__(self, game, name):
+        self.lumber = 1000
+        self.gold = 2000
+        self.oil = 1000
+        self.food = 1
+        self.consumed_food = 0
         self.name = name
-        self.race = RaceConstant.HUMAN
+
+        self.plogic = PlayerLogic(game)
+
+        self.defeated = False
+        self._surrender = False
 
         self.statistics = {
             'kill_count': 0,
@@ -41,18 +30,38 @@ class Player:
             'lumber_count': 0,
             'oil_count': 0
         }
-        self.units = []
-        self.vision = [x for x in self._base_vision()]
-        #self.calculate_fow()
 
-        logging.debug("Created player %s" % name)
-        self.game.clock.shedule(self.check_defeat, 1.0)  # Regularly check for defeat
+        self.units = []
+        self.vision_map = [x for x in self.plogic._base_vision()]
+        self.vision_memory = np.zeros((self.plogic.Map.height, self.plogic.Map.width, 4), dtype=np.int) # 4 Layers of memory
+        self.interaction_map = set()
+
+
+class PlayerLogic:
+    index = 1
+
+    def __init__(self, game):
+        self.id = PlayerLogic.index
+        PlayerLogic.index += 1
+        self.race = RaceConstant.HUMAN
+
+        self.game = game
+        self.Map = game.Map
+
+        self.Event = Event(self)
+        self.Interface = Interface(self, self.Event)
+        self.Interface.start()
+
+        self.reset()
+
+    def reset(self):
+        self.state = PlayerState()
+        logging.debug("Created player %s" % self.name)
+
 
         self.spawn()
-        self.Event.notify_start({
-            'player_id': self.id,
-            'worker': self.units[0]
-        })
+
+
 
     def _base_vision(self):
         """
@@ -70,9 +79,8 @@ class Player:
             base_vision = list(zip(tiles[0], tiles[1]))
             return base_vision
 
-    def check_defeat(self, tick):
-        has_units = True if self.units else False
-        self.defeated = has_units
+    def surrender(self):
+        self._surrender = True
 
     def get_units(self):
         return [self.game.units[x] for x in self.units]
@@ -81,9 +89,6 @@ class Player:
 
         for unit_id in self.units:
             self.game.units[unit_id].process(dt)
-
-        if not Config.NO_FOG:
-            self.calculate_fow()
 
     def spawn(self):
         # Get single spawn tile
