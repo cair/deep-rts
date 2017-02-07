@@ -1,9 +1,11 @@
+import asyncio
+import logging
 import time
 
-from ai.RemoteAI import Config
-import asyncio
 import websockets
-import logging
+
+from ai.RemoteAI import Config
+
 log = logging.getLogger('root')
 
 

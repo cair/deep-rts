@@ -1,5 +1,6 @@
-from Mechanics.API.Action import Action
 from Mechanics.API.Event import Event
+
+from game.api.Action import Action
 
 
 class AI:

@@ -1,7 +1,5 @@
 import random
-
-from Mechanics.Unit import Unit
-
+from game.const import Unit
 
 class ChainCommand:
 
@@ -186,13 +184,11 @@ class ChainCommand:
         if current[0](*current[2]):
             self.current += 1
 
-
     def has_element(self, store):
         return True if store else False
 
     def not_none(self, store):
         return True if store is not None else False
-
 
     def _add(self, data):
         self.chain.append(data)

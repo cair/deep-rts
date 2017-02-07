@@ -1,6 +1,8 @@
-from Mechanics.Map import Map, AdjacentMap
-from Mechanics.Util import ArrayUtil
 import numpy as np
+from game.util.Util import ArrayUtil
+
+from game.loaders.MapLoader import AdjacentMap
+
 
 class MockGame:
 

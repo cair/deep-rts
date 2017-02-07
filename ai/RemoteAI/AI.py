@@ -1,5 +1,6 @@
-from ai.RemoteAI.RemoteClient import RemoteClient
-import log
+from ai.RemoteAI import RemoteClient
+from game.util import log
+
 logger = log.setup_custom_logger('root')
 
 
