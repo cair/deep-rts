@@ -395,13 +395,15 @@ class GUI:
                 )
 
     def render_units(self, dt):
+
         for unit in self.game.units.values():
+
             coordinates = (unit.state.x, unit.state.y)
 
             if not unit.state.x or coordinates not in self.player.vision:
                 continue
 
-            sprite_arr = self.unit_sprite[unit.id][unit.direction] # Selection
+            sprite_arr = self.unit_sprite[unit.id][unit.state.direction] # Selection
             sprite = sprite_arr[unit.animation_iterator % len(sprite_arr)] # Selection based on frame
             pos = (unit.state.x * Map.TILE_SIZE, unit.state.y * Map.TILE_SIZE)
 

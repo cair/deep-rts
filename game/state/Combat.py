@@ -15,7 +15,7 @@ class Combat(GenericState):
     attack_timer = 1000
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Combat)
 
     def toJSON2(self):
         return {
@@ -57,6 +57,7 @@ class Combat(GenericState):
                 self.unit.move(*tile)
             else:
                 # Can attack (Distance < Range)
+                print(self.health)
                 my_damage = self.unit.get_damage(self.unit)
                 self.attack_target.afflict_damage(my_damage)
 

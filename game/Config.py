@@ -14,5 +14,12 @@ DEBUG = False
 AI_FRAME_SKIP = 50 # Skip Event notification every X frames (Only State Events)
 FRAME_MULTIPLIER = 8
 
+
+SAVE_FREQUENCY = 1
+SAVE_TO_FILE = True
 FPS = 20
-UPS = 400000
+UPS = 32
+
+MULTIPROCESSING_WORKERS = 10
+
+REPORT_DIR  = os.path.join(BASE_PATH, "../reports/")

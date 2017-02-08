@@ -18,7 +18,7 @@ def crossover(current, start, goal):
 
 def a_star_search(Map, graph, start, goal):
 
-    frontier = PriorityQueue(None)
+    frontier = PriorityQueue([])
     frontier.put(start, 0)
     came_from = {}
     cost_so_far = {}

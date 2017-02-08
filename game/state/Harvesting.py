@@ -20,7 +20,7 @@ class Harvesting(GenericState):
     harvest_target = None
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Harvesting)
 
     def toJSON2(self):
         return {

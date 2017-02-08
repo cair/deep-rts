@@ -51,9 +51,17 @@ class Unit:
     def toJSON(self):
         return {
             'id': self.id,
-            'unit_id': self.unit_id,
             'state': self.state
         }
+
+    def load(self, data):
+        self.id = data['id']
+
+        s_data = data['state']
+        state_clazz = State.mapping[s_data['type']]
+
+        state = state_clazz(self, s_data)
+        self.state = state
 
     def __init__(self, player, attrs={}, init=True):
         """
@@ -69,9 +77,6 @@ class Unit:
 
         # Generate a unique id for this unit
         self.unit_id = self.generate_id()
-
-        # Set default direction of the unit
-        self.direction = UnitC.DOWN
 
         # Calculate dimension of this unit
         self.dimension = self._dimension()
@@ -128,9 +133,9 @@ class Unit:
             (1, -1): UnitC.UP_RIGHT
         }
         try:
-            self.direction = data[(dx, dy)]
+            self.state.direction = data[(dx, dy)]
         except:
-            self.direction = data[(0, 0)] # TODO!
+            self.state.direction = data[(0, 0)]     # TODO!
 
     def clear_position_matrix(self):
         for x, y in ArrayUtil.get_area(
@@ -394,7 +399,7 @@ class Unit:
             self.player.statistics['unit_count'] += 1
 
             self.state.transition(State.Building, {
-                'target': entity_class,
+                'target_id': entity_class.id,
             })
 
             return True

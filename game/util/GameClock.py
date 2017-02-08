@@ -2,8 +2,6 @@ import time
 
 
 class GameClock:
-
-
     def __init__(self):
 
         self._render = None
@@ -31,12 +29,20 @@ class GameClock:
 
     def toJSON(self):
         return dict(
-            _stats_next = self._stats_next,
+            _stats_next=self._stats_next,
             _stats_render=self._stats_render,
             _stats_update=self._stats_update,
             _update_ticks=self._update_ticks,
             _render_ticks=self._render_ticks
         )
+
+    def load(self, data):
+        self._render_next = time.time()
+        self._update_next = time.time()
+        self._stats_render = data['_stats_render']
+        self._stats_update = data['_stats_update']
+        self._update_ticks = data['_update_ticks']
+        self._render_ticks = data['_render_ticks']
 
     def shedule(self, func, interval):
         self._shedules.append([func, interval, time.time(), len(self._shedules)])
@@ -79,12 +85,3 @@ class GameClock:
             self._stats_next = current_time + self._stats_interval
             self.ups = du
             self.fps = dr
-
-
-
-
-
-
-
-
-

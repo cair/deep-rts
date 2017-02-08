@@ -9,7 +9,7 @@ class Dead(GenericState):
     default = Idle
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Dead)
 
     def init(self):
         self.unit.despawn()

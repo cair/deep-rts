@@ -20,7 +20,7 @@ class Interface(threading.Thread):
             self.ai = LocalAI(player, event)
         else:
             log.info("Hooking AI on player (Remote)")
-            self.ai = RemoteAI(player, event)
+            self.ai = LocalAI(player, event)
 
     def run(self):
         self.ai.init()

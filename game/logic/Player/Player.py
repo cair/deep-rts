@@ -70,6 +70,20 @@ class Player:
             'consumed_food': self.consumed_food
         }
 
+    def load(self, data):
+        self.units = data['units']
+        self.statistics = data['statistics']
+        self.name = data['name']
+        self.race = data['race']
+        self.vision = [tuple(pair) for pair in data['vision']]
+        self.defeated = data['defeated']
+        self.id = data['id']
+        self.lumber = data['lumber']
+        self.gold = data['gold']
+        self.oil = data['oil']
+        self.food = data['food']
+        self.consumed_food = data['consumed_food']
+
     def _base_vision(self):
         """
         Fog of war base.
@@ -82,7 +96,7 @@ class Player:
             return list(zip(tiles[0], tiles[1]))
 
         else:
-            tiles = np.nonzero(self.game.data['tile'] == Map.WALL)
+            tiles = np.nonzero(self.game.data['tile'] == Map.WALL, dtype=np.int)
             base_vision = list(zip(tiles[0], tiles[1]))
             return base_vision
 

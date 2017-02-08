@@ -9,7 +9,7 @@ class Spawning(GenericState):
     default = Idle
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Spawning)
 
     def update(self, tick):
         pass

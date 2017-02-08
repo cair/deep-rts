@@ -9,7 +9,7 @@ class Despawned(GenericState):
     default = Idle
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Despawned)
         self.done = False
 
     def update(self, dt):

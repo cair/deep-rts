@@ -16,7 +16,8 @@ class Walking(GenericState):
     path_goal = None
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Walking)
+
 
     def toJSON2(self):
         return {

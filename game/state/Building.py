@@ -1,3 +1,4 @@
+from game.logic.UnitManager import UnitManager
 from game.state.GenericState import GenericState
 from game.const.State import ID_Building
 from game.state.Idle import Idle
@@ -10,25 +11,28 @@ class Building(GenericState):
 
     build_timer = 20
     build_duration = 20
-    target = None
-    entity = None  # Set by init()
+    target_id = None
+    entity_id = None  # Set by init()
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes)
+        super().__init__(unit, attributes, Building)
 
     def toJSON2(self):
         return {
             'build_timer': self.build_timer,
             'build_duration': self.build_duration,
-            'target': self.target,
-            'entity': self.entity
+            'target_id': self.target_id,
+            'entity_id': self.entity_id
         }
 
     def init(self):
+        target_clazz = UnitManager.get_class_by_id(self.target_id)
+
         self.build_timer = 0
-        self.build_duration = self.target.build_duration
+        self.build_duration = target_clazz.build_duration
         # Create initial instance of unit
-        entity = self.target(self.unit.player)
+
+        entity = target_clazz(self.unit.player)
         entity.add_to_game()
         if not self.unit.structure:
             entity.state.x = self.unit.state.x - entity.dimension
@@ -36,7 +40,7 @@ class Building(GenericState):
             self.unit.despawn()
             entity.spawn()
 
-        self.entity = entity
+        self.entity_id = entity.unit_id
 
     def spawn_subject(self, unit1, unit2):
         """
@@ -65,16 +69,17 @@ class Building(GenericState):
 
         if self.build_timer >= self.build_duration:
             # Build is done
-            self.entity.direction = UP
+            entity = self.game.units[self.entity_id]
+            entity.state.direction = UP
 
             did_spawn = False
             if not self.unit.state.spawned:
                 # Builder is despawned, Spawn unit adjacent to newly built entity
-                did_spawn = self.spawn_subject(self.entity, self.unit)
-            elif not self.entity.state.spawned:
+                did_spawn = self.spawn_subject(entity, self.unit)
+            elif not entity.state.spawned:
                 # Entity is despawned, Spawn entity (for example TownHall spawns Peasant)
-                did_spawn = self.spawn_subject(self.unit, self.entity)
+                did_spawn = self.spawn_subject(self.unit, entity)
 
             if did_spawn:
-                self.entity.state.transition()
+                entity.state.transition()
                 self.transition()
