@@ -37,8 +37,7 @@ class GenericState:
     def toJSON2(self):
         return {}
 
-    def __init__(self, unit, attributes, child_clazz):
-        self.registry[child_clazz.type] = child_clazz
+    def __init__(self, unit, attributes):
         self.unit = unit
         self.player = self.unit.player
         self.Event = self.unit.Event
@@ -77,7 +76,7 @@ class GenericState:
             next_state = None
             if d:
                 state_id, attributes = d
-                next_state = self.registry[state_id](self.unit, attributes=attributes)
+                next_state = GenericState.registry[state_id](self.unit, attributes=attributes)
                 next_state.init()
 
         if next_state:

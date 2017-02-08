@@ -20,7 +20,7 @@ class Harvesting(GenericState):
     harvest_target = None
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes, Harvesting)
+        super().__init__(unit, attributes)
 
     def toJSON2(self):
         return {
@@ -141,3 +141,6 @@ class Harvesting(GenericState):
                 """
                 self.stage_deliver()
                 self.unit.harvest(*self.harvest_target)
+
+# Register to Generic State
+GenericState.registry[Harvesting.type] = Harvesting

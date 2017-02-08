@@ -15,7 +15,7 @@ class Combat(GenericState):
     attack_timer = 1000
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes, Combat)
+        super().__init__(unit, attributes)
 
     def toJSON2(self):
         return {
@@ -73,3 +73,6 @@ class Combat(GenericState):
                     self.attack_target.attack(self.unit.state.x, self.unit.state.y)
 
             self.attack_timer = 0
+
+# Register to Generic State
+GenericState.registry[Combat.type] = Combat

@@ -15,7 +15,7 @@ class Building(GenericState):
     entity_id = None  # Set by init()
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes, Building)
+        super().__init__(unit, attributes)
 
     def toJSON2(self):
         return {
@@ -83,3 +83,6 @@ class Building(GenericState):
             if did_spawn:
                 entity.state.transition()
                 self.transition()
+
+# Register to Generic State
+GenericState.registry[Building.type] = Building

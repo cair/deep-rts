@@ -6,4 +6,8 @@ class Idle(GenericState):
     type = ID_Idle
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes, Idle)
+        super().__init__(unit, attributes)
+
+
+# Register to Generic State
+GenericState.registry[Idle.type] = Idle

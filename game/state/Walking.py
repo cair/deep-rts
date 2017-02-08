@@ -16,7 +16,7 @@ class Walking(GenericState):
     path_goal = None
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes, Walking)
+        super().__init__(unit, attributes)
 
 
     def toJSON2(self):
@@ -44,3 +44,6 @@ class Walking(GenericState):
             # Nothing to do. Transition to next state
             self.transition()
             return
+
+# Register to Generic State
+GenericState.registry[Walking.type] = Walking

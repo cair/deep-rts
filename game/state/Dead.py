@@ -9,7 +9,7 @@ class Dead(GenericState):
     default = Idle
 
     def __init__(self, unit, attributes={}):
-        super().__init__(unit, attributes, Dead)
+        super().__init__(unit, attributes)
 
     def init(self):
         self.unit.despawn()
@@ -17,3 +17,6 @@ class Dead(GenericState):
 
     def update(self, tick):
         pass
+
+# Register to Generic State
+GenericState.registry[Dead.type] = Dead
