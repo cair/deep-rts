@@ -27,19 +27,21 @@ class Combat(GenericState):
         self.attack_timer += tick
 
         if self.attack_timer >= self.attack_interval:
+            attack_target = self.game.units[self.attack_target]
+
             distance = self.unit.distance(
-                self.attack_target.state.x,
-                self.attack_target.state.y,
-                self.attack_target.dimension
+                attack_target.state.x,
+                attack_target.state.y,
+                attack_target.dimension
             )
             if distance > self.unit.range:
                 # Too far away, Walk
 
                 # Find adjacent tile to the attack target
                 tiles = self.Map.AdjacentMap.adjacent_walkable(
-                    self.attack_target.state.x + self.attack_target.dimension,
-                    self.attack_target.state.y + self.attack_target.dimension,
-                    self.attack_target.dimension + 1
+                    attack_target.state.x + attack_target.dimension,
+                    attack_target.state.y + attack_target.dimension,
+                    attack_target.dimension + 1
                 )
                 # No tiles are available around the target
                 if not tiles:
@@ -57,20 +59,19 @@ class Combat(GenericState):
                 self.unit.move(*tile)
             else:
                 # Can attack (Distance < Range)
-                print(self.health)
                 my_damage = self.unit.get_damage(self.unit)
-                self.attack_target.afflict_damage(my_damage)
+                attack_target.afflict_damage(my_damage)
 
                 # If attack target is dead, transition to next state
-                if self.attack_target.is_dead():
+                if attack_target.is_dead():
 
                     self.player.statistics['kill_count'] += 1
                     self.transition()
                     return
 
                 # Make unit retaliate if its Idle (Changes to attack state)
-                if type(self.attack_target.state) == Idle:
-                    self.attack_target.attack(self.unit.state.x, self.unit.state.y)
+                if type(attack_target.state) == Idle:
+                    attack_target.attack(self.unit.state.x, self.unit.state.y)
 
             self.attack_timer = 0
 

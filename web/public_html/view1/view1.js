@@ -16,8 +16,8 @@ angular.module('myApp.view1', ['ngRoute'])
         API.on('state', function(data){
             $scope.state_data = [];
             for(var idx in data) {
-                var game_data = JSON.parse(data[idx]["game"]["data"]);
-                $scope.state_data.push(game_data)
+                data[idx]["game"]["data"] = JSON.parse(data[idx]["game"]["data"]);
+                $scope.state_data.push(data[idx]);
             }
 
 

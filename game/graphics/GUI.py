@@ -534,6 +534,7 @@ class GUI:
         self.scroll_process()
 
     def render(self, dt):
+        self.process()
 
         # Draw Tile map
         self.render_tiles()
@@ -550,7 +551,8 @@ class GUI:
 
     def caption(self, dt):
         pygame.display.set_caption(
-            ' '.join(('WarC2Sim', '[FPS=%d UPS=%d]')) % (
+            ' '.join(('WarC2Sim', '[FPS=%d UPS=%d MUL=x%d]')) % (
                 self.game.clock.fps,
-                self.game.clock.ups))
+                self.game.clock.ups,
+                (self.game.clock.ups / Config.FRAME_MULTIPLIER)))
 

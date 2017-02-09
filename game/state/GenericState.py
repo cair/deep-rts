@@ -15,7 +15,7 @@ class GenericState:
 
     def has_next_state(self, state):
         for s in self.next_states:
-            if state == type(s):
+            if state == GenericState.registry[s[0]]:
                 return True
         return False
 

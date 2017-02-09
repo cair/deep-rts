@@ -61,7 +61,6 @@ class MCTS:
             p -= f
         return i
 
-
     def next_move(self):
         self.counter += 1
         self.avg_counter += 1

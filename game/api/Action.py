@@ -56,7 +56,8 @@ class Action:
         :return:
         """
         # TODO Optimize
-        units = set([y for x in [x.unit_area() for x in self.game.units.values() if x.player != unit.player] for y in x])
+        #print(unit.state.x, unit.state, )
+        units = set([y for x in [x.unit_area() for x in self.game.units.values()] for y in x])
         return self.environment_tiles - units
 
     def build_actions(self, unit):
@@ -80,6 +81,6 @@ class Action:
         move_actions = [(unit.right_click, arguments) for arguments in self.move_actions(unit)]
         build_actions = self.build_actions(unit)
         harvest_actions = self.harvest_wood_actions(unit) + self.harvest_gold_actions(unit)
-        attack_actions = self.attack_actions(unit)
+        #attack_actions = self.attack_actions(unit)
 
-        return harvest_actions + move_actions + build_actions + attack_actions
+        return harvest_actions + move_actions + build_actions #+ attack_actions

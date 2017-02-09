@@ -1,13 +1,13 @@
 import random
-from game.const import Unit
 
 class ChainCommand:
 
     def __init__(self, Action):
         self.Action = Action
+        self.Unit = Action.game.UnitManager.UnitC
         self.chain = []
         self.current = 0
-        self.last_tick = 0
+        self.transition_tick = 0
 
         self.reg1 = None
         self.reg2 = None
@@ -94,7 +94,7 @@ class ChainCommand:
 
     def idle_town_hall(self):
 
-        town_halls = self.Action.idle_units(Unit.TOWN_HALL)
+        town_halls = self.Action.idle_units(self.Unit.TOWN_HALL)
         print("Idle Town-Hall")
         if town_halls:
             self.reg1 = town_halls.pop()
@@ -133,14 +133,14 @@ class ChainCommand:
         return False
 
     def build_town_hall(self):
-        assert self.reg1.id == Unit.PEASANT
+        assert self.reg1.id == self.Unit.PEASANT
         method = getattr(self.reg1, 'build')
         method(0)
         print("Build Town-Hall")
         return True
 
     def build_farm(self):
-        assert self.reg1.id == Unit.PEASANT
+        assert self.reg1.id == self.Unit.PEASANT
         self.reg1.state.clear_next()
         method = getattr(self.reg1, 'build')
         method(1)
@@ -148,7 +148,7 @@ class ChainCommand:
         return True
 
     def build_barracks(self):
-        assert self.reg1.id == Unit.PEASANT
+        assert self.reg1.id == self.Unit.PEASANT
         self.reg1.state.clear_next()
         method = getattr(self.reg1, 'build')
         print("Build Barracks")
@@ -157,14 +157,14 @@ class ChainCommand:
         return False
 
     def build_worker(self):
-        assert self.reg1.id == Unit.TOWN_HALL
+        assert self.reg1.id == self.Unit.TOWN_HALL
         print("Build Worker")
         if self.reg1.build(0):
             return True
         return False
 
     def build_footman(self):
-        assert self.reg1.id == Unit.BARRACKS
+        assert self.reg1.id == self.Unit.BARRACKS
         print("Build Footman")
         if self.reg1.build(0):
             return True
@@ -173,9 +173,11 @@ class ChainCommand:
     def eligible(self, tick):
         if self.current >= len(self.chain):
             return False
+
         current = self.chain[self.current]
-        if tick > current[1] + self.last_tick:
-            self.last_tick = current[1] + self.last_tick
+
+        if tick > self.transition_tick:
+            self.transition_tick = current[1] + tick
             return True
         return False
 

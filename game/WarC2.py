@@ -14,14 +14,13 @@ from game.util.GameClock import GameClock
 
 
 class Game:
-    def __init__(self, map_name="simple", players=2):
+    def __init__(self, map_name="simple", players=2, gui=True):
 
         self.map_name = map_name
         self.n_players = players
         self.snapshot = None  # Save snapshot
         # Unit Manager
         self.UnitManager = UnitManager
-
 
         self.parallell_worker = None
 
@@ -48,7 +47,7 @@ class Game:
         self.players = [Player(self, "Player %s" % x) for x in range(self.n_players)]
 
         # Create GUI
-        self.gui = NoGUI(self) if not Config.HAS_GUI else GUI(self, self.players[0])
+        self.gui = NoGUI(self) if not gui else GUI(self, self.players[0])
 
         self.clock.shedule(self.gui.caption, 1.0)
         self.clock.shedule(self.gameover_check, 1.0)
@@ -75,7 +74,8 @@ class Game:
             'winner': self.winner,
             'clock': self.clock,
             'data': self.data,
-            'units': self.units
+            'units': self.units,
+            'version': Config.VERSION
         }
 
     def hook(self,
@@ -104,8 +104,6 @@ class Game:
         for p in self.players:
             p.process(tick)
 
-        self.gui.process()
-
         Event.notify_broadcast(Event.NEW_STATE, frame)
 
     class ComplexEncoder(json.JSONEncoder):
@@ -125,7 +123,7 @@ class Game:
 
     def scheduled_save(self, tick):
         data = self.dump_state()
-        if Config.SAVE_TO_FILE:
+        if Config.SAVE_TO_FILE and Config.AI_SAVESTATE:
             with open(Config.REPORT_DIR + "state.json", "w") as f:
                 f.write(data)
         self.snapshot = data
@@ -141,6 +139,18 @@ class Game:
             data = raw
 
         if data is not None:
+
+            if not 'version' in data or data['version'] != Config.VERSION:
+                v = None
+                try:
+                    v = data['version']
+                except:
+                    pass
+                print("Incorrect version of the game! %s found, %s required" % (v, Config.VERSION))
+                # Start plain game
+                g = Game()
+                return g
+
             print("Valid state file. Loading...")
 
             # Create new game instance

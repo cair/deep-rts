@@ -12,7 +12,7 @@ if __name__ == "__main__":
     if LOAD_SAVED_GAME:
 
         game = Game.load(fromfile=True)
-        game.parallell_worker = ParallellWorker()
+        game.parallell_worker = ParallellWorker(gui=False)
 
     else:
 

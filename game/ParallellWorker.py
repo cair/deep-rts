@@ -4,8 +4,6 @@ from multiprocessing import Queue
 from multiprocessing import Process
 from threading import Thread
 
-from multiprocessing import Pipe
-
 import time
 
 from game import Config
@@ -73,7 +71,7 @@ class ParallellWorker:
                 if data['type'] == GAMESTATE:
                     proc.data['game'] = data
 
-    def __init__(self):
+    def __init__(self, gui=True):
 
         # Create a process container
         self.procs = []
@@ -85,7 +83,7 @@ class ParallellWorker:
             out_queue = Queue()
 
             # Spawn the process inputting an id, and the io gates
-            proc = Worker(i, in_queue, out_queue)
+            proc = Worker(i, in_queue, out_queue, gui)
             proc.start()
 
             # Create a entry in the process state dict
@@ -94,6 +92,7 @@ class ParallellWorker:
             proc.o = out_queue
             proc.status = STATUS_WORKING
             proc.proc = proc
+            proc.data['process_id'] = i
             proc.data['last_update'] = time.time()
             self.procs.append(proc)
 
@@ -134,11 +133,12 @@ class Worker(Process):
             'data': self.g.dump_state()
         })
 
-    def __init__(self, _id, in_queue, out_queue):
+    def __init__(self, _id, in_queue, out_queue, gui):
         super(Worker, self).__init__()
         self.i = in_queue
         self.o = out_queue
         self.id = _id
+        self.gui = gui
 
         self.g = None
 
@@ -149,7 +149,7 @@ class Worker(Process):
     def run(self):
         #print("Started Worker %s" % self.id)
 
-        self.g = Game()
+        self.g = Game(gui=self.gui)
         self.g.set_pause(False)
         self.g.clock.shedule(self.on_event, .1)
         self.g.clock.shedule(self.do_event, 3)

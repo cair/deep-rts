@@ -8,6 +8,9 @@ class Idle(GenericState):
     def __init__(self, unit, attributes={}):
         super().__init__(unit, attributes)
 
+    def update(self, tick):
+        pass
+
 
 # Register to Generic State
 GenericState.registry[Idle.type] = Idle

@@ -1,19 +1,18 @@
 
 <div ng-repeat="model in state_data" class="col-lg-3">
-    <h1>Core {X}</h1>
-
-    Map: <b>{{model.map_name}}</b>
+    <h1>Core {{model.process_id}}</h1>
+    Map: <b>{{model.game.data.map_name}}</b>
     </br>
-    Winner: <b>{{model.winner}}</b>
+    Winner: <b>{{model.game.data.winner}}</b>
     </br>
-    Update Ticks: {{model.clock._update_ticks}}
+    Update Ticks: {{model.game.data.clock._update_ticks}}
     </br>
-    Render Ticks: {{model.clock._render_ticks}}
+    Render Ticks: {{model.game.data.clock._render_ticks}}
     </br>
     <hr>
 
 
-        <div ng-repeat="player in model.players">
+        <div ng-repeat="player in model.game.data.players">
             Name: {{player.name}}
             </br>
             Food: {{player.consumed_food}} / {{player.food}}

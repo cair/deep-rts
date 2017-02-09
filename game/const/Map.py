@@ -22,12 +22,12 @@ TILE_DATA = {
     },
     GRASS: {
         'type': WALKABLE,
-        'id': [i for i in range(238, 238 + 32)],
+        'id': [250], #[i for i in range(238, 238 + 32)],
         'name': 'grass',
     },
     WOOD: {
         'type': HARVESTABLE,
-        'id': [i for i in range(102, 102 + 32)],
+        'id': [105], #[i for i in range(102, 102 + 32)],
         'name': 'wood',
         'gold_yield': 0,
         'lumber_yield': 1,

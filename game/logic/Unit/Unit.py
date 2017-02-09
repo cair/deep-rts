@@ -96,6 +96,8 @@ class Unit:
         self.state.update(tick)
 
     def unit_area(self):
+        if not self.state.x or not self.state.y:
+            return []
         map_tiles_x = [x for x in range(self.state.x, self.state.x + self.width)]
         map_tiles_y = [y for y in range(self.state.y, self.state.y + self.height)]
         tiles = list(itertools.product(map_tiles_x, map_tiles_y))
@@ -330,16 +332,16 @@ class Unit:
                 self.state.clear_next()
 
             self.state.add_next(State.Combat, {
-                'attack_target': attack_target
+                'attack_target': attack_target.unit_id
             }, 2)
             self.move(*tile)
         else:
             self.state.transition(State.Combat, {
-                'attack_target': attack_target
+                'attack_target': attack_target.unit_id
             })
 
     def right_click(self, x, y):
-        if not self.state.x or not self.state.y:
+        if not self.state.x or not self.state.y or self.state.type == State.Building.type:
             return
 
         if self.game.Map.is_attackable(self, x, y):

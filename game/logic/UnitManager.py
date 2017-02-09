@@ -17,6 +17,8 @@ class UnitManager:
     SOLDIER = 3
     BARRACKS = 4
 
+    UnitC = UnitC
+
     UNIT_MAP = {
         UnitC.FOOTMAN: Footman,
         UnitC.PEASANT: Peasant,

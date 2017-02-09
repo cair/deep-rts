@@ -1,7 +1,5 @@
-                                                                                                     AI policy, EvaluationFunction a_ef) {
 
-
-class MCTS:
+class GreedyMCTS:
 
 
     def __init__(self,
@@ -34,6 +32,7 @@ class MCTS:
 
 
     def reset(self):
+        pass
 
         """tree = None;
         gs_to_start_from = null;

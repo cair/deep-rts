@@ -19,10 +19,12 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         msg = json.loads(message)
 
+        print(msg)
+
         if msg['type'] == "state":
             self.write_message(json.dumps({
                 'type': 'state',
-                'data': [state['state'] for state in pll_worker.proc_state.values()]
+                'data': [proc.data for proc in pll_worker.procs]
             }))
 
     def on_close(self):
