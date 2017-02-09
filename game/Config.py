@@ -23,3 +23,6 @@ UPS = 32
 MULTIPROCESSING_WORKERS = 10
 
 REPORT_DIR  = os.path.join(BASE_PATH, "../reports/")
+
+
+WEB_PORT = 8888

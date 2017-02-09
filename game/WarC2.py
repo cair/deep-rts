@@ -95,6 +95,7 @@ class Game:
     def loop(self):
         while Config.IS_RUNNING:
             if self.paused:
+                self.clock.tick_schedule()  # Continue to tick scheduled tasks
                 time.sleep(.1)
                 continue
             self.clock.tick()
@@ -113,13 +114,17 @@ class Game:
                 return obj.toJSON()
             elif type(obj).__name__ == 'ndarray':
                 return json.dumps(obj.tolist())
-            elif type(obj).__name__ == 'int64':
+            elif type(obj).__name__ == 'int64' or type(obj).__name__ == 'int32':
                 return int(obj)
             else:
+
                 return json.JSONEncoder.default(self, obj)
 
-    def scheduled_save(self, ick):
-        data = json.dumps(self.toJSON(), cls=Game.ComplexEncoder)
+    def dump_state(self):
+        return json.dumps(self.toJSON(), cls=Game.ComplexEncoder)
+
+    def scheduled_save(self, tick):
+        data = self.dump_state()
         if Config.SAVE_TO_FILE:
             with open(Config.REPORT_DIR + "state.json", "w") as f:
                 f.write(data)

@@ -2,13 +2,12 @@
 from game.WarC2 import Game
 from game.util import log
 from game.ParallellWorker import ParallellWorker
+from web.Server import WebServer
 
 if __name__ == "__main__":
     logger = log.setup_custom_logger('root')
 
-
     LOAD_SAVED_GAME = True
-
 
     if LOAD_SAVED_GAME:
 
@@ -24,6 +23,11 @@ if __name__ == "__main__":
             players=select_players,
             ParallellWorker=ParallellWorker
         )
+
+    # Webserver'
+    webserver = WebServer(game)
+    webserver.daemon = True
+    webserver.start()
 
     # Start loop
     game.loop()

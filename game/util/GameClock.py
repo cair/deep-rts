@@ -59,6 +59,19 @@ class GameClock:
     def elapsed_update(self):
         return self._update_ticks
 
+    def tick_schedule(self):
+        """
+        Tick on scheduled tasks
+        Used in order to get Parallell Processes to still run the on_event
+        This is because Threads does not work in Multiprocessing
+        :return:
+        """
+        current_time = time.time()
+        for (shedule_func, interval, next, idx) in self._shedules:
+            if current_time > next:
+                shedule_func(1)
+                self._shedules[idx][2] = current_time + interval
+
     def tick(self):
         current_time = time.time()
 
