@@ -11,28 +11,44 @@ from game.logic.UnitManager import UnitManager
 
 
 class Player:
-    index = 1
 
-    lumber = 1000
-    gold = 2000
-    oil = 1000
-    food = 1
-    consumed_food = 0
 
-    def __init__(self, game, name="[NO-NAME]"):
+
+    def __init__(self, game, _id, name="[NO-NAME]"):
+        self.id = _id
+
+        # References
         self.game = game
         self.Map = game.Map
-
-        self.id = Player.index
-        Player.index += 1
-        self.defeated = False
         self.Event = Event(self)
         self.Interface = Interface(self, self.Event)
         self.Interface.start()
 
+        # Final Variables
         self.name = name
         self.race = Race.HUMAN
 
+        # Variables
+        self.statistics = None
+        self.units = None
+        self.vision = None
+        self.defeated = None
+
+        # Game Variables
+        self.lumber = None
+        self.gold = None
+        self.oil = None
+        self.food = None
+        self.consumed_food = None
+
+        self.reset()
+
+        logging.debug("Created player %s" % name)
+
+    def reset(self):
+        self.defeated = False
+        self.units = []
+        self.vision = [x for x in self._base_vision()]
         self.statistics = {
             'kill_count': 0,
             'death_count': 0,
@@ -41,12 +57,11 @@ class Player:
             'lumber_count': 0,
             'oil_count': 0
         }
-        self.units = []
-        self.vision = [x for x in self._base_vision()]
-        #self.calculate_fow()
-
-        logging.debug("Created player %s" % name)
-        self.game.clock.shedule(self.check_defeat, 1.0)  # Regularly check for defeat
+        self.lumber = 1000
+        self.gold = 2000
+        self.oil = 1000
+        self.food = 1
+        self.consumed_food = 0
 
         self.spawn()
         self.Event.notify_start({
@@ -100,8 +115,8 @@ class Player:
             base_vision = list(zip(tiles[0], tiles[1]))
             return base_vision
 
-    def check_defeat(self, tick):
-        has_units = True if self.units else False
+    def calculate_defeat(self):
+        has_units = True if not self.units else False
         self.defeated = has_units
 
     def get_units(self):
@@ -110,14 +125,17 @@ class Player:
     def process(self, dt):
 
         for unit_id in self.units:
-            self.game.units[unit_id].process(dt)
+            try:
+                self.game.units[unit_id].process(dt)
+            except KeyError as e:
+                pass
 
         if not Config.NO_FOG:
             self.calculate_fow()
 
     def spawn(self):
         # Get single spawn tile
-        spawn_tile = self.Map.get_spawn_tile()
+        spawn_tile = self.Map.get_spawn_tile(self.id)
 
         # Create new unit
         unit = UnitManager.worker(self)      # 1. Create a worker
@@ -147,8 +165,6 @@ class Player:
 
     def left_click(self, x, y, unit_id):
         pass
-
-
 
 
 

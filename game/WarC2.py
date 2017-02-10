@@ -1,5 +1,6 @@
 import json
 
+import gc
 import numpy as np
 import time
 
@@ -10,6 +11,7 @@ from game.graphics.NoGUI import NoGUI
 from game.loaders.MapLoader import MapLoader
 from game.logic.Player.Player import Player
 from game.logic.UnitManager import UnitManager
+from game.util.ComplexEncoder import ComplexEncoder
 from game.util.GameClock import GameClock
 
 
@@ -35,22 +37,20 @@ class Game:
             "unit": np.zeros((self.Map.height, self.Map.width), dtype=np.int),
             "unit_pid": np.zeros((self.Map.height, self.Map.width), dtype=np.int),
             "tile": np.zeros((self.Map.height, self.Map.width), dtype=np.int),
-            "tile_collision": np.zeros((self.Map.height, self.Map.width), dtype=np.int)
         }
 
         # Create game clock
         self.clock = GameClock()
 
-        self.Map.load(self.data['tile'], self.data['tile_collision'])  # Load tile data onto layer 2 and 3
+        self.Map.load(self.data['tile'])  # Load tile data onto layer 2 and 3
 
         # Create Players
-        self.players = [Player(self, "Player %s" % x) for x in range(self.n_players)]
+        self.players = [Player(self, x) for x in range(self.n_players)]
 
         # Create GUI
         self.gui = NoGUI(self) if not gui else GUI(self, self.players[0])
 
         self.clock.shedule(self.gui.caption, 1.0)
-        self.clock.shedule(self.gameover_check, 1.0)
         self.clock.shedule(self.scheduled_save, Config.SAVE_FREQUENCY)
         self.clock.update(self.process, Config.UPS)  # 16
         self.clock.render(self.render, Config.FPS)  # 607
@@ -64,8 +64,18 @@ class Game:
         g.parallell_worker = ParallellWorker()
         return g
 
-    def set_pause(self, val):
-        self.paused = val
+    def pause(self):
+        self.paused = True
+
+    def resume(self):
+        self.paused = False
+
+    def reset(self):
+        self.gui.reset()
+        self.clock.reset()
+        self.units = dict()
+        [p.reset() for p in self.players]
+
 
     def toJSON(self):
         return {
@@ -106,20 +116,8 @@ class Game:
 
         Event.notify_broadcast(Event.NEW_STATE, frame)
 
-    class ComplexEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if hasattr(obj, 'toJSON'):
-                return obj.toJSON()
-            elif type(obj).__name__ == 'ndarray':
-                return json.dumps(obj.tolist())
-            elif type(obj).__name__ == 'int64' or type(obj).__name__ == 'int32':
-                return int(obj)
-            else:
-
-                return json.JSONEncoder.default(self, obj)
-
     def dump_state(self):
-        return json.dumps(self.toJSON(), cls=Game.ComplexEncoder)
+        return json.dumps(self.toJSON(), cls=ComplexEncoder)
 
     def scheduled_save(self, tick):
         data = self.dump_state()
@@ -132,8 +130,12 @@ class Game:
     def load(fromfile=True, raw=None):
         data = None
         if fromfile:
-            with open(Config.REPORT_DIR + "state.json", "r") as f:
-                data = json.load(f)
+            try:
+                with open(Config.REPORT_DIR + "state.json", "r") as f:
+                    data = json.load(f)
+            except FileNotFoundError as e:
+                print("Could not find state-file, starting new game...")
+                return Game()
 
         else:
             data = raw
@@ -166,8 +168,7 @@ class Game:
             g.data = {
                 "unit": np.array(json.loads(data['data']['unit']), dtype=np.int),
                 "unit_pid": np.array(json.loads(data['data']['unit_pid']), dtype=np.int),
-                "tile": np.array(json.loads(data['data']['tile']), dtype=np.int),
-                "tile_collision": np.array(json.loads(data['data']['tile_collision']), dtype=np.int)
+                "tile": np.array(json.loads(data['data']['tile']), dtype=np.int)
             }
 
             # Load player data
@@ -194,14 +195,22 @@ class Game:
 
         return g
 
-    def gameover_check(self, tick):
-        winner = None
+    def calculate_winner(self):
+        alive = [p for p in self.players if not p.defeated]
 
-        still_alive = [p for p in self.players if not p.defeated]
-        if len(still_alive) == 1:
-            winner = still_alive.pop()
-            Config.IS_RUNNING = False
-            self.winner = winner
+        if len(alive) == 1:
+            self.scheduled_save(0)                              # Save terminal game state
+            self.winner = alive[0]                              # Retrieve winning player
+
+            # Emit terminal state for defeated players
+            for p in self.players:
+                if p == self.winner: continue
+                p.Event.notify_defeat(self.snapshot)
+
+            # Emit terminal state for winning player
+            self.winner.Event.notify_victory(self.snapshot)
+
+            self.reset()
 
     def render(self, tick):
         self.gui.render(tick)

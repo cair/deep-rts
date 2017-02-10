@@ -29,7 +29,7 @@ class AdjacentMap:
         potential_tiles = self.adjacent(x, y, dim)
 
         tiles = [t for t in potential_tiles if
-                 self.game.data['tile_collision'][t[0]][t[1]] == Map.WALKABLE and
+                 self.game.data['tile'][t[0]][t[1]] == Map.GRASS and
                  self.game.data['unit'][t[0]][t[1]] == Unit.NONE
                  ]
 

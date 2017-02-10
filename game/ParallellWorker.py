@@ -150,7 +150,7 @@ class Worker(Process):
         #print("Started Worker %s" % self.id)
 
         self.g = Game(gui=self.gui)
-        self.g.set_pause(False)
+        self.g.pause()
         self.g.clock.shedule(self.on_event, .1)
         self.g.clock.shedule(self.do_event, 3)
         self.g.loop()

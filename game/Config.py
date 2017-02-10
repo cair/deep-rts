@@ -12,12 +12,17 @@ AI_NONE = 2
 
 RUN_FOREVER = True # Rerun game after defeat
 IS_RUNNING = True
-HAS_GUI = False
+
 INTERFACE = AI_LOCAL
 NO_FOG = True
 DEBUG = False
 AI_FRAME_SKIP = 50 # Skip Event notification every X frames (Only State Events)
 FRAME_MULTIPLIER = 8
+
+
+GUI_ON = False
+GUI_NOGUI_CAPTION = False
+
 
 
 AI_ALGORITHMS = [RandomAction, Hardcode.Hardcode_Simple1]

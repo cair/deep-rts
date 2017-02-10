@@ -8,7 +8,6 @@ class MockGame:
 
     def __init__(self):
         self.data = {
-            'tile_collision': np.zeros((30, 30), dtype=np.int),
             'unit': np.zeros((30, 30), dtype=np.int)
         }
 

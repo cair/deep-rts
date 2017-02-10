@@ -27,6 +27,15 @@ class GameClock:
         self._update_ticks = 0
         self._render_ticks = 0
 
+    def reset(self):
+        self._render_next = time.time()
+        self._update_next = time.time()
+        self._stats_next = time.time()
+        self._stats_render = 0
+        self._stats_update = 0
+        self._update_ticks = 0
+        self._render_ticks = 0
+
     def toJSON(self):
         return dict(
             _stats_next=self._stats_next,

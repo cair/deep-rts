@@ -1,6 +1,7 @@
 from game.api.Action import Action
 
 
+
 class Event:
     from game.const.Event import NEW_STATE
     handles = []   # List of all hooked Event instances (All players) Used for broadcasts
@@ -10,9 +11,11 @@ class Event:
     c_victory = None
     c_event = None
 
+
     def __init__(self, player):
         Event.handles.append(self)
         self.Action = Action(player)
+        self.clock = player.game.clock
 
 
 # Callback setters
@@ -35,22 +38,22 @@ class Event:
     # Notifiers
 
 
-    def notify(self, event_type, data=None):
+    def notify(self, event_type, data=None, tick=None):
         if not self.c_event: return
-        self.c_event(event_type, data)
+        self.c_event(event_type, data, self.clock._update_ticks)
 
     @staticmethod
     def notify_broadcast(event_type, data=None):
         for e in Event.handles:
-            e.notify(event_type, data)
+            e.notify(event_type, data, e.clock._update_ticks)
 
     def notify_victory(self, data):
         if not self.c_victory: return
-        self.c_victory(data)
+        self.c_victory(data, self.clock._update_ticks)
 
     def notify_defeat(self, data):
         if not self.c_defeat: return
-        self.c_defeat(data)
+        self.c_defeat(data, self.clock._update_ticks)
 
     def notify_start(self, data):
         if not self.c_start: return

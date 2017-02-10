@@ -9,6 +9,9 @@ from game import Config
 from game.const import Unit as UnitC, State
 from game.state.Dead import Dead
 from game.util import ArrayUtil
+
+# C Libraries
+import pyximport; pyximport.install()
 from game.util.Pathfinding import a_star_search
 
 
@@ -303,6 +306,10 @@ class Unit:
 
         if self.state.health <= 0:
             self.state.transition(State.Dead)
+
+            # In addition check for @see issue #1
+            self.player.calculate_defeat()
+            self.game.calculate_winner()
 
     def is_dead(self):
         return type(self.state) == Dead

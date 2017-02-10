@@ -6,7 +6,6 @@ from game.loaders.AdjacentMap import AdjacentMap
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-
 class MapLoader:
 
     def __init__(self, game):
@@ -29,7 +28,7 @@ class MapLoader:
 
         logging.debug("Loaded %s, a %sX%s sized map!" % (map_name, self.height, self.width))
 
-    def load(self, tiles, tile_collision):
+    def load(self, tiles):
 
         for y, val in enumerate(self.raw_data):
             for x, tile_id in enumerate(val):
@@ -39,13 +38,11 @@ class MapLoader:
                     self.spawn_tiles.append((x, y))
                     tile_id = Map.GRASS
 
-                tile = Map.TILE_DATA[tile_id]
 
                 tiles[x][y] = tile_id
-                tile_collision[x][y] = tile['type']
 
-    def get_spawn_tile(self):
-        return self.spawn_tiles.pop(0)
+    def get_spawn_tile(self, player_id):
+        return self.spawn_tiles[player_id]
 
     @staticmethod
     def is_harvestable_tile(unit, x, y):

@@ -36,7 +36,7 @@ def adjacent_walkable_tiles(unit, i, j, d, type=Map.WALKABLE):
 
 
 def is_walkable_tile(unit, x, y):
-    tile_walkable = unit.game.data['tile_collision'][x][y] == Map.WALKABLE
+    tile_walkable = unit.game.data['tile'][x][y] == Map.GRASS
     unit_walkable = unit.game.data['unit'][x][y] == Unit.NONE
 
     return tile_walkable and unit_walkable

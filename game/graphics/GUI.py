@@ -556,3 +556,6 @@ class GUI:
                 self.game.clock.ups,
                 (self.game.clock.ups / Config.FRAME_MULTIPLIER)))
 
+
+    def reset(self):
+        self.gstate.selected_unit = None
