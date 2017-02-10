@@ -1,2 +1,4 @@
 pygame
 tornado
+cython
+plotly

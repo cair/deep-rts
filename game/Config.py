@@ -24,6 +24,12 @@ GUI_ON = False
 GUI_NOGUI_CAPTION = False
 
 
+GAME_LUMBER_MODIFIER = 1
+GAME_GOLD_MODIFIER = 1.25
+GAME_OIL_MODIFIER = 0
+
+
+
 
 AI_ALGORITHMS = [RandomAction, Hardcode.Hardcode_Simple1]
 AI_SAVESTATE = False

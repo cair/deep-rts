@@ -8,11 +8,9 @@ from game.api.Interface import Interface
 from game.const import Map
 from game.const import Race
 from game.logic.UnitManager import UnitManager
-
+import collections
 
 class Player:
-
-
 
     def __init__(self, game, _id, name="[NO-NAME]"):
         self.id = _id
@@ -166,6 +164,67 @@ class Player:
     def left_click(self, x, y, unit_id):
         pass
 
+
+    def score_unit(self):
+        structures = [type(self.game.units[s]) for s in self.units if not self.game.units[s].structure]
+        counter = {}
+        sum = 0
+        for unit in structures:
+            if unit not in counter: counter[unit] = 0                   # Create a counter entry for this unit type
+            counter[unit] += 1                                          # Increment counter
+            g_s = (unit.cost_gold * Config.GAME_GOLD_MODIFIER)          # Calculate gold value
+            l_s = (unit.cost_lumber * Config.GAME_LUMBER_MODIFIER)      # Calculate lumber value
+            a = (g_s + l_s) * .15                                       # The score with .20 is resource score
+            dx = a * .05                                               # Punishment value (Many buildings are not good)
+            score = max(0, a + (a - (counter[unit] * dx)))              # Exponential Smoothing, check wiki
+            sum += score
+
+        return sum
+
+    def score_structure(self):
+        structures = [type(self.game.units[s]) for s in self.units if self.game.units[s].structure]
+        counter = {}
+        sum = 0
+        for unit in structures:
+            if unit not in counter: counter[unit] = 0                   # Create a counter entry for this unit type
+            counter[unit] += 1                                          # Increment counter
+            g_s = (unit.cost_gold * Config.GAME_GOLD_MODIFIER)          # Calculate gold value
+            l_s = (unit.cost_lumber * Config.GAME_LUMBER_MODIFIER)      # Calculate lumber value
+            a = (g_s + l_s) * .15                                       # The score with .20 is resource score
+            dx = a * .10                                               # Punishment value (Many buildings are not good)
+            score = max(0, a + (a - (counter[unit] * dx)))              # Exponential Smoothing, check wiki
+            sum += score
+
+        return sum
+
+    def score_resources(self):
+        oil = self.oil * Config.GAME_OIL_MODIFIER
+        lumber = self.lumber * Config.GAME_LUMBER_MODIFIER
+        gold = self.gold * Config.GAME_GOLD_MODIFIER
+        return (oil + lumber + gold) * .10
+
+    def score_military(self):
+        military_units = [type(self.game.units[s]) for s in self.units if self.game.units[s].military]
+        counter = {}
+        sum = 0
+        for unit in military_units:
+            if unit not in counter: counter[unit] = 0                   # Create a counter entry for this unit type
+            counter[unit] += 1                                          # Increment counter
+            g_s = (unit.cost_gold * Config.GAME_GOLD_MODIFIER)          # Calculate gold value
+            l_s = (unit.cost_lumber * Config.GAME_LUMBER_MODIFIER)      # Calculate lumber value
+            a = (g_s + l_s) * .20                                       # The score with .20 is military score
+            dx = a * .05                                                # Punishment value (Big armies are not good)
+            score = max(0, a + (a - (counter[unit] * dx)))              # Exponential Smoothing, check wiki
+            sum += score
+
+
+        return sum
+
+    def score_defence(self):
+        return 0
+
+    def score_total(self):
+        return self.score_military() + self.score_resources() + self.score_structure() + self.score_unit() + self.score_defence()
 
 
 

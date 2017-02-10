@@ -32,6 +32,7 @@ class Unit:
     ground_unit = True
     water_unit = False
     structure = False
+    military = False
 
     # Attributes
     name = "UNKNOWN"

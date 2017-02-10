@@ -8,6 +8,7 @@ class Footman(Unit):
     # Identifier
     id = UnitC.FOOTMAN
     structure = UnitC.UNIT
+    military = True
 
     # Tile Data
     width = 1

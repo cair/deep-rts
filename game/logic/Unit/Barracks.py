@@ -7,6 +7,7 @@ class Barracks(Unit):
     # Identifier
     id = UnitC.BARRACKS
     structure = UnitC.STRUCTURE
+    military = True
 
     # Tile Data
     width = 3

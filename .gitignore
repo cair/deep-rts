@@ -93,4 +93,4 @@ ENV/
 .ropeproject
 
 # Reports
-reports/
+reports/output/
