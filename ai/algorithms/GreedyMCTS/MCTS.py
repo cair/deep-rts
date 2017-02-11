@@ -1,4 +1,7 @@
+import time
+
 from ai.algorithms.GreedyMCTS.MCTSAction import MCTSAction
+from game import Config
 from game.WarC2 import Game
 import numpy as np
 
@@ -20,15 +23,18 @@ class MCTS:
 
         gs = Game.load(False, state, ai_instance=True)                            # Create a game instance
 
-        self.tree = MCTSNode(gs.save(), self.player.id, None, 0)   # Create tree root node
+        self.tree = MCTSNode(Game.load(False, state=gs.save()), self.player.id, None, 0)   # Create tree root node
         self.current = self.tree
 
-
+        _gui_interval = (1.0 / Config.FPS)
+        _gui_next = time.time() + _gui_interval
         while True:
             self.process()
 
-            self.current.gs.set_gui()
-            self.current.gs.gui.render(0)
+            if time.time() > _gui_next:
+                #self.current.gs.set_gui()
+                self.current.gs.gui.render(0)
+                _gui_next += _gui_interval
 
 
 
@@ -44,7 +50,7 @@ class MCTS:
             action = self.policy_rollout(self.current.actions)
             #print(action)
             self.do_action(action, self.current)
-            self.current = MCTSNode(self.current.gs.save(), self.player.id, self.current, self.current.depth + 1)
+            self.current = MCTSNode(self.current.gs, self.player.id, self.current, self.current.depth + 1)
             self.current.parent.children.append(self.current)
 
 
@@ -70,14 +76,14 @@ class MCTSNode:
     # A MCTSNode is representing a gamestate. This gamestate is a result of a action, done by the algorithm (policy)
     # An action can be thought as an edge
     """
-    def __init__(self, gs_fork, max_id, parent, depth):
+    def __init__(self, gs, max_id, parent, depth):
         self.edge = None            # Which action that led to this state (Parent ---Action--- This)
         self.children = list()      # Which states derived from this state
         self.actions = list()       # Which actions can be explored from this state
         self.parent = parent        # Which state this state was derived from
         self.depth = depth          # Which depth this node are on
 
-        self.gs = Game.load(False, gs_fork)                               # Fork a new gamestate
+        self.gs = gs                                                      # Fork a new gamestate
         max_p = next(p for p in self.gs.players if p.id == max_id)        # Find max player given input id
         min_p = next(p for p in self.gs.players if p != max_p)            # Find min player given max player
 
@@ -94,11 +100,10 @@ class MCTSNode:
             max_actions = MCTSAction.available_actions(max_p)       # Check for new available actions for max
             min_actions = MCTSAction.available_actions(min_p)       # Check for new available actions for min
 
-
         if self.gs.winner:                                                # If there is a winner
-            exit("Game over!")                                      # Gameover!
+            exit("Game over! %s" % (self.depth))                                      # Gameover!
 
 
         self.actions = max_actions if max_actions else min_actions  # Action set is max_p's if not we select min_p
 
-        print(self.depth, max_p.score_total(), len(max_actions), len(min_actions), max_actions, min_actions)
+        #print(self.depth, max_p.score_total(), len(max_actions), len(min_actions), max_actions, min_actions)

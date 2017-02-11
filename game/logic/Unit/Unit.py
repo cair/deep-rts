@@ -148,22 +148,12 @@ class Unit:
             self.state.direction = data[(0, 0)]     # TODO!
 
     def clear_position_matrix(self):
-        for x, y in ArrayUtil.get_area(
-                self.state.x,
-                self.state.y,
-                self.width,
-                self.height
-        ):
-            self.data['unit'][x, y] = 0
-            self.data['unit_pid'][x, y] = 0
+        for x, y in self.unit_area():
+            del self.data['unit'][x, y]
+            del self.data['unit_pid'][x, y]
 
     def update_position_matrix(self):
-        for x, y in ArrayUtil.get_area(
-                self.state.x,
-                self.state.y,
-                self.width,
-                self.height
-        ):
+        for x, y in self.unit_area():
             self.game.data['unit'][x, y] = self.unit_id
             self.game.data['unit_pid'][x, y] = self.player.id
 
@@ -205,7 +195,9 @@ class Unit:
         if self.structure == UnitC.STRUCTURE or self.speed <= 0:
             return False
 
-        path = self.generate_path(x, y)
+
+
+        path = [(x, y)] if self.distance(x, y ) == 1 else self.generate_path(x, y)
 
         self.state.transition(State.Walking, {
             'path': path,
@@ -262,7 +254,6 @@ class Unit:
             return
 
         distance = self.distance(x, y)
-        print(distance)
         if distance > 1:
             tiles = self.game.AdjacentMap.adjacent_walkable(self.game, x, y, 1)
 

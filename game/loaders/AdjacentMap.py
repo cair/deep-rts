@@ -8,6 +8,9 @@ class AdjacentMap:
 
     _map = {}
 
+    _edges_wood = []
+    _edges_gold = []
+
     @staticmethod
     def generate(dim=3):
 
@@ -24,6 +27,10 @@ class AdjacentMap:
         AdjacentMap.loaded = True
 
     @staticmethod
+    def _calculate_edges():
+        pass
+
+    @staticmethod
     def adjacent(x, y, dim):
         return AdjacentMap._map[(x, y, dim)]
 
@@ -31,10 +38,13 @@ class AdjacentMap:
     def adjacent_walkable(game, x, y, dim):
         potential_tiles = AdjacentMap.adjacent(x, y, dim)
 
-        tiles = [(x, y) for x, y in potential_tiles if
-                 MapLoader.tiles[x][y] == Map.GRASS and
-                 game.data['unit'][x, y] == Unit.NONE
-                 ]
+        tiles = []
+        for x, y in potential_tiles:
+            is_grass = MapLoader.tiles[x][y] == Map.GRASS
+            is_no_unit = game.data['unit'][x, y] == Unit.NONE
+            if is_grass and is_no_unit:
+                tiles.append((x, y))
+
 
         return tiles
 

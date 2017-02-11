@@ -66,4 +66,3 @@ def determine_path(came_from, start, goal):
         else:
             end = path[::-1]
             return end
-

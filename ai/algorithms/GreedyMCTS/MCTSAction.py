@@ -22,7 +22,6 @@ class MCTSAction:
             if unit.state.type == MCTSAction.IDLE:          # If unit is idle
                 idle_units.append(unit)             # Append to idle_unit list
 
-
         for unit in idle_units:
             AM = unit.AdjacentMap
             uid = unit.unit_id

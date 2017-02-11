@@ -9,6 +9,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 class MapLoader:
     preloaded = False
     AdjacentMap = None
+    GrassTiles = []
+
     spawn_tiles = []
     height = None
     width = None

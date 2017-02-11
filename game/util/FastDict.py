@@ -19,3 +19,5 @@ class FastDict(object):
         except:
             return 0
 
+    def __delitem__(self, index):
+        del self.v[index]
