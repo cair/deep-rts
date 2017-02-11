@@ -142,6 +142,9 @@ class Player:
         unit.spawn()                         # 4. Spawn worker
         unit.state.transition()              # 5. Transition from Spawning to Idle state
 
+        if Config.MECHANICS_TOWN_HALL_ON_START:
+            unit.build(0)
+
         logging.debug("Player %s spawned at %s with 1 worker", self.name, spawn_tile)
 
     def calculate_fow(self):
@@ -201,7 +204,14 @@ class Player:
         oil = self.oil * Config.GAME_OIL_MODIFIER
         lumber = self.lumber * Config.GAME_LUMBER_MODIFIER
         gold = self.gold * Config.GAME_GOLD_MODIFIER
-        return (oil + lumber + gold) * .10
+
+        for u in self.units:
+            unit = self.game.units[u]
+            oil += unit.state.inventory_oil
+            gold += unit.state.inventory_gold
+            lumber += unit.state.inventory_lumber
+
+        return (oil + lumber + gold) * .20
 
     def score_military(self):
         military_units = [type(self.game.units[s]) for s in self.units if self.game.units[s].military]

@@ -97,14 +97,16 @@ class Overlay:
             "Food %s/%s "
             "Units: %s "
             "Seconds: %s  "
-            "Frames: %s"
+            "Frames: %s "
+            "Score: %s "
             % (
                 gui.player.lumber,
                 gui.player.gold,
                 gui.player.consumed_food, gui.player.food,
                 len(gui.player.units),
                 int(gui.game.clock.elapsed_update / Config.FRAME_MULTIPLIER),
-                int(gui.game.clock.elapsed_update)
+                int(gui.game.clock.elapsed_update),
+                int(gui.player.score_total())
             ), 1, (255, 255, 0))
         gui.display.blit(lbl, (10, 5))
 

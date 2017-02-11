@@ -55,7 +55,7 @@ class Unit:
     def toJSON(self):
         return {
             'id': self.id,
-            'state': self.state
+            'state': self.state.toJSON()
         }
 
     def load(self, data):
@@ -81,6 +81,9 @@ class Unit:
 
         # Generate a unique id for this unit
         self.unit_id = self.generate_id()
+
+        self.buildable = [
+        ]
 
         # Calculate dimension of this unit
         self.dimension = self._dimension()
@@ -212,6 +215,13 @@ class Unit:
             'path': path,
             'path_goal': (x, y)
         })
+
+    def void(self):
+        """
+        A "do nothing" action
+        :return:
+        """
+        return True
 
     def distance(self, x, y, dim=0):
         d = math.hypot(self.state.x - (x + dim), self.state.y - (y + dim))
@@ -360,6 +370,17 @@ class Unit:
             self.state.clear_next()
             self.move(x, y)
 
+    def can_build(self, entity):
+        if self.player.consumed_food + entity.food_cost > self.player.food:
+            #print("Not enough food!")
+            return False
+
+        if self.player.gold < entity.cost_gold or self.player.lumber < entity.cost_lumber:
+            #print("Cannot afford this unit")
+            return False
+
+        return True
+
     def can_build_here(self, subject):
         """
         This determines weither this unit can build a unit at current location
@@ -392,12 +413,7 @@ class Unit:
 
         entity_class = self.buildable[idx]
 
-        if self.player.consumed_food + entity_class.food_cost > self.player.food:
-            print("Not enough food!")
-            return False
-
-        if self.player.gold < entity_class.cost_gold or self.player.lumber < entity_class.cost_lumber:
-            print("Cannot afford this unit")
+        if not self.can_build(entity_class):
             return False
 
         if self.can_build_here(entity_class):

@@ -1,5 +1,5 @@
 import json
-
+import copy
 import gc
 import numpy as np
 import time
@@ -17,13 +17,13 @@ from game.util.GameClock import GameClock
 
 class Game:
     def __init__(self, map_name="simple", players=2, gui=True):
-
         self.map_name = map_name
         self.n_players = players
-        self.snapshot = None  # Save snapshot
+
         # Unit Manager
         self.UnitManager = UnitManager
 
+        # Parallell Worker
         self.parallell_worker = None
 
         # Units map
@@ -76,17 +76,16 @@ class Game:
         self.units = dict()
         [p.reset() for p in self.players]
 
-
     def toJSON(self):
-        return {
-            'players': self.players,
+        return copy.deepcopy({
+            'players': [p.toJSON() for p in self.players],
             'map_name': self.map_name,
             'winner': self.winner,
-            'clock': self.clock,
+            'clock': self.clock.toJSON(),
             'data': self.data,
-            'units': self.units,
+            'units': {uid: u.toJSON() for uid, u in self.units.items()},
             'version': Config.VERSION
-        }
+        })
 
     def hook(self,
              on_victory=None,
@@ -117,17 +116,20 @@ class Game:
         Event.notify_broadcast(Event.NEW_STATE, frame)
 
     def dump_state(self):
-        return json.dumps(self.toJSON(), cls=ComplexEncoder)
+        return self.toJSON()
 
     def scheduled_save(self, tick):
+        self.save()
+
+    def save(self):
         data = self.dump_state()
         if Config.SAVE_TO_FILE and Config.AI_SAVESTATE:
             with open(Config.REPORT_DIR + "state.json", "w") as f:
-                f.write(data)
-        self.snapshot = data
+                f.write(json.dumps(data, cls=ComplexEncoder))
+        return data
 
     @staticmethod
-    def load(fromfile=True, raw=None):
+    def load(fromfile=True, state=None, gui=False):
         data = None
         if fromfile:
             try:
@@ -135,10 +137,10 @@ class Game:
                     data = json.load(f)
             except FileNotFoundError as e:
                 print("Could not find state-file, starting new game...")
-                return Game()
+                return Game(gui=gui)
 
         else:
-            data = raw
+            data = state
 
         if data is not None:
 
@@ -150,25 +152,32 @@ class Game:
                     pass
                 print("Incorrect version of the game! %s found, %s required" % (v, Config.VERSION))
                 # Start plain game
-                g = Game()
+                g = Game(gui=gui)
                 return g
 
-            print("Valid state file. Loading...")
+            #print("Valid state file. Loading...")
 
             # Create new game instance
             g = Game(
                 map_name=data['map_name'],
-                players=len(data['players'])
+                players=len(data['players']),
+                gui=gui
             )
+
+            # TODO remove units etc (MAKE BETTER CONSTRUCTOR)
+            g.units = {}
+            for p in g.players:
+                p.units = []
+
 
             # Load Game Clock
             g.clock.load(data['clock'])
 
             # Load game data
             g.data = {
-                "unit": np.array(json.loads(data['data']['unit']), dtype=np.int),
-                "unit_pid": np.array(json.loads(data['data']['unit_pid']), dtype=np.int),
-                "tile": np.array(json.loads(data['data']['tile']), dtype=np.int)
+                "unit": np.array(data['data']['unit'], dtype=np.int),
+                "unit_pid": np.array(data['data']['unit_pid'], dtype=np.int),
+                "tile": np.array(data['data']['tile'], dtype=np.int)
             }
 
             # Load player data
@@ -178,11 +187,13 @@ class Game:
                 p.load(data['players'][idx])
 
                 for unit_id in p.units:
+
                     id_to_p_id[unit_id] = p.id
                 id_to_player[p.id] = p
 
             # Load unit data
             for u_id, u_v in data['units'].items():
+
                 unit_class = UnitManager.get_class_by_id(u_v['id'])
 
                 player_id = id_to_p_id[int(u_id)]

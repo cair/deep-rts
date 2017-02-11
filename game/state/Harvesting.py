@@ -140,7 +140,11 @@ class Harvesting(GenericState):
                 # When delivery is done, trigger new harvesting round
                 """
                 self.stage_deliver()
-                self.unit.harvest(*self.harvest_target)
+
+                if Config.MECHANICS_HARVEST_FOREVER:
+                    self.unit.harvest(*self.harvest_target)
+                else:
+                    self.transition(Idle)
 
 # Register to Generic State
 GenericState.registry[Harvesting.type] = Harvesting

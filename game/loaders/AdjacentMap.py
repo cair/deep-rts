@@ -34,3 +34,20 @@ class AdjacentMap:
                  ]
 
         return tiles
+
+    def adjacent_harvestable(self, x, y, dim):
+        potential_tiles = self.adjacent(x, y, dim)
+
+        tiles = [t for t in potential_tiles if self.game.data['tile'][t[0]][t[1]] in [Map.WOOD, Map.GOLD]]
+
+        return tiles
+
+    def adjacent_attackable(self, unit):
+
+        potential_tiles = self.adjacent(unit.state.x + unit.dimension,
+                                        unit.state.y + unit.dimension,
+                                        1 + unit.dimension)
+
+        tiles = [t for t in potential_tiles if self.game.data['unit_pid'][t[0]][t[1]] not in [unit.player.id, 0]]
+
+        return tiles

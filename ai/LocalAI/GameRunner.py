@@ -17,6 +17,7 @@ class GameRunner(Thread):
 
     def run(self):
         self.g = Game()
+        print(self.g)
         self.g.parallell_worker = ParallellWorker(False)
         self.g.loop()
 
