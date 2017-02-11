@@ -7,6 +7,7 @@ from pygame.locals import *
 
 from game import Config
 from game.const.State import ID_Walking
+from game.loaders.MapLoader import MapLoader
 from game.logic.Unit.Barracks import Barracks
 
 from game.const import State
@@ -161,27 +162,22 @@ class Overlay:
 
 class GUI:
 
-    def __init__(self, game, player):
+    def __init__(self):
         self.camera_x = 0
         self.camera_y = 0
-        self.game = game
-        self.player = player
-        self.Map = self.game.Map
         self.gstate = GUIState()
 
-        # Calculate window size
-        self.canvas_size = (self.Map.width * Map.TILE_SIZE, self.Map.height * Map.TILE_SIZE)
+
+        self.canvas_size = (MapLoader.width * Map.TILE_SIZE, MapLoader.height * Map.TILE_SIZE)
         self.window_size = (800, 600)
 
         pygame.init()
         pygame.display.set_caption('WarC2Sim')
 
-
         # Canvas's
         self.display = pygame.display.set_mode(self.window_size) # Window
         self.canvas = pygame.Surface(self.canvas_size)
         Overlay.init(self)
-
 
         self.tiles_sprite = self.tile_sprites()  # tile sprites (images)
         self.unit_sprite = self.unit_sprites()
@@ -203,15 +199,15 @@ class GUI:
             pass
 
     def tile_sprites(self):
-        tileset_path = os.path.abspath(os.path.join(dir_path, '../data/textures', self.Map.TILES_THEME, "tiles.png"))
+        tileset_path = os.path.abspath(os.path.join(dir_path, '../data/textures', MapLoader.TILES_THEME, "tiles.png"))
         sheet = pygame.image.load(tileset_path).convert()
 
-        result = [[None for x in range(self.Map.width)] for y in range(self.Map.height)]
+        result = [[None for x in range(MapLoader.width)] for y in range(MapLoader.height)]
 
         # Predefine sprites for each tile
-        for x in range(self.Map.height):
-            for y in range(self.Map.width):
-                tile_type = self.game.data['tile'][x][y]
+        for x in range(MapLoader.height):
+            for y in range(MapLoader.width):
+                tile_type = MapLoader.tiles[x][y]
                 tile_info = Map.TILE_DATA[tile_type]
                 tile_choice = random.choice(tile_info['id'])
                 sprite = SpriteUtil.image_at(sheet, tile_choice, Map.TILE_SIZE).convert()
@@ -384,7 +380,7 @@ class GUI:
 
     def render_tiles(self):
 
-        pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, self.Map.height * Map.TILE_SIZE, self.Map.width * Map.TILE_SIZE))
+        pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, MapLoader.height * Map.TILE_SIZE, MapLoader.width * Map.TILE_SIZE))
 
         for x, y in self.player.vision:
             self.canvas.blit(self.tiles_sprite[x][y], (x * Map.TILE_SIZE, y * Map.TILE_SIZE))
@@ -451,11 +447,11 @@ class GUI:
 
     def left_click(self, x, y):
 
-        x = max(0, min(self.Map.width - 1, x))
-        y = max(0, min(self.Map.height - 1, y))
+        x = max(0, min(MapLoader.width - 1, x))
+        y = max(0, min(MapLoader.height - 1, y))
 
         # Propagate first to Units
-        unit_id = self.game.data['unit'][x][y]
+        unit_id = self.game.data['unit'][x, y]
 
         if unit_id != 0:
             # Unit selection
@@ -471,11 +467,11 @@ class GUI:
 
     def right_click(self, x, y):
 
-        x = max(0, min(self.Map.width - 1, x))
-        y = max(0, min(self.Map.height - 1, y))
+        x = max(0, min(MapLoader.width - 1, x))
+        y = max(0, min(MapLoader.height - 1, y))
 
         # Right click and hav a selected unit, move it!
-        if self.gstate.selected_unit:
+        if self.gstate.selected_unit and type(self.gstate.selected_unit.state) != State.Dead:
             self.player.right_click(x, y, self.gstate.selected_unit.unit_id)
 
 

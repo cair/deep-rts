@@ -39,7 +39,7 @@ for key, item in graph_items.items():
     ys = {
         x: [] for x in item[0]
         }
-    g = Game(gui=False)                                 # Create a game instance
+    g = Game()                                 # Create a game instance
     g.pause()                                           # Ensure that it does not run
     p = Player(g, 0)                                    # Create a player
     p.units = []                                        # Remove all units

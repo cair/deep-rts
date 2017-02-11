@@ -76,6 +76,7 @@ class Unit:
         self.player = player
         self.game = player.game
         self.Map = self.game.Map
+        self.AdjacentMap = self.game.AdjacentMap
         self.data = player.game.data
         self.Event = player.Event
 
@@ -153,8 +154,8 @@ class Unit:
                 self.width,
                 self.height
         ):
-            self.data['unit'][x][y] = 0
-            self.data['unit_pid'][x][y] = 0
+            self.data['unit'][x, y] = 0
+            self.data['unit_pid'][x, y] = 0
 
     def update_position_matrix(self):
         for x, y in ArrayUtil.get_area(
@@ -163,8 +164,8 @@ class Unit:
                 self.width,
                 self.height
         ):
-            self.game.data['unit'][x][y] = self.unit_id
-            self.game.data['unit_pid'][x][y] = self.player.id
+            self.game.data['unit'][x, y] = self.unit_id
+            self.game.data['unit_pid'][x, y] = self.player.id
 
     def add_to_game(self):
         self.game.units[self.unit_id] = self
@@ -192,12 +193,7 @@ class Unit:
         self.state.spawned = False
 
     def generate_path(self, x, y):
-        path = a_star_search(
-            self.game.Map,
-            self.game.data['tile'],
-            (self.state.x, self.state.y),
-            (x, y)
-        )
+        path = a_star_search(self.game, self.state.x, self.state.y, x, y)
 
         if path:
             path.pop()
@@ -266,8 +262,9 @@ class Unit:
             return
 
         distance = self.distance(x, y)
+        print(distance)
         if distance > 1:
-            tiles = self.game.Map.AdjacentMap.adjacent_walkable(x, y, 1)
+            tiles = self.game.AdjacentMap.adjacent_walkable(self.game, x, y, 1)
 
             if not tiles:
                 return
@@ -332,11 +329,12 @@ class Unit:
         if self.damage_min <= 0:
             return
 
-        attack_target = self.Map.get_unit(x, y)
+        attack_target = self.game.get_unit(x, y)
         distance = self.distance(x, y)
         if distance > 1:
 
-            tiles = self.Map.AdjacentMap.adjacent_walkable(
+            tiles = self.AdjacentMap.adjacent_walkable(
+                self.game,
                 attack_target.state.x + attack_target.dimension,
                 attack_target.state.y + attack_target.dimension,
                 attack_target.dimension + 1
@@ -391,15 +389,17 @@ class Unit:
         """
 
         if self.structure:
-            adjacent_tiles = self.Map.AdjacentMap.adjacent_walkable(
+            adjacent_tiles = self.AdjacentMap.adjacent_walkable(
+                self.game,
                 self.state.x + self.dimension,
                 self.state.y + self.dimension,
                 self.dimension + 1
             )
             return len(adjacent_tiles) > 0
         else:
+
             # A unit builds a structure
-            adjacent_tiles = self.Map.AdjacentMap.adjacent_walkable(self.state.x, self.state.y, Unit._dimension(subject))
+            adjacent_tiles = self.AdjacentMap.adjacent_walkable(self.game, self.state.x, self.state.y, Unit._dimension(subject))
             adjacent_tiles.append((self.state.x, self.state.y))
             subject_area = list(
                 itertools.product(

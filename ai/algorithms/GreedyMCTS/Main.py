@@ -6,7 +6,7 @@ from ai.algorithms.GreedyMCTS.MCTSAction import MCTSAction
 from ai.algorithms.GreedyMCTS.Node import Node
 from game.WarC2 import Game
 
-g = Game(gui=False)
+g = Game.start(2, None)
 s = g.save()
 
 algorithm = MCTS(

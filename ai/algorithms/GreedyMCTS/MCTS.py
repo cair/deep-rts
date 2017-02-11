@@ -18,12 +18,7 @@ class MCTS:
         self.policy_expand = policy_expand                  # Policy for selecting states
         self.policy_rollout = policy_rollout                # Policy for selecting actions when expanding tree
 
-
-
-
-        # Create a game instance (TODO)
-        gs = Game.load(False, state)                            # Create a game instance
-        self.gui = GUI(gs, None)
+        gs = Game.load(False, state, ai_instance=True)                            # Create a game instance
 
         self.tree = MCTSNode(gs.save(), self.player.id, None, 0)   # Create tree root node
         self.current = self.tree
@@ -32,12 +27,9 @@ class MCTS:
         while True:
             self.process()
 
+            self.current.gs.set_gui()
+            self.current.gs.gui.render(0)
 
-            # GUI for debug purposes
-            self.gui.game = self.current.gs
-            self.gui.player = self.current.max_p
-            self.Map = self.gui.game.Map
-            self.gui.render(0)
 
 
     def process(self):
@@ -50,7 +42,7 @@ class MCTS:
             # Select action with rollout policy
             # Compute state
             action = self.policy_rollout(self.current.actions)
-            print(action)
+            #print(action)
             self.do_action(action, self.current)
             self.current = MCTSNode(self.current.gs.save(), self.player.id, self.current, self.current.depth + 1)
             self.current.parent.children.append(self.current)
@@ -67,7 +59,7 @@ class MCTS:
         elif action_type == MCTSAction.RIGHT_CLICK:
             unit.right_click(*params)
         else:
-            print(action_str, action)
+            #print(action_str, action)
             exit("Fuckdidoodli This should happen")
 
 
@@ -85,8 +77,7 @@ class MCTSNode:
         self.parent = parent        # Which state this state was derived from
         self.depth = depth          # Which depth this node are on
 
-
-        self.gs = Game.load(False, gs_fork, False)                        # Fork a new gamestate
+        self.gs = Game.load(False, gs_fork)                               # Fork a new gamestate
         max_p = next(p for p in self.gs.players if p.id == max_id)        # Find max player given input id
         min_p = next(p for p in self.gs.players if p != max_p)            # Find min player given max player
 

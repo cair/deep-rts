@@ -1,4 +1,5 @@
 from game import Config
+from game.loaders.AdjacentMap import AdjacentMap
 from game.state.GenericState import GenericState
 from game.const.State import ID_Harvesting
 from game.state.Idle import Idle
@@ -30,7 +31,7 @@ class Harvesting(GenericState):
         }
 
     def stage_goto_harvest(self):
-        tiles = self.Map.AdjacentMap.adjacent_walkable(*self.harvest_target, 1)
+        tiles = self.AdjacentMap.adjacent_walkable(self.game, *self.harvest_target, 1)
 
         if not tiles:
             return
@@ -73,7 +74,7 @@ class Harvesting(GenericState):
 
     def stage_recall(self, recall_building):
         # Must walk
-        tiles = self.Map.AdjacentMap.adjacent_walkable(recall_building.state.x + recall_building.dimension,
+        tiles = AdjacentMap.adjacent_walkable(self.game, recall_building.state.x + recall_building.dimension,
                                                        recall_building.state.y + recall_building.dimension,
                                                        recall_building.dimension + 1)
 

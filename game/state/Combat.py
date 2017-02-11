@@ -38,7 +38,8 @@ class Combat(GenericState):
                 # Too far away, Walk
 
                 # Find adjacent tile to the attack target
-                tiles = self.Map.AdjacentMap.adjacent_walkable(
+                tiles = self.game.AdjacentMap.adjacent_walkable(
+                    self.game,
                     attack_target.state.x + attack_target.dimension,
                     attack_target.state.y + attack_target.dimension,
                     attack_target.dimension + 1

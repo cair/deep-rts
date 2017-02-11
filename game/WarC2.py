@@ -1,67 +1,88 @@
 import json
 import copy
-import gc
-import numpy as np
+import os
 import time
 
 from game import Config
 from game.api.Event import Event
 from game.graphics.GUI import GUI
 from game.graphics.NoGUI import NoGUI
+from game.loaders.AdjacentMap import AdjacentMap
 from game.loaders.MapLoader import MapLoader
 from game.logic.Player.Player import Player
 from game.logic.UnitManager import UnitManager
 from game.util.ComplexEncoder import ComplexEncoder
+from game.util.FastDict import FastDict
 from game.util.GameClock import GameClock
+
+if not MapLoader.preloaded:
+    MapLoader.preload(Config.GAME_MAP)
+    AdjacentMap.generate()
+    Graphics = GUI()
 
 
 class Game:
-    def __init__(self, map_name="simple", players=2, gui=True):
-        self.map_name = map_name
-        self.n_players = players
-
-        # Unit Manager
+    def __init__(self, players=2, ai_instance=False):
+        """
+        # Constructs a game instance
+        :param players: Number of players in this game
+        :param ai_instance: Describes if this game should be considered a instance of a AI simulation
+        """
         self.UnitManager = UnitManager
+        self.Map = MapLoader
+        self.AdjacentMap = AdjacentMap
 
-        # Parallell Worker
-        self.parallell_worker = None
+        self.n_players = players
+        self.ai_instance = ai_instance
 
-        # Units map
+
+        self.parallel_worker = None
+
         self.units = {}
 
-        self.Map = MapLoader(self)
-        self.Map.preload(self.map_name)
+        self.winner = None
+        self.paused = False
 
         # Data Matrix
         self.data = {
-            "unit": np.zeros((self.Map.height, self.Map.width), dtype=np.int),
-            "unit_pid": np.zeros((self.Map.height, self.Map.width), dtype=np.int),
-            "tile": np.zeros((self.Map.height, self.Map.width), dtype=np.int),
+            "unit": FastDict(),
+            "unit_pid": FastDict(),
         }
 
         # Create game clock
         self.clock = GameClock()
 
-        self.Map.load(self.data['tile'])  # Load tile data onto layer 2 and 3
-
         # Create Players
-        self.players = [Player(self, x) for x in range(self.n_players)]
+        self.players = []
 
         # Create GUI
-        self.gui = NoGUI(self) if not gui else GUI(self, self.players[0])
+        self.gui = NoGUI(self)
 
-        self.clock.shedule(self.gui.caption, 1.0)
+    def init(self, no_units=False):
+        self.clock = GameClock()
+        self.clock.shedule(self.caption, 1.0)
         self.clock.shedule(self.scheduled_save, Config.SAVE_FREQUENCY)
         self.clock.update(self.process, Config.UPS)  # 16
         self.clock.render(self.render, Config.FPS)  # 607
 
-        self.winner = None  # Winner of the game
-        self.paused = False
+        if not no_units:
+            self.players = [Player(self, x) for x in range(self.n_players)]
+            [p.reset() for p in self.players]
+
+    def set_gui(self):
+        self.gui = Graphics
+        self.gui.game = self
+        self.gui.player = self.players[0]
+
+    def get_unit(self, x, y):
+        return self.units[self.data['unit'][x, y]]
+
 
     @staticmethod
-    def start(map_name, players, ParallellWorker=None):
-        g = Game(map_name, players)
-        g.parallell_worker = ParallellWorker()
+    def start(n_players, ParallellWorker=None):
+        g = Game(n_players)
+        g.init()
+        g.parallell_worker = ParallellWorker
         return g
 
     def pause(self):
@@ -74,18 +95,25 @@ class Game:
         self.gui.reset()
         self.clock.reset()
         self.units = dict()
+        self.data = {
+            "unit": FastDict(),
+            "unit_pid": FastDict(),
+        }
+
         [p.reset() for p in self.players]
 
     def toJSON(self):
         return copy.deepcopy({
             'players': [p.toJSON() for p in self.players],
-            'map_name': self.map_name,
+            'map_name': Config.GAME_MAP,
             'winner': self.winner,
             'clock': self.clock.toJSON(),
-            'data': self.data,
             'units': {uid: u.toJSON() for uid, u in self.units.items()},
             'version': Config.VERSION
         })
+
+    def caption(self, dt):
+        self.gui.caption(dt)
 
     def hook(self,
              on_victory=None,
@@ -115,94 +143,69 @@ class Game:
 
         Event.notify_broadcast(Event.NEW_STATE, frame)
 
+
     def dump_state(self):
         return self.toJSON()
 
     def scheduled_save(self, tick):
-        self.save()
+        if not self.winner and not self.ai_instance:
+            self.save()
+
 
     def save(self):
         data = self.dump_state()
-        if Config.SAVE_TO_FILE and Config.AI_SAVESTATE:
+        if Config.SAVE_TO_FILE and not self.ai_instance:
             with open(Config.REPORT_DIR + "state.json", "w") as f:
                 f.write(json.dumps(data, cls=ComplexEncoder))
         return data
 
     @staticmethod
-    def load(fromfile=True, state=None, gui=False):
-        data = None
-        if fromfile:
-            try:
-                with open(Config.REPORT_DIR + "state.json", "r") as f:
-                    data = json.load(f)
-            except FileNotFoundError as e:
-                print("Could not find state-file, starting new game...")
-                return Game(gui=gui)
-
+    def load(fromfile=True, state=None, ai_instance=False):
+        save_file = Config.REPORT_DIR + "state.json"
+        if fromfile and os.path.isfile(save_file):
+            data = json.load(open(save_file))
+        elif not fromfile and state is None:
+            print("Could not find state-file, starting new game...")
+            g = Game()
+            g.init()
+            return g
         else:
             data = state
 
-        if data is not None:
 
-            if not 'version' in data or data['version'] != Config.VERSION:
-                v = None
+        if data['version'] != Config.VERSION:
+            print("Incorrect version of the game! %s found, %s required" % (v, Config.VERSION))
+            # Start plain game
+            g = Game(ai_instance=ai_instance)
+            g.init()
+            return g
+
+        g = Game(players=len(data['players']), ai_instance=ai_instance)
+        g.init(no_units=True)
+
+        g.clock.load(data['clock'])
+
+        g.players = []
+        for p_data in data['players']:
+            player = Player(g, p_data['id'])
+            player.load(p_data)
+            g.players.append(player)
+
+            for uid in player.units:
                 try:
-                    v = data['version']
+                    u_data = data['units'][str(uid)]
                 except:
-                    pass
-                print("Incorrect version of the game! %s found, %s required" % (v, Config.VERSION))
-                # Start plain game
-                g = Game(gui=gui)
-                return g
-
-            #print("Valid state file. Loading...")
-
-            # Create new game instance
-            g = Game(
-                map_name=data['map_name'],
-                players=len(data['players']),
-                gui=gui
-            )
-
-            # TODO remove units etc (MAKE BETTER CONSTRUCTOR)
-            g.units = {}
-            for p in g.players:
-                p.units = []
-
-
-            # Load Game Clock
-            g.clock.load(data['clock'])
-
-            # Load game data
-            g.data = {
-                "unit": np.array(data['data']['unit'], dtype=np.int),
-                "unit_pid": np.array(data['data']['unit_pid'], dtype=np.int),
-                "tile": np.array(data['data']['tile'], dtype=np.int)
-            }
-
-            # Load player data
-            id_to_p_id = {}  # """ Key is unit id, Value is Player id"""
-            id_to_player = {}  # """ Key is player id, Value is Player object"""
-            for idx, p in enumerate(g.players):
-                p.load(data['players'][idx])
-
-                for unit_id in p.units:
-
-                    id_to_p_id[unit_id] = p.id
-                id_to_player[p.id] = p
-
-            # Load unit data
-            for u_id, u_v in data['units'].items():
-
-                unit_class = UnitManager.get_class_by_id(u_v['id'])
-
-                player_id = id_to_p_id[int(u_id)]
-                player = id_to_player[player_id]
+                    u_data = data['units'][int(uid)]
+                unit_class = UnitManager.get_class_by_id(u_data['id'])
 
                 u = unit_class(player)
-                u.load(u_v)
-                g.units[int(u_id)] = u
-                u.unit_id = int(u_id)
+                u.load(u_data)
+                g.units[int(uid)] = u
+                u.unit_id = int(uid)
+
+                for xy in u.unit_area():
+                    g.data['unit'][xy] = uid
+                    g.data['unit_pid'][xy] = p_data['id']
 
         return g
 
@@ -210,16 +213,16 @@ class Game:
         alive = [p for p in self.players if not p.defeated]
 
         if len(alive) == 1:
-            self.scheduled_save(0)                              # Save terminal game state
+            #self.scheduled_save(0)                              # Save terminal game state
             self.winner = alive[0]                              # Retrieve winning player
 
             # Emit terminal state for defeated players
             for p in self.players:
                 if p == self.winner: continue
-                p.Event.notify_defeat(self.snapshot)
+                p.Event.notify_defeat({"shoiuld be savegame":None})
 
             # Emit terminal state for winning player
-            self.winner.Event.notify_victory(self.snapshot)
+            self.winner.Event.notify_victory({"shoiuld be savegame":None})
 
             self.reset()
 

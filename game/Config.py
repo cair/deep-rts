@@ -24,7 +24,7 @@ FRAME_MULTIPLIER = 8
 GUI_ON = True
 GUI_NOGUI_CAPTION = False
 
-
+GAME_MAP = "simple"
 GAME_LUMBER_MODIFIER = 1
 GAME_GOLD_MODIFIER = 1.25
 GAME_OIL_MODIFIER = 0
@@ -42,7 +42,7 @@ SAVE_TO_FILE = True
 FPS = 20
 UPS = 20000000
 
-MULTIPROCESSING_WORKERS = multiprocessing.cpu_count()
+MULTIPROCESSING_WORKERS = 0 #multiprocessing.cpu_count()
 MULTIPROCESSING_GUI = False
 
 REPORT_DIR = os.path.join(BASE_PATH, "../reports/")

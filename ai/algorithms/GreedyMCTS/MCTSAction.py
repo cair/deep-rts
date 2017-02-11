@@ -14,6 +14,7 @@ class MCTSAction:
     @staticmethod
     def available_actions(player):
         data = []
+        game = player.game
 
         idle_units = []                             # Define a list for idle units
         for u_id in player.units:                   # Iterate through all of the users units
@@ -23,7 +24,7 @@ class MCTSAction:
 
 
         for unit in idle_units:
-            AM = unit.Map.AdjacentMap
+            AM = unit.AdjacentMap
             uid = unit.unit_id
 
             action_set = list()
@@ -33,6 +34,7 @@ class MCTSAction:
                 adj_tiles = []
             else:
                 adj_tiles = AM.adjacent_walkable(           # Here we are finding all tiles that the unit can walk on
+                    game,
                     unit.state.x + unit.dimension,
                     unit.state.y + unit.dimension,
                     unit.dimension + 1
@@ -43,9 +45,7 @@ class MCTSAction:
                 adj_harvest = []
             else:
                 adj_harvest = AM.adjacent_harvestable(      # Here we are finding all tiles that the unit can walk on
-                    unit.state.x + unit.dimension,
-                    unit.state.y + unit.dimension,
-                    unit.dimension + 1
+                    unit
                 )
 
             # Walkable tiles (1x radius)

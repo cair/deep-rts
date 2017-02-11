@@ -50,7 +50,7 @@ class Building(GenericState):
         :return: Returns True if successful
         """
 
-        adjacent_tiles = self.game.Map.AdjacentMap.adjacent_walkable(
+        adjacent_tiles = self.game.AdjacentMap.adjacent_walkable(self.game,
             unit1.state.x + unit1.dimension,
             unit1.state.y + unit1.dimension,
             unit1.dimension + 1

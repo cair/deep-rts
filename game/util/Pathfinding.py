@@ -2,21 +2,23 @@ from game.util.PriorityQueue import PriorityQueue
 
 
 
-cdef double heuristic(int a_x, int a_y, int b_x, int b_y):
+def heuristic(a_x, a_y, b_x, b_y):
     return abs(a_x - b_x) + abs(a_y - b_y)
 
 
-cdef double crossover(int curr_x, int curr_y, int start_x, int start_y, int goal_x, int goal_y):
+def crossover(curr_x, curr_y, start_x, start_y, goal_x, goal_y):
 
-    cdef int dx1 = curr_x - goal_x
-    cdef int dy1 = curr_y - goal_y
-    cdef int dx2 = start_x - goal_x
-    cdef int dy2 = start_y - goal_y
-    cdef int cross = abs(dx1*dy2 - dx2*dy1)
+    dx1 = curr_x - goal_x
+    dy1 = curr_y - goal_y
+    dx2 = start_x - goal_x
+    dy2 = start_y - goal_y
+    cross = abs(dx1*dy2 - dx2*dy1)
 
     return cross*0.001
 
-def a_star_search(Map, graph, start, goal):
+def a_star_search(game, start_x, start_y, goal_x, goal_y):
+    start = (start_x, start_y)
+    goal = (goal_x, goal_y)
 
     frontier = PriorityQueue([])
     frontier.put(start, 0)
@@ -25,19 +27,13 @@ def a_star_search(Map, graph, start, goal):
     came_from[start] = None
     cost_so_far[start] = 0
 
-    goal_x = goal[0]
-    goal_y = goal[1]
-
-    start_x = start[0]
-    start_y = start[1]
-
     while not frontier.empty():
         current = frontier.get()
 
         if current == goal:
             break
 
-        neighbors = Map.AdjacentMap.adjacent_walkable(*current, 1)
+        neighbors = game.AdjacentMap.adjacent_walkable(game, *current, 1)
         for next in neighbors:
             new_cost = cost_so_far[current]
             if next not in cost_so_far or new_cost < cost_so_far[next]:

@@ -14,11 +14,11 @@ class Action:
         self.edge_wood_tiles = self._edge_tiles(type=Map.WOOD)
         self.edge_gold_tiles = self._edge_tiles(type=Map.GOLD)
 
-        self.environment_tiles = np.where(self.game.data['tile'] == Map.GRASS)
+        self.environment_tiles = np.where(self.game.Map.tiles == Map.GRASS)
         self.environment_tiles = set(zip(*self.environment_tiles))
 
     def _edge_tiles(self, type=None):
-        tiles = self.game.data['tile']
+        tiles = self.game.Map.tiles
 
         # Environment tiles
         env_tiles = np.where(tiles == type)
@@ -26,7 +26,7 @@ class Action:
 
         eligble_tiles = []
         for (x, y) in env_tiles:
-            adjacent_tiles = self.game.Map.AdjacentMap.adjacent_walkable(x, y, 1)
+            adjacent_tiles = self.game.AdjacentMap.adjacent_walkable(self.game, x, y, 1)
             if adjacent_tiles:
                 eligble_tiles.append((x, y))
         return eligble_tiles

@@ -1,6 +1,8 @@
 import logging
 
 import numpy as np
+import sys
+
 from game.api.Event import Event
 
 from game import Config
@@ -39,7 +41,7 @@ class Player:
         self.food = None
         self.consumed_food = None
 
-        self.reset()
+        #self.reset()
 
         logging.debug("Created player %s" % name)
 
@@ -73,7 +75,6 @@ class Player:
             'statistics': self.statistics,
             'name': self.name,
             'race': self.race,
-            'vision': self.vision,
             'defeated': self.defeated,
             'id': self.id,
             'lumber': self.lumber,
@@ -84,11 +85,12 @@ class Player:
         }
 
     def load(self, data):
+
         self.units = data['units']
         self.statistics = data['statistics']
         self.name = data['name']
         self.race = data['race']
-        self.vision = [tuple(pair) for pair in data['vision']]
+        self.vision = [x for x in self._base_vision()]
         self.defeated = data['defeated']
         self.id = data['id']
         self.lumber = data['lumber']
@@ -109,7 +111,7 @@ class Player:
             return list(zip(tiles[0], tiles[1]))
 
         else:
-            tiles = np.nonzero(self.game.data['tile'] == Map.WALL, dtype=np.int)
+            tiles = np.nonzero(self.game.Map.tiles == Map.WALL, dtype=np.int)
             base_vision = list(zip(tiles[0], tiles[1]))
             return base_vision
 
@@ -162,7 +164,8 @@ class Player:
                     self.vision.append((x, y))
 
     def right_click(self, x, y, unit_id):
-        self.game.units[unit_id].right_click(x, y)
+       self.game.units[unit_id].right_click(x, y)
+
 
     def left_click(self, x, y, unit_id):
         pass

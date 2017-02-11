@@ -1,53 +1,61 @@
+from game.loaders.MapLoader import MapLoader
 from game.util import ArrayUtil
 from game.const import Unit, Map
 
+
 class AdjacentMap:
+    loaded = False
 
-    def __init__(self, game, width, height, d=3):
-        self.game = game
-        self._map = {}
-        self.width = width
-        self.height = height
-        self.dim = d
+    _map = {}
 
-        self._generate()
+    @staticmethod
+    def generate(dim=3):
 
-    def _generate(self):
+        assert MapLoader.width and MapLoader.height
 
-        for x in range(self.width):
-            for y in range(self.height):
-                for dim in range(0, self.dim):
-                    key = (x, y, dim)
+        for x in range(MapLoader.height):
+            for y in range(MapLoader.width):
+                for d in range(0, dim):
+                    key = (x, y, d)
                     adjacent_tiles = ArrayUtil.neighbors(*key)
 
-                    self._map[key] = adjacent_tiles
+                    AdjacentMap._map[key] = adjacent_tiles
 
-    def adjacent(self, x, y, dim):
-        return self._map[(x, y, dim)]
+        AdjacentMap.loaded = True
 
-    def adjacent_walkable(self, x, y, dim):
-        potential_tiles = self.adjacent(x, y, dim)
+    @staticmethod
+    def adjacent(x, y, dim):
+        return AdjacentMap._map[(x, y, dim)]
 
-        tiles = [t for t in potential_tiles if
-                 self.game.data['tile'][t[0]][t[1]] == Map.GRASS and
-                 self.game.data['unit'][t[0]][t[1]] == Unit.NONE
+    @staticmethod
+    def adjacent_walkable(game, x, y, dim):
+        potential_tiles = AdjacentMap.adjacent(x, y, dim)
+
+        tiles = [(x, y) for x, y in potential_tiles if
+                 MapLoader.tiles[x][y] == Map.GRASS and
+                 game.data['unit'][x, y] == Unit.NONE
                  ]
 
         return tiles
 
-    def adjacent_harvestable(self, x, y, dim):
-        potential_tiles = self.adjacent(x, y, dim)
+    @staticmethod
+    def adjacent_harvestable(unit):
+        potential_tiles = AdjacentMap.adjacent(
+            unit.state.x + unit.dimension,
+            unit.state.y + unit.dimension,
+            unit.dimension + 1)
 
-        tiles = [t for t in potential_tiles if self.game.data['tile'][t[0]][t[1]] in [Map.WOOD, Map.GOLD]]
+        tiles = [(x, y) for x, y in potential_tiles if MapLoader.tiles[x][y]in [Map.WOOD, Map.GOLD]]
 
         return tiles
 
-    def adjacent_attackable(self, unit):
+    @staticmethod
+    def adjacent_attackable(unit):
+        potential_tiles = AdjacentMap.adjacent(
+            unit.state.x + unit.dimension,
+            unit.state.y + unit.dimension,
+            unit.dimension + 1)
 
-        potential_tiles = self.adjacent(unit.state.x + unit.dimension,
-                                        unit.state.y + unit.dimension,
-                                        1 + unit.dimension)
-
-        tiles = [t for t in potential_tiles if self.game.data['unit_pid'][t[0]][t[1]] not in [unit.player.id, 0]]
+        tiles = [(x, y) for x, y in potential_tiles if unit.game.data['unit_pid'][x, y] not in [unit.player.id, 0]]
 
         return tiles

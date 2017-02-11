@@ -10,7 +10,7 @@ def memory():
     result = w.query("SELECT WorkingSet FROM Win32_PerfRawData_PerfProc_Process WHERE IDProcess=%d" % os.getpid())
     return int(result[0].WorkingSet)
 
-g = Game(gui=False)
+g = Game()
 
 N = 50
 dur1 = 0
@@ -23,7 +23,7 @@ for x in range(N):
     state = g.save()
     dur1 += time.time() - s1
     s2 = time.time()
-    gx = g.load(False, state, gui=False)
+    gx = g.load(False, state)
     dur2 += time.time() - s2
 
     states.append(state)
@@ -63,6 +63,14 @@ with open("./state_clone_vs_json.txt", "r+") as f:
     f.write(json.dumps(existing))
     f.truncate()
 
+print("--------")
+print("d1:%s, d2:%s, tot:%s, avg:%s, mem:%s"
+      % (
+          data['d1'],
+          data['d2'],
+          data['tot'],
+          data['avg'],
+          data['mem'] / 1024 / 1024))
 
 
 #
