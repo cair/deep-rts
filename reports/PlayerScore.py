@@ -66,6 +66,6 @@ for key, item in graph_items.items():
 
 # Plot and embed in ipython notebook!
 plotly.offline.plot(traces, filename='basic-line')
-
+plotly.offline.plot(traces, image='png')
 
 # or plot with: plot_url = py.plot(data, filename='basic-line')

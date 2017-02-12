@@ -87,7 +87,8 @@ class GenericState:
             #print("%s. Transition from %s | %s => %s (%s => %s)" % (self.tick, self.unit, self.id, next_state.id, self, next_state))
             self.unit.state = next_state
         else:
-            self.transition(self.default)
+            if self.default:
+                self.transition(self.default)
 
     def update(self, dt):
         pass

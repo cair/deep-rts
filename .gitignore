@@ -94,3 +94,6 @@ ENV/
 
 # Reports
 reports/output/
+
+
+*.c

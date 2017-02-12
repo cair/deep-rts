@@ -13,16 +13,16 @@ if __name__ == "__main__":
 
         game = Game.load(fromfile=True)
         game.parallell_worker = ParallellWorker(gui=False)
+        game.set_gui()
 
     else:
 
-        select_map = "simple"
         select_players = 2
         game = Game.start(
-            map_name=select_map,
-            players=select_players,
+            n_players=select_players,
             ParallellWorker=ParallellWorker
         )
+        game.set_gui()
 
     # Webserver'
     webserver = WebServer(game)

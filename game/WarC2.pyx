@@ -1,4 +1,3 @@
-import json
 import copy
 import os
 import time
@@ -11,7 +10,6 @@ from game.loaders.AdjacentMap import AdjacentMap
 from game.loaders.MapLoader import MapLoader
 from game.logic.Player.Player import Player
 from game.logic.UnitManager import UnitManager
-from game.util.ComplexEncoder import ComplexEncoder
 from game.util.FastDict import FastDict
 from game.util.GameClock import GameClock
 
@@ -103,14 +101,14 @@ class Game:
         [p.reset() for p in self.players]
 
     def toJSON(self):
-        return copy.deepcopy({
+        return {
             'players': [p.toJSON() for p in self.players],
             'map_name': Config.GAME_MAP,
             'winner': self.winner,
             'clock': self.clock.toJSON(),
             'units': {uid: u.toJSON() for uid, u in self.units.items()},
             'version': Config.VERSION
-        })
+        }
 
     def caption(self, dt):
         self.gui.caption(dt)
@@ -143,27 +141,22 @@ class Game:
 
         Event.notify_broadcast(Event.NEW_STATE, frame)
 
-
-    def dump_state(self):
-        return self.toJSON()
-
     def scheduled_save(self, tick):
         if not self.winner and not self.ai_instance:
             self.save()
 
-
     def save(self):
-        data = self.dump_state()
+        data = self.toJSON()
         if Config.SAVE_TO_FILE and not self.ai_instance:
             with open(Config.REPORT_DIR + "state.json", "w") as f:
-                f.write(json.dumps(data, cls=ComplexEncoder))
+                f.write(Config.LIBRARY_JSON.dumps(data))
         return data
 
     @staticmethod
     def load(fromfile=True, state=None, ai_instance=False):
         save_file = Config.REPORT_DIR + "state.json"
         if fromfile and os.path.isfile(save_file):
-            data = json.load(open(save_file))
+            data = Config.LIBRARY_JSON.load(open(save_file))
         elif not fromfile and state is None:
             print("Could not find state-file, starting new game...")
             g = Game()
@@ -174,7 +167,7 @@ class Game:
 
 
         if data['version'] != Config.VERSION:
-            print("Incorrect version of the game! %s found, %s required" % (v, Config.VERSION))
+            print("Incorrect version of the game! %s found, %s required" % (data['version'], Config.VERSION))
             # Start plain game
             g = Game(ai_instance=ai_instance)
             g.init()
@@ -187,7 +180,7 @@ class Game:
 
         g.players = []
         for p_data in data['players']:
-            player = Player(g, p_data['id'])
+            player = Player(g, p_data['id'], ai_instance=True)
             player.load(p_data)
             g.players.append(player)
 

@@ -28,7 +28,7 @@ class Combat(GenericState):
 
         if self.attack_timer >= self.attack_interval:
             attack_target = self.game.units[self.attack_target]
-
+            print(attack_target, attack_target.state)
             distance = self.unit.distance(
                 attack_target.state.x,
                 attack_target.state.y,

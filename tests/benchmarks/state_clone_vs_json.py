@@ -1,5 +1,4 @@
-import json
-
+from game import Config
 from game.WarC2 import Game
 import time
 
@@ -41,7 +40,7 @@ with open("./state_clone_vs_json.txt", "r+") as f:
     try:
         r = f.read()
 
-        existing = json.loads(r)
+        existing = Config.LIBRARY_JSON.loads(r)
     except:
         existing = []
 
@@ -60,7 +59,7 @@ with open("./state_clone_vs_json.txt", "r+") as f:
 
     existing.append(data)
     f.seek(0)
-    f.write(json.dumps(existing))
+    f.write(Config.LIBRARY_JSON.dumps(existing))
     f.truncate()
 
 print("--------")

@@ -1,10 +1,19 @@
 import multiprocessing
 import os
-
-from ai.algorithms import Hardcode
-from ai.algorithms.GreedyMCTS.old.GreedyMCTS import GreedyMCTS
-from ai.algorithms.RandomAction import RandomAction
+#from ai.algorithms import Hardcode
+#from ai.algorithms.GreedyMCTS.old.GreedyMCTS import GreedyMCTS
+#from ai.algorithms.RandomAction import RandomAction
 from game.util import Version
+
+try:
+    import json
+    LIBRARY_JSON = json
+except:
+    import json
+    LIBRARY_JSON = json
+    print("ujson could not be found. This is a huge performance boost! pip install ujson")
+
+
 
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 AI_LOCAL = 0
@@ -33,13 +42,13 @@ MECHANICS_HARVEST_FOREVER = False            # This options make workers harvest
 MECHANICS_TOWN_HALL_ON_START = True          # This option makes the worker automatically start building town-hall
 
 
-AI_ALGORITHMS = [GreedyMCTS, RandomAction, Hardcode.Hardcode_Simple1]
+#AI_ALGORITHMS = [GreedyMCTS, RandomAction, Hardcode.Hardcode_Simple1] # TODO circular
 AI_SAVESTATE = False
 
 
 SAVE_FREQUENCY = 1
 SAVE_TO_FILE = True
-FPS = 1
+FPS = 5
 UPS = 20000000
 
 MULTIPROCESSING_WORKERS = 0 #multiprocessing.cpu_count()

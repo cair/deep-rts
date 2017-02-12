@@ -1,5 +1,7 @@
 import logging
 import os
+
+from game import Config
 from game.const import Unit, Map
 import numpy as np
 
@@ -10,7 +12,7 @@ class MapLoader:
     preloaded = False
     AdjacentMap = None
     GrassTiles = []
-
+    base_vision = []
     spawn_tiles = []
     height = None
     width = None
@@ -40,8 +42,28 @@ class MapLoader:
 
                 MapLoader.tiles[x][y] = tile_id
 
+        # Calculate base vision
+        MapLoader.base_vision = MapLoader._base_vision()
+
         logging.debug("Loaded %s, a %sX%s sized map!" % (map_name, MapLoader.height, MapLoader.width))
         MapLoader.preloaded = True
+
+    @staticmethod
+    def _base_vision():
+        """
+        Fog of war base.
+        This is the inital 2d array which defines vision for walls and nothing else
+        :return: base fow
+        """
+        if Config.NO_FOG:
+            """ 100 % vision"""
+            tiles = np.nonzero(np.ones((MapLoader.height, MapLoader.width), dtype=np.int8))
+            return list(zip(tiles[0], tiles[1]))
+
+        else:
+            tiles = np.nonzero(MapLoader.tiles == Map.WALL, dtype=np.int8)
+            base_vision = list(zip(tiles[0], tiles[1]))
+            return base_vision
 
     @staticmethod
     def get_spawn_tile(player_id):

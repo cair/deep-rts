@@ -1,7 +1,4 @@
 import numpy as np
-from game.util.Util import ArrayUtil
-
-from game.loaders.MapLoader import AdjacentMap
 
 
 class MockGame:

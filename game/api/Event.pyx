@@ -1,5 +1,32 @@
 from game.api.Action import Action
 
+class DummyEvent:
+
+    @staticmethod
+    def notify(event_type, data=None, tick=None):
+        pass
+
+    @staticmethod
+    def notify_broadcast(event_type, data=None):
+        pass
+
+    @staticmethod
+    def notify_victory(data):
+        pass
+
+    @staticmethod
+    def notify_defeat(data):
+        pass
+
+    @staticmethod
+    def notify_start( data):
+        pass
+
+    @staticmethod
+    def notify_end():
+        pass
+
+
 
 
 class Event:

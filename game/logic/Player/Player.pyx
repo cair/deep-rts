@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import sys
 
-from game.api.Event import Event
+from game.api.Event import Event, DummyEvent
 
 from game import Config
 from game.api.Interface import Interface
@@ -14,15 +14,19 @@ import collections
 
 class Player:
 
-    def __init__(self, game, _id, name="[NO-NAME]"):
+    def __init__(self, game, _id, name="[NO-NAME]", ai_instance=False):
         self.id = _id
 
         # References
         self.game = game
         self.Map = game.Map
-        self.Event = Event(self)
-        self.Interface = Interface(self, self.Event)
-        self.Interface.start()
+
+        if not ai_instance:
+            self.Event = Event(self)
+            self.Interface = Interface(self, self.Event)
+            self.Interface.start()
+        else:
+            self.Event = DummyEvent
 
         # Final Variables
         self.name = name
@@ -48,7 +52,7 @@ class Player:
     def reset(self):
         self.defeated = False
         self.units = []
-        self.vision = [x for x in self._base_vision()]
+        self.vision = self.game.Map.base_vision[:]
         self.statistics = {
             'kill_count': 0,
             'death_count': 0,
@@ -86,11 +90,11 @@ class Player:
 
     def load(self, data):
 
-        self.units = data['units']
+        self.units = [x for x in data['units']]
         self.statistics = data['statistics']
         self.name = data['name']
         self.race = data['race']
-        self.vision = [x for x in self._base_vision()]
+        self.vision = self.game.Map.base_vision[:]
         self.defeated = data['defeated']
         self.id = data['id']
         self.lumber = data['lumber']
@@ -98,22 +102,6 @@ class Player:
         self.oil = data['oil']
         self.food = data['food']
         self.consumed_food = data['consumed_food']
-
-    def _base_vision(self):
-        """
-        Fog of war base.
-        This is the inital 2d array which defines vision for walls and nothing else
-        :return: base fow
-        """
-        if Config.NO_FOG:
-            """ 100 % vision"""
-            tiles = np.nonzero(np.ones((self.Map.height, self.Map.width), dtype=np.int))
-            return list(zip(tiles[0], tiles[1]))
-
-        else:
-            tiles = np.nonzero(self.game.Map.tiles == Map.WALL, dtype=np.int)
-            base_vision = list(zip(tiles[0], tiles[1]))
-            return base_vision
 
     def calculate_defeat(self):
         has_units = True if not self.units else False

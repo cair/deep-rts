@@ -2,8 +2,6 @@ import time
 
 from ai.algorithms.GreedyMCTS import Policies
 from ai.algorithms.GreedyMCTS.MCTS import MCTS
-from ai.algorithms.GreedyMCTS.MCTSAction import MCTSAction
-from ai.algorithms.GreedyMCTS.Node import Node
 from game.WarC2 import Game
 
 g = Game.start(2, None)

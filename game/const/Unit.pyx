@@ -1,5 +1,5 @@
-import pygame
 from os.path import join
+import pygame
 from game import Config
 
 UNIT = 0 # Peasant, Footman. etc

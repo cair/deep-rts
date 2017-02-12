@@ -2,16 +2,15 @@ import itertools
 import random
 import math
 
-import game.const.Event as Event
-from game.api import Event
-
 from game import Config
-from game.const import Unit as UnitC, State
+from game.const import Unit as UnitC
+from game.const import State as StateC
 from game.state.Dead import Dead
-from game.util import ArrayUtil
 
 # C Libraries
-import pyximport; pyximport.install()
+from game.state.Despawned import Despawned
+from game.state.Spawning import Spawning
+
 from game.util.Pathfinding import a_star_search
 
 
@@ -62,7 +61,7 @@ class Unit:
         self.id = data['id']
 
         s_data = data['state']
-        state_clazz = State.mapping[s_data['type']]
+        state_clazz = StateC.mapping[s_data['type']]
 
         state = state_clazz(self, s_data)
         self.state = state
@@ -83,15 +82,14 @@ class Unit:
         # Generate a unique id for this unit
         self.unit_id = self.generate_id()
 
-        self.buildable = [
-        ]
+        self.buildable = []
 
         # Calculate dimension of this unit
         self.dimension = self._dimension()
 
         # Load initial state or accept existing state # TODO
-        self.state = State.new(self, State.Despawned)
-        self.state.transition(State.Spawning, attributes=attrs)
+        self.state = StateC.new(self, Despawned)
+        self.state.transition(Spawning, attributes=attrs)
 
         if init:
             self.state.health = self.health_max
@@ -199,7 +197,7 @@ class Unit:
 
         path = [(x, y)] if self.distance(x, y ) == 1 else self.generate_path(x, y)
 
-        self.state.transition(State.Walking, {
+        self.state.transition(StateC.Walking, {
             'path': path,
             'path_goal': (x, y)
         })
@@ -261,15 +259,15 @@ class Unit:
                 return
             tile = self.shortest_distance(tiles)
 
-            if self.state.has_next_state(State.Harvesting):
+            if self.state.has_next_state(StateC.Harvesting):
                 self.state.clear_next()
 
-            self.state.add_next(State.Harvesting, {
+            self.state.add_next(StateC.Harvesting, {
                 'harvest_target': (x, y)
             }, 1)
             self.move(*tile)
         else:
-            self.state.transition(State.Harvesting, {
+            self.state.transition(StateC.Harvesting, {
                 'harvest_target': (x, y)
             })
 
@@ -304,7 +302,7 @@ class Unit:
         self.state.health = max(0, self.state.health - damage)
 
         if self.state.health <= 0:
-            self.state.transition(State.Dead)
+            self.state.transition(StateC.Dead)
 
             # In addition check for @see issue #1
             self.player.calculate_defeat()
@@ -335,20 +333,20 @@ class Unit:
                 return
             tile = self.shortest_distance(tiles)
 
-            if self.state.has_next_state(State.Combat):
+            if self.state.has_next_state(StateC.Combat):
                 self.state.clear_next()
 
-            self.state.add_next(State.Combat, {
+            self.state.add_next(StateC.Combat, {
                 'attack_target': attack_target.unit_id
             }, 2)
             self.move(*tile)
         else:
-            self.state.transition(State.Combat, {
+            self.state.transition(StateC.Combat, {
                 'attack_target': attack_target.unit_id
             })
 
     def right_click(self, x, y):
-        if not self.state.x or not self.state.y or self.state.type == State.Building.type:
+        if not self.state.x or not self.state.y or self.state.type == StateC.Building.type:
             return
 
         if self.game.Map.is_attackable(self, x, y):
@@ -415,7 +413,7 @@ class Unit:
 
             self.player.statistics['unit_count'] += 1
 
-            self.state.transition(State.Building, {
+            self.state.transition(StateC.Building, {
                 'target_id': entity_class.id,
             })
 
