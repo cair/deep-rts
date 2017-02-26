@@ -1,0 +1,12 @@
+{
+  "fps": 9999999999999,
+  "ups": 9999999999999,
+  "ticks_per_sec": 10,
+
+  "mechanics": {
+    "town_hall_on_start": true,
+    "auto_farmer": true
+  }
+
+
+}
