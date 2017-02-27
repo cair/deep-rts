@@ -6,11 +6,20 @@
 #include "Player.h"
 #include "../unit/Peasant.h"
 #include "../Game.h"
+#include "../lib/ColorConverter.h"
 
 int Player::gId = 0;
 
-Player::Player(Game &game): game_(game) {
+Player::Player(Game &game): inventoryManager(*this), game_(game) {
     id_ = Player::gId++;
+
+
+    /*playerColor = ColorConverter::hsv(fmod(id_ * 0.618033988749895, 1.0),
+                                      0.5,
+                                      sqrt(1.0 - fmod(id_ * 0.618033988749895, 0.5)));
+    std::cout << std::to_string(id_) << "--" << std::to_string(playerColor.r) << "," << std::to_string(playerColor.g) << "," << std::to_string(playerColor.b) << std::endl;
+    */
+
     faction = 0;
     gold = 1500;
     lumber = 750;
@@ -24,48 +33,34 @@ Player::Player(Game &game): game_(game) {
 Unit& Player::spawn(Tile &spawnPoint) {
     // Spawn a builder
 
-    Config::print("Spawning player_!");
 
 
     if(faction == 0) // Human
     {
-        units.push_back(Peasant(*this));
+        units.push_back(new Peasant(*this));
     }
     else if(faction == 1) // Orc
     {
-        units.push_back(Peasant(*this));
+        units.push_back(new Peasant(*this));
     }
     else {
         assert(false);
     }
 
     assert(!units.empty());
-    Unit &unit = units.back();
-    unit.spawn(spawnPoint);
-    unit.spawnTimer = unit.spawnDuration; // Spawn instantly
+    Unit *unit = units.back();
+    unit->spawn(spawnPoint, unit->spawnDuration);
 
 
-    return unit;
+
+    return *unit;
 }
 
 void Player::update() {
 
     for(auto &unit : units) {
-        unit.update();
-
-        int r = ((double) rand() / (RAND_MAX)) + 1;
-        if (r > 0.75) {
-
-            int rnd = rand() % (game_.map.tiles.size() - 1);
-            std::cout << rnd << " --- " << game_.map.tiles.size() << std::endl;
-            Tile &randomTile = game_.map.tiles[rnd];
-            unit.rightClick(randomTile);
-        }
-
-
-
+        unit->update();
     }
-
 }
 
 
@@ -98,3 +93,70 @@ int Player::getId() {
     return id_;
 }
 
+void Player::addGold(int n) {
+    gold += n;
+}
+
+void Player::addLumber(int n) {
+    lumber += n;
+}
+
+void Player::addOil(int n) {
+    oil += n;
+}
+
+void Player::removeUnit(Unit *unit) {
+    std::cout << "Implement removeUnit" << std::endl;
+    /*auto it = std::find_if(units.begin(), units.end(), [=](Unit* p)
+                      {
+                          return unit->id == p->id;
+                      });
+
+    if(it != units.end())
+    {
+        //object found
+    }*/
+}
+
+bool Player::checkDefeat(){
+    bool isDefeated = (units.size() > 0);
+    defeated = isDefeated;
+    return defeated;
+}
+
+bool Player::canPlace(Unit *unit, Tile *_tile) {
+
+    for (auto &tile : game_.map.getTiles(_tile, unit->width, unit->height)) {
+        if(tile == _tile)
+            continue;
+
+        if(!tile->isBuildable()) {
+            return false;
+        }
+
+    }
+
+    return true;
+}
+
+bool Player::canAfford(Unit *unit) {
+    return gold >= unit->goldCost and lumber >= unit->lumberCost and oil >= unit->oilCost;
+
+}
+
+void Player::addUnit(Unit *u) {
+    units.push_back(u);
+
+}
+
+void Player::subOil(int n) {
+    oil -= n;
+}
+
+void Player::subLumber(int n) {
+    lumber -= n;
+}
+
+void Player::subGold(int n) {
+    gold -= n;
+}

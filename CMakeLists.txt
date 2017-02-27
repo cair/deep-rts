@@ -38,7 +38,15 @@ set(SOURCE_FILES
         game/graphics/Animation.cpp
         game/graphics/Animation.h
         game/graphics/GUI.cpp
-        game/graphics/GUI.h)
+        game/graphics/GUI.h
+        game/state/Harvesting.cpp
+        game/state/Harvesting.h
+        game/lib/Pathfinder.cpp
+        game/lib/Pathfinder.h
+        game/lib/PriorityQueue.h
+        game/unit/TownHall.h
+        game/unit/TownHall.cpp
+        game/state/Building.cpp game/state/Building.h game/unit/InventoryManager.cpp game/unit/InventoryManager.h game/lib/ColorConverter.h game/state/Combat.cpp game/state/Combat.h game/state/Dead.cpp game/state/Dead.h)
 
 add_executable(WarC2Sim__ ${SOURCE_FILES})
 

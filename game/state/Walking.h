@@ -12,7 +12,7 @@ class Walking: public BaseState {
 
 public:
     Walking(){
-        id = Constants::State_Spawning;
+        id = Constants::State_Walking;
         name = "Walking";
     }
     virtual void update(Unit &unit)const;

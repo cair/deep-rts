@@ -13,6 +13,7 @@
 
 #include "../environment/Tile.h"
 #include "../state/StateManager.h"
+#include "../Config.h"
 
 
 class Player;
@@ -40,18 +41,17 @@ public:
     int groundUnit;
     int waterUnit;
 
-    int damage_min = -1;
-    int damage_max = -1;
-    int damage_range = -1;
-    int damage_piercing = -1;
+    int damageMin = -1;
+    int damageMax = -1;
+    int damageRange = -1;
+    int damagePiercing = -1;
     int armor = -1;
 
     int lumberCarry = 0;
     int goldCarry = 0;
     int oilCarry = 0;
-    int harvestInventory;
-    int harvestCapacity;
-    std::vector<Unit> buildInventory;
+    int carryCapacity = 10;
+    std::vector<std::shared_ptr<Unit>> buildInventory;
     int speed;
     int sight;
     int range;
@@ -61,11 +61,14 @@ public:
     bool canMove;
     bool military;
     bool structure;
+    bool recallable = false;
 
     int lumberCost;
     int goldCost;
+    int oilCost;
 
     int spawnDuration;
+    Tile *spawnTile;
 
     int foodProduction;
     int foodConsumption;
@@ -82,32 +85,30 @@ public:
     // State attributes
 
     // Harvesting
-    double harvest_interval;
-    int harvest_timer;
-    int harvest_iterator;
-    int harvest_target_x;
-    int harvest_target_y;
+    double harvestInterval = .5 * 10;
+    int harvestTimer;
+    int harvestIterator;
+    Tile *harvestTarget;
 
     // Building
     int spawnTimer;
-    int build_target_id;
-    int build_entity_id;
+    Unit *buildEntity;
+    int buildTimer;
 
     // Combat
-    int combat_target_id;
-    int combat_timer;
-    double combat_interval;
+    Unit *combatTarget;
+    int combatTimer = 1000;
+    double combatInterval = .1 * 10;
 
     // Walking
-    int walking_timer;
-    std::vector<std::pair<int, int>> walking_path;
-    int walking_goal_x;
-    int walking_goal_y;
-    double walking_interval;
+    int walking_timer = 0;
+    std::vector<Tile *> walking_path;
+    Tile *walkingGoal;
+    double walking_interval = .001 * 10;
 
 
     Tile *tile = NULL;
-    StateManager stateManager;
+    StateManager& stateManager;
     BaseState *state;
 
     std::vector<BaseState *> stateList;
@@ -118,7 +119,7 @@ public:
 
     Unit(Player &player);
     bool build(int idx);
-    void spawn(Tile &x);
+    void spawn(Tile &x, int initValue);
     void despawn();
     void update();
     void enqueueState(BaseState &tate);
@@ -129,9 +130,19 @@ public:
     void move(Tile &targetTile);
     void attack(Tile &tile);
     void harvest(Tile &tile);
+    int distance(Tile &tile);
 
 
+    void clearTiles();
 
+    Unit *closestRecallBuilding();
+
+
+    bool isDead();
+
+    void afflictDamage(int dmg_);
+
+    int getDamage(Unit &target);
 };
 
 #endif //WARC2SIM_UNIT_H

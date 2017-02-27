@@ -19,7 +19,6 @@ class Game {
     // Gameclock variables
     clock_t _update_next;
     clock_t _render_next;
-    clock_t _caption_next;
     clock_t _stats_next;
 
     int _update_interval = 0;
@@ -41,6 +40,7 @@ public:
     int getSeconds();
     long getFrames();
 
+    StateManager stateManager;
     std::vector<Player*> players;
 
 
@@ -58,6 +58,19 @@ public:
     Game(int n_players);
 
     GUI *gui;
+
+    void initGUI();
+
+    void setFPS(int fps_);
+
+    void setUPS(int ups_);
+
+    int currentFPS = 0;
+    int currentUPS = 0;
+
+    bool checkTerminal();
+
+    bool terminal;
 };
 
 

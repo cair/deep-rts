@@ -6,6 +6,9 @@
 
 #include "Config.h"
 #include "graphics/GUI.h"
+#include "unit/Peasant.h"
+#include "unit/TownHall.h"
+#include "lib/ColorConverter.h"
 
 
 Game::Game(int n_players):
@@ -13,19 +16,15 @@ Game::Game(int n_players):
 {
     // Definitions
     this->n_players = n_players;
-    this->_render_interval = Config::getInstance().getUPSInterval();
-    this->_update_interval = Config::getInstance().getFPSInterval();
-
-    this->gui = new GUI(*this);
+    setFPS(Config::getInstance().getFPS());
+    setUPS(Config::getInstance().getUPS());
 
 
 }
 
 void Game::create_players(){
 
-
     for (int i = 0; i < n_players; i++) {
-
         Player *player = new Player(*this);
         players.push_back(player);
 
@@ -47,8 +46,24 @@ void Game::create_players(){
 
 }
 
+void Game::initGUI(){
+    this->gui = new GUI(*this);
+}
+
 void Game::load_players(){
 
+}
+
+void Game::setFPS(int fps_){
+    fps = fps_;
+    _render_interval = 1000.0 / fps;
+
+
+}
+
+void Game::setUPS(int ups_){
+    ups = ups_;
+    _update_interval =  1000.0 / ups;
 }
 
 void Game::start(){
@@ -63,9 +78,9 @@ void Game::stop(){
 void Game::loop() {
 
     clock_t now = clock();
-    this->_caption_next = now + this->_caption_interval;
     this->_render_next= now + this->_render_interval;
     this->_update_next = now + this->_update_interval;
+    this->_stats_next = now + 0;
 
     while(this->running) {
 
@@ -95,15 +110,13 @@ void Game::loop() {
             this->_render_delta += 1;
         }
 
-        if (now >= this->_caption_next) {
-            // Caption
-            std::cout << "[FPS=" << this->fps << ", UPS=" << this->ups<< "]" << std::endl;
-            this->_caption_next += this->_caption_interval;
-        }
-
         if (now >= this->_stats_next) {
-            this->fps = this->_update_delta;
-            this->ups = this->_render_delta;
+
+            gui->caption();
+            std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS<< "]" << std::endl;
+
+            this->currentFPS = this->_update_delta;
+            this->currentUPS = this->_render_delta;
             this->_render_delta = 0;
             this->_update_delta = 0;
             this->_stats_next += 1000;
@@ -122,4 +135,20 @@ long Game::getFrames() {
 int Game::getSeconds() {
     return this->ticks / Config::getInstance().getTickModifier();
 }
+
+bool Game::checkTerminal(){
+
+    int c = 0;
+    for(auto &p : players) {
+        if(p->defeated){
+            c++;
+        }
+    }
+
+    bool isTerminal = (c == 1);
+    terminal = isTerminal;
+
+    return terminal;
+}
+
 

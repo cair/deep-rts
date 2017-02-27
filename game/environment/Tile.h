@@ -13,9 +13,10 @@
 
 class Unit;
 
+class Tilemap;
 class Tile: public sf::Drawable{
 public:
-    Tile(int x, int y, int w, int h);
+    Tile(int x, int y, int w, int h, Tilemap &tilemap);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const{};
     int id;
@@ -28,7 +29,7 @@ public:
     int goldYield;
     int resources;
     sf::Vertex vertices[4];
-
+    Tilemap& tilemap;
     Unit* occupant = NULL;
 
     bool isAttackable(Unit &unit);
@@ -46,6 +47,16 @@ public:
 
     int height;
     int width;
+
+
+    bool canWalkTo();
+
+    int distance(Tile *pTile);
+
+    bool isBuildable();
+    int depleteTile;
+
+    void setDepleted();
 };
 
 

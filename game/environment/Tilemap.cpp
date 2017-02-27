@@ -6,17 +6,17 @@
 #include "../Constants.h"
 #include "../unit/Unit.h"
 
-Tilemap::Tilemap(json tilesData, json mapData, sf::Texture tileset_) {
+Tilemap::Tilemap(json tilesData_, json mapData, sf::Texture tileset_) {
+    tilesData = tilesData_;
     json tilesetData = mapData["tilesets"][0];
     json mapLayer = mapData["layers"][0];
     json tileIDs = mapLayer["data"];
 
     int mapWidth = mapData["width"];
     int mapHeight = mapData["height"];
-    int n_cols = tilesetData["columns"];
     int tWidth = tilesetData["tilewidth"];
     int tHeight = tilesetData["tileheight"];
-    int tFirstGid = tilesetData["firstgid"];
+    tFirstGid = tilesetData["firstgid"];
 
     tileset = tileset_;
     TILE_WIDTH = tWidth;
@@ -34,7 +34,7 @@ Tilemap::Tilemap(json tilesData, json mapData, sf::Texture tileset_) {
 
             int tId = (int)tileIDs[c] - 1;
             json tileData = tilesData[std::to_string(tId + 1)];
-            tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT));
+            tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT, *this));
             assert(!tiles.empty());
             Tile &tile = tiles.back();
             tile.id = tId;
@@ -46,6 +46,7 @@ Tilemap::Tilemap(json tilesData, json mapData, sf::Texture tileset_) {
             tile.lumberYield = tileData["lumber_yield"];
             tile.goldYield = tileData["gold_yield"];
             tile.resources = tileData["resources"];
+            tile.depleteTile = tileData["deplete_tile"];
 
             if(tile.name == "Spawn"){
                 spawnTiles.push_back(c);
@@ -62,7 +63,7 @@ Tilemap::Tilemap(json tilesData, json mapData, sf::Texture tileset_) {
                 tile.lumberYield = tileData["lumber_yield"];
                 tile.goldYield = tileData["gold_yield"];
                 tile.resources = tileData["resources"];
-
+                tile.depleteTile = tileData["deplete_tile"];
             }
 
 
@@ -105,6 +106,77 @@ void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 }
 
-Tilemap::Tilemap() {
 
+
+std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {
+    std::vector<Tile *> neighbors;
+
+    std::pair<int,int> pos[8];
+
+    pos[0].first = 0;
+    pos[0].second = -1;
+
+    pos[1].first = 0;
+    pos[1].second = 1;
+
+    pos[2].first = 1;
+    pos[2].second = 1;
+
+    pos[3].first = 1;
+    pos[3].second = 0;
+
+    pos[4].first = -1;
+    pos[4].second = -1;
+
+    pos[5].first = -1;
+    pos[5].second = 0;
+
+    pos[6].first = -1;
+    pos[6].second = 1;
+
+    //for(int i = 0; i < 1; i++){ // TODO width of neighbor
+    for(auto &i : pos){
+        int x = tile.x + i.first;
+        int y = tile.y + i.second;
+
+        if(x < 0 or y < 0 or x > MAP_WIDTH or y > MAP_WIDTH)
+            continue;
+
+        int idx = MAP_WIDTH*y + x;
+
+        Tile &neigh = tiles[idx];
+
+        if(const_pathfinding_type == Constants::Pathfinding_Walkable && !neigh.walkable or neigh.occupant != 0)
+            continue;
+
+        neighbors.push_back(&neigh);
+    }
+    //}
+
+
+    return neighbors;
+
+
+}
+
+Tile *Tilemap::getTile(int x, int y){
+    int idx = MAP_WIDTH*y + x;
+    return &tiles[idx];
+}
+
+std::vector<Tile *> Tilemap::getTiles(Tile *source, int width, int height) {
+    /// Get tiles based on width and height of unit
+    std::vector<Tile *> tiles;
+    for (int _x = 0; _x < width; _x++) {
+        for(int _y = 0; _y < height; _y++) {
+
+            int x = source->x + _x;
+            int y = source->y + _y;
+
+            Tile *tile = getTile(x, y);
+            tiles.push_back(tile);
+        }
+    }
+
+    return tiles;
 }

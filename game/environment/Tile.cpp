@@ -7,10 +7,10 @@
 #include "Tile.h"
 #include "../player/Player.h"
 #include "../unit/Unit.h"
+#include <utility>
 
-
-Tile::Tile(int x, int y, int width, int height):
-x(x), y(y), height(height), width(width)
+Tile::Tile(int x, int y, int width, int height, Tilemap& tilemap):
+x(x), y(y), height(height), width(width), tilemap(tilemap)
 {
 
 }
@@ -34,11 +34,35 @@ bool Tile::isWalkable() {
 }
 
 bool Tile::isHarvestable() {
-    return false;
+    return harvestable;
 }
 
 void Tile::setOccupant(Unit &unit) {
     occupant = &unit;
 }
+
+bool Tile::canWalkTo() {
+    return occupant == 0 and walkable;
+}
+
+bool Tile::isBuildable() {
+    return canWalkTo();
+}
+
+
+int Tile::distance(Tile *pTile) {
+    return abs(pTile->x - x) + abs(pTile->y - y);
+}
+
+void Tile::setDepleted() {
+    this->harvestable = false;
+    this->walkable = true;
+
+    tilemap.addTileVertices(depleteTile-1, width, height, tilemap.tFirstGid, *this);
+
+}
+
+
+
 
 

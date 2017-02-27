@@ -7,7 +7,8 @@
     "oil_yield": 0,
     "lumber_yield": 0,
     "gold_yield": 0,
-    "resources": 0
+    "resources": 0,
+    "deplete_tile": 52
   },
   "142": {
     "name": "Lumber",
@@ -17,8 +18,8 @@
     "oil_yield": 0,
     "lumber_yield": 1,
     "gold_yield": 0,
-    "resources": 0,
-    "deplete_tile": "270"
+    "resources": 1000,
+    "deplete_tile": 270
   },
   "334": {
     "name": "Water",
@@ -28,7 +29,8 @@
     "oil_yield": 0,
     "lumber_yield": 0,
     "gold_yield": 0,
-    "resources": 0
+    "resources": 0,
+    "deplete_tile": 334
   },
   "270": {
     "name": "Grass",
@@ -38,7 +40,8 @@
     "oil_yield": 0,
     "lumber_yield": 0,
     "gold_yield": 0,
-    "resources": 0
+    "resources": 0,
+    "deplete_tile": 270
   },
   "102": {
     "name": "Gold",
@@ -49,7 +52,7 @@
     "lumber_yield": 0,
     "gold_yield": 1,
     "resources": 1000,
-    "deplete_tile": "270"
+    "deplete_tile": 270
   },
   "17": {
     "name": "Spawn",
@@ -59,7 +62,8 @@
     "oil_yield": 0,
     "lumber_yield": 0,
     "gold_yield": 0,
-    "resources": 0
+    "resources": 0,
+    "deplete_tile": 17
   }
 
 

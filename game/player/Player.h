@@ -10,6 +10,7 @@
 #include <memory>
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
+#include "../unit/InventoryManager.h"
 
 
 class Game;
@@ -30,7 +31,9 @@ private:
 
 public:
     Game &game_;
-    std::vector<Unit> units;
+    InventoryManager inventoryManager;
+    std::vector<Unit*> units;
+    sf::Color playerColor;
 
     void update();
 
@@ -41,12 +44,28 @@ public:
     int getOil();
     int getLumber();
     int getUnitCount();
-
+    void subGold(int n);
+    void subLumber(int n);
+    void subOil(int n);
+    void addGold(int n);
+    void addLumber(int n);
+    void addOil(int n);
+    void addUnit(Unit *u);
     Player(Game &game);
     Unit &spawn(Tile &spawnPoint);
 
 
     int id_;
+
+    bool canPlace(Unit *unit, Tile *tile);
+
+    bool canAfford(Unit *unit);
+
+    void removeUnit(Unit *unit);
+
+    bool checkDefeat();
+
+    bool defeated;
 };
 
 

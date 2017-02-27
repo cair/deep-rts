@@ -18,12 +18,26 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 #include <SFML/Graphics.hpp>
 
 
+
 GUI::GUI(Game &game) :
         game(game),
-        window(sf::VideoMode(800, 800), "X1337", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize){
+        window(sf::VideoMode(800, 800), "WarC2Sim++", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/){
 
+
+    player = game.players[0];
+
+
+    this->createView();
+    this->createFrame();
+
+
+    this->font.loadFromFile("./data/fonts/arial.ttf");
+
+
+}
+
+void GUI::createView(){
     const Tilemap &tilemap = game.map;
-
     this->fullView = sf::View(sf::FloatRect(0, 0,
                                             tilemap.MAP_WIDTH * tilemap.TILE_WIDTH,
                                             tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT));
@@ -41,13 +55,8 @@ GUI::GUI(Game &game) :
 
 
     this->currentView = &this->povView;
-    this->createFrame();
-
-
-    this->font.loadFromFile("./data/fonts/arial.ttf");
-
-
 }
+
 
 void GUI::createFrame(){
 
@@ -62,6 +71,10 @@ void GUI::createFrame(){
 }
 
 void GUI::caption() {
+    std::stringstream ss;
+    ss << "WarC2Sim++ [FPS=" << game.currentFPS << ",UPS=" << game.currentUPS << "]";
+    std::string s = ss.str();
+    window.setTitle(s);
 
 }
 
@@ -138,6 +151,46 @@ void GUI::render() {
             else if(event.key.code == sf::Keyboard::R) {
                 this->toggleFrame = !this->toggleFrame;
             }
+
+                // Change FPS and UPS
+            else if(event.key.code == sf::Keyboard::Comma) {
+                game.fps -= 2;
+                game.setFPS(game.fps);
+            }
+            else if(event.key.code == sf::Keyboard::Period) {
+                game.fps += 2;
+                game.setFPS(game.fps);
+            }
+                //  UPS
+            else if(event.key.code == sf::Keyboard::N) {
+                game.ups -= 2;
+                game.setUPS(game.ups);
+            }
+            else if(event.key.code == sf::Keyboard::M) {
+                game.ups += 2;
+                game.setUPS(game.ups);
+            }
+
+
+
+
+
+                // Build actions
+            else if(event.key.code == sf::Keyboard::Num1) {
+                if(selectedUnit){
+                    selectedUnit->build(0);
+                }
+            }
+            else if(event.key.code == sf::Keyboard::Num2) {
+                if(selectedUnit){
+                    selectedUnit->build(1);
+                }
+            }
+            else if(event.key.code == sf::Keyboard::Num3) {
+                if(selectedUnit){
+                    selectedUnit->build(2);
+                }
+            }
         }
         else if(event.type == sf::Event::KeyReleased)
         {
@@ -160,7 +213,10 @@ void GUI::render() {
     this->drawUnits();
 
     window.setView(this->fullView);
+
+    this->drawStats();
     this->drawSelected();  // Text
+    this->drawStatistics();
 
 
     /*if(this->toggleFrame){
@@ -197,31 +253,29 @@ void GUI::update(){
 
 }
 
-void GUI::drawSelected(){
+void GUI::drawStats(){
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(16);
     text.setFillColor(sf::Color::Yellow);
 
-    /*Player &p = game.players.
-
-    text.setString("Lumber: " + std::to_string(p.getLumber()));
+    text.setString("Lumber: " + std::to_string(player->getLumber()));
     text.setPosition(10,10);
     window.draw(text);
 
-    text.setString("Gold: " + std::to_string(p.getGold()));
+    text.setString("Gold: " + std::to_string(player->getGold()));
     text.setPosition(125,10);
     window.draw(text);
 
-    text.setString("Oil: " + std::to_string(p.getOil()));
+    text.setString("Oil: " + std::to_string(player->getOil()));
     text.setPosition(225,10);
     window.draw(text);
 
-    text.setString("Food: " + std::to_string(p.getFoodConsumption()) + "/" + std::to_string(p.getFood()));
+    text.setString("Food: " + std::to_string(player->getFoodConsumption()) + "/" + std::to_string(player->getFood()));
     text.setPosition(300,10);
     window.draw(text);
 
-    text.setString("Units: " + std::to_string(p.getUnitCount()));
+    text.setString("Units: " + std::to_string(player->getUnitCount()));
     text.setPosition(380,10);
     window.draw(text);
 
@@ -236,9 +290,40 @@ void GUI::drawSelected(){
     text.setString("Score: " + std::to_string(0));
     text.setPosition(650,10);
     window.draw(text);
-     */
 
-    if(this->selectedTile)
+}
+
+void GUI::drawStatistics(){
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(16);
+    text.setFillColor(sf::Color::Yellow);
+
+    text.setString("CurrentFPS: " + std::to_string(game.currentFPS));
+    text.setPosition(790,50);
+    window.draw(text);
+
+    text.setString("CurrentUPS: " + std::to_string(game.currentUPS));
+    text.setPosition(790,75);
+    window.draw(text);
+
+    text.setString("FPS: " + std::to_string(game.fps));
+    text.setPosition(790,100);
+    window.draw(text);
+
+    text.setString("UPS: " + std::to_string(game.ups));
+    text.setPosition(790,125);
+    window.draw(text);
+}
+
+
+void GUI::drawSelected(){
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(16);
+    text.setFillColor(sf::Color::Yellow);
+
+    if(selectedTile)
     {
         text.setString("Type: " + selectedTile->name + " - (" + std::to_string(selectedTile->x) + "," + std::to_string(selectedTile->y) + ")");
         text.setPosition(10,860);
@@ -293,7 +378,7 @@ void GUI::drawSelected(){
         text.setPosition(385,870);
         window.draw(text);
 
-        text.setString("Damage: " + std::to_string(unit->damage_min) + " - " + std::to_string(unit->damage_max));
+        text.setString("Damage: " + std::to_string(unit->damageMin) + " - " + std::to_string(unit->damageMax));
         text.setPosition(385, 900);
         window.draw(text);
 
@@ -326,9 +411,10 @@ void GUI::drawUnits() {
 for(auto&p : game.players)
 {
     for(auto&u: p->units){
-        if(u.tile) {
-            std::cout << u.id << std::endl;
-            window.draw(*u.testSprite);
+        if(u->tile) {
+
+            //u->testSprite->setColor(u->player_.playerColor);
+            window.draw(*u->testSprite);
         }
     }
 }
@@ -347,7 +433,6 @@ void GUI::leftClick(Tile &tile) {
 
 void GUI::rightClick(Tile &tile) {
     if(this->selectedUnit) {
-        std::cout << tile.getPixelPosition().x << "---" << tile.getPixelPosition().y << std::endl;
         this->selectedUnit->rightClick(tile);
         this->selectedTile = &tile;
     }

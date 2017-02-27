@@ -10,9 +10,13 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
-#include "../environment/Tile.h"
+#include <SFML/Graphics/Text.hpp>
+
 
 class Game;
+class Player;
+class Tile;
+class Unit;
 class GUI{
 private:
     Game& game;
@@ -25,6 +29,7 @@ private:
     sf::Texture gameFrameTexture;
     sf::Sprite gameFrame;
     sf::Font font;
+    sf::Text text;
     Tile* selectedTile = NULL;
 
 public:
@@ -60,6 +65,14 @@ public:
     void rightClick(Tile &tile);
 
     Unit* selectedUnit = nullptr;
+
+    void createView();
+
+    Player *player;
+
+    void drawStats();
+
+    void drawStatistics();
 };
 
 

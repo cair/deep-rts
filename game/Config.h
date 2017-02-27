@@ -42,6 +42,9 @@ public:
         return tickModifier;
     }
 
+    bool getMechanicHarvestReplay() {
+        return false;
+    }
     static void print(std::string data) {
         std::cout << data << std::endl;
     }
@@ -94,5 +97,7 @@ public:
     //       be public as it results in better error messages
     //       due to the compilers behavior to check accessibility
     //       before deleted status
+
+
 };
 #endif //WARC2SIM_CONFIG_H

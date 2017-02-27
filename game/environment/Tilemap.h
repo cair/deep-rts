@@ -32,8 +32,14 @@ public:
     Tilemap(json tilesData, json mapData, sf::Texture tileset);
 
     void addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid, Tile &tile);
+    std::vector<Tile *> neighbors(Tile &tile, int const_pathfinding_type);
 
-    Tilemap();
+    std::vector<Tile *> getTiles(Tile *source, int width, int height);
+
+    Tile *getTile(int x, int y);
+
+    json tilesData;
+    int tFirstGid;
 };
 
 

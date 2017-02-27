@@ -10,6 +10,10 @@
 #include "Walking.h"
 #include "Idle.h"
 #include "Despawned.h"
+#include "Harvesting.h"
+#include "Building.h"
+#include "Combat.h"
+#include "Dead.h"
 
 class StateManager {
 
@@ -19,6 +23,10 @@ public:
     Spawning spawnState;
     Idle idleState;
     Despawned despawnedState;
+    Harvesting harvestingState;
+    Building buildingState;
+    Combat combatState;
+    Dead deadState;
 };
 
 

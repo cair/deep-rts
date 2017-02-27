@@ -9,15 +9,17 @@
 void Spawning::update(Unit &unit)const{
     unit.spawnTimer += 1;
 
+   
     if(unit.spawnTimer >= unit.spawnDuration) {
         // Unit can spawn
+        unit.setPosition(*unit.spawnTile);
         unit.transitionState();
     }
 
 }
 
 void Spawning::init(Unit &unit)const{
-    unit.spawnTimer = 0;
+
 }
 
 void Spawning::end(Unit &unit)const{

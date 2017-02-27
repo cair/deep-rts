@@ -3,6 +3,7 @@
 //
 
 #include "Peasant.h"
+#include "../player/Player.h"
 
 Peasant::Peasant(Player &player): Unit(player) {
     type_id = Constants::Unit_Peasant;
@@ -14,17 +15,16 @@ Peasant::Peasant(Player &player): Unit(player) {
     groundUnit = true;
     waterUnit = false;
 
-    damage_min = 2;
-    damage_max = 9;
-    damage_range = 1;
-    damage_piercing = 2;
+    damageMin = 2;
+    damageMax = 9;
+    damageRange = 1;
+    damagePiercing = 2;
     armor = 0;
 
     goldCarry = 0;
     lumberCarry = 0;
     oilCarry = 0;
-    harvestInventory = 0;
-    harvestCapacity = 10;
+    carryCapacity = 10;
     speed = 10;
     sight = 4;
 
@@ -36,6 +36,7 @@ Peasant::Peasant(Player &player): Unit(player) {
 
     lumberCost = 0;
     goldCost = 400;
+    oilCost = 0;
 
     spawnDuration = 45 * Config::getInstance().getTickModifier();
 
@@ -46,5 +47,7 @@ Peasant::Peasant(Player &player): Unit(player) {
     height = 1;
 
     name = "Peasant";
+
+    buildInventory = player_.inventoryManager.peasant;
 
 }
