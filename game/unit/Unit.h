@@ -21,17 +21,21 @@ class BaseState;
 
 
 
-class Unit{
+class Unit: public std::enable_shared_from_this<Unit>{
 private:
     static int gId;
 public:
+    std::shared_ptr<Unit> getptr() {
+        return shared_from_this();
+    }
+
     // Graphics
-    double animation_interval;
-    int animation_timer;
-    int animation_iterator;
+    double animationInterval = .3 * 10;
+    int animationTimer = 0;
+    int animationIterator = 0;
 
     int id;
-    int type_id;
+    int typeId;
     int health;
     int health_max;
     int current_state;
@@ -92,11 +96,11 @@ public:
 
     // Building
     int spawnTimer;
-    Unit *buildEntity;
+    std::shared_ptr<Unit> buildEntity;
     int buildTimer;
 
     // Combat
-    Unit *combatTarget;
+    std::shared_ptr<Unit> combatTarget;
     int combatTimer = 1000;
     double combatInterval = .1 * 10;
 
@@ -135,7 +139,7 @@ public:
 
     void clearTiles();
 
-    Unit *closestRecallBuilding();
+    std::shared_ptr<Unit> closestRecallBuilding();
 
 
     bool isDead();
@@ -143,6 +147,12 @@ public:
     void afflictDamage(int dmg_);
 
     int getDamage(Unit &target);
+
+    sf::Vector2f worldPosition;
+
+    void setDirection(int newX, int newY);
+
+    void moveRelative(int x, int y);
 };
 
 #endif //WARC2SIM_UNIT_H

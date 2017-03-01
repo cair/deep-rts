@@ -4,24 +4,24 @@
 
 
 #include "Spawning.h"
-#include "../unit/Unit.h"
+#include "../unit/unit.h"
 
-void Spawning::update(Unit &unit)const{
-    unit.spawnTimer += 1;
+void Spawning::update(std::shared_ptr<Unit> unit)const{
+    unit->spawnTimer += 1;
 
    
-    if(unit.spawnTimer >= unit.spawnDuration) {
+    if(unit->spawnTimer >= unit->spawnDuration) {
         // Unit can spawn
-        unit.setPosition(*unit.spawnTile);
-        unit.transitionState();
+        unit->setPosition(*unit->spawnTile);
+        unit->transitionState();
     }
 
 }
 
-void Spawning::init(Unit &unit)const{
+void Spawning::init(std::shared_ptr<Unit> unit)const{
 
 }
 
-void Spawning::end(Unit &unit)const{
+void Spawning::end(std::shared_ptr<Unit> unit)const{
 
 }

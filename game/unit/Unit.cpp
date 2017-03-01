@@ -7,6 +7,7 @@
 #include "../Game.h"
 #include "../lib/Pathfinder.h"
 #include "../graphics/GUI.h"
+#include "../action/RightClickAction.h"
 #include <random>
 
 int Unit::gId = 0;
@@ -17,15 +18,6 @@ Unit::Unit(Player &player): player_(player), stateManager(player.game_.stateMana
     state = &stateManager.despawnedState;
     current_state = state->id;
 
-    testTexture = new sf::Texture();
-    testTexture->loadFromFile("data/textures/human/peasant.png");
-
-    testSprite = new sf::Sprite();
-    testSprite->setTexture(*testTexture);
-
-    //testSprite->setColor(sf::Color(255, 0, 0, 200));
-    testSprite->setTextureRect(sf::IntRect(10,0, 40,40));
-
 
 }
 void Unit::spawn(Tile &_toSpawnOn, int initValue) {
@@ -35,12 +27,20 @@ void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     enqueueState(stateManager.idleState);
 }
 
+void Unit::moveRelative(int x, int y) {
+
+    int newX = tile->x + x;
+    int newY = tile->y + y;
+
+    Tile *moveTile = player_.game_.map.getTile(newX, newY);
+
+    move(*moveTile);
+}
+
 void Unit::move(Tile &targetTile){
     if (!canMove)
         return;
-
     this->walkingGoal = &targetTile;
-
     transitionState(stateManager.walkingState);
 }
 
@@ -52,17 +52,19 @@ void Unit::setPosition(Tile &newTile) {
     }
 
     for(auto &t : player_.game_.map.getTiles(&newTile, width, height)) {
-        t->setOccupant(*this);
+        t->setOccupant(getptr());
     }
 
 
-    newTile.setOccupant(*this);         // Set occupant of new tile to this
+    newTile.setOccupant(getptr());         // Set occupant of new tile to this
     tile = &newTile;                     // Set this units tile to new tile
-    testSprite->setPosition(tile->getPixelPosition());
+    sf::Vector2f newPos = tile->getPixelPosition();
+    setDirection(newPos.x, newPos.y);
+    worldPosition = newPos;
 }
 
 void Unit::update() {
-    state->update(*this);
+    state->update(getptr());
 
 }
 
@@ -74,15 +76,15 @@ bool Unit::build(int idx) {
     if((idx < 0 or idx >= buildInventory.size()))
         return false;
 
-    Unit &newUnit = *buildInventory[idx];
-    if(!player_.canAfford(&newUnit)) {
-        std::cout << "Cannot afford " << newUnit.name << std::endl;
+    std::shared_ptr<Unit> newUnit = buildInventory[idx]->getptr();
+    if(!player_.canAfford(newUnit)) {
+        std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
     }
 
-    if(player_.canPlace(&newUnit, tile)) {
+    if(player_.canPlace(newUnit, tile)) {
 
-        Unit *unit = new Unit(newUnit);
+        std::shared_ptr<Unit> unit = std::shared_ptr<Unit>(new Unit(*newUnit));
 
         player_.addUnit(unit);
 
@@ -127,8 +129,8 @@ bool Unit::build(int idx) {
 }
 
 void Unit::despawn() {
-    if(player_.game_.gui)
-        player_.game_.gui->selectedUnit = NULL;
+    if(player_.targetedUnit)
+        player_.targetedUnit = NULL;
 
     clearTiles();
     transitionState(stateManager.despawnedState);
@@ -144,11 +146,16 @@ void Unit::clearTiles(){
 
 void Unit::rightClick(Tile &tile) {
 
+
+    std::shared_ptr<BaseAction> action = std::shared_ptr<BaseAction>(new RightClickAction(getptr()));
+    player_.game_.addAction(action);
+
+
     if(tile.isHarvestable()){
         //  Harvest
         harvest(tile);
     }
-    else if(tile.isAttackable(*this)){
+    else if(tile.isAttackable(getptr())){
         // Attack
         attack(tile);
     }
@@ -162,7 +169,7 @@ void Unit::attack(Tile &tile) {
     if(!canAttack)
         return;
 
-    Unit *target = tile.occupant;
+    std::shared_ptr<Unit> target = tile.occupant;
     assert(target);
     combatTarget = target;
 
@@ -204,7 +211,7 @@ void Unit::transitionState() {
         //std::cout << "State Transition: " << state->name << " ==> " << nextState.name << "|" << std::endl;
         state = &nextState;
         current_state = state->id;
-        state->init(*this);
+        state->init(getptr());
         return;
     }
 
@@ -222,7 +229,7 @@ void Unit::transitionState(BaseState &nextState) {
     //std::cout << "State Transition: " << state->name << " ==> " << nextState.name << "|" << std::endl;
     state = &nextState;
     current_state = state->id;
-    state->init(*this);
+    state->init(getptr());
     return;
 }
 
@@ -233,8 +240,8 @@ int Unit::distance(Tile &target) {
 
 }
 
-Unit *Unit::closestRecallBuilding() {
-    Unit* closest = NULL;
+std::shared_ptr<Unit> Unit::closestRecallBuilding() {
+    std::shared_ptr<Unit> closest = NULL;
     int dist = INT_MAX;
     for(auto &u : player_.units) {
         if(u->recallable) {
@@ -275,7 +282,48 @@ int Unit::getDamage(Unit &target) {
 
     return floor(output2);
 
+}
 
+void Unit::setDirection(int newX, int newY){
+    int oldX = worldPosition.x;
+    int oldY = worldPosition.y;
+
+    int dx = (newX - oldX);
+    int dy = (newY - oldY);
+
+    if (dx > 0 and dy > 0) {
+        // Down Right
+        direction = Constants::D_DownRight;
+        //std::cout << "Down Right" << std::endl;
+    } else if (dx < 0 and dy > 0) {
+        // Down Left
+        direction = Constants::D_DownLeft;
+        //std::cout << "Down Left" << std::endl;
+    } else if (dx > 0 and dy < 0) {
+        // Up Right
+        direction = Constants::D_UpRight;
+        //std::cout << "Up Right" << std::endl;
+    } else if (dx < 0 and dy < 0) {
+        // Up Left
+        direction = Constants::D_UpLeft;
+        //std::cout << "Up Left" << std::endl;
+    } else if (dx > 0 and dy == 0) {
+        // Right
+        direction = Constants::D_Right;
+        //std::cout << "Right" << std::endl;
+    } else if (dx < 0 and dy == 0) {
+        // Left
+        direction = Constants::D_Left;
+        //std::cout << "Left" << std::endl;
+    } else if (dx == 0 and dy < 0) {
+        // Up
+        direction = Constants::D_Up;
+        //std::cout << "Up" << std::endl;
+    } else if (dx == 0 and dy > 0) {
+        // Down
+        direction = Constants::D_Down;
+        //std::cout << "Down" << std::endl;
+    }
 
 
 

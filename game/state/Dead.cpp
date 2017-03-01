@@ -5,17 +5,17 @@
 #include "Dead.h"
 #include "../unit/Unit.h"
 #include "../player/Player.h"
-void Dead::update(Unit &unit)const{
+void Dead::update(std::shared_ptr<Unit> unit)const{
 
-    unit.despawn();
-    unit.player_.removeUnit(&unit);
+    unit->despawn();
+    unit->player_.removeUnit(unit);
 }
 
-void Dead::end(Unit &unit)const{
+void Dead::end(std::shared_ptr<Unit> unit)const{
 
 }
 
-void Dead::init(Unit &unit)const{
+void Dead::init(std::shared_ptr<Unit> unit)const{
 
 }
 

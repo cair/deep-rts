@@ -1,3 +1,5 @@
+# https://github.com/Kitware/CMake/tree/master/Modules
+
 cmake_minimum_required(VERSION 3.6)
 project(WarC2Sim__)
 
@@ -54,18 +56,52 @@ set(SOURCE_FILES
         game/state/Combat.cpp
         game/state/Combat.h
         game/state/Dead.cpp
-        game/state/Dead.h)
+        game/state/Dead.h
+        server/Server.cpp
+        server/Server.h
+        game/proto/TestMessage.pb.cc
+        game/proto/TestMessage.pb.h
+
+        game/algorithms/base/Algorithm.h
+        game/algorithms/RANDOM/AlgoRandom.cpp
+        game/algorithms/RANDOM/AlgoRandom.h
+        game/algorithms/base/Algorithm.cpp
+        game/action/BaseAction.h game/action/RightClickAction.cpp game/action/RightClickAction.h)
 
 add_executable(WarC2Sim__ ${SOURCE_FILES})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
 
+
+#include_directories(${PROTOBUF_INCLUDE_DIRS})
+#include_directories(${CMAKE_CURRENT_BINARY_DIR})
+#protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS foo.proto)
+#add_executable(bar bar.cc ${PROTO_SRCS} ${PROTO_HDRS})
+#target_link_libraries(bar ${PROTOBUF_LIBRARIES})
+
+
 find_package(SFML REQUIRED system window graphics network audio)
 find_package(ZeroMQ REQUIRED)
-if (SFML_FOUND AND ZEROMQ_FOUND)
-    include_directories(${SFML_INCLUDE_DIR} ${ZeroMQ_INCLUDE_DIR})
-    target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES} ${ZeroMQ_LIBRARIES})
+find_package(Protobuf REQUIRED)
+
+add_custom_command(
+        OUTPUT .
+        WORKING_DIR ../
+        COMMAND ./proto_compile.sh
+)
+
+if (SFML_FOUND AND ZEROMQ_FOUND AND PROTOBUF_FOUND)
+    include_directories(${SFML_INCLUDE_DIR})
+    include_directories(${CMAKE_CURRENT_BINARY_DIR})
+    include_directories(${PROTOBUF_INCLUDE_DIRS})
+    include_directories(${ZeroMQ_INCLUDE_DIR})
+    #protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS proto/SearchRequest.proto)
+    target_link_libraries(WarC2Sim__ ${PROTOBUF_LIBRARIES})
+    target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES})
+    target_link_libraries(WarC2Sim__ ${ZeroMQ_LIBRARIES})
+
+
 else()
     message( FATAL_ERROR "You can not do this at all, CMake will exit. ${SFML_FOUND} and ${ZEROMQ_FOUND}." )
 endif()

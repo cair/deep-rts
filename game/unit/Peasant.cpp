@@ -6,7 +6,7 @@
 #include "../player/Player.h"
 
 Peasant::Peasant(Player &player): Unit(player) {
-    type_id = Constants::Unit_Peasant;
+    typeId = Constants::Unit_Peasant;
     health = 30;
     health_max = 30;
     direction = 0;
