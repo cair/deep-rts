@@ -27,6 +27,7 @@ We will be using MSYS2 with Mingw64.
  pacman -S mingw-w64-x86_64-pkg-zeromq
  pacman -S mingw-w64-x86_64-toolchain
  pacman -S mingw-w64-x86_64-pkg-config
+ pacman -S mingw-w64-x86_64-protobuf
 ```
 * **Remember to add mingw bin to path!**
 * Everything should work now as long as you are using gcc through msys2
