@@ -66,15 +66,7 @@ endif()
 set(FIND_SFML_PATHS
         ${SFML_ROOT}
         $ENV{SFML_ROOT}
-        ~/Library/Frameworks
-        /Library/Frameworks
-        /usr/local
-        /usr
-        /sw
-        /opt/local
-        /opt/csw
-        /opt
-        C:\\Program\ Files\\SFML)
+        )
 
 # find the SFML include directory
 find_path(SFML_INCLUDE_DIR SFML/Config.hpp

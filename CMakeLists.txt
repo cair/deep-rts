@@ -46,15 +46,28 @@ set(SOURCE_FILES
         game/lib/PriorityQueue.h
         game/unit/TownHall.h
         game/unit/TownHall.cpp
-        game/state/Building.cpp game/state/Building.h game/unit/InventoryManager.cpp game/unit/InventoryManager.h game/lib/ColorConverter.h game/state/Combat.cpp game/state/Combat.h game/state/Dead.cpp game/state/Dead.h)
+        game/state/Building.cpp
+        game/state/Building.h
+        game/unit/InventoryManager.cpp
+        game/unit/InventoryManager.h
+        game/lib/ColorConverter.h
+        game/state/Combat.cpp
+        game/state/Combat.h
+        game/state/Dead.cpp
+        game/state/Dead.h)
 
 add_executable(WarC2Sim__ ${SOURCE_FILES})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+
+
 find_package(SFML REQUIRED system window graphics network audio)
-if (SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES})
+find_package(ZeroMQ REQUIRED)
+if (SFML_FOUND AND ZEROMQ_FOUND)
+    include_directories(${SFML_INCLUDE_DIR} ${ZeroMQ_INCLUDE_DIR})
+    target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES} ${ZeroMQ_LIBRARIES})
+else()
+    message( FATAL_ERROR "You can not do this at all, CMake will exit. ${SFML_FOUND} and ${ZEROMQ_FOUND}." )
 endif()
 
 
