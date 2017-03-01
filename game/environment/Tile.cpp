@@ -16,7 +16,7 @@ x(x), y(y), height(height), width(width), tilemap(tilemap)
 }
 
 
-const sf::Vector2f Tile::getPixelPosition() {
+sf::Vector2f Tile::getPixelPosition()const {
 
     return sf::Vector2f(vertices->position.x, vertices->position.y);
 }

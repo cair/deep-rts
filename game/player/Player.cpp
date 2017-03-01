@@ -26,6 +26,14 @@ Player::Player(Game &game): inventoryManager(*this), game_(game) {
     foodConsumption = 0;
     food = 1;
 
+    statGoldGather = 0;
+    statLumberGather = 0;
+    statOilGather = 0;
+    statUnitDamageDone = 0;
+    statUnitDamageTaken = 0;
+    statUnitBuilt = 0;
+    statUnitMilitary = 0;
+
 }
 
 
@@ -110,7 +118,27 @@ void Player::addOil(int n) {
     oil += n;
 }
 
+int Player::getScore() {
+    int GOLD_VALUE = 2;
+    int LUMBER_VALUE = 1;
+    int OIL_VALUE = 3;
+
+    int gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .20;
+    int builtScore = statUnitBuilt * 10;
+    int unitScore = units.size() * 2.5;
+    int militaryScore = 0;
+    int defenceScore = 0;
+
+
+    return gatherScore + builtScore + unitScore + militaryScore + defenceScore;
+
+}
+
 void Player::removeUnit(std::shared_ptr<Unit> unit) {
+
+    units.erase(std::remove(units.begin(), units.end(), unit), units.end());
+
+
     std::cout << "Implement removeUnit" << std::endl;
     /*auto it = std::find_if(units.begin(), units.end(), [=](Unit* p)
                       {

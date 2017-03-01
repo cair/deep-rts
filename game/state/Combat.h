@@ -10,8 +10,7 @@ class Unit;
 
 class Combat: public BaseState {
 public:
-    Combat():BaseState(){
-        id = Constants::State_Combat;
+    Combat():BaseState(Constants::State_Combat){
         name = "Combat";
     }
 

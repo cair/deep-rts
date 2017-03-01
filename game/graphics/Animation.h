@@ -29,11 +29,12 @@ public:
                     >>> sprites;
     sf::Sprite & getNext(std::shared_ptr<Unit> unit);
 
-    void add(const int unit, const int state,  const int direction,int x, int y, int w, int h, sf::Texture* texture);
+    void add(const int unit, const int state,  const int direction,int x, int y, int w, int h, int wrs, int hrs,  sf::Texture* texture, bool flip);
     void setup();
 
 private:
     std::shared_ptr<sf::Texture> peasant;
+    std::shared_ptr<sf::Texture> buildings;
 
 
     Animation() {}                    // Constructor? (the {} brackets) are needed here.
@@ -52,6 +53,10 @@ public:
     //       due to the compilers behavior to check accessibility
     //       before deleted status
     void setupPeasant();
+
+    void setupTownHall();
+
+
 };
 
 

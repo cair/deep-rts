@@ -11,8 +11,7 @@
 class Idle: public BaseState {
 
 public:
-    Idle():BaseState(){
-        id = Constants::State_Idle;
+    Idle():BaseState(Constants::State_Idle){
         name = "Idle";
     }
     virtual void update(std::shared_ptr<Unit> unit)const;

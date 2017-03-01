@@ -4,6 +4,7 @@
 
 #include "Combat.h"
 #include "../unit/unit.h"
+#include "../player/Player.h"
 #include "../lib/Pathfinder.h"
 
 
@@ -25,6 +26,8 @@ void Combat::update(std::shared_ptr<Unit> unit)const{
             // Can attack
             int myDamage = unit->getDamage(*unit->combatTarget);
             unit->combatTarget->afflictDamage(myDamage);
+            unit->player_.statUnitDamageDone += myDamage;
+            unit->combatTarget->player_.statUnitDamageTaken += myDamage;
 
             if(unit->combatTarget->isDead()){
                 unit->combatTarget = NULL;

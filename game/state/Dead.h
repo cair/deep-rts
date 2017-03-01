@@ -10,8 +10,7 @@ class Unit;
 
 class Dead: public BaseState {
 public:
-    Dead():BaseState(){
-        id = Constants::State_Dead;
+    Dead():BaseState(Constants::State_Dead){
         name = "Dead";
     }
 

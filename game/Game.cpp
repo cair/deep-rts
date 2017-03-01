@@ -69,7 +69,7 @@ void Game::loop() {
     this->_render_next= now + this->_render_interval;
     this->_update_next = now + this->_update_interval;
     this->_stats_next = now + 0;
-    std::cout << this->_update_interval << std::endl;
+
 
     while(this->running) {
 

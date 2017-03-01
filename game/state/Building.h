@@ -10,8 +10,7 @@ class Unit;
 
 class Building: public BaseState {
 public:
-    Building():BaseState(){
-        id = Constants::State_Building;
+    Building():BaseState(Constants::State_Building){
         name = "Building";
     }
 

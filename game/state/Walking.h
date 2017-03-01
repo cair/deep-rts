@@ -11,8 +11,7 @@
 class Walking: public BaseState {
 
 public:
-    Walking(){
-        id = Constants::State_Walking;
+    Walking(): BaseState(Constants::State_Walking){
         name = "Walking";
     }
     virtual void update(std::shared_ptr<Unit> unit)const;

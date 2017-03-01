@@ -12,8 +12,7 @@
 class Spawning: public BaseState{
 
 public:
-    Spawning():BaseState(){
-        id = Constants::State_Spawning;
+    Spawning():BaseState(Constants::State_Spawning){
         name = "Spawning";
     }
     virtual void update(std::shared_ptr<Unit> unit)const;

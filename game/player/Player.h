@@ -86,6 +86,16 @@ public:
     void previousUnit();
 
     int _getNextPrevUnitIdx();
+
+    int statGoldGather;
+    int statLumberGather;
+    int statOilGather;
+    int statUnitDamageDone;
+    int statUnitDamageTaken;
+    int statUnitBuilt;
+    int statUnitMilitary;
+
+    int getScore();
 };
 
 

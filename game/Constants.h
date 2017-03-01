@@ -17,7 +17,7 @@ namespace Constants{
     const int Tile_Grass = 271;
 
 
-    const int State_Idle = 0;
+    const int State_Idle = 8;
     const int State_Spawning = 1;
     const int State_Walking = 2;
     const int State_Despawned = 3;

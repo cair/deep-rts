@@ -1,6 +1,7 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "./Tile.h"
 #include "Tilemap.h"
 #include "../Constants.h"
@@ -100,8 +101,19 @@ void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
     for(const Tile& tile : tiles){
 
+
+
+        sf::RectangleShape rectangle;
+        rectangle.setSize(sf::Vector2f(32, 32));
+        rectangle.setOutlineColor(sf::Color::Red);
+        rectangle.setOutlineThickness(1);
+        rectangle.setPosition(tile.getPixelPosition());
+        target.draw(rectangle);
+
         // Draw the tile itself
         target.draw(tile.vertices, 4, sf::Quads, states);
+
+
     }
 
 }
@@ -139,12 +151,13 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {
         int x = tile.x + i.first;
         int y = tile.y + i.second;
 
-        if(x < 0 or y < 0 or x > MAP_WIDTH or y > MAP_WIDTH)
+        if(x < 0 or y < 0 or x > MAP_WIDTH-1 or y > MAP_WIDTH-1)
             continue;
 
         int idx = MAP_WIDTH*y + x;
 
         Tile &neigh = tiles[idx];
+        assert(&neigh);
 
         if(const_pathfinding_type == Constants::Pathfinding_Walkable && !neigh.walkable or neigh.occupant != 0)
             continue;

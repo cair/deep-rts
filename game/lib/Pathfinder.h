@@ -21,6 +21,7 @@ public:
     static Tile *find_first_walkable_tile(Tile *start);
 
     static Tile *find_first_harvestable_tile(Tile *pTile);
+
 };
 
 

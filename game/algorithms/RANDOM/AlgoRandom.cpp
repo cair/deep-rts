@@ -21,7 +21,11 @@ AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 void AlgoRandom::update() {
     // Tick happended
 
+
     for(auto &u : player.units){
+        if(u->state->id =! Constants::State_Idle)
+            continue;
+
         int randomIndex = rand() % actionSpace.size();
         int actionID = actionSpace[randomIndex];
         getAction(actionID, u);

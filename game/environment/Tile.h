@@ -43,7 +43,7 @@ public:
     int y;
 
 
-    const sf::Vector2f getPixelPosition();
+    sf::Vector2f getPixelPosition()const;
 
     int height;
     int width;

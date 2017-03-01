@@ -307,7 +307,7 @@ void GUI::drawStats(){
     text.setPosition(640,10);
     window.draw(text);
 
-    text.setString("Score: " + std::to_string(0));
+    text.setString("Score: " + std::to_string(player->getScore()));
     text.setPosition(810,10);
     window.draw(text);
 
@@ -475,7 +475,7 @@ void GUI::drawScoreBoard() {
     int offsetY = 0;
     text.setCharacterSize(18);
     for (Player *p : game.players) {
-        text.setString(p->name_ + ": " + std::to_string(0));
+        text.setString(p->name_ + ": " + std::to_string(p->getScore()));
         text.setFillColor(p->playerColor);
         text.setPosition(10, 40 + offsetY);
         offsetY += 25;

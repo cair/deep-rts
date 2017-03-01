@@ -29,12 +29,22 @@ void Unit::spawn(Tile &_toSpawnOn, int initValue) {
 
 void Unit::moveRelative(int x, int y) {
 
+
     int newX = tile->x + x;
     int newY = tile->y + y;
 
     Tile *moveTile = player_.game_.map.getTile(newX, newY);
 
     move(*moveTile);
+}
+
+void Unit::rightClickRelative(int x, int y) {
+
+    int newX = tile->x + x;
+    int newY = tile->y + y;
+
+    Tile *clickTile = player_.game_.map.getTile(newX, newY);
+    rightClick(*clickTile);
 }
 
 void Unit::move(Tile &targetTile){
@@ -70,7 +80,8 @@ void Unit::update() {
 
 
 bool Unit::build(int idx) {
-    if(state->id != Constants::State_Idle)
+    //if(state->id != Constants::State_Idle)
+    if(state->name != "Idle")
         return false;
 
     if((idx < 0 or idx >= buildInventory.size()))
@@ -116,6 +127,7 @@ bool Unit::build(int idx) {
         player_.subGold(unit->goldCost);
         player_.subLumber(unit->lumberCost);
         player_.subOil(unit->oilCost);
+        player_.statUnitBuilt += 1;
 
     } else {
         std::cout << "Cannot build here" << std::endl;

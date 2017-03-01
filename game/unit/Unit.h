@@ -153,6 +153,8 @@ public:
     void setDirection(int newX, int newY);
 
     void moveRelative(int x, int y);
+
+    void rightClickRelative(int x, int y);
 };
 
 #endif //WARC2SIM_UNIT_H

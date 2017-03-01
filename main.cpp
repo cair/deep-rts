@@ -28,7 +28,7 @@ int main() {
     Player &player3 = g.addPlayer();
 
     std::shared_ptr<AlgoRandom> algorithm0 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player0));
-    player0.setAlgorithm(algorithm0);
+    //player0.setAlgorithm(algorithm0);
 
     std::shared_ptr<AlgoRandom> algorithm1 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player1));
     player1.setAlgorithm(algorithm1);

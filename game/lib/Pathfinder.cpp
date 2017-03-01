@@ -18,12 +18,13 @@ std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map
 
 std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
 {
+
     std::vector<Tile *> path;
     std::unordered_map<Tile*, Tile*> came_from;
-    std::unordered_map<Tile*, int> cost_so_far;
+    std::unordered_map<Tile*, double> cost_so_far;
 
 
-    PriorityQueue<Tile*, double> frontier = PriorityQueue<Tile*, double>();
+    auto frontier = PriorityQueue<Tile*, double>();
     frontier.put(start, 0);
 
 
@@ -37,7 +38,9 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
             break;
         }
 
+
         std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_Walkable);
+
         for (auto next : neighbors) {
 
             double new_cost = cost_so_far[current] + 1;
@@ -51,10 +54,19 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
         }
     }
 
-    return reconstruct_path(start, goal, came_from);
+
+    std::vector<Tile *> completePath = reconstruct_path(start, goal, came_from);
+
+    return completePath;
 }
 
 double Pathfinder::heuristic(Tile *goal, Tile *next) {
+    int dx = abs(next->x - goal->x);
+    int dy = abs(next->y - goal->y);
+
+    return (dx + dy) + (1 - 2 * 1) * std::min(dx, dy);
+
+
     return abs(goal->x - next->y) + abs(goal->y - next->y);
 }
 
@@ -81,6 +93,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
     while(queue.size() > 0) {
 
         Tile *current = queue.front();
+        assert(current);
         queue.pop();
 
         if (current->canWalkTo()) {
@@ -96,6 +109,8 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
             }
         }
     }
+
+
 }
 
 Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
@@ -132,7 +147,7 @@ std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map
     std::vector<Tile *> path;
     Tile *current = goal;
     path.push_back(current);
-    while (current != start) {
+    while (came_from[current] != start) {
         current = came_from[current];
         path.push_back(current);
     }

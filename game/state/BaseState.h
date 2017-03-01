@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <iostream>
 #include <memory>
 #include "../Constants.h"
 class Unit;
@@ -15,9 +16,12 @@ class BaseState {
 
 
 public:
-    int id;
+    int id = 1337;
     std::string name = "**ERR**";
-    BaseState(){};
+    BaseState(int id): id(id){
+        std::cout << "setting id to " << id << std::endl;
+
+    };
     virtual void update(std::shared_ptr<Unit> unit)const;
     virtual void init(std::shared_ptr<Unit> unit)const;
     virtual void end(std::shared_ptr<Unit> unit)const;
