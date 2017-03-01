@@ -9,6 +9,7 @@
 #include <memory>
 #include "player/Player.h"
 #include "environment/Tilemap.h"
+#include "action/BaseAction.h"
 
 
 class GUI;
@@ -42,12 +43,14 @@ public:
 
     StateManager stateManager;
     std::vector<Player*> players;
+    std::vector<std::shared_ptr<BaseAction>> executedActions;
+    void addAction(std::shared_ptr<BaseAction> action);
 
 
     void loop();
     void update(int ticks);
     void render(int ticks);
-    void create_players();
+    void createPlayers();
     void load_players();
 
 
@@ -71,6 +74,8 @@ public:
     bool checkTerminal();
 
     bool terminal;
+
+    Player &addPlayer();
 };
 
 

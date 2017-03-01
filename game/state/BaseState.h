@@ -8,6 +8,7 @@
 
 
 #include <string>
+#include <memory>
 #include "../Constants.h"
 class Unit;
 class BaseState {
@@ -17,9 +18,9 @@ public:
     int id;
     std::string name = "**ERR**";
     BaseState(){};
-    virtual void update(Unit &player)const;
-    virtual void init(Unit &player)const;
-    virtual void end(Unit &player)const;
+    virtual void update(std::shared_ptr<Unit> unit)const;
+    virtual void init(std::shared_ptr<Unit> unit)const;
+    virtual void end(std::shared_ptr<Unit> unit)const;
 };
 
 

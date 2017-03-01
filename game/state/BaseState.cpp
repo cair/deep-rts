@@ -4,13 +4,13 @@
 
 #include "BaseState.h"
 
-void BaseState::update(Unit &player)const{
+void BaseState::update(std::shared_ptr<Unit> unit)const{
 }
 
-void BaseState::init(Unit &player)const {
+void BaseState::init(std::shared_ptr<Unit> unit)const {
 
 }
 
-void BaseState::end(Unit &player)const{
+void BaseState::end(std::shared_ptr<Unit> unit)const{
 
 }

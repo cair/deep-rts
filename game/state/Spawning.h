@@ -6,6 +6,7 @@
 #define WARC2SIM_SPAWNING_H
 
 
+
 #include "BaseState.h"
 
 class Spawning: public BaseState{
@@ -15,9 +16,9 @@ public:
         id = Constants::State_Spawning;
         name = "Spawning";
     }
-    virtual void update(Unit &unit)const;
-    virtual void init(Unit &unit)const;
-    virtual void end(Unit &unit)const;
+    virtual void update(std::shared_ptr<Unit> unit)const;
+    virtual void init(std::shared_ptr<Unit> unit)const;
+    virtual void end(std::shared_ptr<Unit> unit)const;
 };
 
 

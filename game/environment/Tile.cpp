@@ -21,11 +21,11 @@ const sf::Vector2f Tile::getPixelPosition() {
     return sf::Vector2f(vertices->position.x, vertices->position.y);
 }
 
-bool Tile::isAttackable(Unit &unit) {
+bool Tile::isAttackable(std::shared_ptr<Unit> unit) {
     if (!occupant)
         return false;
 
-    return occupant->player_.getId() != unit.player_.getId();
+    return occupant->player_.getId() != unit->player_.getId();
 
 }
 
@@ -37,8 +37,8 @@ bool Tile::isHarvestable() {
     return harvestable;
 }
 
-void Tile::setOccupant(Unit &unit) {
-    occupant = &unit;
+void Tile::setOccupant(std::shared_ptr<Unit> unit) {
+    occupant = unit;
 }
 
 bool Tile::canWalkTo() {

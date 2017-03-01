@@ -64,8 +64,6 @@ public:
     void drawSelected();
     void rightClick(Tile &tile);
 
-    Unit* selectedUnit = nullptr;
-
     void createView();
 
     Player *player;
@@ -73,6 +71,14 @@ public:
     void drawStats();
 
     void drawStatistics();
+
+    bool renderGUI = true;
+
+    void showNoGuiMessage();
+
+    void handleEvents();
+
+    void drawScoreBoard();
 };
 
 

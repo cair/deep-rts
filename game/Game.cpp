@@ -9,6 +9,8 @@
 #include "unit/Peasant.h"
 #include "unit/TownHall.h"
 #include "lib/ColorConverter.h"
+#include "graphics/Animation.h"
+#include "action/BaseAction.h"
 
 
 Game::Game(int n_players):
@@ -18,29 +20,15 @@ Game::Game(int n_players):
     this->n_players = n_players;
     setFPS(Config::getInstance().getFPS());
     setUPS(Config::getInstance().getUPS());
+    Animation::getInstance().setup();
 
 
 }
 
-void Game::create_players(){
+void Game::createPlayers(){
 
     for (int i = 0; i < n_players; i++) {
-        Player *player = new Player(*this);
-        players.push_back(player);
-
-        // Retrieve spawn_point
-        int spawnPointIdx = map.spawnTiles[i];
-        Tile &spawnTile = map.tiles[spawnPointIdx];
-
-        // Spawn Initial builder
-        Unit &builder = player->spawn(spawnTile);
-
-        // If auto-spawn town hall mechanic is activated
-        if(Config::getInstance().getMechanicTownHall()) {
-            // build Town-Hall
-            builder.build(0);
-        }
-
+        addPlayer();
 
     }
 
@@ -81,6 +69,7 @@ void Game::loop() {
     this->_render_next= now + this->_render_interval;
     this->_update_next = now + this->_update_interval;
     this->_stats_next = now + 0;
+    std::cout << this->_update_interval << std::endl;
 
     while(this->running) {
 
@@ -115,8 +104,8 @@ void Game::loop() {
             gui->caption();
             std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS<< "]" << std::endl;
 
-            this->currentFPS = this->_update_delta;
-            this->currentUPS = this->_render_delta;
+            this->currentFPS = this->_render_delta;
+            this->currentUPS = this->_update_delta;
             this->_render_delta = 0;
             this->_update_delta = 0;
             this->_stats_next += 1000;
@@ -149,6 +138,31 @@ bool Game::checkTerminal(){
     terminal = isTerminal;
 
     return terminal;
+}
+
+void Game::addAction(std::shared_ptr<BaseAction> action) {
+    executedActions.push_back(action);
+}
+
+Player &Game::addPlayer() {
+    Player *player = new Player(*this);
+
+
+    // Retrieve spawn_point
+    int spawnPointIdx = map.spawnTiles[players.size()];
+    Tile &spawnTile = map.tiles[spawnPointIdx];
+
+
+    // Spawn Initial builder
+    Unit &builder = player->spawn(spawnTile);
+
+    // If auto-spawn town hall mechanic is activated
+    if(Config::getInstance().getMechanicTownHall()) {
+        // build Town-Hall
+        builder.build(0);
+    }
+    players.push_back(player);
+    return *player;
 }
 
 

@@ -15,9 +15,9 @@ public:
         id = Constants::State_Walking;
         name = "Walking";
     }
-    virtual void update(Unit &unit)const;
-    virtual void init(Unit &unit)const;
-    virtual void end(Unit &unit)const;
+    virtual void update(std::shared_ptr<Unit> unit)const;
+    virtual void init(std::shared_ptr<Unit> unit)const;
+    virtual void end(std::shared_ptr<Unit> unit)const;
 };
 
 

@@ -7,18 +7,17 @@
 #include "../unit/Peasant.h"
 #include "../Game.h"
 #include "../lib/ColorConverter.h"
+#include "../algorithms/RANDOM/AlgoRandom.h"
 
 int Player::gId = 0;
 
 Player::Player(Game &game): inventoryManager(*this), game_(game) {
     id_ = Player::gId++;
-
-
-    /*playerColor = ColorConverter::hsv(fmod(id_ * 0.618033988749895, 1.0),
+    name_ = "Player: " + std::to_string(id_);
+    playerColor = ColorConverter::hsv(fmod(id_ * 0.618033988749895, 1.0),
                                       0.5,
                                       sqrt(1.0 - fmod(id_ * 0.618033988749895, 0.5)));
-    std::cout << std::to_string(id_) << "--" << std::to_string(playerColor.r) << "," << std::to_string(playerColor.g) << "," << std::to_string(playerColor.b) << std::endl;
-    */
+
 
     faction = 0;
     gold = 1500;
@@ -32,23 +31,25 @@ Player::Player(Game &game): inventoryManager(*this), game_(game) {
 
 Unit& Player::spawn(Tile &spawnPoint) {
     // Spawn a builder
+    std::shared_ptr<Unit> unit;
 
 
 
     if(faction == 0) // Human
     {
-        units.push_back(new Peasant(*this));
+        unit = std::shared_ptr<Unit>(new Peasant(*this));
+        units.push_back(unit);
     }
     else if(faction == 1) // Orc
     {
-        units.push_back(new Peasant(*this));
+        unit = std::shared_ptr<Unit>(new Peasant(*this));
+        units.push_back(unit);
     }
     else {
         assert(false);
     }
 
     assert(!units.empty());
-    Unit *unit = units.back();
     unit->spawn(spawnPoint, unit->spawnDuration);
 
 
@@ -60,6 +61,10 @@ void Player::update() {
 
     for(auto &unit : units) {
         unit->update();
+    }
+
+    if(algorithm_) {
+        algorithm_->update();
     }
 }
 
@@ -105,7 +110,7 @@ void Player::addOil(int n) {
     oil += n;
 }
 
-void Player::removeUnit(Unit *unit) {
+void Player::removeUnit(std::shared_ptr<Unit> unit) {
     std::cout << "Implement removeUnit" << std::endl;
     /*auto it = std::find_if(units.begin(), units.end(), [=](Unit* p)
                       {
@@ -124,7 +129,7 @@ bool Player::checkDefeat(){
     return defeated;
 }
 
-bool Player::canPlace(Unit *unit, Tile *_tile) {
+bool Player::canPlace(std::shared_ptr<Unit> unit, Tile *_tile) {
 
     for (auto &tile : game_.map.getTiles(_tile, unit->width, unit->height)) {
         if(tile == _tile)
@@ -139,12 +144,12 @@ bool Player::canPlace(Unit *unit, Tile *_tile) {
     return true;
 }
 
-bool Player::canAfford(Unit *unit) {
+bool Player::canAfford(std::shared_ptr<Unit> unit) {
     return gold >= unit->goldCost and lumber >= unit->lumberCost and oil >= unit->oilCost;
 
 }
 
-void Player::addUnit(Unit *u) {
+void Player::addUnit(std::shared_ptr<Unit> u) {
     units.push_back(u);
 
 }
@@ -159,4 +164,45 @@ void Player::subLumber(int n) {
 
 void Player::subGold(int n) {
     gold -= n;
+}
+
+void Player::setName(std::string name){
+    name_ = name;
+}
+
+void Player::setAlgorithm(std::shared_ptr<AlgoRandom> theAlg){
+    algorithm_ = theAlg;
+}
+
+int Player::_getNextPrevUnitIdx(){
+    if(units.size() == 0){
+        return -1;
+    }
+    if(!targetedUnit){
+        return 0;
+    }
+    int idx = 0;
+    for(auto &u : units){
+        if(targetedUnit == u){
+            return idx;
+        }
+        idx++;
+    }
+}
+
+void Player::nextUnit(){
+    int idx = _getNextPrevUnitIdx() + 1;
+    if(idx == -1)
+        return;
+    idx++;
+    targetedUnit = units[idx % units.size()];
+}
+
+void Player::previousUnit(){
+    int idx = _getNextPrevUnitIdx();
+    if(idx == -1)
+        return;
+    idx--;
+    targetedUnit = units[idx % units.size()];
+
 }

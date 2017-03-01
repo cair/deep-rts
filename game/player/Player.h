@@ -11,6 +11,10 @@
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
 #include "../unit/InventoryManager.h"
+#include "../algorithms/base/Algorithm.h"
+
+
+class AlgoRandom;
 
 
 class Game;
@@ -32,8 +36,10 @@ private:
 public:
     Game &game_;
     InventoryManager inventoryManager;
-    std::vector<Unit*> units;
+
+    std::vector<std::shared_ptr<Unit>> units;
     sf::Color playerColor;
+    std::shared_ptr<Unit> targetedUnit = NULL;
 
     void update();
 
@@ -50,22 +56,36 @@ public:
     void addGold(int n);
     void addLumber(int n);
     void addOil(int n);
-    void addUnit(Unit *u);
+    void addUnit(std::shared_ptr<Unit> u);
     Player(Game &game);
     Unit &spawn(Tile &spawnPoint);
 
 
     int id_;
 
-    bool canPlace(Unit *unit, Tile *tile);
+    bool canPlace(std::shared_ptr<Unit> unit, Tile *tile);
 
-    bool canAfford(Unit *unit);
+    bool canAfford(std::shared_ptr<Unit> unit);
 
-    void removeUnit(Unit *unit);
+    void removeUnit(std::shared_ptr<Unit> unit);
 
     bool checkDefeat();
 
     bool defeated;
+
+    void setName(std::string name);
+
+    std::string name_;
+
+    void setAlgorithm(std::shared_ptr<AlgoRandom> theAlg);
+
+    std::shared_ptr<AlgoRandom> algorithm_ = NULL;
+
+    void nextUnit();
+
+    void previousUnit();
+
+    int _getNextPrevUnitIdx();
 };
 
 

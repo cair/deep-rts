@@ -15,6 +15,7 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 
 #include "GUI.h"
 #include "../Game.h"
+#include "Animation.h"
 #include <SFML/Graphics.hpp>
 
 
@@ -98,7 +99,7 @@ int GUI::mouseClick(int mX, int mY)
 
 }
 
-void GUI::render() {
+void GUI::handleEvents(){
     // Process events
     sf::Event event;
     while (window.pollEvent(event))
@@ -172,23 +173,30 @@ void GUI::render() {
             }
 
 
+            else if(event.key.code == sf::Keyboard::G) {
+                renderGUI = !renderGUI;
+                if(!renderGUI){
+                    showNoGuiMessage();
+                }
+            }
+
 
 
 
                 // Build actions
             else if(event.key.code == sf::Keyboard::Num1) {
-                if(selectedUnit){
-                    selectedUnit->build(0);
+                if(player->targetedUnit){
+                    player->targetedUnit->build(0);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num2) {
-                if(selectedUnit){
-                    selectedUnit->build(1);
+                if(player->targetedUnit){
+                    player->targetedUnit->build(1);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num3) {
-                if(selectedUnit){
-                    selectedUnit->build(2);
+                if(player->targetedUnit){
+                    player->targetedUnit->build(2);
                 }
             }
         }
@@ -204,8 +212,16 @@ void GUI::render() {
                 this->panDown = false;
         }
     }
+}
+
+void GUI::render() {
 
 
+    handleEvents();
+
+
+    if(!renderGUI)
+        return;
 
     // Draw things here
     window.setView(*this->currentView);
@@ -217,6 +233,7 @@ void GUI::render() {
     this->drawStats();
     this->drawSelected();  // Text
     this->drawStatistics();
+    this->drawScoreBoard();
 
 
     /*if(this->toggleFrame){
@@ -230,7 +247,10 @@ void GUI::render() {
     }*/
 
 
-
+    if(!renderGUI){
+        showNoGuiMessage();
+        return;
+    }
 
     // Update the window
     window.display();
@@ -280,15 +300,15 @@ void GUI::drawStats(){
     window.draw(text);
 
     text.setString("Seconds: " + std::to_string(game.getSeconds()));
-    text.setPosition(450,10);
+    text.setPosition(470,10);
     window.draw(text);
 
     text.setString("Frames: " + std::to_string(game.getFrames()));
-    text.setPosition(550,10);
+    text.setPosition(640,10);
     window.draw(text);
 
     text.setString("Score: " + std::to_string(0));
-    text.setPosition(650,10);
+    text.setPosition(810,10);
     window.draw(text);
 
 }
@@ -345,9 +365,9 @@ void GUI::drawSelected(){
 
 
 
-    if (selectedUnit) {
+    if (player->targetedUnit) {
         text.setCharacterSize(32);
-        Unit* unit = selectedUnit;
+        std::shared_ptr<Unit> unit = player->targetedUnit;
 
         text.setString(unit->name + " (" +
                                std::to_string(unit->id ) +
@@ -412,9 +432,17 @@ for(auto&p : game.players)
 {
     for(auto&u: p->units){
         if(u->tile) {
+            u->animationTimer++;
+            if(u->animationTimer >= u->animationInterval){
+                u->animationIterator += 1;
+                u->animationTimer = 0;
+
+            }
 
             //u->testSprite->setColor(u->player_.playerColor);
-            window.draw(*u->testSprite);
+            sf::Sprite &sprite = Animation::getInstance().getNext(u);
+            sprite.setPosition(u->worldPosition);
+            window.draw(sprite);
         }
     }
 }
@@ -425,15 +453,59 @@ void GUI::leftClick(Tile &tile) {
     this->selectedTile = &tile;
 
     if(tile.occupant) {
-        this->selectedUnit = tile.occupant;
+        player->targetedUnit = tile.occupant;
     }else {
-        this->selectedUnit = NULL;
+        player->targetedUnit = NULL;
     }
 }
 
 void GUI::rightClick(Tile &tile) {
-    if(this->selectedUnit) {
-        this->selectedUnit->rightClick(tile);
+    if(player->targetedUnit) {
+        player->targetedUnit->rightClick(tile);
         this->selectedTile = &tile;
     }
+}
+
+void GUI::drawScoreBoard() {
+    sf::Text text;
+    text.setFont(font);
+
+
+
+    int offsetY = 0;
+    text.setCharacterSize(18);
+    for (Player *p : game.players) {
+        text.setString(p->name_ + ": " + std::to_string(0));
+        text.setFillColor(p->playerColor);
+        text.setPosition(10, 40 + offsetY);
+        offsetY += 25;
+
+        window.draw(text);
+    }
+
+
+}
+
+void GUI::showNoGuiMessage() {
+
+
+    window.clear();
+
+
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Yellow);
+    text.setString("GUI is deactivated! Press \"G\" to activate.");
+    sf::Vector2u size = window.getSize();
+    text.setPosition((size.x / 2) - (text.getLocalBounds().width / 4) ,size.y / 2);
+    window.draw(text);
+
+    text.setCharacterSize(16);
+    text.setFillColor(sf::Color::Yellow);
+    text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View");
+    text.setPosition((size.x / 2), (size.y / 2) + 50);
+    window.draw(text);
+
+    window.display();
 }

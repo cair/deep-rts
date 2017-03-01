@@ -30,12 +30,12 @@ public:
     int resources;
     sf::Vertex vertices[4];
     Tilemap& tilemap;
-    Unit* occupant = NULL;
+    std::shared_ptr<Unit> occupant = NULL;
 
-    bool isAttackable(Unit &unit);
+    bool isAttackable(std::shared_ptr<Unit> unit);
     bool isWalkable();
     bool isHarvestable();
-    void setOccupant(Unit &unit);
+    void setOccupant(std::shared_ptr<Unit> unit);
 
 
 

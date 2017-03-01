@@ -9,18 +9,57 @@
 #include <SFML/Graphics/Vertex.hpp>
 #include <vector>
 #include <map>
+#include "../unit/Unit.h"
 
-class Animation {
-private:
 
-    // Unit -> State -> sprite[]
-    static std::map<int, std::map<int, std::vector<sf::Sprite>>> sprites;
+class Animation
+{
 public:
-    static sf::Sprite & getNext(int unit, int state, int iteration);
+    static Animation& getInstance()
+    {
+        static Animation    instance; // Guaranteed to be destroyed.
+        // Instantiated on first use.
+        return instance;
+    }
 
-    static void addSprite(const int unit, const int state, int x, int y, int w, int h, sf::Texture& texture);
-    static void setup();
+    // Unit -> State -> Direction ->sprite[]
+    std::map<
+            int, std::map<int,
+                    std::map<int, std::vector<std::shared_ptr<sf::Sprite>>
+                    >>> sprites;
+    sf::Sprite & getNext(std::shared_ptr<Unit> unit);
+
+    void add(const int unit, const int state,  const int direction,int x, int y, int w, int h, sf::Texture* texture);
+    void setup();
+
+private:
+    std::shared_ptr<sf::Texture> peasant;
+
+
+    Animation() {}                    // Constructor? (the {} brackets) are needed here.
+
+    // C++ 11
+    // =======
+    // We can use the better technique of deleting the methods
+    // we don't want.
+public:
+    Animation(Animation const&)               = delete;
+    void operator=(Animation const&)  = delete;
+
+    // Note: Scott Meyers mentions in his Effective Modern
+    //       C++ book, that deleted functions should generally
+    //       be public as it results in better error messages
+    //       due to the compilers behavior to check accessibility
+    //       before deleted status
+    void setupPeasant();
 };
+
+
+
+
+
+
+
 
 
 #endif //WARC2SIM_SPRITEMANAGER_H
