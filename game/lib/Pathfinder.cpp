@@ -93,6 +93,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
     while(queue.size() > 0) {
 
         Tile *current = queue.front();
+
         assert(current);
         queue.pop();
 
@@ -103,12 +104,14 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         const bool is_in = visited.find(current) != visited.end();
         if(!is_in) {
             visited.insert(current);
-            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_All);
+            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_Walkable);
             for(auto &i : neighbors) {
                 queue.push(i);
             }
         }
     }
+
+    assert(false); // Should not be here. this means algorithm didnt find any closest tile and there should be one
 
 
 }
@@ -116,7 +119,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
 Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
     /**
    * This is a breadth-first search which looks for a walkable tile
-   */
+    */
 
     std::set<Tile *> visited;
     std::queue<Tile *> queue;
@@ -126,6 +129,7 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
     while(queue.size() > 0) {
 
         Tile *current = queue.front();
+
         queue.pop();
 
         if (current->isHarvestable()) {
@@ -140,6 +144,8 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
             }
         }
     }
+
+    return NULL;
 }
 
 std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map<Tile*, Tile*>& came_from

@@ -67,8 +67,18 @@ Unit& Player::spawn(Tile &spawnPoint) {
 
 void Player::update() {
 
-    for(auto &unit : units) {
+    /*for(auto &unit : units) {
         unit->update();
+    }*/
+    std::vector<std::shared_ptr<Unit>>::iterator it;
+    for(it = units.begin(); it != units.end();) {
+        (*it)->update();
+
+        if((*it)->removedFromGame) {
+            it = units.erase(it);
+        }else {
+            it++;
+        }
     }
 
     if(algorithm_) {
@@ -123,32 +133,32 @@ int Player::getScore() {
     int LUMBER_VALUE = 1;
     int OIL_VALUE = 3;
 
+
     int gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .20;
     int builtScore = statUnitBuilt * 10;
+    int damageScore = statUnitDamageDone / (statUnitDamageTaken + 1);
     int unitScore = units.size() * 2.5;
     int militaryScore = 0;
     int defenceScore = 0;
 
 
-    return gatherScore + builtScore + unitScore + militaryScore + defenceScore;
+    return gatherScore + builtScore + unitScore + militaryScore + defenceScore + damageScore;
 
 }
 
 void Player::removeUnit(std::shared_ptr<Unit> unit) {
+    for(auto p : game_.players) {
+        if(p->targetedUnit == unit) {
+            p->targetedUnit = NULL;
+        }
+    }
 
-    units.erase(std::remove(units.begin(), units.end(), unit), units.end());
+    unit->removedFromGame = true;
 
 
+    //units.erase(std::remove(units.begin(), units.end(), unit), units.end());
     std::cout << "Implement removeUnit" << std::endl;
-    /*auto it = std::find_if(units.begin(), units.end(), [=](Unit* p)
-                      {
-                          return unit->id == p->id;
-                      });
 
-    if(it != units.end())
-    {
-        //object found
-    }*/
 }
 
 bool Player::checkDefeat(){
@@ -157,10 +167,10 @@ bool Player::checkDefeat(){
     return defeated;
 }
 
-bool Player::canPlace(std::shared_ptr<Unit> unit, Tile *_tile) {
+bool Player::canPlace(std::shared_ptr<Unit> builder, std::shared_ptr<Unit> unit, Tile *_tile) {
 
     for (auto &tile : game_.map.getTiles(_tile, unit->width, unit->height)) {
-        if(tile == _tile)
+        if(tile == builder->tile) // Ignore tile of the builder, this is handled in Unit::Build when builder despawns
             continue;
 
         if(!tile->isBuildable()) {

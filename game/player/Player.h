@@ -63,7 +63,7 @@ public:
 
     int id_;
 
-    bool canPlace(std::shared_ptr<Unit> unit, Tile *tile);
+    bool canPlace(std::shared_ptr<Unit> builder, std::shared_ptr<Unit> unit, Tile *tile);
 
     bool canAfford(std::shared_ptr<Unit> unit);
 

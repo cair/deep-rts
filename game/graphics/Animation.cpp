@@ -17,7 +17,6 @@ void Animation::add(const int unit, const int state, const int direction, int x,
         w * -1;
     sprite->setTextureRect(sf::IntRect(x, y, w, h));
     sprite->setScale((double)wrs/w,(double)hrs/h);
-    std::cout << sprite->getScale().x << std::endl;
     Animation::sprites[unit][state][direction].push_back(sprite);
 
 

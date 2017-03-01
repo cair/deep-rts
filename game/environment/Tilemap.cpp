@@ -96,27 +96,6 @@ void Tilemap::addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHei
     tile.vertices[3].texCoords = sf::Vector2f((mod * tileWidth) + mod, ((div + 1) * tileHeight) + div);
 }
 
-void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    states.texture = &tileset;
-
-    for(const Tile& tile : tiles){
-
-
-
-        sf::RectangleShape rectangle;
-        rectangle.setSize(sf::Vector2f(32, 32));
-        rectangle.setOutlineColor(sf::Color::Red);
-        rectangle.setOutlineThickness(1);
-        rectangle.setPosition(tile.getPixelPosition());
-        target.draw(rectangle);
-
-        // Draw the tile itself
-        target.draw(tile.vertices, 4, sf::Quads, states);
-
-
-    }
-
-}
 
 
 
@@ -159,7 +138,7 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {
         Tile &neigh = tiles[idx];
         assert(&neigh);
 
-        if(const_pathfinding_type == Constants::Pathfinding_Walkable && !neigh.walkable or neigh.occupant != 0)
+        if(const_pathfinding_type == Constants::Pathfinding_Walkable && !neigh.canWalkTo())
             continue;
 
         neighbors.push_back(&neigh);

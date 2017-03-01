@@ -21,6 +21,10 @@ void Harvesting::update(std::shared_ptr<Unit> unit)const{
             // If distance is > 1, change harvest_target
             if(closestWalkable->distance(unit->harvestTarget) > 1) {
                 Tile *closestHarvestable = Pathfinder::find_first_harvestable_tile(closestWalkable);
+                if(!closestHarvestable){
+                    unit->transitionState(unit->stateManager.idleState);
+                    return;
+                }
                 unit->harvestTarget = closestHarvestable;
 
 
@@ -51,9 +55,9 @@ void Harvesting::update(std::shared_ptr<Unit> unit)const{
             unit->lumberCarry += unit->harvestTarget->lumberYield;
             unit->goldCarry += unit->harvestTarget->goldYield;
             unit->oilCarry += unit->harvestTarget->oilYield;
-            unit->player_.statGoldGather = unit->harvestTarget->goldYield;
-            unit->player_.statLumberGather = unit->harvestTarget->lumberYield;
-            unit->player_.statOilGather = unit->harvestTarget->oilYield;
+            unit->player_.statGoldGather += unit->harvestTarget->goldYield;
+            unit->player_.statLumberGather += unit->harvestTarget->lumberYield;
+            unit->player_.statOilGather += unit->harvestTarget->oilYield;
             unit->harvestTarget->resources -= unit->harvestTarget->lumberYield + unit->harvestTarget->goldYield + unit->harvestTarget->oilYield;
 
             // No more resources // TODO constant parameter Config
@@ -62,6 +66,12 @@ void Harvesting::update(std::shared_ptr<Unit> unit)const{
 
                 // Find new harvestable
                 Tile *closestHarvestable = Pathfinder::find_first_harvestable_tile(unit->harvestTarget);
+                if(!closestHarvestable){
+                    unit->transitionState(unit->stateManager.idleState);
+                    return;
+                }
+
+
                 unit->harvestTarget = closestHarvestable;
             }
 
@@ -108,13 +118,6 @@ void Harvesting::update(std::shared_ptr<Unit> unit)const{
             }
         }
 
-
-
-
-
-
-    } else if (unit->harvestIterator == 3) {
-        // Deliver
     }
 }
 

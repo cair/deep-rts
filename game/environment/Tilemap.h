@@ -13,9 +13,8 @@
 #include "../lib/json.h"
 using json = nlohmann::json;
 
-class Tilemap: public sf::Drawable{
+class Tilemap{
 private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 
 public:

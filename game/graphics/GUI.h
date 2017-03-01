@@ -79,6 +79,8 @@ public:
     void handleEvents();
 
     void drawScoreBoard();
+
+    int showGridLines = false;
 };
 
 

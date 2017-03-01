@@ -180,6 +180,14 @@ void GUI::handleEvents(){
                 }
             }
 
+            else if(event.key.code == sf::Keyboard::H) {
+                renderGUI = !renderGUI;
+                if(!renderGUI){
+                    showGridLines = !showGridLines;
+                }
+            }
+
+
 
 
 
@@ -370,12 +378,12 @@ void GUI::drawSelected(){
         std::shared_ptr<Unit> unit = player->targetedUnit;
 
         text.setString(unit->name + " (" +
-                               std::to_string(unit->id ) +
-                               ")" + " - " +
-                               unit->state->name + " - (" +
-                               std::to_string(unit->tile->x) + "," +
-                               std::to_string(unit->tile->y) + ") - (" +
-                               std::to_string(unit->player_.getId()) + ")"
+                       std::to_string(unit->id ) +
+                       ")" + " - " +
+                       unit->state->name + " - (" +
+                       std::to_string(unit->tile->x) + "," +
+                       std::to_string(unit->tile->y) + ") - (" +
+                       std::to_string(unit->player_.getId()) + ")"
         );
         text.setPosition(320,830);
         window.draw(text);
@@ -423,29 +431,53 @@ void GUI::drawSelected(){
 }
 
 void GUI::drawTiles(){
-    window.draw(game.map);
+
+
+
+    for(const Tile& tile : game.map.tiles){
+
+
+        if(showGridLines){
+            sf::RectangleShape rectangle;
+            rectangle.setSize(sf::Vector2f(32, 32));
+            rectangle.setOutlineColor(sf::Color::Red);
+            rectangle.setOutlineThickness(1);
+            rectangle.setPosition(tile.getPixelPosition());
+            window.draw(rectangle);
+        }
+
+
+        window.draw(tile.vertices, 4, sf::Quads, &game.map.tileset);
+
+
+
+
+    }
+
+
+
 }
 
 void GUI::drawUnits() {
 
-for(auto&p : game.players)
-{
-    for(auto&u: p->units){
-        if(u->tile) {
-            u->animationTimer++;
-            if(u->animationTimer >= u->animationInterval){
-                u->animationIterator += 1;
-                u->animationTimer = 0;
+    for(auto&p : game.players)
+    {
+        for(auto&u: p->units){
+            if(u->tile) {
+                u->animationTimer++;
+                if(u->animationTimer >= u->animationInterval){
+                    u->animationIterator += 1;
+                    u->animationTimer = 0;
 
+                }
+
+                //u->testSprite->setColor(u->player_.playerColor);
+                sf::Sprite &sprite = Animation::getInstance().getNext(u);
+                sprite.setPosition(u->worldPosition);
+                window.draw(sprite);
             }
-
-            //u->testSprite->setColor(u->player_.playerColor);
-            sf::Sprite &sprite = Animation::getInstance().getNext(u);
-            sprite.setPosition(u->worldPosition);
-            window.draw(sprite);
         }
     }
-}
 
 }
 

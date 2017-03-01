@@ -155,6 +155,8 @@ public:
     void moveRelative(int x, int y);
 
     void rightClickRelative(int x, int y);
+
+    bool removedFromGame = false;
 };
 
 #endif //WARC2SIM_UNIT_H

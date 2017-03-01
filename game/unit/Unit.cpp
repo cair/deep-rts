@@ -88,12 +88,18 @@ bool Unit::build(int idx) {
         return false;
 
     std::shared_ptr<Unit> newUnit = buildInventory[idx]->getptr();
+
+    // PlacementTile is based on dimension of the new unit. For example; town hall has
+    // 3x Width and 3x Height. We then want to place  the building by the middle tile;
+    Tile *placementTile = player_.game_.map.getTile(tile->x - floor(newUnit->width/2), tile->y - floor(newUnit->height/2));
+    std::cout << tile->x - floor(newUnit->width/2) << "--" << tile->y - floor(newUnit->height/2);
+
     if(!player_.canAfford(newUnit)) {
         std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
     }
 
-    if(player_.canPlace(newUnit, tile)) {
+    if(player_.canPlace(getptr(), newUnit, placementTile)) {
 
         std::shared_ptr<Unit> unit = std::shared_ptr<Unit>(new Unit(*newUnit));
 
@@ -102,7 +108,7 @@ bool Unit::build(int idx) {
 
         if(!structure and unit->structure) {
            // *this is a unit (peasant), which builds a building
-            Tile *spawnTile = tile;
+            Tile *spawnTile = placementTile;
             assert(spawnTile);
             despawn();
 
@@ -141,8 +147,10 @@ bool Unit::build(int idx) {
 }
 
 void Unit::despawn() {
-    if(player_.targetedUnit)
-        player_.targetedUnit = NULL;
+
+    for(auto p: player_.game_.players) {
+        p->targetedUnit = NULL;
+    }
 
     clearTiles();
     transitionState(stateManager.despawnedState);
