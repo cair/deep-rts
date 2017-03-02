@@ -14,10 +14,10 @@
 
 
 Game::Game(int n_players):
-        map(MapLoader::load("contested-4v4.json"))
+        map(Tilemap("contested-4v4.json"))
 {
     // Definitions
-    this->n_players = n_players;
+    n_players = n_players;
     setFPS(Config::getInstance().getFPS());
     setUPS(Config::getInstance().getUPS());
     Animation::getInstance().setup();

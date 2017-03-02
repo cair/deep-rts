@@ -9,7 +9,7 @@
 #include "../unit/Unit.h"
 #include <utility>
 
-Tile::Tile(int x, int y, int width, int height, Tilemap& tilemap):
+Tile::Tile(int x, int y, int width, int height, Tilemap &tilemap):
 x(x), y(y), height(height), width(width), tilemap(tilemap)
 {
 

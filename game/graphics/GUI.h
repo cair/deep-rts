@@ -81,6 +81,8 @@ public:
     void drawScoreBoard();
 
     int showGridLines = false;
+
+    sf::Vector2f getCameraOffset();
 };
 
 

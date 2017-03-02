@@ -17,16 +17,13 @@ using json = nlohmann::json;
 
 class MapLoader {
 
-    static json loadFile(std::string map_file);
-    static Tilemap getTileset(json tilesData, json basic_json);
+    
+
 
 public:
-
-    static Tilemap load(std::string map_name) ;
-    static Tilemap loadNull();
-
+	static json loadFile(std::string mapFile);
+    static Tilemap getTileset(json tilesData, json basic_json);
     static json tileProperties();
-
     static sf::Texture loadTexture();
 };
 

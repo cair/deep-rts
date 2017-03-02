@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D58D94A0-8F04-415D-9570-F232B3F1FF7D}</ProjectGuid>
+    <RootNamespace>WarC2Sim</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>E:\libs\MSVC2015\SFML\include;%(AdditionalIncludeDirectories);E:\libs\MSVC2015\libzmq\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>E:\libs\MSVC2015\SFML\lib;%(AdditionalLibraryDirectories);E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-audio-d.lib;%(AdditionalDependencies);libzmq.dll;libzmq.dll</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>E:\libs\MSVC2015\libzmq\include;E:\libs\MSVC2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic;E:\libs\MSVC2015\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libzmq.lib;sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>E:\libs\MSVC2015\SFML\include;E:\libs\MSVC2015\libzmq\include;%(AdditionalIncludeDirectories);E:\libs\MSVC2015\libzmq\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>E:\libs\MSVC2015\SFML\lib;E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic;%(AdditionalLibraryDirectories);E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-window.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies);libzmq.dll</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>E:\libs\MSVC2015\libzmq\include;E:\libs\MSVC2015\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic;E:\libs\MSVC2015\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libzmq.lib;sfml-system.lib;sfml-graphics.lib;sfml-window.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="game\action\BaseAction.h" />
+    <ClInclude Include="game\action\RightClickAction.h" />
+    <ClInclude Include="game\algorithms\base\Algorithm.h" />
+    <ClInclude Include="game\algorithms\RANDOM\AlgoRandom.h" />
+    <ClInclude Include="game\Config.h" />
+    <ClInclude Include="game\Constants.h" />
+    <ClInclude Include="game\environment\Tile.h" />
+    <ClInclude Include="game\environment\Tilemap.h" />
+    <ClInclude Include="game\Game.h" />
+    <ClInclude Include="game\graphics\Animation.h" />
+    <ClInclude Include="game\graphics\GUI.h" />
+    <ClInclude Include="game\lib\ColorConverter.h" />
+    <ClInclude Include="game\lib\csv.h" />
+    <ClInclude Include="game\lib\json.h" />
+    <ClInclude Include="game\lib\Pathfinder.h" />
+    <ClInclude Include="game\lib\PriorityQueue.h" />
+    <ClInclude Include="game\loaders\MapLoader.h" />
+    <ClInclude Include="game\player\Player.h" />
+    <ClInclude Include="game\proto\SearchRequest.pb.h" />
+    <ClInclude Include="game\proto\TestMessage.pb.h" />
+    <ClInclude Include="game\state\BaseState.h" />
+    <ClInclude Include="game\state\Building.h" />
+    <ClInclude Include="game\state\Combat.h" />
+    <ClInclude Include="game\state\Dead.h" />
+    <ClInclude Include="game\state\Despawned.h" />
+    <ClInclude Include="game\state\Harvesting.h" />
+    <ClInclude Include="game\state\Idle.h" />
+    <ClInclude Include="game\state\Spawning.h" />
+    <ClInclude Include="game\state\StateManager.h" />
+    <ClInclude Include="game\state\Walking.h" />
+    <ClInclude Include="game\unit\InventoryManager.h" />
+    <ClInclude Include="game\unit\Peasant.h" />
+    <ClInclude Include="game\unit\TownHall.h" />
+    <ClInclude Include="game\unit\Unit.h" />
+    <ClInclude Include="server\Server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="game\action\RightClickAction.cpp" />
+    <ClCompile Include="game\algorithms\base\Algorithm.cpp" />
+    <ClCompile Include="game\algorithms\RANDOM\AlgoRandom.cpp" />
+    <ClCompile Include="game\environment\Tile.cpp" />
+    <ClCompile Include="game\environment\Tilemap.cpp" />
+    <ClCompile Include="game\Game.cpp" />
+    <ClCompile Include="game\graphics\Animation.cpp" />
+    <ClCompile Include="game\graphics\GUI.cpp" />
+    <ClCompile Include="game\lib\Pathfinder.cpp" />
+    <ClCompile Include="game\loaders\MapLoader.cpp" />
+    <ClCompile Include="game\player\Player.cpp" />
+    <ClCompile Include="game\state\BaseState.cpp" />
+    <ClCompile Include="game\state\Building.cpp" />
+    <ClCompile Include="game\state\Combat.cpp" />
+    <ClCompile Include="game\state\Dead.cpp" />
+    <ClCompile Include="game\state\Despawned.cpp" />
+    <ClCompile Include="game\state\Harvesting.cpp" />
+    <ClCompile Include="game\state\Idle.cpp" />
+    <ClCompile Include="game\state\Spawning.cpp" />
+    <ClCompile Include="game\state\StateManager.cpp" />
+    <ClCompile Include="game\state\Walking.cpp" />
+    <ClCompile Include="game\unit\InventoryManager.cpp" />
+    <ClCompile Include="game\unit\Peasant.cpp" />
+    <ClCompile Include="game\unit\TownHall.cpp" />
+    <ClCompile Include="game\unit\Unit.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="server\Server.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="game\data\maps\contested-4v4.json" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

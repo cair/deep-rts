@@ -22,13 +22,13 @@ public:
     std::vector<Tile> tiles;
     std::vector<int> spawnTiles;
 
-    int TILE_WIDTH;
-    int TILE_HEIGHT;
-    int MAP_WIDTH;
-    int MAP_HEIGHT;
+    size_t TILE_WIDTH;
+    size_t TILE_HEIGHT;
+    size_t MAP_WIDTH;
+    size_t MAP_HEIGHT;
     float tileTextureDimension;
     float tileWorldDimension;
-    Tilemap(json tilesData, json mapData, sf::Texture tileset);
+    Tilemap(std::string mapName);
 
     void addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid, Tile &tile);
     std::vector<Tile *> neighbors(Tile &tile, int const_pathfinding_type);

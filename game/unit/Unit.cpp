@@ -260,6 +260,13 @@ int Unit::distance(Tile &target) {
 
 }
 
+sf::Vector2f Unit::distanceVector(Tile &target){
+    int dx = tile->x - target.x;
+    int dy = tile->y - target.y;
+
+    return sf::Vector2f(dx, dy);
+}
+
 std::shared_ptr<Unit> Unit::closestRecallBuilding() {
     std::shared_ptr<Unit> closest = NULL;
     int dist = INT_MAX;
@@ -302,6 +309,10 @@ int Unit::getDamage(Unit &target) {
 
     return floor(output2);
 
+}
+
+void Unit::setDirection(sf::Vector2f &dir){
+    setDirection(dir.x, dir.y);
 }
 
 void Unit::setDirection(int newX, int newY){

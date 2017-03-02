@@ -53,6 +53,7 @@ void GUI::createView(){
 
     this->povView = sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
     this->povView.setViewport(sf::FloatRect(0, 0, 1, 1));
+    this->povView.zoom(.9);
 
 
     this->currentView = &this->povView;
@@ -79,21 +80,20 @@ void GUI::caption() {
 
 }
 
+sf::Vector2f GUI::getCameraOffset() {
+    sf::Vector2f viewCenter = currentView->getCenter();
+    sf::Vector2f halfExtents = currentView->getSize() / 2.0f;
+    sf::Vector2f translation = viewCenter - halfExtents;
+    return translation;
+}
+
 int GUI::mouseClick(int mX, int mY)
 {
-    sf::Vector2f viewCenter = this->currentView->getCenter();
-    sf::Vector2f halfExtents = this->currentView->getSize() / 2.0f;
-    sf::Vector2f translation = viewCenter - halfExtents;
-
-    mX += static_cast<int>(translation.x);
-    mY += static_cast<int>(translation.y);
-
     int x = mX / this->game.map.TILE_WIDTH;
     int y = mY / this->game.map.TILE_HEIGHT;
     int cols = this->game.map.MAP_WIDTH;
 
     int idx = cols*y + x;
-    //sf::Vector2f tiles = sf::Vector2f(mX / TILE_SIZE, mY / TILE_SIZE);
 
     return idx;
 
@@ -114,7 +114,8 @@ void GUI::handleEvents(){
             {
                 // get the current mouse position in the window
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-                int idx = this->mouseClick(pixelPos.x, pixelPos.y);
+                sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+                int idx = this->mouseClick(worldPos.x, worldPos.y);
                 Tile &t = this->game.map.tiles[idx];
                 this->leftClick(t);
 
@@ -122,7 +123,8 @@ void GUI::handleEvents(){
             {
                 // get the current mouse position in the window
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-                int idx = this->mouseClick(pixelPos.x, pixelPos.y);
+                sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+                int idx = this->mouseClick(worldPos.x, worldPos.y);
                 Tile &t = this->game.map.tiles[idx];
                 this->rightClick(t);
 
@@ -187,6 +189,10 @@ void GUI::handleEvents(){
                 }
             }
 
+            else if(event.key.code == sf::Keyboard::F) {
+                game.setUPS(10);
+                game.setFPS(60);
+            }
 
 
 
@@ -267,16 +273,16 @@ void GUI::render() {
 
 void GUI::update(){
 
-    sf::Vector2f center = this->povView.getCenter();
-    sf::Vector2u windowSize = window.getSize();
+    sf::Vector2f viewSize = currentView->getSize();
+    sf::Vector2f offset = getCameraOffset();
 
-    if(this->panLeft && center.x > (windowSize.x / 2))
+    if(this->panLeft && offset.x > 0)
         this->povView.move(sf::Vector2f(this->velocity * -1, 0));
-    if(this->panRight && center.x < (game.map.MAP_WIDTH * game.map.TILE_WIDTH) -  (windowSize.x / 2))
+    if(this->panRight && offset.x < (game.map.MAP_WIDTH * game.map.TILE_WIDTH) -  viewSize.x)
         this->povView.move(sf::Vector2f(this->velocity, 0));
-    if(this->panUp && center.y > (windowSize.y / 2))
+    if(this->panUp && offset.y > 0)
         this->povView.move(sf::Vector2f(0, this->velocity * -1));
-    if(this->panDown && center.y < (game.map.MAP_HEIGHT * game.map.TILE_HEIGHT) -  (windowSize.y / 2))
+    if(this->panDown && offset.y < (game.map.MAP_HEIGHT * game.map.TILE_HEIGHT) -  viewSize.y)
         this->povView.move(sf::Vector2f(0, this->velocity));
 
 }
@@ -535,7 +541,7 @@ void GUI::showNoGuiMessage() {
 
     text.setCharacterSize(16);
     text.setFillColor(sf::Color::Yellow);
-    text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View");
+    text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View\nF: GameMode (10UPS/60FPS)\nH: Gridlines");
     text.setPosition((size.x / 2), (size.y / 2) + 50);
     window.draw(text);
 

@@ -30,7 +30,7 @@ public:
     }
 
     // Graphics
-    double animationInterval = .3 * 10;
+    double animationInterval = .2 * 10;
     int animationTimer = 0;
     int animationIterator = 0;
 
@@ -102,13 +102,13 @@ public:
     // Combat
     std::shared_ptr<Unit> combatTarget;
     int combatTimer = 1000;
-    double combatInterval = .1 * 10;
+    double combatInterval = 1 * 10;
 
     // Walking
     int walking_timer = 0;
     std::vector<Tile *> walking_path;
     Tile *walkingGoal;
-    double walking_interval = .001 * 10;
+    double walking_interval = .1 * 10;
 
 
     Tile *tile = NULL;
@@ -135,6 +135,7 @@ public:
     void attack(Tile &tile);
     void harvest(Tile &tile);
     int distance(Tile &tile);
+    sf::Vector2f distanceVector(Tile &target);
 
 
     void clearTiles();
@@ -151,12 +152,15 @@ public:
     sf::Vector2f worldPosition;
 
     void setDirection(int newX, int newY);
+    void setDirection(sf::Vector2f &dir);
 
     void moveRelative(int x, int y);
 
     void rightClickRelative(int x, int y);
 
     bool removedFromGame = false;
+
+
 };
 
 #endif //WARC2SIM_UNIT_H

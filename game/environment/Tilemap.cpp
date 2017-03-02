@@ -7,8 +7,13 @@
 #include "../Constants.h"
 #include "../unit/Unit.h"
 
-Tilemap::Tilemap(json tilesData_, json mapData, sf::Texture tileset_) {
-    tilesData = tilesData_;
+Tilemap::Tilemap(std::string mapName) {
+	json mapData = MapLoader::loadFile(mapName);
+
+	json tilesData = MapLoader::tileProperties();
+	tileset = MapLoader::loadTexture();
+
+
     json tilesetData = mapData["tilesets"][0];
     json mapLayer = mapData["layers"][0];
     json tileIDs = mapLayer["data"];
@@ -19,7 +24,6 @@ Tilemap::Tilemap(json tilesData_, json mapData, sf::Texture tileset_) {
     int tHeight = tilesetData["tileheight"];
     tFirstGid = tilesetData["firstgid"];
 
-    tileset = tileset_;
     TILE_WIDTH = tWidth;
     TILE_HEIGHT = tHeight;
     MAP_WIDTH = mapWidth;

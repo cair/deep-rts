@@ -34,17 +34,18 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
     while (!frontier.empty()) {
         Tile *current = frontier.get();
 
-        if (current == goal) {
-            break;
-        }
+
+		if (current == goal) {
+			break;
+		}
 
 
         std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_Walkable);
 
         for (auto next : neighbors) {
 
-            double new_cost = cost_so_far[current] + 1;
-            if (!cost_so_far.count(next) || new_cost < cost_so_far[next]) {
+            double new_cost = cost_so_far.at(current) + 1;
+            if (!cost_so_far.count(next) || new_cost < cost_so_far.at(next)) {
                 cost_so_far[next] = new_cost;
                 double priority = new_cost + heuristic(goal, next) + crossover(next, start, goal);
                 frontier.put(next, priority);
@@ -52,6 +53,7 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
 
             }
         }
+
     }
 
 
@@ -104,7 +106,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         const bool is_in = visited.find(current) != visited.end();
         if(!is_in) {
             visited.insert(current);
-            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_Walkable);
+            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_All);
             for(auto &i : neighbors) {
                 queue.push(i);
             }
@@ -153,8 +155,9 @@ std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map
     std::vector<Tile *> path;
     Tile *current = goal;
     path.push_back(current);
-    while (came_from[current] != start) {
-        current = came_from[current];
+
+    while (came_from.at(current) != start) {
+        current = came_from.at(current);
         path.push_back(current);
     }
     //path.push_back(start); // optional

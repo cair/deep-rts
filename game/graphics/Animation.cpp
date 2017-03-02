@@ -41,65 +41,167 @@ void Animation::setupPeasant(){
     int P = Constants::Unit_Peasant;
 
 
-    Animation::add(P, Constants::State_Walking, Constants::D_Left, 85, 4,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_Left, 85, 42,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_Left, 85, 82,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_Left, 85, 118,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_Left, 85, 155,  40, 40, 32, 32, &*peasant, true);
+    ///
+    /// Walking
+    ///
+    Animation::add(P, Constants::State_Walking, Constants::D_Up, 18, 8,  25, 23, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Up, 18, 46,  23, 28, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Up, 18, 86,  23, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Up, 18, 122,  23, 30, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Up, 18, 159,  24, 27, 32, 32, &*peasant, false);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_Up, 15, 4,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Up, 15, 42,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Up, 15, 82,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Up, 15, 118,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Up, 15, 155,  40, 40, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Down, 166, 7,  24, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Down, 169, 45,  22, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Down, 167, 85,  26, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Down, 168, 121,  23, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Down, 167, 158,  24, 27, 32, 32, &*peasant, false);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_Right, 85, 4,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Right, 85, 42,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Right, 85, 82,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Right, 85, 118,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Right, 85, 155,  40, 40, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Left, 97, 4,  14, 31, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_Left, 91, 42,  24, 30, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_Left, 96, 82,  16, 31, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_Left, 91, 118,  23, 30, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_Left, 95, 155,  20, 30, 32, 32, &*peasant, true);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_Down, 164, 4,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Down, 164, 42,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Down, 164, 82,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Down, 164, 118,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_Down, 164, 155,  40, 40, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Right, 97, 4,  14, 31, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Right, 91, 42,  24, 30, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Right, 96, 82,  16, 31, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Right, 91, 118,  23, 30, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_Right, 95, 155,  20, 30, 32, 32, &*peasant, false);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 50, 4,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 50, 42,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 50, 82,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 50, 118,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 50, 155,  40, 40, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 56, 6,  22, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 55, 44,  26, 30, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 56, 84,  24, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 56, 119,  23, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 57, 156,  21, 28, 32, 32, &*peasant, false);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 50, 4,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 50, 42,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 50, 82,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 50, 118,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_UpRight, 50, 155,  40, 40, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 56, 6,  22, 26, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 55, 44,  26, 30, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 56, 84,  24, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 56, 119,  23, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_UpLeft, 57, 156,  21, 28, 32, 32, &*peasant, true);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 120, 4,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 120, 42,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 120, 82,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 120, 118,  40, 40, 32, 32, &*peasant, true);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 120, 155,  40, 40, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 128, 3,  21, 31, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 128, 41,  20, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 130, 82,  19, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 126, 119,  26, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 126, 156,  26, 28, 32, 32, &*peasant, false);
 
-    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 120, 4,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 120, 42,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 120, 82,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 120, 118,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Walking, Constants::D_DownRight, 120, 155,  40, 40, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 128, 3,  21, 31, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 128, 41,  20, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 130, 82,  19, 26, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 126, 119,  26, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Walking, Constants::D_DownLeft, 126, 156,  26, 28, 32, 32, &*peasant, true);
 
+    ///
+    /// Harvesting
+    ///
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Down,168, 196,  24, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Down,160, 228,  28, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Down,168, 274,  23, 24, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Down,174, 317,  22, 37, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Down,173, 367,  22, 24, 32, 32, &*peasant, false);
 
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Up,19, 190,  31, 32, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Up,19, 230,  30, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Up,19, 260,  23, 41, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Up,19, 304,  21, 41, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Up,18, 356,  24, 36, 32, 32, &*peasant, false);
 
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownRight,129, 196,  21, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownRight,122, 231,  25, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownRight,129, 273,  19, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownRight,133, 319,  37, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownRight,134, 366,  32, 28, 32, 32, &*peasant, false);
 
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownLeft,129, 196,  21, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownLeft,122, 231,  25, 26, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownLeft,129, 273,  19, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownLeft,133, 319,  37, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_DownLeft,134, 366,  32, 28, 32, 32, &*peasant, true);
 
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpRight,56, 196,  27, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpRight,56, 231,  21, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpRight,56, 270,  30, 30, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpRight,56, 309,  31, 35, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpRight,56, 362,  32, 30, 32, 32, &*peasant, false);
 
-    Animation::add(P, Constants::State_Idle, Constants::D_Down,15, 4,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Dead, Constants::D_Down,0, 0, 40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Spawning, Constants::D_Down,0, 0, 40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Despawned,Constants::D_Down,0, 0,  40, 40, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpLeft,56, 196,  27, 25, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpLeft,56, 231,  21, 25, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpLeft,56, 270,  30, 30, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpLeft,56, 309,  31, 35, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_UpLeft,56, 362,  32, 30, 32, 32, &*peasant, true);
+
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Right,96, 194,  19, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Right,94, 228,  18, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Right,93, 268,  27, 32, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Right,94, 314,  36, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Right,94, 364,  35, 27, 32, 32, &*peasant, false);
+
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Left,96, 194,  19, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Left,94, 228,  18, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Left,93, 268,  27, 32, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Left,94, 314,  36, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Harvesting,Constants::D_Left,94, 364,  35, 27, 32, 32, &*peasant, true);
+
+    
+    ///
+    /// Combat
+    ///
+    Animation::add(P, Constants::State_Combat,Constants::D_Down,168, 196,  24, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Down,160, 228,  28, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Down,168, 274,  23, 24, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Down,174, 317,  22, 37, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Down,173, 367,  22, 24, 32, 32, &*peasant, false);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_Up,19, 190,  31, 32, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Up,19, 230,  30, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Up,19, 260,  23, 41, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Up,19, 304,  21, 41, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Up,18, 356,  24, 36, 32, 32, &*peasant, false);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_DownRight,129, 196,  21, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownRight,122, 231,  25, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownRight,129, 273,  19, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownRight,133, 319,  37, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownRight,134, 366,  32, 28, 32, 32, &*peasant, false);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_DownLeft,129, 196,  21, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownLeft,122, 231,  25, 26, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownLeft,129, 273,  19, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownLeft,133, 319,  37, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_DownLeft,134, 366,  32, 28, 32, 32, &*peasant, true);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_UpRight,56, 196,  27, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpRight,56, 231,  21, 25, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpRight,56, 270,  30, 30, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpRight,56, 309,  31, 35, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpRight,56, 362,  32, 30, 32, 32, &*peasant, false);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_UpLeft,56, 196,  27, 25, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpLeft,56, 231,  21, 25, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpLeft,56, 270,  30, 30, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpLeft,56, 309,  31, 35, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_UpLeft,56, 362,  32, 30, 32, 32, &*peasant, true);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_Right,96, 194,  19, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Right,94, 228,  18, 27, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Right,93, 268,  27, 32, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Right,94, 314,  36, 29, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat,Constants::D_Right,94, 364,  35, 27, 32, 32, &*peasant, false);
+
+    Animation::add(P, Constants::State_Combat,Constants::D_Left,96, 194,  19, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_Left,94, 228,  18, 27, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_Left,93, 268,  27, 32, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_Left,94, 314,  36, 29, 32, 32, &*peasant, true);
+    Animation::add(P, Constants::State_Combat,Constants::D_Left,94, 364,  35, 27, 32, 32, &*peasant, true);
+
+    Animation::add(P, Constants::State_Idle, Constants::D_Down,166, 7,  24, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Dead, Constants::D_Down,166, 7,  24, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Spawning, Constants::D_Down,166, 7,  24, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Despawned, Constants::D_Down,166, 7,  24, 26, 32, 32, &*peasant, false);
+    Animation::add(P, Constants::State_Combat, Constants::D_Down,166, 7,  24, 26, 32, 32, &*peasant, false);
     Animation::add(P, Constants::State_Combat, Constants::D_Down,0, 0,  40, 40, 32, 32, &*peasant, false);
-    Animation::add(P, Constants::State_Harvesting,Constants::D_Down,0, 0,  40, 40, 32, 32, &*peasant, false);
+
 }
 
 void Animation::setupTownHall(){

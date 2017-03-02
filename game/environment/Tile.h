@@ -29,7 +29,7 @@ public:
     int goldYield;
     int resources;
     sf::Vertex vertices[4];
-    Tilemap& tilemap;
+    Tilemap &tilemap;
     std::shared_ptr<Unit> occupant = NULL;
 
     bool isAttackable(std::shared_ptr<Unit> unit);

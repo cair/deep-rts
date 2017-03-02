@@ -10,20 +10,6 @@
 
 using json = nlohmann::json;
 
-
-
-Tilemap MapLoader::load(std::string map_name) {
-    json mapData = MapLoader::loadFile(map_name);
-    json mapLayer = mapData["layers"][0];
-    json tileIDs = mapLayer["data"];
-
-    json tilesData = MapLoader::tileProperties();
-    sf::Texture tilesetTexture = MapLoader::loadTexture();
-    Tilemap tilemap = Tilemap(tilesData, mapData, tilesetTexture);
-
-    return tilemap;
-}
-
 json MapLoader::loadFile(std::string map_file) {
     // Read Map data
     std::ifstream map("./data/maps/" + map_file);
@@ -33,7 +19,7 @@ json MapLoader::loadFile(std::string map_file) {
 }
 
 json MapLoader::tileProperties() {
-    std::ifstream map("./data/tile_properties.json");
+    std::ifstream map(".//data//tile_properties.json");
     json data;
     map >> data;
     return data;
