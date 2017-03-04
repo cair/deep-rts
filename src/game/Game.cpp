@@ -68,7 +68,7 @@ void Game::loop() {
     this->_update_next = now + this->_update_interval;
     this->_stats_next = now + 0;
 
-    
+
     while(this->running) {
 
 

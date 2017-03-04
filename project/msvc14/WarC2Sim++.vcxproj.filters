@@ -13,97 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{b72e3753-6187-4910-b379-187fb6d24950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\loaders">
+      <UniqueIdentifier>{7410137e-a4cf-475d-91cc-b7195c868628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\action">
+      <UniqueIdentifier>{48e269c4-4a81-42f1-a688-797d283a58f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\algorithms">
+      <UniqueIdentifier>{cb22741e-c6fe-4d46-bef7-8fe09f78b7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\environment">
+      <UniqueIdentifier>{d1124627-6fd5-4fc7-82aa-0537baeb0874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\graphics">
+      <UniqueIdentifier>{34f2c000-00ae-4a48-a071-8137899f739c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\lib">
+      <UniqueIdentifier>{295e5902-1d78-40a3-a542-d534a84e75ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\unit">
+      <UniqueIdentifier>{41d241d1-ad54-4b2e-9d94-caf1c5d36ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\state">
+      <UniqueIdentifier>{f5018d83-417a-4ffc-8f65-1420e525861e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\proto">
+      <UniqueIdentifier>{7553f37e-b6cd-46f3-bf66-0f00055c84d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\player">
+      <UniqueIdentifier>{e2c52f50-0df5-47b2-a588-6e4d7e4740d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="game\data\maps\contested-4v4.json">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\game\state\Despawned.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\action\RightClickAction.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Idle.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\unit\Peasant.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\unit\TownHall.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\unit\InventoryManager.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\StateManager.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\main.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\Game.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Walking.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\lib\Pathfinder.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\environment\Tilemap.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\environment\Tile.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\graphics\GUI.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\server\Server.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\unit\Unit.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Combat.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\graphics\Animation.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Harvesting.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\player\Player.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\algorithms\base\Algorithm.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Dead.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Building.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\Spawning.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\state\BaseState.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\game\unit\Peasant.h">
+    <ClInclude Include="..\..\src\game\action\BaseAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\action\RightClickAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\base\Algorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTSNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\environment\Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\environment\Tilemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\graphics\GUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\graphics\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\lib\Pathfinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\lib\PriorityQueue.h">
@@ -118,44 +93,171 @@
     <ClInclude Include="..\..\src\game\lib\ColorConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\unit\InventoryManager.h">
+    <ClInclude Include="..\..\src\game\lib\zhelpers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\proto\GameMessage.pb.h">
+      <Filter>Source Files\game\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\unit\TownHall.h">
+    <ClInclude Include="..\..\src\game\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\player\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\BaseState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Building.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Combat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Dead.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Despawned.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Harvesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Idle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\state\Spawning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\state\StateManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\server\Server.h">
+    <ClInclude Include="..\..\src\game\state\Walking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\graphics\GUI.h">
+    <ClInclude Include="..\..\src\game\unit\InventoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\Game.h">
+    <ClInclude Include="..\..\src\game\unit\Peasant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\server\ServerWorker.h">
+    <ClInclude Include="..\..\src\game\unit\TownHall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\server\ServerTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\game\lib\zhelpers.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\game\environment\Tilemap.h">
+    <ClInclude Include="..\..\src\game\unit\Unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\loaders\MapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\environment\Tile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\game\action\RightClickAction.cpp">
+      <Filter>Source Files\game\action</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTS.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTSNode.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\base\Algorithm.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\environment\Tilemap.cpp">
+      <Filter>Source Files\game\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\environment\Tile.cpp">
+      <Filter>Source Files\game\environment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\graphics\Animation.cpp">
+      <Filter>Source Files\game\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\graphics\GUI.cpp">
+      <Filter>Source Files\game\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\lib\Pathfinder.cpp">
+      <Filter>Source Files\game\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp">
+      <Filter>Source Files\game\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\player\Player.cpp">
+      <Filter>Source Files\game\player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\proto\GameMessage.pb.cc">
+      <Filter>Source Files\game\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\BaseState.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Building.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Combat.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Dead.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Despawned.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Harvesting.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Idle.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Spawning.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\StateManager.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\state\Walking.cpp">
+      <Filter>Source Files\game\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\unit\InventoryManager.cpp">
+      <Filter>Source Files\game\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\unit\Peasant.cpp">
+      <Filter>Source Files\game\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\unit\TownHall.cpp">
+      <Filter>Source Files\game\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\unit\Unit.cpp">
+      <Filter>Source Files\game\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\Game.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\proto\GameMessage.proto">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\src\game\data\maps\contested-4v4.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\src\game\data\config.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\src\game\data\tile_properties.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

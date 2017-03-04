@@ -16,174 +16,167 @@
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
+class GameMessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<GameMessage> {
+} _GameMessage_default_instance_;
+
+namespace protobuf_GameMessage_2eproto {
+
 
 namespace {
 
-const ::google::protobuf::Descriptor* GameMessage_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  GameMessage_reflection_ = NULL;
+::google::protobuf::Metadata file_level_metadata[1];
 
 }  // namespace
 
+const ::google::protobuf::uint32 TableStruct::offsets[] = {
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, playerid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, defeated_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statgoldgather_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statlumbergather_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statoilgather_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitdamagetaken_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitdamagedone_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitbuilt_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitmilitary_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, food_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, consumedfood_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, gold_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, lumber_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, oil_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitcount_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, gameticks_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, numunits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsids_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitstype_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitshealth_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitstileid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsstate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsdirection_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsduration_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsharvesttimer_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsharvestiterator_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsspawntimer_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsbuildtimer_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitscombattimer_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitswalkingtimer_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsspawntileid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsharvesttarget_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitswalkinggoal_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitbuildentity_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitscombattarget_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsgoldcarry_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitslumbercarry_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsoilcary_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, numtiles_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, tileids_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, tileresources_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, tileoccupant_),
+};
 
-void protobuf_AssignDesc_GameMessage_2eproto() GOOGLE_ATTRIBUTE_COLD;
-void protobuf_AssignDesc_GameMessage_2eproto() {
-  protobuf_AddDesc_GameMessage_2eproto();
-  const ::google::protobuf::FileDescriptor* file =
-    ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
-      "GameMessage.proto");
-  GOOGLE_CHECK(file != NULL);
-  GameMessage_descriptor_ = file->message_type(0);
-  static const int GameMessage_offsets_[43] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, playerid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, defeated_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statgoldgather_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statlumbergather_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statoilgather_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitdamagetaken_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitdamagedone_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitbuilt_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, statunitmilitary_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, food_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, consumedfood_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, gold_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, lumber_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, oil_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitcount_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, gameticks_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, numunits_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsids_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitstype_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitshealth_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitstileid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsstate_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsdirection_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsduration_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsharvesttimer_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsharvestiterator_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsspawntimer_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsbuildtimer_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitscombattimer_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitswalkingtimer_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsspawntileid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsharvesttarget_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitswalkinggoal_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitbuildentity_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitscombattarget_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsgoldcarry_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitslumbercarry_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, unitsoilcary_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, numtiles_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, tileids_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, tileresources_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, tileoccupant_),
-  };
-  GameMessage_reflection_ =
-    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
-      GameMessage_descriptor_,
-      GameMessage::internal_default_instance(),
-      GameMessage_offsets_,
-      -1,
-      -1,
-      -1,
-      sizeof(GameMessage),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GameMessage, _internal_metadata_));
-}
+static const ::google::protobuf::internal::MigrationSchema schemas[] = {
+  { 0, -1, sizeof(GameMessage)},
+};
+
+static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&_GameMessage_default_instance_),
+};
 
 namespace {
 
-GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AssignDescriptors_once_);
+void protobuf_AssignDescriptors() {
+  AddDescriptors();
+  ::google::protobuf::MessageFactory* factory = NULL;
+  AssignDescriptors(
+      "GameMessage.proto", schemas, file_default_instances, TableStruct::offsets, factory,
+      file_level_metadata, NULL, NULL);
+}
+
 void protobuf_AssignDescriptorsOnce() {
-  ::google::protobuf::GoogleOnceInit(&protobuf_AssignDescriptors_once_,
-                 &protobuf_AssignDesc_GameMessage_2eproto);
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &protobuf_AssignDescriptors);
 }
 
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-      GameMessage_descriptor_, GameMessage::internal_default_instance());
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
 }
 
 }  // namespace
 
-void protobuf_ShutdownFile_GameMessage_2eproto() {
-  GameMessage_default_instance_.Shutdown();
-  delete GameMessage_reflection_;
+void TableStruct::Shutdown() {
+  _GameMessage_default_instance_.Shutdown();
+  delete file_level_metadata[0].reflection;
 }
 
-void protobuf_InitDefaults_GameMessage_2eproto_impl() {
+void TableStruct::InitDefaultsImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  GameMessage_default_instance_.DefaultConstruct();
-  GameMessage_default_instance_.get_mutable()->InitAsDefaultInstance();
+  ::google::protobuf::internal::InitProtobufDefaults();
+  _GameMessage_default_instance_.DefaultConstruct();
 }
 
-GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_InitDefaults_GameMessage_2eproto_once_);
-void protobuf_InitDefaults_GameMessage_2eproto() {
-  ::google::protobuf::GoogleOnceInit(&protobuf_InitDefaults_GameMessage_2eproto_once_,
-                 &protobuf_InitDefaults_GameMessage_2eproto_impl);
+void InitDefaults() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &TableStruct::InitDefaultsImpl);
 }
-void protobuf_AddDesc_GameMessage_2eproto_impl() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  protobuf_InitDefaults_GameMessage_2eproto();
+void AddDescriptorsImpl() {
+  InitDefaults();
+  static const char descriptor[] = {
+      "\n\021GameMessage.proto\"\345\010\n\013GameMessage\022\n\n\002i"
+      "d\030\001 \001(\005\022\024\n\010playerId\030\033 \003(\005B\002\020\001\022\024\n\010defeate"
+      "d\030\002 \003(\005B\002\020\001\022\032\n\016statGoldGather\030\003 \003(\005B\002\020\001\022"
+      "\034\n\020statLumberGather\030\004 \003(\005B\002\020\001\022\031\n\rstatOil"
+      "Gather\030\005 \003(\005B\002\020\001\022\037\n\023statUnitDamageTaken\030"
+      "\006 \003(\005B\002\020\001\022\036\n\022statUnitDamageDone\030\007 \003(\005B\002\020"
+      "\001\022\031\n\rstatUnitBuilt\030\010 \003(\005B\002\020\001\022\034\n\020statUnit"
+      "Military\030\t \003(\005B\002\020\001\022\020\n\004food\030\n \003(\005B\002\020\001\022\030\n\014"
+      "consumedFood\030\013 \003(\005B\002\020\001\022\020\n\004gold\030\014 \003(\005B\002\020\001"
+      "\022\022\n\006lumber\030\r \003(\005B\002\020\001\022\017\n\003oil\030\016 \003(\005B\002\020\001\022\025\n"
+      "\tunitCount\030\017 \003(\005B\002\020\001\022\025\n\tgameTicks\030\020 \003(\005B"
+      "\002\020\001\022\020\n\010numUnits\030\021 \001(\005\022\024\n\010unitsIDS\030\022 \003(\005B"
+      "\002\020\001\022\025\n\tunitsType\030\023 \003(\005B\002\020\001\022\027\n\013unitsHealt"
+      "h\030\024 \003(\005B\002\020\001\022\027\n\013unitsTileID\030\025 \003(\005B\002\020\001\022\026\n\n"
+      "unitsState\030\026 \003(\005B\002\020\001\022\032\n\016unitsDirection\030\027"
+      " \003(\005B\002\020\001\022\031\n\runitsDuration\030\030 \003(\005B\002\020\001\022\035\n\021u"
+      "nitsHarvestTimer\030\031 \003(\005B\002\020\001\022 \n\024unitsHarve"
+      "stIterator\030\032 \003(\005B\002\020\001\022\033\n\017unitsSpawnTimer\030"
+      "( \003(\005B\002\020\001\022\033\n\017unitsBuildTimer\030\034 \003(\005B\002\020\001\022\034"
+      "\n\020unitsCombatTimer\030\035 \003(\005B\002\020\001\022\035\n\021unitsWal"
+      "kingTimer\030\036 \003(\005B\002\020\001\022\034\n\020unitsSpawnTileID\030"
+      "\037 \003(\005B\002\020\001\022\036\n\022unitsHarvestTarget\030  \003(\005B\002\020"
+      "\001\022\034\n\020unitsWalkingGoal\030! \003(\005B\002\020\001\022\033\n\017unitB"
+      "uildEntity\030\" \003(\005B\002\020\001\022\035\n\021unitsCombatTarge"
+      "t\030* \003(\005B\002\020\001\022\032\n\016unitsGoldCarry\030) \003(\005B\002\020\001\022"
+      "\034\n\020unitsLumberCarry\030+ \003(\005B\002\020\001\022\030\n\014unitsOi"
+      "lCary\030, \003(\005B\002\020\001\022\020\n\010numTiles\030$ \001(\005\022\023\n\007til"
+      "eIDs\030% \003(\005B\002\020\001\022\031\n\rtileResources\030& \003(\005B\002\020"
+      "\001\022\030\n\014tileOccupant\030\' \003(\005B\002\020\001b\006proto3"
+  };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\021GameMessage.proto\"\345\010\n\013GameMessage\022\n\n\002i"
-    "d\030\001 \001(\005\022\024\n\010playerId\030\033 \003(\005B\002\020\001\022\024\n\010defeate"
-    "d\030\002 \003(\005B\002\020\001\022\032\n\016statGoldGather\030\003 \003(\005B\002\020\001\022"
-    "\034\n\020statLumberGather\030\004 \003(\005B\002\020\001\022\031\n\rstatOil"
-    "Gather\030\005 \003(\005B\002\020\001\022\037\n\023statUnitDamageTaken\030"
-    "\006 \003(\005B\002\020\001\022\036\n\022statUnitDamageDone\030\007 \003(\005B\002\020"
-    "\001\022\031\n\rstatUnitBuilt\030\010 \003(\005B\002\020\001\022\034\n\020statUnit"
-    "Military\030\t \003(\005B\002\020\001\022\020\n\004food\030\n \003(\005B\002\020\001\022\030\n\014"
-    "consumedFood\030\013 \003(\005B\002\020\001\022\020\n\004gold\030\014 \003(\005B\002\020\001"
-    "\022\022\n\006lumber\030\r \003(\005B\002\020\001\022\017\n\003oil\030\016 \003(\005B\002\020\001\022\025\n"
-    "\tunitCount\030\017 \003(\005B\002\020\001\022\025\n\tgameTicks\030\020 \003(\005B"
-    "\002\020\001\022\020\n\010numUnits\030\021 \001(\005\022\024\n\010unitsIDS\030\022 \003(\005B"
-    "\002\020\001\022\025\n\tunitsType\030\023 \003(\005B\002\020\001\022\027\n\013unitsHealt"
-    "h\030\024 \003(\005B\002\020\001\022\027\n\013unitsTileID\030\025 \003(\005B\002\020\001\022\026\n\n"
-    "unitsState\030\026 \003(\005B\002\020\001\022\032\n\016unitsDirection\030\027"
-    " \003(\005B\002\020\001\022\031\n\runitsDuration\030\030 \003(\005B\002\020\001\022\035\n\021u"
-    "nitsHarvestTimer\030\031 \003(\005B\002\020\001\022 \n\024unitsHarve"
-    "stIterator\030\032 \003(\005B\002\020\001\022\033\n\017unitsSpawnTimer\030"
-    "( \003(\005B\002\020\001\022\033\n\017unitsBuildTimer\030\034 \003(\005B\002\020\001\022\034"
-    "\n\020unitsCombatTimer\030\035 \003(\005B\002\020\001\022\035\n\021unitsWal"
-    "kingTimer\030\036 \003(\005B\002\020\001\022\034\n\020unitsSpawnTileID\030"
-    "\037 \003(\005B\002\020\001\022\036\n\022unitsHarvestTarget\030  \003(\005B\002\020"
-    "\001\022\034\n\020unitsWalkingGoal\030! \003(\005B\002\020\001\022\033\n\017unitB"
-    "uildEntity\030\" \003(\005B\002\020\001\022\035\n\021unitsCombatTarge"
-    "t\030* \003(\005B\002\020\001\022\032\n\016unitsGoldCarry\030) \003(\005B\002\020\001\022"
-    "\034\n\020unitsLumberCarry\030+ \003(\005B\002\020\001\022\030\n\014unitsOi"
-    "lCary\030, \003(\005B\002\020\001\022\020\n\010numTiles\030$ \001(\005\022\023\n\007til"
-    "eIDs\030% \003(\005B\002\020\001\022\031\n\rtileResources\030& \003(\005B\002\020"
-    "\001\022\030\n\014tileOccupant\030\' \003(\005B\002\020\001b\006proto3", 1155);
+      descriptor, 1155);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "GameMessage.proto", &protobuf_RegisterTypes);
-  ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_GameMessage_2eproto);
+  ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
 }
 
-GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AddDesc_GameMessage_2eproto_once_);
-void protobuf_AddDesc_GameMessage_2eproto() {
-  ::google::protobuf::GoogleOnceInit(&protobuf_AddDesc_GameMessage_2eproto_once_,
-                 &protobuf_AddDesc_GameMessage_2eproto_impl);
+void AddDescriptors() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &AddDescriptorsImpl);
 }
 // Force AddDescriptors() to be called at static initialization time.
-struct StaticDescriptorInitializer_GameMessage_2eproto {
-  StaticDescriptorInitializer_GameMessage_2eproto() {
-    protobuf_AddDesc_GameMessage_2eproto();
+struct StaticDescriptorInitializer {
+  StaticDescriptorInitializer() {
+    AddDescriptors();
   }
-} static_descriptor_initializer_GameMessage_2eproto_;
+} static_descriptor_initializer;
 
-namespace {
-
-static void MergeFromFail(int line) GOOGLE_ATTRIBUTE_COLD GOOGLE_ATTRIBUTE_NORETURN;
-static void MergeFromFail(int line) {
-  ::google::protobuf::internal::MergeFromFail(__FILE__, line);
-}
-
-}  // namespace
+}  // namespace protobuf_GameMessage_2eproto
 
 
 // ===================================================================
@@ -236,19 +229,60 @@ const int GameMessage::kTileOccupantFieldNumber;
 
 GameMessage::GameMessage()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  if (this != internal_default_instance()) protobuf_InitDefaults_GameMessage_2eproto();
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_GameMessage_2eproto::InitDefaults();
+  }
   SharedCtor();
   // @@protoc_insertion_point(constructor:GameMessage)
 }
-
-void GameMessage::InitAsDefaultInstance() {
-}
-
 GameMessage::GameMessage(const GameMessage& from)
   : ::google::protobuf::Message(),
-    _internal_metadata_(NULL) {
-  SharedCtor();
-  UnsafeMergeFrom(from);
+      _internal_metadata_(NULL),
+      playerid_(from.playerid_),
+      defeated_(from.defeated_),
+      statgoldgather_(from.statgoldgather_),
+      statlumbergather_(from.statlumbergather_),
+      statoilgather_(from.statoilgather_),
+      statunitdamagetaken_(from.statunitdamagetaken_),
+      statunitdamagedone_(from.statunitdamagedone_),
+      statunitbuilt_(from.statunitbuilt_),
+      statunitmilitary_(from.statunitmilitary_),
+      food_(from.food_),
+      consumedfood_(from.consumedfood_),
+      gold_(from.gold_),
+      lumber_(from.lumber_),
+      oil_(from.oil_),
+      unitcount_(from.unitcount_),
+      gameticks_(from.gameticks_),
+      unitsids_(from.unitsids_),
+      unitstype_(from.unitstype_),
+      unitshealth_(from.unitshealth_),
+      unitstileid_(from.unitstileid_),
+      unitsstate_(from.unitsstate_),
+      unitsdirection_(from.unitsdirection_),
+      unitsduration_(from.unitsduration_),
+      unitsharvesttimer_(from.unitsharvesttimer_),
+      unitsharvestiterator_(from.unitsharvestiterator_),
+      unitsspawntimer_(from.unitsspawntimer_),
+      unitsbuildtimer_(from.unitsbuildtimer_),
+      unitscombattimer_(from.unitscombattimer_),
+      unitswalkingtimer_(from.unitswalkingtimer_),
+      unitsspawntileid_(from.unitsspawntileid_),
+      unitsharvesttarget_(from.unitsharvesttarget_),
+      unitswalkinggoal_(from.unitswalkinggoal_),
+      unitbuildentity_(from.unitbuildentity_),
+      unitscombattarget_(from.unitscombattarget_),
+      unitsgoldcarry_(from.unitsgoldcarry_),
+      unitslumbercarry_(from.unitslumbercarry_),
+      unitsoilcary_(from.unitsoilcary_),
+      tileids_(from.tileids_),
+      tileresources_(from.tileresources_),
+      tileoccupant_(from.tileoccupant_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&id_, &from.id_,
+    reinterpret_cast<char*>(&numtiles_) -
+    reinterpret_cast<char*>(&id_) + sizeof(numtiles_));
   // @@protoc_insertion_point(copy_constructor:GameMessage)
 }
 
@@ -272,16 +306,14 @@ void GameMessage::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
 const ::google::protobuf::Descriptor* GameMessage::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return GameMessage_descriptor_;
+  protobuf_GameMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_GameMessage_2eproto::file_level_metadata[0].descriptor;
 }
 
 const GameMessage& GameMessage::default_instance() {
-  protobuf_InitDefaults_GameMessage_2eproto();
+  protobuf_GameMessage_2eproto::InitDefaults();
   return *internal_default_instance();
 }
-
-::google::protobuf::internal::ExplicitlyConstructed<GameMessage> GameMessage_default_instance_;
 
 GameMessage* GameMessage::New(::google::protobuf::Arena* arena) const {
   GameMessage* n = new GameMessage;
@@ -293,9 +325,6 @@ GameMessage* GameMessage::New(::google::protobuf::Arena* arena) const {
 
 void GameMessage::Clear() {
 // @@protoc_insertion_point(message_clear_start:GameMessage)
-  id_ = 0;
-  numunits_ = 0;
-  numtiles_ = 0;
   playerid_.Clear();
   defeated_.Clear();
   statgoldgather_.Clear();
@@ -336,6 +365,8 @@ void GameMessage::Clear() {
   tileids_.Clear();
   tileresources_.Clear();
   tileoccupant_.Clear();
+  ::memset(&id_, 0, reinterpret_cast<char*>(&numtiles_) -
+    reinterpret_cast<char*>(&id_) + sizeof(numtiles_));
 }
 
 bool GameMessage::MergePartialFromCodedStream(
@@ -344,13 +375,13 @@ bool GameMessage::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:GameMessage)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(16383u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 id = 1;
+      // int32 id = 1;
       case 1: {
-        if (tag == 8) {
+        if (tag == 8u) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -358,284 +389,252 @@ bool GameMessage::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_defeated;
         break;
       }
 
       // repeated int32 defeated = 2 [packed = true];
       case 2: {
-        if (tag == 18) {
-         parse_defeated:
+        if (tag == 18u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_defeated())));
-        } else if (tag == 16) {
+        } else if (tag == 16u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 18, input, this->mutable_defeated())));
+                 1, 18u, input, this->mutable_defeated())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(26)) goto parse_statGoldGather;
         break;
       }
 
       // repeated int32 statGoldGather = 3 [packed = true];
       case 3: {
-        if (tag == 26) {
-         parse_statGoldGather:
+        if (tag == 26u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statgoldgather())));
-        } else if (tag == 24) {
+        } else if (tag == 24u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 26, input, this->mutable_statgoldgather())));
+                 1, 26u, input, this->mutable_statgoldgather())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_statLumberGather;
         break;
       }
 
       // repeated int32 statLumberGather = 4 [packed = true];
       case 4: {
-        if (tag == 34) {
-         parse_statLumberGather:
+        if (tag == 34u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statlumbergather())));
-        } else if (tag == 32) {
+        } else if (tag == 32u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 34, input, this->mutable_statlumbergather())));
+                 1, 34u, input, this->mutable_statlumbergather())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(42)) goto parse_statOilGather;
         break;
       }
 
       // repeated int32 statOilGather = 5 [packed = true];
       case 5: {
-        if (tag == 42) {
-         parse_statOilGather:
+        if (tag == 42u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statoilgather())));
-        } else if (tag == 40) {
+        } else if (tag == 40u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 42, input, this->mutable_statoilgather())));
+                 1, 42u, input, this->mutable_statoilgather())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_statUnitDamageTaken;
         break;
       }
 
       // repeated int32 statUnitDamageTaken = 6 [packed = true];
       case 6: {
-        if (tag == 50) {
-         parse_statUnitDamageTaken:
+        if (tag == 50u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statunitdamagetaken())));
-        } else if (tag == 48) {
+        } else if (tag == 48u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 50, input, this->mutable_statunitdamagetaken())));
+                 1, 50u, input, this->mutable_statunitdamagetaken())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(58)) goto parse_statUnitDamageDone;
         break;
       }
 
       // repeated int32 statUnitDamageDone = 7 [packed = true];
       case 7: {
-        if (tag == 58) {
-         parse_statUnitDamageDone:
+        if (tag == 58u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statunitdamagedone())));
-        } else if (tag == 56) {
+        } else if (tag == 56u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 58, input, this->mutable_statunitdamagedone())));
+                 1, 58u, input, this->mutable_statunitdamagedone())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(66)) goto parse_statUnitBuilt;
         break;
       }
 
       // repeated int32 statUnitBuilt = 8 [packed = true];
       case 8: {
-        if (tag == 66) {
-         parse_statUnitBuilt:
+        if (tag == 66u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statunitbuilt())));
-        } else if (tag == 64) {
+        } else if (tag == 64u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 66, input, this->mutable_statunitbuilt())));
+                 1, 66u, input, this->mutable_statunitbuilt())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(74)) goto parse_statUnitMilitary;
         break;
       }
 
       // repeated int32 statUnitMilitary = 9 [packed = true];
       case 9: {
-        if (tag == 74) {
-         parse_statUnitMilitary:
+        if (tag == 74u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_statunitmilitary())));
-        } else if (tag == 72) {
+        } else if (tag == 72u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 74, input, this->mutable_statunitmilitary())));
+                 1, 74u, input, this->mutable_statunitmilitary())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(82)) goto parse_food;
         break;
       }
 
       // repeated int32 food = 10 [packed = true];
       case 10: {
-        if (tag == 82) {
-         parse_food:
+        if (tag == 82u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_food())));
-        } else if (tag == 80) {
+        } else if (tag == 80u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 82, input, this->mutable_food())));
+                 1, 82u, input, this->mutable_food())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(90)) goto parse_consumedFood;
         break;
       }
 
       // repeated int32 consumedFood = 11 [packed = true];
       case 11: {
-        if (tag == 90) {
-         parse_consumedFood:
+        if (tag == 90u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_consumedfood())));
-        } else if (tag == 88) {
+        } else if (tag == 88u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 90, input, this->mutable_consumedfood())));
+                 1, 90u, input, this->mutable_consumedfood())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(98)) goto parse_gold;
         break;
       }
 
       // repeated int32 gold = 12 [packed = true];
       case 12: {
-        if (tag == 98) {
-         parse_gold:
+        if (tag == 98u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_gold())));
-        } else if (tag == 96) {
+        } else if (tag == 96u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 98, input, this->mutable_gold())));
+                 1, 98u, input, this->mutable_gold())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(106)) goto parse_lumber;
         break;
       }
 
       // repeated int32 lumber = 13 [packed = true];
       case 13: {
-        if (tag == 106) {
-         parse_lumber:
+        if (tag == 106u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_lumber())));
-        } else if (tag == 104) {
+        } else if (tag == 104u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 106, input, this->mutable_lumber())));
+                 1, 106u, input, this->mutable_lumber())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(114)) goto parse_oil;
         break;
       }
 
       // repeated int32 oil = 14 [packed = true];
       case 14: {
-        if (tag == 114) {
-         parse_oil:
+        if (tag == 114u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_oil())));
-        } else if (tag == 112) {
+        } else if (tag == 112u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 114, input, this->mutable_oil())));
+                 1, 114u, input, this->mutable_oil())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(122)) goto parse_unitCount;
         break;
       }
 
       // repeated int32 unitCount = 15 [packed = true];
       case 15: {
-        if (tag == 122) {
-         parse_unitCount:
+        if (tag == 122u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitcount())));
-        } else if (tag == 120) {
+        } else if (tag == 120u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 122, input, this->mutable_unitcount())));
+                 1, 122u, input, this->mutable_unitcount())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(130)) goto parse_gameTicks;
         break;
       }
 
       // repeated int32 gameTicks = 16 [packed = true];
       case 16: {
-        if (tag == 130) {
-         parse_gameTicks:
+        if (tag == 130u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_gameticks())));
-        } else if (tag == 128) {
+        } else if (tag == 128u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 130, input, this->mutable_gameticks())));
+                 2, 130u, input, this->mutable_gameticks())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(136)) goto parse_numUnits;
         break;
       }
 
-      // optional int32 numUnits = 17;
+      // int32 numUnits = 17;
       case 17: {
-        if (tag == 136) {
-         parse_numUnits:
+        if (tag == 136u) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -643,320 +642,284 @@ bool GameMessage::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(146)) goto parse_unitsIDS;
         break;
       }
 
       // repeated int32 unitsIDS = 18 [packed = true];
       case 18: {
-        if (tag == 146) {
-         parse_unitsIDS:
+        if (tag == 146u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsids())));
-        } else if (tag == 144) {
+        } else if (tag == 144u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 146, input, this->mutable_unitsids())));
+                 2, 146u, input, this->mutable_unitsids())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(154)) goto parse_unitsType;
         break;
       }
 
       // repeated int32 unitsType = 19 [packed = true];
       case 19: {
-        if (tag == 154) {
-         parse_unitsType:
+        if (tag == 154u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitstype())));
-        } else if (tag == 152) {
+        } else if (tag == 152u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 154, input, this->mutable_unitstype())));
+                 2, 154u, input, this->mutable_unitstype())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(162)) goto parse_unitsHealth;
         break;
       }
 
       // repeated int32 unitsHealth = 20 [packed = true];
       case 20: {
-        if (tag == 162) {
-         parse_unitsHealth:
+        if (tag == 162u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitshealth())));
-        } else if (tag == 160) {
+        } else if (tag == 160u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 162, input, this->mutable_unitshealth())));
+                 2, 162u, input, this->mutable_unitshealth())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(170)) goto parse_unitsTileID;
         break;
       }
 
       // repeated int32 unitsTileID = 21 [packed = true];
       case 21: {
-        if (tag == 170) {
-         parse_unitsTileID:
+        if (tag == 170u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitstileid())));
-        } else if (tag == 168) {
+        } else if (tag == 168u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 170, input, this->mutable_unitstileid())));
+                 2, 170u, input, this->mutable_unitstileid())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(178)) goto parse_unitsState;
         break;
       }
 
       // repeated int32 unitsState = 22 [packed = true];
       case 22: {
-        if (tag == 178) {
-         parse_unitsState:
+        if (tag == 178u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsstate())));
-        } else if (tag == 176) {
+        } else if (tag == 176u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 178, input, this->mutable_unitsstate())));
+                 2, 178u, input, this->mutable_unitsstate())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(186)) goto parse_unitsDirection;
         break;
       }
 
       // repeated int32 unitsDirection = 23 [packed = true];
       case 23: {
-        if (tag == 186) {
-         parse_unitsDirection:
+        if (tag == 186u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsdirection())));
-        } else if (tag == 184) {
+        } else if (tag == 184u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 186, input, this->mutable_unitsdirection())));
+                 2, 186u, input, this->mutable_unitsdirection())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(194)) goto parse_unitsDuration;
         break;
       }
 
       // repeated int32 unitsDuration = 24 [packed = true];
       case 24: {
-        if (tag == 194) {
-         parse_unitsDuration:
+        if (tag == 194u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsduration())));
-        } else if (tag == 192) {
+        } else if (tag == 192u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 194, input, this->mutable_unitsduration())));
+                 2, 194u, input, this->mutable_unitsduration())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(202)) goto parse_unitsHarvestTimer;
         break;
       }
 
       // repeated int32 unitsHarvestTimer = 25 [packed = true];
       case 25: {
-        if (tag == 202) {
-         parse_unitsHarvestTimer:
+        if (tag == 202u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsharvesttimer())));
-        } else if (tag == 200) {
+        } else if (tag == 200u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 202, input, this->mutable_unitsharvesttimer())));
+                 2, 202u, input, this->mutable_unitsharvesttimer())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(210)) goto parse_unitsHarvestIterator;
         break;
       }
 
       // repeated int32 unitsHarvestIterator = 26 [packed = true];
       case 26: {
-        if (tag == 210) {
-         parse_unitsHarvestIterator:
+        if (tag == 210u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsharvestiterator())));
-        } else if (tag == 208) {
+        } else if (tag == 208u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 210, input, this->mutable_unitsharvestiterator())));
+                 2, 210u, input, this->mutable_unitsharvestiterator())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(218)) goto parse_playerId;
         break;
       }
 
       // repeated int32 playerId = 27 [packed = true];
       case 27: {
-        if (tag == 218) {
-         parse_playerId:
+        if (tag == 218u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_playerid())));
-        } else if (tag == 216) {
+        } else if (tag == 216u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 218, input, this->mutable_playerid())));
+                 2, 218u, input, this->mutable_playerid())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(226)) goto parse_unitsBuildTimer;
         break;
       }
 
       // repeated int32 unitsBuildTimer = 28 [packed = true];
       case 28: {
-        if (tag == 226) {
-         parse_unitsBuildTimer:
+        if (tag == 226u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsbuildtimer())));
-        } else if (tag == 224) {
+        } else if (tag == 224u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 226, input, this->mutable_unitsbuildtimer())));
+                 2, 226u, input, this->mutable_unitsbuildtimer())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(234)) goto parse_unitsCombatTimer;
         break;
       }
 
       // repeated int32 unitsCombatTimer = 29 [packed = true];
       case 29: {
-        if (tag == 234) {
-         parse_unitsCombatTimer:
+        if (tag == 234u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitscombattimer())));
-        } else if (tag == 232) {
+        } else if (tag == 232u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 234, input, this->mutable_unitscombattimer())));
+                 2, 234u, input, this->mutable_unitscombattimer())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(242)) goto parse_unitsWalkingTimer;
         break;
       }
 
       // repeated int32 unitsWalkingTimer = 30 [packed = true];
       case 30: {
-        if (tag == 242) {
-         parse_unitsWalkingTimer:
+        if (tag == 242u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitswalkingtimer())));
-        } else if (tag == 240) {
+        } else if (tag == 240u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 242, input, this->mutable_unitswalkingtimer())));
+                 2, 242u, input, this->mutable_unitswalkingtimer())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(250)) goto parse_unitsSpawnTileID;
         break;
       }
 
       // repeated int32 unitsSpawnTileID = 31 [packed = true];
       case 31: {
-        if (tag == 250) {
-         parse_unitsSpawnTileID:
+        if (tag == 250u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsspawntileid())));
-        } else if (tag == 248) {
+        } else if (tag == 248u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 250, input, this->mutable_unitsspawntileid())));
+                 2, 250u, input, this->mutable_unitsspawntileid())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(258)) goto parse_unitsHarvestTarget;
         break;
       }
 
       // repeated int32 unitsHarvestTarget = 32 [packed = true];
       case 32: {
-        if (tag == 258) {
-         parse_unitsHarvestTarget:
+        if (tag == 258u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsharvesttarget())));
-        } else if (tag == 256) {
+        } else if (tag == 256u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 258, input, this->mutable_unitsharvesttarget())));
+                 2, 258u, input, this->mutable_unitsharvesttarget())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(266)) goto parse_unitsWalkingGoal;
         break;
       }
 
       // repeated int32 unitsWalkingGoal = 33 [packed = true];
       case 33: {
-        if (tag == 266) {
-         parse_unitsWalkingGoal:
+        if (tag == 266u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitswalkinggoal())));
-        } else if (tag == 264) {
+        } else if (tag == 264u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 266, input, this->mutable_unitswalkinggoal())));
+                 2, 266u, input, this->mutable_unitswalkinggoal())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(274)) goto parse_unitBuildEntity;
         break;
       }
 
       // repeated int32 unitBuildEntity = 34 [packed = true];
       case 34: {
-        if (tag == 274) {
-         parse_unitBuildEntity:
+        if (tag == 274u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitbuildentity())));
-        } else if (tag == 272) {
+        } else if (tag == 272u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 274, input, this->mutable_unitbuildentity())));
+                 2, 274u, input, this->mutable_unitbuildentity())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(288)) goto parse_numTiles;
         break;
       }
 
-      // optional int32 numTiles = 36;
+      // int32 numTiles = 36;
       case 36: {
-        if (tag == 288) {
-         parse_numTiles:
+        if (tag == 288u) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -964,151 +927,134 @@ bool GameMessage::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(298)) goto parse_tileIDs;
         break;
       }
 
       // repeated int32 tileIDs = 37 [packed = true];
       case 37: {
-        if (tag == 298) {
-         parse_tileIDs:
+        if (tag == 298u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_tileids())));
-        } else if (tag == 296) {
+        } else if (tag == 296u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 298, input, this->mutable_tileids())));
+                 2, 298u, input, this->mutable_tileids())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(306)) goto parse_tileResources;
         break;
       }
 
       // repeated int32 tileResources = 38 [packed = true];
       case 38: {
-        if (tag == 306) {
-         parse_tileResources:
+        if (tag == 306u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_tileresources())));
-        } else if (tag == 304) {
+        } else if (tag == 304u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 306, input, this->mutable_tileresources())));
+                 2, 306u, input, this->mutable_tileresources())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(314)) goto parse_tileOccupant;
         break;
       }
 
       // repeated int32 tileOccupant = 39 [packed = true];
       case 39: {
-        if (tag == 314) {
-         parse_tileOccupant:
+        if (tag == 314u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_tileoccupant())));
-        } else if (tag == 312) {
+        } else if (tag == 312u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 314, input, this->mutable_tileoccupant())));
+                 2, 314u, input, this->mutable_tileoccupant())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(322)) goto parse_unitsSpawnTimer;
         break;
       }
 
       // repeated int32 unitsSpawnTimer = 40 [packed = true];
       case 40: {
-        if (tag == 322) {
-         parse_unitsSpawnTimer:
+        if (tag == 322u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsspawntimer())));
-        } else if (tag == 320) {
+        } else if (tag == 320u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 322, input, this->mutable_unitsspawntimer())));
+                 2, 322u, input, this->mutable_unitsspawntimer())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(330)) goto parse_unitsGoldCarry;
         break;
       }
 
       // repeated int32 unitsGoldCarry = 41 [packed = true];
       case 41: {
-        if (tag == 330) {
-         parse_unitsGoldCarry:
+        if (tag == 330u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsgoldcarry())));
-        } else if (tag == 328) {
+        } else if (tag == 328u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 330, input, this->mutable_unitsgoldcarry())));
+                 2, 330u, input, this->mutable_unitsgoldcarry())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(338)) goto parse_unitsCombatTarget;
         break;
       }
 
       // repeated int32 unitsCombatTarget = 42 [packed = true];
       case 42: {
-        if (tag == 338) {
-         parse_unitsCombatTarget:
+        if (tag == 338u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitscombattarget())));
-        } else if (tag == 336) {
+        } else if (tag == 336u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 338, input, this->mutable_unitscombattarget())));
+                 2, 338u, input, this->mutable_unitscombattarget())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(346)) goto parse_unitsLumberCarry;
         break;
       }
 
       // repeated int32 unitsLumberCarry = 43 [packed = true];
       case 43: {
-        if (tag == 346) {
-         parse_unitsLumberCarry:
+        if (tag == 346u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitslumbercarry())));
-        } else if (tag == 344) {
+        } else if (tag == 344u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 346, input, this->mutable_unitslumbercarry())));
+                 2, 346u, input, this->mutable_unitslumbercarry())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(354)) goto parse_unitsOilCary;
         break;
       }
 
       // repeated int32 unitsOilCary = 44 [packed = true];
       case 44: {
-        if (tag == 354) {
-         parse_unitsOilCary:
+        if (tag == 354u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, this->mutable_unitsoilcary())));
-        } else if (tag == 352) {
+        } else if (tag == 352u) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 2, 354, input, this->mutable_unitsoilcary())));
+                 2, 354u, input, this->mutable_unitsoilcary())));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
@@ -1136,7 +1082,7 @@ failure:
 void GameMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:GameMessage)
-  // optional int32 id = 1;
+  // int32 id = 1;
   if (this->id() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
@@ -1291,7 +1237,7 @@ void GameMessage::SerializeWithCachedSizes(
       this->gameticks(i), output);
   }
 
-  // optional int32 numUnits = 17;
+  // int32 numUnits = 17;
   if (this->numunits() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(17, this->numunits(), output);
   }
@@ -1466,7 +1412,7 @@ void GameMessage::SerializeWithCachedSizes(
       this->unitbuildentity(i), output);
   }
 
-  // optional int32 numTiles = 36;
+  // int32 numTiles = 36;
   if (this->numtiles() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(36, this->numtiles(), output);
   }
@@ -1556,9 +1502,9 @@ void GameMessage::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* GameMessage::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:GameMessage)
-  // optional int32 id = 1;
+  // int32 id = 1;
   if (this->id() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
   }
@@ -1773,7 +1719,7 @@ void GameMessage::SerializeWithCachedSizes(
       WriteInt32NoTagToArray(this->gameticks(i), target);
   }
 
-  // optional int32 numUnits = 17;
+  // int32 numUnits = 17;
   if (this->numunits() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(17, this->numunits(), target);
   }
@@ -2016,7 +1962,7 @@ void GameMessage::SerializeWithCachedSizes(
       WriteInt32NoTagToArray(this->unitbuildentity(i), target);
   }
 
-  // optional int32 numTiles = 36;
+  // int32 numTiles = 36;
   if (this->numtiles() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(36, this->numtiles(), target);
   }
@@ -2141,35 +2087,10 @@ size_t GameMessage::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:GameMessage)
   size_t total_size = 0;
 
-  // optional int32 id = 1;
-  if (this->id() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->id());
-  }
-
-  // optional int32 numUnits = 17;
-  if (this->numunits() != 0) {
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->numunits());
-  }
-
-  // optional int32 numTiles = 36;
-  if (this->numtiles() != 0) {
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->numtiles());
-  }
-
   // repeated int32 playerId = 27 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->playerid_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->playerid(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->playerid_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2183,12 +2104,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 defeated = 2 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->defeated_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->defeated(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->defeated_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2202,12 +2119,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statGoldGather = 3 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statgoldgather_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statgoldgather(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statgoldgather_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2221,12 +2134,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statLumberGather = 4 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statlumbergather_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statlumbergather(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statlumbergather_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2240,12 +2149,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statOilGather = 5 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statoilgather_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statoilgather(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statoilgather_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2259,12 +2164,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statUnitDamageTaken = 6 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statunitdamagetaken_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statunitdamagetaken(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statunitdamagetaken_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2278,12 +2179,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statUnitDamageDone = 7 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statunitdamagedone_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statunitdamagedone(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statunitdamagedone_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2297,12 +2194,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statUnitBuilt = 8 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statunitbuilt_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statunitbuilt(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statunitbuilt_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2316,12 +2209,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 statUnitMilitary = 9 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->statunitmilitary_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->statunitmilitary(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->statunitmilitary_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2335,12 +2224,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 food = 10 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->food_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->food(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->food_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2354,12 +2239,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 consumedFood = 11 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->consumedfood_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->consumedfood(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->consumedfood_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2373,12 +2254,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 gold = 12 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->gold_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->gold(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->gold_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2392,12 +2269,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 lumber = 13 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->lumber_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->lumber(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->lumber_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2411,12 +2284,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 oil = 14 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->oil_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->oil(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->oil_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2430,12 +2299,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitCount = 15 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitcount_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitcount(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitcount_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2449,12 +2314,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 gameTicks = 16 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->gameticks_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->gameticks(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->gameticks_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2468,12 +2329,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsIDS = 18 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsids_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsids(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsids_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2487,12 +2344,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsType = 19 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitstype_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitstype(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitstype_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2506,12 +2359,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsHealth = 20 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitshealth_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitshealth(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitshealth_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2525,12 +2374,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsTileID = 21 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitstileid_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitstileid(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitstileid_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2544,12 +2389,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsState = 22 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsstate_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsstate(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsstate_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2563,12 +2404,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsDirection = 23 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsdirection_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsdirection(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsdirection_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2582,12 +2419,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsDuration = 24 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsduration_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsduration(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsduration_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2601,12 +2434,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsHarvestTimer = 25 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsharvesttimer_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsharvesttimer(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsharvesttimer_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2620,12 +2449,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsHarvestIterator = 26 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsharvestiterator_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsharvestiterator(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsharvestiterator_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2639,12 +2464,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsSpawnTimer = 40 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsspawntimer_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsspawntimer(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsspawntimer_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2658,12 +2479,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsBuildTimer = 28 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsbuildtimer_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsbuildtimer(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsbuildtimer_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2677,12 +2494,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsCombatTimer = 29 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitscombattimer_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitscombattimer(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitscombattimer_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2696,12 +2509,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsWalkingTimer = 30 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitswalkingtimer_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitswalkingtimer(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitswalkingtimer_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2715,12 +2524,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsSpawnTileID = 31 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsspawntileid_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsspawntileid(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsspawntileid_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2734,12 +2539,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsHarvestTarget = 32 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsharvesttarget_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsharvesttarget(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsharvesttarget_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2753,12 +2554,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsWalkingGoal = 33 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitswalkinggoal_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitswalkinggoal(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitswalkinggoal_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2772,12 +2569,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitBuildEntity = 34 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitbuildentity_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitbuildentity(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitbuildentity_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2791,12 +2584,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsCombatTarget = 42 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitscombattarget_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitscombattarget(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitscombattarget_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2810,12 +2599,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsGoldCarry = 41 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsgoldcarry_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsgoldcarry(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsgoldcarry_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2829,12 +2614,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsLumberCarry = 43 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitslumbercarry_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitslumbercarry(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitslumbercarry_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2848,12 +2629,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 unitsOilCary = 44 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->unitsoilcary_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->unitsoilcary(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->unitsoilcary_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2867,12 +2644,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 tileIDs = 37 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->tileids_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->tileids(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->tileids_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2886,12 +2659,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 tileResources = 38 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->tileresources_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->tileresources(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->tileresources_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2905,12 +2674,8 @@ size_t GameMessage::ByteSizeLong() const {
 
   // repeated int32 tileOccupant = 39 [packed = true];
   {
-    size_t data_size = 0;
-    unsigned int count = this->tileoccupant_size();
-    for (unsigned int i = 0; i < count; i++) {
-      data_size += ::google::protobuf::internal::WireFormatLite::
-        Int32Size(this->tileoccupant(i));
-    }
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->tileoccupant_);
     if (data_size > 0) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
@@ -2922,6 +2687,27 @@ size_t GameMessage::ByteSizeLong() const {
     total_size += data_size;
   }
 
+  // int32 id = 1;
+  if (this->id() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->id());
+  }
+
+  // int32 numUnits = 17;
+  if (this->numunits() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->numunits());
+  }
+
+  // int32 numTiles = 36;
+  if (this->numtiles() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->numtiles());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -2931,7 +2717,7 @@ size_t GameMessage::ByteSizeLong() const {
 
 void GameMessage::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:GameMessage)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  GOOGLE_DCHECK_NE(&from, this);
   const GameMessage* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const GameMessage>(
           &from);
@@ -2940,61 +2726,54 @@ void GameMessage::MergeFrom(const ::google::protobuf::Message& from) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:GameMessage)
-    UnsafeMergeFrom(*source);
+    MergeFrom(*source);
   }
 }
 
 void GameMessage::MergeFrom(const GameMessage& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:GameMessage)
-  if (GOOGLE_PREDICT_TRUE(&from != this)) {
-    UnsafeMergeFrom(from);
-  } else {
-    MergeFromFail(__LINE__);
-  }
-}
-
-void GameMessage::UnsafeMergeFrom(const GameMessage& from) {
-  GOOGLE_DCHECK(&from != this);
-  playerid_.UnsafeMergeFrom(from.playerid_);
-  defeated_.UnsafeMergeFrom(from.defeated_);
-  statgoldgather_.UnsafeMergeFrom(from.statgoldgather_);
-  statlumbergather_.UnsafeMergeFrom(from.statlumbergather_);
-  statoilgather_.UnsafeMergeFrom(from.statoilgather_);
-  statunitdamagetaken_.UnsafeMergeFrom(from.statunitdamagetaken_);
-  statunitdamagedone_.UnsafeMergeFrom(from.statunitdamagedone_);
-  statunitbuilt_.UnsafeMergeFrom(from.statunitbuilt_);
-  statunitmilitary_.UnsafeMergeFrom(from.statunitmilitary_);
-  food_.UnsafeMergeFrom(from.food_);
-  consumedfood_.UnsafeMergeFrom(from.consumedfood_);
-  gold_.UnsafeMergeFrom(from.gold_);
-  lumber_.UnsafeMergeFrom(from.lumber_);
-  oil_.UnsafeMergeFrom(from.oil_);
-  unitcount_.UnsafeMergeFrom(from.unitcount_);
-  gameticks_.UnsafeMergeFrom(from.gameticks_);
-  unitsids_.UnsafeMergeFrom(from.unitsids_);
-  unitstype_.UnsafeMergeFrom(from.unitstype_);
-  unitshealth_.UnsafeMergeFrom(from.unitshealth_);
-  unitstileid_.UnsafeMergeFrom(from.unitstileid_);
-  unitsstate_.UnsafeMergeFrom(from.unitsstate_);
-  unitsdirection_.UnsafeMergeFrom(from.unitsdirection_);
-  unitsduration_.UnsafeMergeFrom(from.unitsduration_);
-  unitsharvesttimer_.UnsafeMergeFrom(from.unitsharvesttimer_);
-  unitsharvestiterator_.UnsafeMergeFrom(from.unitsharvestiterator_);
-  unitsspawntimer_.UnsafeMergeFrom(from.unitsspawntimer_);
-  unitsbuildtimer_.UnsafeMergeFrom(from.unitsbuildtimer_);
-  unitscombattimer_.UnsafeMergeFrom(from.unitscombattimer_);
-  unitswalkingtimer_.UnsafeMergeFrom(from.unitswalkingtimer_);
-  unitsspawntileid_.UnsafeMergeFrom(from.unitsspawntileid_);
-  unitsharvesttarget_.UnsafeMergeFrom(from.unitsharvesttarget_);
-  unitswalkinggoal_.UnsafeMergeFrom(from.unitswalkinggoal_);
-  unitbuildentity_.UnsafeMergeFrom(from.unitbuildentity_);
-  unitscombattarget_.UnsafeMergeFrom(from.unitscombattarget_);
-  unitsgoldcarry_.UnsafeMergeFrom(from.unitsgoldcarry_);
-  unitslumbercarry_.UnsafeMergeFrom(from.unitslumbercarry_);
-  unitsoilcary_.UnsafeMergeFrom(from.unitsoilcary_);
-  tileids_.UnsafeMergeFrom(from.tileids_);
-  tileresources_.UnsafeMergeFrom(from.tileresources_);
-  tileoccupant_.UnsafeMergeFrom(from.tileoccupant_);
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  playerid_.MergeFrom(from.playerid_);
+  defeated_.MergeFrom(from.defeated_);
+  statgoldgather_.MergeFrom(from.statgoldgather_);
+  statlumbergather_.MergeFrom(from.statlumbergather_);
+  statoilgather_.MergeFrom(from.statoilgather_);
+  statunitdamagetaken_.MergeFrom(from.statunitdamagetaken_);
+  statunitdamagedone_.MergeFrom(from.statunitdamagedone_);
+  statunitbuilt_.MergeFrom(from.statunitbuilt_);
+  statunitmilitary_.MergeFrom(from.statunitmilitary_);
+  food_.MergeFrom(from.food_);
+  consumedfood_.MergeFrom(from.consumedfood_);
+  gold_.MergeFrom(from.gold_);
+  lumber_.MergeFrom(from.lumber_);
+  oil_.MergeFrom(from.oil_);
+  unitcount_.MergeFrom(from.unitcount_);
+  gameticks_.MergeFrom(from.gameticks_);
+  unitsids_.MergeFrom(from.unitsids_);
+  unitstype_.MergeFrom(from.unitstype_);
+  unitshealth_.MergeFrom(from.unitshealth_);
+  unitstileid_.MergeFrom(from.unitstileid_);
+  unitsstate_.MergeFrom(from.unitsstate_);
+  unitsdirection_.MergeFrom(from.unitsdirection_);
+  unitsduration_.MergeFrom(from.unitsduration_);
+  unitsharvesttimer_.MergeFrom(from.unitsharvesttimer_);
+  unitsharvestiterator_.MergeFrom(from.unitsharvestiterator_);
+  unitsspawntimer_.MergeFrom(from.unitsspawntimer_);
+  unitsbuildtimer_.MergeFrom(from.unitsbuildtimer_);
+  unitscombattimer_.MergeFrom(from.unitscombattimer_);
+  unitswalkingtimer_.MergeFrom(from.unitswalkingtimer_);
+  unitsspawntileid_.MergeFrom(from.unitsspawntileid_);
+  unitsharvesttarget_.MergeFrom(from.unitsharvesttarget_);
+  unitswalkinggoal_.MergeFrom(from.unitswalkinggoal_);
+  unitbuildentity_.MergeFrom(from.unitbuildentity_);
+  unitscombattarget_.MergeFrom(from.unitscombattarget_);
+  unitsgoldcarry_.MergeFrom(from.unitsgoldcarry_);
+  unitslumbercarry_.MergeFrom(from.unitslumbercarry_);
+  unitsoilcary_.MergeFrom(from.unitsoilcary_);
+  tileids_.MergeFrom(from.tileids_);
+  tileresources_.MergeFrom(from.tileresources_);
+  tileoccupant_.MergeFrom(from.tileoccupant_);
   if (from.id() != 0) {
     set_id(from.id());
   }
@@ -3017,11 +2796,10 @@ void GameMessage::CopyFrom(const GameMessage& from) {
 // @@protoc_insertion_point(class_specific_copy_from_start:GameMessage)
   if (&from == this) return;
   Clear();
-  UnsafeMergeFrom(from);
+  MergeFrom(from);
 }
 
 bool GameMessage::IsInitialized() const {
-
   return true;
 }
 
@@ -3030,7 +2808,6 @@ void GameMessage::Swap(GameMessage* other) {
   InternalSwap(other);
 }
 void GameMessage::InternalSwap(GameMessage* other) {
-  std::swap(id_, other->id_);
   playerid_.UnsafeArenaSwap(&other->playerid_);
   defeated_.UnsafeArenaSwap(&other->defeated_);
   statgoldgather_.UnsafeArenaSwap(&other->statgoldgather_);
@@ -3047,7 +2824,6 @@ void GameMessage::InternalSwap(GameMessage* other) {
   oil_.UnsafeArenaSwap(&other->oil_);
   unitcount_.UnsafeArenaSwap(&other->unitcount_);
   gameticks_.UnsafeArenaSwap(&other->gameticks_);
-  std::swap(numunits_, other->numunits_);
   unitsids_.UnsafeArenaSwap(&other->unitsids_);
   unitstype_.UnsafeArenaSwap(&other->unitstype_);
   unitshealth_.UnsafeArenaSwap(&other->unitshealth_);
@@ -3069,26 +2845,24 @@ void GameMessage::InternalSwap(GameMessage* other) {
   unitsgoldcarry_.UnsafeArenaSwap(&other->unitsgoldcarry_);
   unitslumbercarry_.UnsafeArenaSwap(&other->unitslumbercarry_);
   unitsoilcary_.UnsafeArenaSwap(&other->unitsoilcary_);
-  std::swap(numtiles_, other->numtiles_);
   tileids_.UnsafeArenaSwap(&other->tileids_);
   tileresources_.UnsafeArenaSwap(&other->tileresources_);
   tileoccupant_.UnsafeArenaSwap(&other->tileoccupant_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(id_, other->id_);
+  std::swap(numunits_, other->numunits_);
+  std::swap(numtiles_, other->numtiles_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata GameMessage::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GameMessage_descriptor_;
-  metadata.reflection = GameMessage_reflection_;
-  return metadata;
+  protobuf_GameMessage_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_GameMessage_2eproto::file_level_metadata[0];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // GameMessage
 
-// optional int32 id = 1;
+// int32 id = 1;
 void GameMessage::clear_id() {
   id_ = 0;
 }
@@ -3582,7 +3356,7 @@ GameMessage::mutable_gameticks() {
   return &gameticks_;
 }
 
-// optional int32 numUnits = 17;
+// int32 numUnits = 17;
 void GameMessage::clear_numunits() {
   numunits_ = 0;
 }
@@ -4226,7 +4000,7 @@ GameMessage::mutable_unitsoilcary() {
   return &unitsoilcary_;
 }
 
-// optional int32 numTiles = 36;
+// int32 numTiles = 36;
 void GameMessage::clear_numtiles() {
   numtiles_ = 0;
 }
@@ -4330,9 +4104,6 @@ GameMessage::mutable_tileoccupant() {
   return &tileoccupant_;
 }
 
-inline const GameMessage* GameMessage::internal_default_instance() {
-  return &GameMessage_default_instance_.get();
-}
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // @@protoc_insertion_point(namespace_scope)
