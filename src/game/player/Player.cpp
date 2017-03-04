@@ -8,15 +8,16 @@
 #include "../Game.h"
 #include "../lib/ColorConverter.h"
 #include "../algorithms/RANDOM/AlgoRandom.h"
+#include "../unit/TownHall.h"
 
 int Player::gId = 0;
 
 Player::Player(Game &game): inventoryManager(*this), game_(game) {
     id_ = Player::gId++;
     name_ = "Player: " + std::to_string(id_);
-    playerColor = ColorConverter::hsv(fmod(id_ * 0.618033988749895, 1.0),
+    playerColor = ColorConverter::hsv(fmod(Player::gId * 0.618033988749895, 1.0),
                                       0.5,
-                                      sqrt(1.0 - fmod(id_ * 0.618033988749895, 0.5)));
+                                      sqrt(1.0 - fmod(Player::gId * 0.618033988749895, 0.5)));
 
 
     faction = 0;
@@ -208,7 +209,7 @@ void Player::setName(std::string name){
     name_ = name;
 }
 
-void Player::setAlgorithm(std::shared_ptr<AlgoRandom> theAlg){
+void Player::setAlgorithm(std::shared_ptr<Algorithm> theAlg){
     algorithm_ = theAlg;
 }
 
@@ -243,4 +244,15 @@ void Player::previousUnit(){
     idx--;
     targetedUnit = units[idx % units.size()];
 
+}
+
+std::shared_ptr<Unit> Player::createUnit(int type_id) {
+    switch (type_id){
+        case Constants::Unit_Peasant:
+            return std::shared_ptr<Unit>(new Peasant(*this));
+        case Constants::Unit_TownHall:
+            return std::shared_ptr<Unit>(new TownHall(*this));
+
+
+    }
 }

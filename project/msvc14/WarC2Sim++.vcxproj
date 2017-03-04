@@ -127,73 +127,56 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="game\action\BaseAction.h" />
-    <ClInclude Include="game\action\RightClickAction.h" />
-    <ClInclude Include="game\algorithms\base\Algorithm.h" />
-    <ClInclude Include="game\algorithms\RANDOM\AlgoRandom.h" />
-    <ClInclude Include="game\Config.h" />
-    <ClInclude Include="game\Constants.h" />
-    <ClInclude Include="game\environment\Tile.h" />
-    <ClInclude Include="game\environment\Tilemap.h" />
-    <ClInclude Include="game\Game.h" />
-    <ClInclude Include="game\graphics\Animation.h" />
-    <ClInclude Include="game\graphics\GUI.h" />
-    <ClInclude Include="game\lib\ColorConverter.h" />
-    <ClInclude Include="game\lib\csv.h" />
-    <ClInclude Include="game\lib\json.h" />
-    <ClInclude Include="game\lib\Pathfinder.h" />
-    <ClInclude Include="game\lib\PriorityQueue.h" />
-    <ClInclude Include="game\loaders\MapLoader.h" />
-    <ClInclude Include="game\player\Player.h" />
-    <ClInclude Include="game\proto\SearchRequest.pb.h" />
-    <ClInclude Include="game\proto\TestMessage.pb.h" />
-    <ClInclude Include="game\state\BaseState.h" />
-    <ClInclude Include="game\state\Building.h" />
-    <ClInclude Include="game\state\Combat.h" />
-    <ClInclude Include="game\state\Dead.h" />
-    <ClInclude Include="game\state\Despawned.h" />
-    <ClInclude Include="game\state\Harvesting.h" />
-    <ClInclude Include="game\state\Idle.h" />
-    <ClInclude Include="game\state\Spawning.h" />
-    <ClInclude Include="game\state\StateManager.h" />
-    <ClInclude Include="game\state\Walking.h" />
-    <ClInclude Include="game\unit\InventoryManager.h" />
-    <ClInclude Include="game\unit\Peasant.h" />
-    <ClInclude Include="game\unit\TownHall.h" />
-    <ClInclude Include="game\unit\Unit.h" />
-    <ClInclude Include="server\Server.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="game\action\RightClickAction.cpp" />
-    <ClCompile Include="game\algorithms\base\Algorithm.cpp" />
-    <ClCompile Include="game\algorithms\RANDOM\AlgoRandom.cpp" />
-    <ClCompile Include="game\environment\Tile.cpp" />
-    <ClCompile Include="game\environment\Tilemap.cpp" />
-    <ClCompile Include="game\Game.cpp" />
-    <ClCompile Include="game\graphics\Animation.cpp" />
-    <ClCompile Include="game\graphics\GUI.cpp" />
-    <ClCompile Include="game\lib\Pathfinder.cpp" />
-    <ClCompile Include="game\loaders\MapLoader.cpp" />
-    <ClCompile Include="game\player\Player.cpp" />
-    <ClCompile Include="game\state\BaseState.cpp" />
-    <ClCompile Include="game\state\Building.cpp" />
-    <ClCompile Include="game\state\Combat.cpp" />
-    <ClCompile Include="game\state\Dead.cpp" />
-    <ClCompile Include="game\state\Despawned.cpp" />
-    <ClCompile Include="game\state\Harvesting.cpp" />
-    <ClCompile Include="game\state\Idle.cpp" />
-    <ClCompile Include="game\state\Spawning.cpp" />
-    <ClCompile Include="game\state\StateManager.cpp" />
-    <ClCompile Include="game\state\Walking.cpp" />
-    <ClCompile Include="game\unit\InventoryManager.cpp" />
-    <ClCompile Include="game\unit\Peasant.cpp" />
-    <ClCompile Include="game\unit\TownHall.cpp" />
-    <ClCompile Include="game\unit\Unit.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="server\Server.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="game\data\maps\contested-4v4.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\game\action\RightClickAction.cpp" />
+    <ClCompile Include="..\..\src\game\algorithms\base\Algorithm.cpp" />
+    <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp" />
+    <ClCompile Include="..\..\src\game\environment\Tile.cpp" />
+    <ClCompile Include="..\..\src\game\environment\Tilemap.cpp" />
+    <ClCompile Include="..\..\src\game\Game.cpp" />
+    <ClCompile Include="..\..\src\game\graphics\Animation.cpp" />
+    <ClCompile Include="..\..\src\game\graphics\GUI.cpp" />
+    <ClCompile Include="..\..\src\game\lib\Pathfinder.cpp" />
+    <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp" />
+    <ClCompile Include="..\..\src\game\player\Player.cpp" />
+    <ClCompile Include="..\..\src\game\state\BaseState.cpp" />
+    <ClCompile Include="..\..\src\game\state\Building.cpp" />
+    <ClCompile Include="..\..\src\game\state\Combat.cpp" />
+    <ClCompile Include="..\..\src\game\state\Dead.cpp" />
+    <ClCompile Include="..\..\src\game\state\Despawned.cpp" />
+    <ClCompile Include="..\..\src\game\state\Harvesting.cpp" />
+    <ClCompile Include="..\..\src\game\state\Idle.cpp" />
+    <ClCompile Include="..\..\src\game\state\Spawning.cpp" />
+    <ClCompile Include="..\..\src\game\state\StateManager.cpp" />
+    <ClCompile Include="..\..\src\game\state\Walking.cpp" />
+    <ClCompile Include="..\..\src\game\unit\InventoryManager.cpp" />
+    <ClCompile Include="..\..\src\game\unit\Peasant.cpp" />
+    <ClCompile Include="..\..\src\game\unit\TownHall.cpp" />
+    <ClCompile Include="..\..\src\game\unit\Unit.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\server\Server.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\game\Config.h" />
+    <ClInclude Include="..\..\src\game\environment\Tile.h" />
+    <ClInclude Include="..\..\src\game\environment\Tilemap.h" />
+    <ClInclude Include="..\..\src\game\Game.h" />
+    <ClInclude Include="..\..\src\game\graphics\GUI.h" />
+    <ClInclude Include="..\..\src\game\lib\ColorConverter.h" />
+    <ClInclude Include="..\..\src\game\lib\csv.h" />
+    <ClInclude Include="..\..\src\game\lib\json.h" />
+    <ClInclude Include="..\..\src\game\lib\PriorityQueue.h" />
+    <ClInclude Include="..\..\src\game\lib\zhelpers.hpp" />
+    <ClInclude Include="..\..\src\game\loaders\MapLoader.h" />
+    <ClInclude Include="..\..\src\game\state\StateManager.h" />
+    <ClInclude Include="..\..\src\game\unit\InventoryManager.h" />
+    <ClInclude Include="..\..\src\game\unit\Peasant.h" />
+    <ClInclude Include="..\..\src\game\unit\TownHall.h" />
+    <ClInclude Include="..\..\src\server\Server.h" />
+    <ClInclude Include="..\..\src\server\ServerTask.h" />
+    <ClInclude Include="..\..\src\server\ServerWorker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,6 +27,8 @@ public:
     Building buildingState;
     Combat combatState;
     Dead deadState;
+
+    BaseState *getByID(int id);
 };
 
 

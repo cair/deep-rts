@@ -19,7 +19,9 @@ public:
     Tile(int x, int y, int w, int h, Tilemap &tilemap);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const{};
-    int id;
+    int id_;
+    int tId;
+    int reallyjustavariable;
     std::string name;
     bool harvestable;
     bool walkable;

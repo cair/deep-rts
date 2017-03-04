@@ -15,8 +15,8 @@ public:
             zmq::context_t &ctx,
             int sock_type,
             int id_,
-            Game *game,
-            Player *player,
+            std::shared_ptr<Game> game,
+            std::shared_ptr<Player> player,
             bool isInput): isInput(isInput), player(player), game(game), id(id_), ctx_(ctx), worker_(ctx_, sock_type) {}
 
     void work() {

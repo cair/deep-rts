@@ -42,7 +42,8 @@ Tilemap::Tilemap(std::string mapName) {
             tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT, *this));
             assert(!tiles.empty());
             Tile &tile = tiles.back();
-            tile.id = tId;
+            tile.tId = tId;
+            tile.id_ = c;
             tile.name = tileData["name"];
             tile.harvestable = tileData["harvestable"];
             tile.walkable = tileData["walkable"];
@@ -59,7 +60,8 @@ Tilemap::Tilemap(std::string mapName) {
                 tId = Constants::Tile_Grass;
                 json tileData = tilesData[std::to_string(tId - 1)];
                 tId -= 2; // TODO some fucked up shit goin on here
-                tile.id = tId;
+                tile.id_ = c;
+                tile.tId = tId;
                 tile.name = tileData["name"];
                 tile.harvestable = tileData["harvestable"];
                 tile.walkable = tileData["walkable"];

@@ -382,14 +382,14 @@ void GUI::drawSelected(){
     if (player->targetedUnit) {
         text.setCharacterSize(32);
         std::shared_ptr<Unit> unit = player->targetedUnit;
-
+        Unit &lel = *unit;
         text.setString(unit->name + " (" +
                        std::to_string(unit->id ) +
                        ")" + " - " +
                        unit->state->name + " - (" +
                        std::to_string(unit->tile->x) + "," +
                        std::to_string(unit->tile->y) + ") - (" +
-                       std::to_string(unit->player_.getId()) + ")"
+                       std::to_string(unit->player_.id_) + ")"
         );
         text.setPosition(320,830);
         window.draw(text);
@@ -512,7 +512,7 @@ void GUI::drawScoreBoard() {
 
     int offsetY = 0;
     text.setCharacterSize(18);
-    for (Player *p : game.players) {
+    for (std::shared_ptr<Player> p : game.players) {
         text.setString(p->name_ + ": " + std::to_string(p->getScore()));
         text.setFillColor(p->playerColor);
         text.setPosition(10, 40 + offsetY);

@@ -11,6 +11,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <memory>
 
 
 class Game;
@@ -66,7 +67,7 @@ public:
 
     void createView();
 
-    Player *player;
+    std::shared_ptr<Player> player;
 
     void drawStats();
 

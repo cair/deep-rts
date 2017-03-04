@@ -13,6 +13,7 @@
 #include "action/BaseAction.h"
 
 
+class GameMessage;
 class GUI;
 class Game {
 
@@ -43,7 +44,7 @@ public:
     long getFrames();
 
     StateManager stateManager;
-    std::vector<Player*> players;
+    std::vector<std::shared_ptr<Player>> players;
     std::vector<std::shared_ptr<BaseAction>> executedActions;
     void addAction(std::shared_ptr<BaseAction> action);
 
@@ -59,7 +60,7 @@ public:
 
     void stop();
 
-    Game(int n_players);
+    Game(int n_players, bool setup);
 
     GUI *gui;
 
@@ -79,7 +80,11 @@ public:
     Player &addPlayer();
 
 
-    //GameMessage serialize(Player *povPlayer);
+    GameMessage serialize();
+
+    void deactivateGUI();
+
+    void load(GameMessage& gameMessage);
 };
 
 

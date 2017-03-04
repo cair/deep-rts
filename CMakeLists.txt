@@ -59,9 +59,6 @@ set(SOURCE_FILES
         src/game/state/Dead.cpp
         src/game/state/Dead.h
 
-        src/game/proto/TestMessage.pb.cc
-        src/game/proto/TestMessage.pb.h
-
         src/game/proto/GameMessage.pb.cc
         src/game/proto/GameMessage.pb.h
 
@@ -75,15 +72,15 @@ set(SOURCE_FILES
         src/server/Server.cpp
         src/server/Server.h
         src/server/ServerWorker.h
-        src/server/ServerTask.h)
+        src/server/ServerTask.h
+
+        src/game/algorithms/MCTS/MCTS.cpp src/game/algorithms/MCTS/MCTS.h src/game/algorithms/MCTS/MCTSNode.cpp src/game/algorithms/MCTS/MCTSNode.h)
 
 add_executable(WarC2Sim__ ${SOURCE_FILES})
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 
-
-include(UseCython)
 
 
 find_package(SFML REQUIRED system window graphics network audio)
@@ -107,7 +104,6 @@ if (SFML_FOUND AND ZEROMQ_FOUND AND PROTOBUF_FOUND)
     target_link_libraries(WarC2Sim__ ${PROTOBUF_LIBRARIES})
     target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES})
     target_link_libraries(WarC2Sim__ ${ZeroMQ_LIBRARIES})
-
 
 
 else()

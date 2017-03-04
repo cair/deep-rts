@@ -72,7 +72,7 @@ public:
     int oilCost;
 
     int spawnDuration;
-    Tile *spawnTile;
+    Tile *spawnTile = NULL;
 
     int foodProduction;
     int foodConsumption;
@@ -92,33 +92,30 @@ public:
     double harvestInterval = .5 * 10;
     int harvestTimer;
     int harvestIterator;
-    Tile *harvestTarget;
+    Tile *harvestTarget = NULL;
 
     // Building
     int spawnTimer;
-    std::shared_ptr<Unit> buildEntity;
+    std::shared_ptr<Unit> buildEntity = NULL;
     int buildTimer;
 
     // Combat
-    std::shared_ptr<Unit> combatTarget;
+    std::shared_ptr<Unit> combatTarget = NULL;
     int combatTimer = 1000;
     double combatInterval = 1 * 10;
 
     // Walking
     int walking_timer = 0;
     std::vector<Tile *> walking_path;
-    Tile *walkingGoal;
+    Tile *walkingGoal = NULL;
     double walking_interval = .1 * 10;
 
 
     Tile *tile = NULL;
     StateManager& stateManager;
-    BaseState *state;
+    BaseState *state = NULL;
 
     std::vector<BaseState *> stateList;
-
-    sf::Texture *testTexture;
-    sf::Sprite *testSprite;
 
 
     Unit(Player &player);

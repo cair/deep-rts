@@ -23,6 +23,12 @@ private:
     static int gId;
 
     std::string name = "Derp";
+
+
+
+
+
+public:
     int oil;
     int gold;
     int lumber;
@@ -30,10 +36,6 @@ private:
     int food;
     int faction; // 0 = Human, 1 = Orc
 
-
-
-
-public:
     Game &game_;
     InventoryManager inventoryManager;
 
@@ -57,6 +59,8 @@ public:
     void addLumber(int n);
     void addOil(int n);
     void addUnit(std::shared_ptr<Unit> u);
+    std::shared_ptr<Unit> createUnit(int type_id);
+
     Player(Game &game);
     Unit &spawn(Tile &spawnPoint);
 
@@ -77,9 +81,9 @@ public:
 
     std::string name_;
 
-    void setAlgorithm(std::shared_ptr<AlgoRandom> theAlg);
+    void setAlgorithm(std::shared_ptr<Algorithm> theAlg);
 
-    std::shared_ptr<AlgoRandom> algorithm_ = NULL;
+    std::shared_ptr<Algorithm> algorithm_ = NULL;
 
     void nextUnit();
 
