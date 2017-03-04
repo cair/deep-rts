@@ -5,85 +5,91 @@ project(WarC2Sim__)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES
-        main.cpp
-        game/Game.cpp
-        game/Game.h
-        game/lib/csv.h
-        game/lib/json.h
-        game/loaders/MapLoader.cpp
-        game/loaders/MapLoader.h
-        game/environment/Tile.cpp
-        game/environment/Tile.h
-        game/player/Player.cpp
-        game/player/Player.h
-        game/unit/Unit.cpp
-        game/unit/Unit.h
-        game/Config.h
-        game/unit/Peasant.cpp
-        game/unit/Peasant.h
-        game/state/Walking.cpp
-        game/state/Walking.h
-        game/state/Spawning.cpp
-        game/state/Spawning.h
-        game/state/StateManager.cpp
-        game/state/StateManager.h
-        game/Constants.h
-        game/state/BaseState.cpp
-        game/state/BaseState.h
-        game/state/Idle.cpp
-        game/state/Idle.h
-        game/environment/Tilemap.cpp
-        game/environment/Tilemap.h
-        game/state/Despawned.cpp
-        game/state/Despawned.h
-        game/graphics/Animation.cpp
-        game/graphics/Animation.h
-        game/graphics/GUI.cpp
-        game/graphics/GUI.h
-        game/state/Harvesting.cpp
-        game/state/Harvesting.h
-        game/lib/Pathfinder.cpp
-        game/lib/Pathfinder.h
-        game/lib/PriorityQueue.h
-        game/unit/TownHall.h
-        game/unit/TownHall.cpp
-        game/state/Building.cpp
-        game/state/Building.h
-        game/unit/InventoryManager.cpp
-        game/unit/InventoryManager.h
-        game/lib/ColorConverter.h
-        game/state/Combat.cpp
-        game/state/Combat.h
-        game/state/Dead.cpp
-        game/state/Dead.h
-        server/Server.cpp
-        server/Server.h
-        game/proto/TestMessage.pb.cc
-        game/proto/TestMessage.pb.h
 
-        game/algorithms/base/Algorithm.h
-        game/algorithms/RANDOM/AlgoRandom.cpp
-        game/algorithms/RANDOM/AlgoRandom.h
-        game/algorithms/base/Algorithm.cpp
-        game/action/BaseAction.h game/action/RightClickAction.cpp game/action/RightClickAction.h)
+set(SOURCE_FILES
+        src/main.cpp
+        src/game/Game.cpp
+        src/game/Game.h
+        src/game/lib/csv.h
+        src/game/lib/json.h
+        src/game/loaders/MapLoader.cpp
+        src/game/loaders/MapLoader.h
+        src/game/environment/Tile.cpp
+        src/game/environment/Tile.h
+        src/game/player/Player.cpp
+        src/game/player/Player.h
+        src/game/unit/Unit.cpp
+        src/game/unit/Unit.h
+        src/game/Config.h
+        src/game/unit/Peasant.cpp
+        src/game/unit/Peasant.h
+        src/game/state/Walking.cpp
+        src/game/state/Walking.h
+        src/game/state/Spawning.cpp
+        src/game/state/Spawning.h
+        src/game/state/StateManager.cpp
+        src/game/state/StateManager.h
+        src/game/Constants.h
+        src/game/state/BaseState.cpp
+        src/game/state/BaseState.h
+        src/game/state/Idle.cpp
+        src/game/state/Idle.h
+        src/game/environment/Tilemap.cpp
+        src/game/environment/Tilemap.h
+        src/game/state/Despawned.cpp
+        src/game/state/Despawned.h
+        src/game/graphics/Animation.cpp
+        src/game/graphics/Animation.h
+        src/game/graphics/GUI.cpp
+        src/game/graphics/GUI.h
+        src/game/state/Harvesting.cpp
+        src/game/state/Harvesting.h
+        src/game/lib/Pathfinder.cpp
+        src/game/lib/Pathfinder.h
+        src/game/lib/PriorityQueue.h
+        src/game/unit/TownHall.h
+        src/game/unit/TownHall.cpp
+        src/game/state/Building.cpp
+        src/game/state/Building.h
+        src/game/unit/InventoryManager.cpp
+        src/game/unit/InventoryManager.h
+        src/game/lib/ColorConverter.h
+        src/game/state/Combat.cpp
+        src/game/state/Combat.h
+        src/game/state/Dead.cpp
+        src/game/state/Dead.h
+
+        src/game/proto/TestMessage.pb.cc
+        src/game/proto/TestMessage.pb.h
+
+        src/game/proto/GameMessage.pb.cc
+        src/game/proto/GameMessage.pb.h
+
+        src/game/algorithms/base/Algorithm.h
+        src/game/algorithms/RANDOM/AlgoRandom.cpp
+        src/game/algorithms/RANDOM/AlgoRandom.h
+        src/game/algorithms/base/Algorithm.cpp
+        src/game/action/BaseAction.h
+        src/game/action/RightClickAction.cpp
+        src/game/action/RightClickAction.h
+        src/server/Server.cpp
+        src/server/Server.h
+        src/server/ServerWorker.h
+        src/server/ServerTask.h)
 
 add_executable(WarC2Sim__ ${SOURCE_FILES})
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 
 
-
-#include_directories(${PROTOBUF_INCLUDE_DIRS})
-#include_directories(${CMAKE_CURRENT_BINARY_DIR})
-#protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS foo.proto)
-#add_executable(bar bar.cc ${PROTO_SRCS} ${PROTO_HDRS})
-#target_link_libraries(bar ${PROTOBUF_LIBRARIES})
+include(UseCython)
 
 
 find_package(SFML REQUIRED system window graphics network audio)
 find_package(ZeroMQ REQUIRED)
 find_package(Protobuf REQUIRED)
+
 
 add_custom_command(
         OUTPUT .
@@ -96,10 +102,12 @@ if (SFML_FOUND AND ZEROMQ_FOUND AND PROTOBUF_FOUND)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
     include_directories(${PROTOBUF_INCLUDE_DIRS})
     include_directories(${ZeroMQ_INCLUDE_DIR})
+
     #protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS proto/SearchRequest.proto)
     target_link_libraries(WarC2Sim__ ${PROTOBUF_LIBRARIES})
     target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES})
     target_link_libraries(WarC2Sim__ ${ZeroMQ_LIBRARIES})
+
 
 
 else()
@@ -110,4 +118,4 @@ endif()
 
 
 
-file(COPY game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??
+file(COPY src/game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??

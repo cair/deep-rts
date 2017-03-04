@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+message GameMessage {
+  int32 id = 1;
+
+  int32 defeated = 2;
+  int32 statGoldGather = 3;
+  int32 statLumberGather = 4;
+  int32 statOilGather = 5;
+  int32 statUnitDamageTaken = 6;
+  int32 statUnitDamageDone = 7;
+  int32 statUnitBuilt = 8;
+  int32 statUnitMilitary = 9;
+  
+  int32 food = 10;
+  int32 consumedFood = 11;
+  int32 gold = 12;
+  int32 lumber = 13;
+  int32 oil = 14;
+  int32 unitCount = 15;
+  int32 gameTicks = 16;
+
+  int32 numUnits = 17;
+  repeated int32 unitsIDS = 18 [packed=true];
+  repeated int32 unitsType = 19 [packed=true];
+  repeated int32 unitsHealth = 20 [packed=true];
+  repeated int32 unitsTileID = 21 [packed=true];
+  repeated int32 unitsState = 22 [packed=true];
+
+  int32 numTiles = 23;
+  repeated int32 tileIDs = 24 [packed=true];
+  repeated int32 tileResources = 25 [packed=true];
+  repeated int32 tileOccupant = 26 [packed=true];
+
+
+}
