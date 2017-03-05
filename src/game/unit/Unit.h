@@ -113,9 +113,9 @@ public:
 
     Tile *tile = NULL;
     StateManager& stateManager;
-    BaseState *state = NULL;
+	std::shared_ptr<BaseState> state = NULL;
 
-    std::vector<BaseState *> stateList;
+    std::vector<std::shared_ptr<BaseState>> stateList;
 
 
     Unit(Player &player);
@@ -123,9 +123,9 @@ public:
     void spawn(Tile &x, int initValue);
     void despawn();
     void update();
-    void enqueueState(BaseState &tate);
+    void enqueueState(std::shared_ptr<BaseState> state);
     void transitionState();
-    void transitionState(BaseState &nextState);
+    void transitionState(std::shared_ptr<BaseState> nextState);
     void setPosition(Tile &tile);
     void rightClick(Tile &tile);
     void move(Tile &targetTile);

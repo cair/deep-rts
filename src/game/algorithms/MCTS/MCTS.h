@@ -7,6 +7,8 @@
 
 #include "../base/Algorithm.h"
 #include "MCTSNode.h"
+#include <random>
+
 class Game;
 class MCTS: public Algorithm  {
 public:
@@ -16,14 +18,21 @@ public:
     virtual std::shared_ptr<BaseAction> findBestAction(std::shared_ptr<Unit> unit);
     virtual void doAction(std::shared_ptr<BaseAction> action);
     virtual void defineActionSpace();
+	std::shared_ptr<BaseAction> findBestAction();
+
 
     int timeBudget;
     int depthBudget;
+	double epsilon;
+	double epsilonModifier;
+	double epsilonDecent;
+	int playerID;
     MCTSNode root;
 
     void calculate(MCTSNode root);
 
     Game *game;
+	std::mt19937 random_engine;
 };
 
 

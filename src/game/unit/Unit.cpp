@@ -13,9 +13,8 @@
 int Unit::gId = 0;
 Unit::Unit(Player &player): player_(player), stateManager(player.game_.stateManager){
 
-
     id = Unit::gId++;
-    state = &stateManager.despawnedState;
+    state = stateManager.despawnedState;
     current_state = state->id;
 
 
@@ -24,7 +23,7 @@ void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
     spawnTile = &_toSpawnOn;
     transitionState(stateManager.spawnState);
-    enqueueState(stateManager.idleState);
+	enqueueState(stateManager.idleState);
 }
 
 void Unit::moveRelative(int x, int y) {
@@ -92,7 +91,6 @@ bool Unit::build(int idx) {
     // PlacementTile is based on dimension of the new unit. For example; town hall has
     // 3x Width and 3x Height. We then want to place  the building by the middle tile;
     Tile *placementTile = player_.game_.map.getTile(tile->x - floor(newUnit->width/2), tile->y - floor(newUnit->height/2));
-    std::cout << tile->x - floor(newUnit->width/2) << "--" << tile->y - floor(newUnit->height/2);
 
     if(!player_.canAfford(newUnit)) {
         std::cout << "Cannot afford " << newUnit->name << std::endl;
@@ -220,34 +218,37 @@ void Unit::harvest(Tile &tile) {
 
 }
 
-void Unit::enqueueState(BaseState &state) {
-    stateList.push_back(&state);
+void Unit::enqueueState(std::shared_ptr<BaseState> state) {
+    stateList.push_back(state);
 }
 
 void Unit::transitionState() {
-    if(stateList.size() == 0) {
+    if(stateList.empty()) {
         // No states to transition to, enter idle state
-        BaseState &nextState = stateManager.idleState;
-        //std::cout << "State Transition: " << state->name << " ==> " << nextState.name << "|" << std::endl;
-        state = &nextState;
+		std::shared_ptr<BaseState> nextState = stateManager.idleState;
+        //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|" << std::endl;
+		//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|" << std::endl;
+        state = nextState;
         current_state = state->id;
         state->init(getptr());
         return;
     }
 
-    BaseState &nextState = *stateList.back();
-    //std::cout << "State Transition: " << state->name << " ==> " << nextState.name << "|" << std::endl;
-    state = &nextState;
+	std::shared_ptr<BaseState> nextState = stateList.back();
+    //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|y" << std::endl;
+	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|y"  << std::endl;
+    state = nextState;
     stateList.pop_back();
     current_state = state->id;
     //state->init(*this);
-    return;
+
 
 }
 
-void Unit::transitionState(BaseState &nextState) {
-    //std::cout << "State Transition: " << state->name << " ==> " << nextState.name << "|" << std::endl;
-    state = &nextState;
+void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
+    //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|x" << std::endl;
+	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
+    state = nextState;
     current_state = state->id;
     state->init(getptr());
     return;

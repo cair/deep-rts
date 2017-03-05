@@ -6,27 +6,35 @@
 
 StateManager::StateManager()
 {
+	walkingState = std::shared_ptr<BaseState>(new Walking());
+	spawnState = std::shared_ptr<BaseState>(new Spawning());
+	idleState = std::shared_ptr<BaseState>(new Idle());
+	despawnedState = std::shared_ptr<BaseState>(new Despawned());
+	harvestingState = std::shared_ptr<BaseState>(new Harvesting());
+	buildingState = std::shared_ptr<BaseState>(new Building());
+	combatState = std::shared_ptr<BaseState>(new Combat());
+	deadState = std::shared_ptr<BaseState>(new Dead());
 
 }
 
 
-BaseState *StateManager::getByID(int id){
+std::shared_ptr<BaseState> StateManager::getByID(int id){
     switch(id) {
         case Constants::State_Building:
-            return &buildingState;
+            return buildingState;
         case Constants::State_Spawning:
-            return &spawnState;
+            return spawnState;
         case Constants::State_Walking:
-            return &walkingState;
+            return walkingState;
         case Constants::State_Idle:
-            return &idleState;
+            return idleState;
         case Constants::State_Despawned:
-            return &despawnedState;
+            return despawnedState;
         case Constants::State_Harvesting:
-            return &harvestingState;
+            return harvestingState;
         case Constants::State_Combat:
-            return &combatState;
+            return combatState;
         case Constants::State_Dead:
-            return &deadState;
+            return deadState;
     }
 }

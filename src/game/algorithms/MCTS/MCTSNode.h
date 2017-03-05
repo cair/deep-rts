@@ -8,13 +8,15 @@
 
 #include <memory>
 #include <vector>
+#include "../../proto/GameMessage.pb.h"
+
 class MCTSNode;
 class MCTSNode {
 public:
     MCTSNode(std::shared_ptr<MCTSNode> parent, int depth, int score);
 
     MCTSNode();
-
+	GameMessage gameState;
     std::shared_ptr<MCTSNode> parent;
     std::vector<std::shared_ptr<MCTSNode>> children;
     int score;

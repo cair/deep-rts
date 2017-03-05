@@ -1,0 +1,143 @@
+layers {
+  name: "frames_input_layer"
+  type: MEMORY_DATA
+  top: "frames"
+  top: "dummy1"
+  memory_data_param {
+    batch_size: 32
+    channels: 4
+    height: 84
+    width: 84
+  }
+}
+layers {
+  name: "target_input_layer"
+  type: MEMORY_DATA
+  top: "target"
+  top: "dummy2"
+  memory_data_param {
+    batch_size: 32
+    channels: 18
+    height: 1
+    width: 1
+  }
+}
+layers {
+  name: "filter_input_layer"
+  type: MEMORY_DATA
+  top: "filter"
+  top: "dummy3"
+  memory_data_param {
+    batch_size: 32
+    channels: 18
+    height: 1
+    width: 1
+  }
+}
+layers {
+  name: "silence_layer"
+  type: SILENCE
+  bottom: "dummy1"
+  bottom: "dummy2"
+  bottom: "dummy3"
+}
+layers {
+  name: "conv1_layer"
+  type: CONVOLUTION
+  bottom: "frames"
+  top: "conv1"
+  convolution_param {
+    num_output: 16
+    kernel_size: 8
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layers {
+  name: "conv1_relu_layer"
+  type: RELU
+  bottom: "conv1"
+  top: "conv1"
+  relu_param {
+    negative_slope: 0.01
+  }
+}
+layers {
+  name: "conv2_layer"
+  type: CONVOLUTION
+  bottom: "conv1"
+  top: "conv2"
+  convolution_param {
+    num_output: 32
+    kernel_size: 4
+    stride: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layers {
+  name: "conv2_relu_layer"
+  type: RELU
+  bottom: "conv2"
+  top: "conv2"
+  relu_param {
+    negative_slope: 0.01
+  }
+}
+layers {
+  name: "ip1_layer"
+  type: INNER_PRODUCT
+  bottom: "conv2"
+  top: "ip1"
+  inner_product_param {
+    num_output: 256
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layers {
+  name: "ip1_relu_layer"
+  type: RELU
+  bottom: "ip1"
+  top: "ip1"
+  relu_param {
+    negative_slope: 0.01
+  }
+}
+layers {
+  name: "ip2_layer"
+  type: INNER_PRODUCT
+  bottom: "ip1"
+  top: "q_values"
+  inner_product_param {
+    num_output: 18
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layers {
+  name: "eltwise_layer"
+  type: ELTWISE
+  bottom: "q_values"
+  bottom: "filter"
+  top: "filtered_q_values"
+  eltwise_param {
+    operation: PROD
+  }
+}
+layers {
+  name: "loss"
+  type: EUCLIDEAN_LOSS
+  bottom: "filtered_q_values"
+  bottom: "target"
+  top: "loss"
+}

@@ -23,14 +23,15 @@ void AlgoRandom::update() {
 
 
     for(auto &u : player.units){
-        if(u->state->id =! Constants::State_Idle)
-            continue;
+		if (u->state->id == Constants::State_Idle) {
+			int randomIndex = rand() % actionSpace.size();
+			int actionID = actionSpace[randomIndex];
+			getAction(actionID, u);
+			//std::shared_ptr<BaseAction> action = findBestAction(u);
+			//doAction(action);
+		}
 
-        int randomIndex = rand() % actionSpace.size();
-        int actionID = actionSpace[randomIndex];
-        getAction(actionID, u);
-        //std::shared_ptr<BaseAction> action = findBestAction(u);
-        //doAction(action);
+    
     }
 
 }

@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 json MapLoader::loadFile(std::string map_file) {
     // Read Map data
-    std::ifstream map("./data/maps/" + map_file);
+    std::ifstream map(".//data//maps//" + map_file);
     json data;
     map >> data;
     return data;

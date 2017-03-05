@@ -213,7 +213,7 @@ GameMessage Game::serialize() {
             gameMessage.add_unitshealth(u->health);
             gameMessage.add_unitsids(u->id);
             gameMessage.add_unitstileid((u->tile) ? u->tile->id_: -1);
-            gameMessage.add_unitsstate(u->current_state);
+            gameMessage.add_unitsstate(u->state->id);
 
             if(u->combatTarget)
                 gameMessage.add_unitscombattarget(u->combatTarget->id);

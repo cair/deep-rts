@@ -80,14 +80,11 @@ public:
     Player &addPlayer();
 
 
-
-private:
-	GameMessage serialize();
-
-public:
 	void deactivateGUI();
+	GameMessage serialize();
+	void load(GameMessage& gameMessage);
 
-    void load(GameMessage& gameMessage);
+
 };
 
 

@@ -19,16 +19,16 @@ class StateManager {
 
 public:
     StateManager();
-    Walking walkingState;
-    Spawning spawnState;
-    Idle idleState;
-    Despawned despawnedState;
-    Harvesting harvestingState;
-    Building buildingState;
-    Combat combatState;
-    Dead deadState;
+	std::shared_ptr<BaseState> walkingState;
+	std::shared_ptr<BaseState> spawnState;
+	std::shared_ptr<BaseState> idleState;
+	std::shared_ptr<BaseState> despawnedState;
+	std::shared_ptr<BaseState> harvestingState;
+	std::shared_ptr<BaseState> buildingState;
+	std::shared_ptr<BaseState> combatState;
+	std::shared_ptr<BaseState> deadState;
 
-    BaseState *getByID(int id);
+	std::shared_ptr<BaseState> getByID(int id);
 };
 
 
