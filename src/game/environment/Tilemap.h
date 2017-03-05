@@ -10,7 +10,7 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "Tile.h"
-#include "../lib/json.h"
+#include "../third_party/json.hpp"
 using json = nlohmann::json;
 
 class Tilemap{

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Harvesting.h"
 #include "../unit/unit.h"
-#include "../lib/Pathfinder.h"
+#include "../util/Pathfinder.h"
 #include "../player/Player.h"
 
 void Harvesting::update(std::shared_ptr<Unit> unit)const{

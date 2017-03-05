@@ -9,7 +9,8 @@
 
 #include "../environment/Tile.h"
 #include <SFML/Graphics/Texture.hpp>
-#include "../lib/json.h"
+#include "../third_party/json.hpp"
+
 #include "../environment/Tilemap.h"
 
 using json = nlohmann::json;

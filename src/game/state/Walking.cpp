@@ -5,7 +5,7 @@
 #include "Walking.h"
 #include "../player/Player.h"
 #include "../Game.h"
-#include "../lib/Pathfinder.h"
+#include "../util/Pathfinder.h"
 
 void Walking::update(std::shared_ptr<Unit> unit)const{
     if(!unit->walkingGoal){

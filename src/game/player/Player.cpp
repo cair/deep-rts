@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "../unit/Peasant.h"
 #include "../Game.h"
-#include "../lib/ColorConverter.h"
+#include "../util/ColorConverter.hpp"
 #include "../algorithms/RANDOM/AlgoRandom.h"
 #include "../unit/TownHall.h"
 

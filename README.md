@@ -11,6 +11,18 @@ In order to get things running you must have the following dependencies:
 * ZeroMQ 4.x
 We will be using MSYS2 with Mingw64.
 
+### Installing (Using vcpkg)
+1. Install Anaconda x64 bit
+2. conda create --prefix=C:\Python27 python=2.7
+
+* Install vcpkg
+* Follow integration instructions
+```bash
+vcpkg.exe install sfml:x64-windows
+vcpkg.exe install protobuf:x64-windows
+vcpkg.exe install uwebsockets:x64-windows
+```
+
 ### Installing (Fast Mode)
 * Install MSYS2
 * run pacman -Sy

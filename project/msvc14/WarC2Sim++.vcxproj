@@ -55,6 +55,9 @@
     <ClInclude Include="..\..\src\game\unit\Peasant.h" />
     <ClInclude Include="..\..\src\game\unit\TownHall.h" />
     <ClInclude Include="..\..\src\game\unit\Unit.h" />
+    <ClInclude Include="..\..\src\game\util\ColorConverter.hpp" />
+    <ClInclude Include="..\..\src\game\util\Pathfinder.h" />
+    <ClInclude Include="..\..\src\game\util\PriorityQueue.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\action\RightClickAction.cpp" />
@@ -67,7 +70,6 @@
     <ClCompile Include="..\..\src\game\Game.cpp" />
     <ClCompile Include="..\..\src\game\graphics\Animation.cpp" />
     <ClCompile Include="..\..\src\game\graphics\GUI.cpp" />
-    <ClCompile Include="..\..\src\game\lib\Pathfinder.cpp" />
     <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp" />
     <ClCompile Include="..\..\src\game\player\Player.cpp" />
     <ClCompile Include="..\..\src\game\proto\GameMessage.pb.cc" />
@@ -85,9 +87,11 @@
     <ClCompile Include="..\..\src\game\unit\Peasant.cpp" />
     <ClCompile Include="..\..\src\game\unit\TownHall.cpp" />
     <ClCompile Include="..\..\src\game\unit\Unit.cpp" />
+    <ClCompile Include="..\..\src\game\util\Pathfinder.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\README.md" />
     <None Include="..\..\src\game\data\config.json" />
     <None Include="..\..\src\game\data\maps\contested-4v4.json" />
     <None Include="..\..\src\game\data\tile_properties.json" />
@@ -143,7 +147,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -162,12 +169,20 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\libs\MSVC2015\libzmq\include;E:\libs\MSVC2015\SFML\include;E:\libs\msvc2015\src\uWebSockets\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic;E:\libs\MSVC2015\SFML\lib;E:\libs\msvc2015\src\uWebSockets\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libzmq.lib;uWS.lib;sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreBuildEvent>
+      <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E
+xcopy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll" /Y/D/E</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -192,16 +207,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\libs\MSVC2015\libzmq\include;E:\libs\MSVC2015\SFML\include;E:\libs\msvc2015\src\uWebSockets\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>E:\libs\MSVC2015\libzmq\bin\x64\Release\v140\dynamic;E:\libs\MSVC2015\SFML\lib;E:\libs\msvc2015\src\uWebSockets\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libzmq.lib;uWS.lib;sfml-system.lib;sfml-graphics.lib;sfml-window.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E
+xcopy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll" /Y/D/E</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

@@ -5,7 +5,7 @@
 #include "Unit.h"
 #include "../player/Player.h"
 #include "../Game.h"
-#include "../lib/Pathfinder.h"
+#include "../util/Pathfinder.h"
 #include "../graphics/GUI.h"
 #include "../action/RightClickAction.h"
 #include <random>

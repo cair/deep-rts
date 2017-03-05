@@ -4,7 +4,7 @@
 
 #include "Building.h"
 #include "../unit/unit.h"
-#include "../lib/Pathfinder.h"
+#include "../util/Pathfinder.h"
 
 
 void Building::update(std::shared_ptr<Unit> unit)const{

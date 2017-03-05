@@ -5,7 +5,7 @@
 #include "Combat.h"
 #include "../unit/unit.h"
 #include "../player/Player.h"
-#include "../lib/Pathfinder.h"
+#include "../util/Pathfinder.h"
 
 
 void Combat::update(std::shared_ptr<Unit> unit)const{

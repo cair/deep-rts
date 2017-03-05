@@ -31,9 +31,6 @@
     <Filter Include="Source Files\game\graphics">
       <UniqueIdentifier>{34f2c000-00ae-4a48-a071-8137899f739c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\game\lib">
-      <UniqueIdentifier>{295e5902-1d78-40a3-a542-d534a84e75ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\game\unit">
       <UniqueIdentifier>{41d241d1-ad54-4b2e-9d94-caf1c5d36ecc}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="Source Files\game\player">
       <UniqueIdentifier>{e2c52f50-0df5-47b2-a588-6e4d7e4740d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\util">
+      <UniqueIdentifier>{295e5902-1d78-40a3-a542-d534a84e75ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +156,15 @@
     <ClInclude Include="..\..\src\game\loaders\MapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\game\util\Pathfinder.h">
+      <Filter>Source Files\game\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\util\PriorityQueue.hpp">
+      <Filter>Source Files\game\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\util\ColorConverter.hpp">
+      <Filter>Source Files\game\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\action\RightClickAction.cpp">
@@ -184,9 +193,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game\graphics\GUI.cpp">
       <Filter>Source Files\game\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\lib\Pathfinder.cpp">
-      <Filter>Source Files\game\lib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp">
       <Filter>Source Files\game\loaders</Filter>
@@ -245,6 +251,9 @@
     <ClCompile Include="..\..\src\game\Game.cpp">
       <Filter>Source Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game\util\Pathfinder.cpp">
+      <Filter>Source Files\game\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\proto\GameMessage.proto">
@@ -257,6 +266,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\..\src\game\data\tile_properties.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\README.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
