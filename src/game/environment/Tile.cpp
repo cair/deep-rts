@@ -10,7 +10,7 @@
 #include <utility>
 
 Tile::Tile(int x, int y, int width, int height, Tilemap &tilemap):
-x(x), y(y), height(height), width(width), tilemap(tilemap)
+x(x), y(y), height(height), width(width), tilemap(tilemap), color(sf::Color(255,0,0,255))
 {
 
 }
@@ -51,7 +51,7 @@ bool Tile::isBuildable() {
 
 
 int Tile::distance(Tile *pTile) {
-    return abs(pTile->x - x) + abs(pTile->y - y);
+	return abs(pTile->x - x) + abs(pTile->y - y);
 }
 
 void Tile::setDepleted() {

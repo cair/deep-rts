@@ -56,7 +56,7 @@ void GUI::createView(){
     this->povView.zoom(.9);
 
 
-    this->currentView = &this->povView;
+    this->currentView = &this->fullView;
 }
 
 
@@ -446,9 +446,10 @@ void GUI::drawTiles(){
         if(showGridLines){
             sf::RectangleShape rectangle;
             rectangle.setSize(sf::Vector2f(32, 32));
-            rectangle.setOutlineColor(sf::Color::Red);
+            rectangle.setOutlineColor(tile.color);
             rectangle.setOutlineThickness(1);
             rectangle.setPosition(tile.getPixelPosition());
+
             window.draw(rectangle);
         }
 

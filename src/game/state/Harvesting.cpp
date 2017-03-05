@@ -93,10 +93,9 @@ void Harvesting::update(std::shared_ptr<Unit> unit)const{
         }
 
 
-        if(unit->distance(*closestBase->tile) > 1) {
+        if(unit->distance(closestBase) > 1) {
             // Must walk
-            Tile* destinationTile = Pathfinder::find_first_walkable_tile(closestBase->tile);
-            unit->walkingGoal = destinationTile;
+            unit->walkingGoal = closestBase->tile;
             unit->transitionState(unit->stateManager.walkingState);
             unit->enqueueState(unit->stateManager.harvestingState);
             return;

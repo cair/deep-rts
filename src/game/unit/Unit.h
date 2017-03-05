@@ -132,6 +132,7 @@ public:
     void attack(Tile &tile);
     void harvest(Tile &tile);
     int distance(Tile &tile);
+	int Unit::distance(std::shared_ptr<Unit> unit);
     sf::Vector2f distanceVector(Tile &target);
 
 

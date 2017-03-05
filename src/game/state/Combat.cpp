@@ -16,10 +16,8 @@ void Combat::update(std::shared_ptr<Unit> unit)const{
         if(unit->distance(*unit->combatTarget->tile) > unit->damageRange) {
             // Too far away, Walk
 
-            Tile* nearestTile = Pathfinder::find_first_walkable_tile(unit->combatTarget->tile);
-            assert(nearestTile);
-
-            unit->move(*nearestTile);
+			unit->walkingGoal = unit->combatTarget->tile;
+			unit->transitionState(unit->stateManager.walkingState);
             unit->enqueueState(unit->stateManager.combatState);
 
         } else {

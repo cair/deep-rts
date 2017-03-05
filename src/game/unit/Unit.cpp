@@ -163,6 +163,8 @@ void Unit::clearTiles(){
 }
 
 void Unit::rightClick(Tile &tile) {
+	stateList.clear();
+	transitionState();
 
 
     std::shared_ptr<BaseAction> action = std::shared_ptr<BaseAction>(new RightClickAction(getptr()));
@@ -192,11 +194,8 @@ void Unit::attack(Tile &tile) {
     combatTarget = target;
 
     if(distance(tile) > 1){
-        Tile* nearestWalkable = Pathfinder::find_first_walkable_tile(&tile);
-        assert(nearestWalkable);
-
         enqueueState(stateManager.combatState);
-        move(*nearestWalkable);
+        move(tile);
 
 
     }
@@ -258,6 +257,20 @@ int Unit::distance(Tile &target) {
     int dim = 0; // TODO
     double d = hypot(tile->x - (target.x + dim), tile->y - (target.y + dim));
     return (int)d - dim;
+
+}
+
+
+int Unit::distance(std::shared_ptr<Unit> target) {
+	int targ_x = target->tile->x;
+	int targ_y = target->tile->y;
+	int dim_x = floor(target->width / 2);
+	int dim_y = floor(target->height / 2);
+
+	double d = hypot(tile->x - (targ_x + dim_x), tile->y - (targ_y + dim_y));
+	std::cout << d << std::endl;
+
+	return (int)d - dim_x;
 
 }
 

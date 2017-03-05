@@ -65,10 +65,15 @@ void Walking::end(std::shared_ptr<Unit> unit)const{
 void Walking::init(std::shared_ptr<Unit> unit)const{
     unit->walking_timer = 0;
 
-    // If user clicked on a unreachable tile
-    if((!unit->walkingGoal->isWalkable() or unit->walkingGoal->occupant != NULL) and unit->walkingGoal->occupant != unit){
-        unit->walkingGoal = Pathfinder::find_first_walkable_tile(unit->walkingGoal);
-    }
+	
+	if (unit->walkingGoal->occupant) {
+		std::shared_ptr<Unit> occupant = unit->walkingGoal->occupant;
+		Tile *closest  = Pathfinder::find_closest_walkable_tile(unit->tile, occupant->tile, occupant->width);
+		unit->walkingGoal = closest;
+	}
+	else if (!unit->walkingGoal->isWalkable()) {
+		unit->walkingGoal = Pathfinder::find_first_walkable_tile(unit->walkingGoal);
+	}
 
     unit->walking_path = Pathfinder::aStar(unit->tile, unit->walkingGoal);
 }

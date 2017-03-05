@@ -31,6 +31,7 @@ public:
     int goldYield;
     int resources;
     sf::Vertex vertices[4];
+	sf::Color color;
     Tilemap &tilemap;
     std::shared_ptr<Unit> occupant = NULL;
 
