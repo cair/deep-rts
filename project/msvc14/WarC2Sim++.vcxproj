@@ -25,6 +25,8 @@
     <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTS.h" />
     <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTSNode.h" />
     <ClInclude Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.h" />
+    <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\BaseRemoteAI.h" />
+    <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.h" />
     <ClInclude Include="..\..\src\game\Config.h" />
     <ClInclude Include="..\..\src\game\Constants.h" />
     <ClInclude Include="..\..\src\game\environment\Tile.h" />
@@ -65,6 +67,7 @@
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTS.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTSNode.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp" />
+    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.cpp" />
     <ClCompile Include="..\..\src\game\environment\Tile.cpp" />
     <ClCompile Include="..\..\src\game\environment\Tilemap.cpp" />
     <ClCompile Include="..\..\src\game\Game.cpp" />
@@ -95,6 +98,8 @@
     <None Include="..\..\src\game\data\config.json" />
     <None Include="..\..\src\game\data\maps\contested-4v4.json" />
     <None Include="..\..\src\game\data\tile_properties.json" />
+    <None Include="..\..\src\game\python\GameMessage_pb2.py" />
+    <None Include="..\..\src\game\python\RemoteAI.py" />
     <None Include="..\..\src\proto\GameMessage.proto" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -169,11 +174,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\libs\python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -181,7 +186,11 @@
     </PreLinkEvent>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E
-copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"</Command>
+copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.dll" "$(SolutionDir)$(Platform)\$(Configuration)\"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.pdb" "$(SolutionDir)$(Platform)\$(Configuration)\"
+xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)" /Y/D/E
+xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Configuration)" /Y/D/E</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -207,17 +216,21 @@ copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zli
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\libs\python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E
-copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"</Command>
+copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.dll" "$(SolutionDir)$(Platform)\$(Configuration)\"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.pdb" "$(SolutionDir)$(Platform)\$(Configuration)\"
+xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)" /Y/D/E
+xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Configuration)" /Y/D/E</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

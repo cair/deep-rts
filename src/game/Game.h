@@ -7,10 +7,13 @@
 
 #include <time.h>
 #include <memory>
+#include <map>
+#include <unordered_map>
 
 #include "player/Player.h"
 #include "environment/Tilemap.h"
 #include "action/BaseAction.h"
+
 
 
 class GameMessage;
@@ -34,8 +37,12 @@ class Game {
 
     bool running;
     long ticks = 0;
-
+	static std::unordered_map<int, Game *> games;
 public:
+	
+	static Game * getGame(int id);
+	int id;
+
     Tilemap map;
     int fps;
     int ups;
@@ -82,6 +89,7 @@ public:
 
 	void deactivateGUI();
 	GameMessage serialize();
+	std::string serialize_json();
 	void load(GameMessage& gameMessage);
 
 

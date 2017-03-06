@@ -9,10 +9,26 @@
 #include "game/algorithms/RANDOM/AlgoRandom.h"
 #include "game/algorithms/MCTS/MCTS.h"
 
+#include <pybind11/pybind11.h>
+#include <pybind11/eval.h>
+
+#include "game/algorithms/REMOTEAI/CRemoteAI.h"
+
+
+
+
+
+
 
 int main() {
+	// REMEMBER PY FILE MUST BE IN WORKING DIR (WITH EXE) Copyed by visual studio
+	CRemoteAI::PySetupImport();					// Pre-import C++ API endpoint
+	Py_Initialize();							// Init Python interp
+	pybind11::init();							// Init Pybind interp
+	CRemoteAI::PyRunImport();					// Run actual imports
 
-
+	
+	// Create game instance
     Game *g = new Game(4, true);
     Player &player0 = g->addPlayer();
     Player &player1 = g->addPlayer();
@@ -33,6 +49,9 @@ int main() {
 
     std::shared_ptr<AlgoRandom> algorithm3 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player3));
     //player3.setAlgorithm(algorithm3);
+
+
+	CRemoteAI ai = CRemoteAI::createInstance(g->id);
 
     g->initGUI();
     g->loop();

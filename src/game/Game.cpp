@@ -9,6 +9,8 @@
 #include "graphics/Animation.h"
 #include "proto/GameMessage.pb.h"
 
+std::unordered_map<int, Game*> Game::games;
+
 Game::Game(int _nplayers, bool setup):
         map(Tilemap("contested-4v4.json"))
 {
@@ -16,6 +18,10 @@ Game::Game(int _nplayers, bool setup):
     n_players = _nplayers;
     setFPS(Config::getInstance().getFPS());
     setUPS(Config::getInstance().getUPS());
+
+	id = games.size();
+	games[id] = this;
+
 
     if(setup)
         Animation::getInstance().setup();
@@ -118,6 +124,13 @@ void Game::loop() {
 
 long Game::getFrames() {
     return this->ticks;
+}
+
+Game * Game::getGame(int id)
+{
+	Game *g = games.at(id);
+
+	return g;
 }
 
 int Game::getSeconds() {
@@ -291,6 +304,179 @@ GameMessage Game::serialize() {
     return gameMessage;
 }
 
+
+std::string Game::serialize_json() {
+	json data;
+
+	/*data["tileIds"] .push_back();
+	data["tileResources"] .push_back();
+	data["tileOccupant"] .push_back();
+	data["unitsDirection"] .push_back();
+	data["unitsHarvestTimer"] .push_back();
+	data["unitsHarvestIterator"] .push_back();
+	data["unitsLumberCarry"] .push_back();
+	data["unitsOilCarry"] .push_back();
+	data["unitsGoldCarry"] .push_back();
+	data["unitsSpawnTimer"] .push_back();
+	data["unitsBuildTimer"] .push_back();
+	data["unitsCombatTimer"] .push_back();
+	data["unitsWalkingTimer"] .push_back();
+	data["unitsType"] .push_back();
+	data["unitsHealth"] .push_back();
+	data["unitsIds"] .push_back();
+	data["unitsTileID"] .push_back();
+	data["unitsState"] .push_back();
+	data["unitsCombatTarget"] .push_back();
+	data["unitsBuildEntity"] .push_back();
+	data["unitsWalkingGoal"] .push_back();
+	data["unitsHarvestTarget"] .push_back();
+	data["unitsSpawnTile"] .push_back();
+	data["unitsPlayerID"] = {}
+	data["playerID"].push_back(pid);
+	data["defeated"].push_back(defeated);
+	data["statGoldGather"].push_back(statGoldGather);
+	data["statLumberGather"].push_back(statLumberGather);
+	data["statOilGather"].push_back(statOilGather);
+	data["statUnitDamageTaken"].push_back(statUnitDamageTaken);
+	data["statUnitDamageDone"].push_back(statUnitDamageDone);
+	data["statUnitBuilt"].push_back(statUnitBuilt);
+	data["statUnitMilitary"].push_back(statUnitMilitary);
+
+	data["food"].push_back(food);
+	data["consumedFood"].push_back(consumedFood);
+	data["gold"].push_back(gold);
+	data["lumber"].push_back(lumber);
+	data["oil"].push_back(oil);
+	data["unitCount"].push_back(unitCount);
+	data["gameTicks"] = gameTicks;*/
+
+	///
+	/// TILE DATA
+	///
+	const int numTiles = map.tiles.size();
+
+
+	for (int i = 0; i < numTiles; i++) {
+		Tile &t = map.tiles[i];
+		data["tileIds"].push_back(t.id_);
+		data["tileResources"].push_back(t.resources);
+		data["tileOccupant"].push_back((t.occupant) ? t.occupant->id : -1);
+	}
+
+
+
+	///
+	/// PLAYER DATA
+	///
+	int numUnits = 0;
+	for (auto &p : players) {
+		numUnits += p->units.size();
+	}
+
+	int i = 0;
+	for (auto &p : players) {
+		for (auto &u : p->units) {
+			Unit &ut = *u;
+
+			//std::vector<BaseState *> stateList;
+			//std::vector<Tile *> walking_path;
+
+			data["unitsDirection"].push_back(u->direction);
+			data["unitsHarvestTimer"] .push_back(u->harvestTimer);
+			data["unitsHarvestIterator"] .push_back(u->harvestIterator);
+			data["unitsLumberCarry"] .push_back(u->lumberCarry);
+			data["unitsOilCarry"] .push_back(u->oilCarry);
+			data["unitsGoldCarry"] .push_back(u->goldCarry);
+			data["unitsSpawnTimer"] .push_back(u->spawnTimer);
+			data["unitsBuildTimer"] .push_back(u->buildTimer);
+			data["unitsCombatTimer"] .push_back(u->combatTimer);
+			data["unitsWalkingTimer"] .push_back(u->walking_timer);
+			data["unitsType"] .push_back(u->typeId);
+			data["unitsHealth"] .push_back(u->health);
+			data["unitsIds"] .push_back(u->id);
+			data["unitsTileID"] .push_back((u->tile) ? u->tile->id_ : -1);
+			data["unitsState"] .push_back(u->state->id);
+			data["unitsPlayerID"].push_back(u->player_.id_);
+
+			if (u->combatTarget)
+				data["unitsCombatTarget"].push_back(u->combatTarget->id);
+			else
+				data["unitsCombatTarget"].push_back(-1);
+
+			if (u->buildEntity)
+				data["unitsBuildEntity"].push_back(u->buildEntity->id);
+			else
+				data["unitsBuildEntity"].push_back(-1);
+
+			if (u->walkingGoal)
+				data["unitsWalkingGoal"].push_back(u->walkingGoal->id_);
+			else
+				data["unitsWalkingGoal"].push_back(-1);
+
+			if (u->harvestTarget)
+				data["unitsHarvestTarget"].push_back(u->harvestTarget->id_);
+			else
+				data["unitsHarvestTarget"].push_back(-1);
+
+			if (u->spawnTile)
+				data["unitsSpawnTile"].push_back(u->spawnTile->id_);
+			else
+				data["unitsSpawnTile"].push_back(-1);
+
+
+
+
+			i++;
+		}
+
+		int pid = p->id_;
+		int defeated = p->defeated;
+		int statGoldGather = p->statGoldGather;
+		int statLumberGather = p->statLumberGather;
+		int statOilGather = p->statOilGather;
+		int statUnitDamageTaken = p->statUnitDamageTaken;
+		int statUnitDamageDone = p->statUnitDamageDone;
+		int statUnitBuilt = p->statUnitBuilt;
+		int statUnitMilitary = p->statUnitMilitary;
+
+		int food = p->getFood();
+		int consumedFood = p->getFoodConsumption();
+		int gold = p->getGold();
+		int lumber = p->getLumber();
+		int oil = p->getOil();
+		int unitCount = p->getUnitCount();
+
+		data["playerID"].push_back(pid);
+		data["defeated"].push_back(defeated);
+		data["statGoldGather"].push_back(statGoldGather);
+		data["statLumberGather"].push_back(statLumberGather);
+		data["statOilGather"].push_back(statOilGather);
+		data["statUnitDamageTaken"].push_back(statUnitDamageTaken);
+		data["statUnitDamageDone"].push_back(statUnitDamageDone);
+		data["statUnitBuilt"].push_back(statUnitBuilt);
+		data["statUnitMilitary"].push_back(statUnitMilitary);
+
+		data["food"].push_back(food);
+		data["consumedFood"].push_back(consumedFood);
+		data["gold"].push_back(gold);
+		data["lumber"].push_back(lumber);
+		data["oil"].push_back(oil);
+		data["unitCount"].push_back(unitCount);
+
+	}
+
+	///
+	/// Game Stuff
+	///
+	int gameTicks = ticks;
+	data["gameTicks"] = gameTicks;
+	data["mapSize"] = { map.MAP_WIDTH, map.MAP_HEIGHT };
+
+
+	return data.dump();
+
+
+}
 
 
 void Game::load(GameMessage& gameMessage) {
