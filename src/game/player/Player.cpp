@@ -135,10 +135,12 @@ int Player::getScore() {
     int OIL_VALUE = 3;
 
 
-    int gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .20;
+    int gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
     int builtScore = statUnitBuilt * 10;
-    int damageScore = statUnitDamageDone / (statUnitDamageTaken + 1);
-    int unitScore = units.size() * 2.5;
+	int damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
+    int unitScore = units.size() * 5;
+
+
     int militaryScore = 0;
     int defenceScore = 0;
 
