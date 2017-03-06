@@ -187,3 +187,5 @@ ENV/
 
 # Rope project settings
 .ropeproject
+project/msvc14/data/
+project/msvc14/x64/
