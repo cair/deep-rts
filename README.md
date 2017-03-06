@@ -14,7 +14,6 @@ We will be using MSYS2 with Mingw64.
 ### Installing (Using vcpkg)
 1. Install Anaconda x64 bit
 2. conda create --prefix=C:\Python27 python=2.7
-
 * Install vcpkg
 * Follow integration instructions
 ```bash
@@ -22,6 +21,13 @@ vcpkg.exe install sfml:x64-windows
 vcpkg.exe install protobuf:x64-windows
 vcpkg.exe install uwebsockets:x64-windows
 ```
+* Since pybind11 is not part of vcpkg yet, we must install that manually
+1. ```git clone https://github.com/pybind/pybind11.git ```
+2. ```cd pybind11```
+3. ```mkdir build```
+4. ```cmake -A x64```
+4. Open solution file pybind11.sln
+5. Build "Release" and "Debug" target
 
 ### Installing (Fast Mode)
 * Install MSYS2
