@@ -52,7 +52,6 @@ void Combat::end(std::shared_ptr<Unit> unit)const{
 
 void Combat::init(std::shared_ptr<Unit> unit)const{
     sf::Vector2f dir = unit->distanceVector(*unit->combatTarget->tile);
-    std::cout << dir.x << "--" << dir.y << std::endl;
     unit->setDirection(dir);
 
 

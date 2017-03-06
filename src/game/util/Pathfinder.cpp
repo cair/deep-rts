@@ -4,8 +4,9 @@
 
 #include <list>
 #include <queue>
-#include <map>
 #include <unordered_map>
+#include <vector>
+#include <map>
 #include <set>
 #include "Pathfinder.h"
 #include "../environment/Tile.h"
@@ -13,10 +14,9 @@
 #include "../Constants.h"
 #include "../environment/Tilemap.h"
 
-std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map<Tile*, Tile*>& came_from
-) ;
 
-std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
+
+bool Pathfinder::aStar(std::vector<Tile *> &constructedPath, Tile *start, Tile *goal)
 {
 
     std::vector<Tile *> path;
@@ -28,7 +28,7 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
     frontier.put(start, 0);
 
 
-    came_from[start] = start;
+    came_from[start] = NULL;
     cost_so_far[start] = 0;
 
     while (!frontier.empty()) {
@@ -36,7 +36,8 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
 
 
 		if (current == goal) {
-			break;
+			constructedPath = reconstruct_path(start, goal, came_from);
+			return true;
 		}
 
 
@@ -56,10 +57,7 @@ std::vector<Tile*> Pathfinder::aStar(Tile *start, Tile *goal)
 
     }
 
-
-    std::vector<Tile *> completePath = reconstruct_path(start, goal, came_from);
-
-    return completePath;
+    return false;
 }
 
 double Pathfinder::heuristic(Tile *goal, Tile *next) {
@@ -186,17 +184,18 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
     return NULL;
 }
 
-std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map<Tile*, Tile*>& came_from
-) {
-    std::vector<Tile *> path;
-    Tile *current = goal;
-    path.push_back(current);
 
-    while (came_from.at(current) != start) {
-        current = came_from.at(current);
-        path.push_back(current);
-    }
-    //path.push_back(start); // optional
-    //std::reverse(path.begin(), path.end());
-    return path;
+std::vector<Tile*> Pathfinder::reconstruct_path(Tile * start, Tile * goal, std::unordered_map<Tile*, Tile*>& came_from)
+{
+	std::vector<Tile *> path;
+	Tile *current = goal;
+	path.push_back(current);
+
+	while (came_from.at(current) != start) {
+		current = came_from.at(current);
+		path.push_back(current);
+	}
+	//path.push_back(start); // optional
+	//std::reverse(path.begin(), path.end());
+	return path;
 }

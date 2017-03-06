@@ -77,6 +77,17 @@ void Unit::update() {
 
 }
 
+Tile *Unit::centerTile() {
+	int addX = floor(width / 2);
+	int addY = floor(height / 2);
+
+	if (addX == 0 && addY == 0) {
+		assert(tile);
+		return tile;
+	}
+
+	return player_.game_.map.getTile(tile->x + addX, tile->y + addY);
+}
 
 bool Unit::build(int idx) {
     //if(state->id != Constants::State_Idle)
@@ -100,7 +111,6 @@ bool Unit::build(int idx) {
     if(player_.canPlace(getptr(), newUnit, placementTile)) {
 
         std::shared_ptr<Unit> unit = std::shared_ptr<Unit>(new Unit(*newUnit));
-
         player_.addUnit(unit);
 
 
@@ -120,7 +130,7 @@ bool Unit::build(int idx) {
             // Structure builds unit (Ie: TownHall builds Peasant)
             buildEntity = unit;
             // build entity has no tile, spawn on nearest walkable
-            Tile *firstWalkable = Pathfinder::find_first_walkable_tile(tile);
+            Tile *firstWalkable = Pathfinder::find_first_walkable_tile(centerTile());
             assert(firstWalkable);
             buildEntity->spawn(*firstWalkable, 0);
 
@@ -268,7 +278,6 @@ int Unit::distance(std::shared_ptr<Unit> target) {
 	int dim_y = floor(target->height / 2);
 
 	double d = hypot(tile->x - (targ_x + dim_x), tile->y - (targ_y + dim_y));
-	std::cout << d << std::endl;
 
 	return (int)d - dim_x;
 

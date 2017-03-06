@@ -13,38 +13,24 @@ void Walking::update(std::shared_ptr<Unit> unit)const{
     }
 
 
-    if (unit->walking_path.size() > 0)
-    {
-
+    if (!unit->walking_path.empty()) {
         unit->walking_timer += 1;
+
         if (unit->walking_timer > unit->walking_interval) {
 
             // Pop next
             Tile * nextTile = unit->walking_path.back();
             unit->walking_path.pop_back();
+
+			// Check if someone is standing on goal
+			if (!nextTile->canWalkTo()) {
+				unit->transitionState();
+				return;
+			}
+
+
             unit->setPosition(*nextTile);
             unit->walking_timer = 0;
-
-            /*
-             *
-
-    // Done
-    if (unit->distance(*unit->walkingGoal) == 0) {
-        unit->transitionState();
-    return;
-}
-
-
-
-    // If someone is occupying tile
-    if(nextTile->occupant){
-        unit->walking_path = Pathfinder::aStar(unit->tile, unit->walkingGoal);
-        return; // Try on next iteration // TODO?
-    }
-
-
-
-             */
 
 
         }
@@ -65,16 +51,26 @@ void Walking::end(std::shared_ptr<Unit> unit)const{
 void Walking::init(std::shared_ptr<Unit> unit)const{
     unit->walking_timer = 0;
 
-	
+	Tile *goal = NULL;
 	if (unit->walkingGoal->occupant) {
 		std::shared_ptr<Unit> occupant = unit->walkingGoal->occupant;
 		Tile *closest  = Pathfinder::find_closest_walkable_tile(unit->tile, occupant->tile, occupant->width);
-		unit->walkingGoal = closest;
+		goal = closest;
 	}
-	else if (!unit->walkingGoal->isWalkable()) {
-		unit->walkingGoal = Pathfinder::find_first_walkable_tile(unit->walkingGoal);
+	else if (!unit->walkingGoal->canWalkTo()) {
+		goal = Pathfinder::find_first_walkable_tile(unit->walkingGoal);
+	}
+	else {
+		goal = unit->walkingGoal;
 	}
 
-    unit->walking_path = Pathfinder::aStar(unit->tile, unit->walkingGoal);
+
+	if (!goal) {
+
+		return;
+	}
+
+	unit->walkingGoal = goal;
+	Pathfinder::aStar(unit->walking_path, unit->tile, goal);
 }
 

@@ -123,6 +123,7 @@ public:
     void spawn(Tile &x, int initValue);
     void despawn();
     void update();
+	Tile * centerTile();
     void enqueueState(std::shared_ptr<BaseState> state);
     void transitionState();
     void transitionState(std::shared_ptr<BaseState> nextState);

@@ -110,26 +110,29 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {
 
     std::pair<int,int> pos[8];
 
-    pos[0].first = 0;
+    pos[0].first = -1;
     pos[0].second = -1;
 
     pos[1].first = 0;
-    pos[1].second = 1;
+    pos[1].second = -1;
 
     pos[2].first = 1;
-    pos[2].second = 1;
+    pos[2].second = -1;
 
-    pos[3].first = 1;
+    pos[3].first = -1;
     pos[3].second = 0;
 
-    pos[4].first = -1;
-    pos[4].second = -1;
+    pos[4].first = 1;
+    pos[4].second = 0;
 
     pos[5].first = -1;
-    pos[5].second = 0;
+    pos[5].second = 1;
 
-    pos[6].first = -1;
-    pos[6].second = 1;
+    pos[6].first = 0;
+	pos[6].second = 1;
+
+	pos[7].first = 1;
+	pos[7].second = 1;
 
     //for(int i = 0; i < 1; i++){ // TODO width of neighbor
     for(auto &i : pos){

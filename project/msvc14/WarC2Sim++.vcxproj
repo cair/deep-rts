@@ -181,7 +181,7 @@
     </PreLinkEvent>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E
-xcopy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll" /Y/D/E</Command>
+copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -217,7 +217,7 @@ xcopy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zl
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E
-xcopy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll" /Y/D/E</Command>
+copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
