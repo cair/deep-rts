@@ -9,25 +9,22 @@
 #include "game/algorithms/RANDOM/AlgoRandom.h"
 #include "game/algorithms/MCTS/MCTS.h"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/eval.h>
-
 #include "game/algorithms/REMOTEAI/CRemoteAI.h"
+#include "game/algorithms/REMOTEAI/zmqAI.h"
+#include "game/third_party/zmq.hpp"
 
-
-
-
-
-
+#include <zmq_utils.h>
 
 int main() {
 	// REMEMBER PY FILE MUST BE IN WORKING DIR (WITH EXE) Copyed by visual studio
-	CRemoteAI::PySetupImport();					// Pre-import C++ API endpoint
+	/*CRemoteAI::PySetupImport();					// Pre-import C++ API endpoint
 	Py_Initialize();							// Init Python interp
 	pybind11::init();							// Init Pybind interp
-	CRemoteAI::PyRunImport();					// Run actual imports
+	CRemoteAI::PyRunImport();					// Run actual imports*/
+	//  Prepare our context and socket
 
-	
+
+
 	// Create game instance
     Game *g = new Game(4, true);
     Player &player0 = g->addPlayer();
@@ -37,6 +34,8 @@ int main() {
 
 
     g->start();
+
+	std::shared_ptr<zmqAI> ai = zmqAI::createInstance(1, 0);
 
     std::shared_ptr<AlgoRandom> algorithm0 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player0));
     //player0.setAlgorithm(algorithm0);
@@ -51,7 +50,7 @@ int main() {
     //player3.setAlgorithm(algorithm3);
 
 
-	CRemoteAI ai = CRemoteAI::createInstance(g->id);
+	//CRemoteAI ai = CRemoteAI::createInstance(g->id);
 
     g->initGUI();
     g->loop();
