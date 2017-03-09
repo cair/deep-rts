@@ -67,6 +67,8 @@ Unit& Player::spawn(Tile &spawnPoint) {
 }
 
 void Player::update() {
+	if (defeated && units.size() == 0)
+		return;
 
     /*for(auto &unit : units) {
         unit->update();
@@ -165,8 +167,15 @@ void Player::removeUnit(std::shared_ptr<Unit> unit) {
 }
 
 bool Player::checkDefeat(){
+	int aliveUnits = 0;
+
     bool isDefeated = (units.size() > 0);
     defeated = isDefeated;
+	if (defeated) {
+		name_ += " [DEFEATED]";
+	}
+	
+
     return defeated;
 }
 

@@ -69,7 +69,7 @@ void MCTS::update() {
     // Tick happended
 
     root = MCTSNode(NULL, 0, 0);
-	root.gameState = player.game_.serialize();
+	player.game_.serialize(root.gameState);
     calculate(root);
 
 

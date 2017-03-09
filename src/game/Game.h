@@ -88,7 +88,7 @@ public:
 
 
 	void deactivateGUI();
-	GameMessage serialize();
+	GameMessage serialize(GameMessage& gameMessage);
 	std::string serialize_json();
 	void load(GameMessage& gameMessage);
 

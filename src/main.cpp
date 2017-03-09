@@ -12,17 +12,48 @@
 #include "game/algorithms/REMOTEAI/CRemoteAI.h"
 #include "game/algorithms/REMOTEAI/zmqAI.h"
 #include "game/third_party/zmq.hpp"
-
+#include "game\algorithms\PYAPI\PyAPI.h"
 #include <zmq_utils.h>
 
+
+#ifdef _DEBUG
+#undef _DEBUG
+#include <python.h>
+#define _DEBUG
+#else
+#include <python.h>
+#endif
+
+#include <stdlib.h>  
+
+
+int setenv(const char *name, const char *value, int overwrite)
+{
+	int errcode = 0;
+	if (!overwrite) {
+		size_t envsize = 0;
+		errcode = getenv_s(&envsize, NULL, 0, name);
+		if (errcode || envsize) return errcode;
+	}
+	return _putenv_s(name, value);
+}
+
 int main() {
+	PyAPI::init(); // Init the API
+	PyImport_AppendInittab("PyAPIRegistry", &PyAPI::PyInit_PyAPIRegistry);
+	Py_Initialize();
+
+
+
+
+
 	// REMEMBER PY FILE MUST BE IN WORKING DIR (WITH EXE) Copyed by visual studio
 	/*CRemoteAI::PySetupImport();					// Pre-import C++ API endpoint
 	Py_Initialize();							// Init Python interp
 	pybind11::init();							// Init Pybind interp
 	CRemoteAI::PyRunImport();					// Run actual imports*/
 	//  Prepare our context and socket
-
+	
 
 
 	// Create game instance
@@ -35,12 +66,11 @@ int main() {
 
     g->start();
 
-	std::shared_ptr<zmqAI> ai = zmqAI::createInstance(1, 0);
-
-    std::shared_ptr<AlgoRandom> algorithm0 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player0));
+	//std::shared_ptr<zmqAI> ai = zmqAI::createInstance(0, 0);
+	PyAPI::createInstance("Main", 0, 0);
     //player0.setAlgorithm(algorithm0);
 
-    std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
+    //std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
     //player1.setAlgorithm(algorithm1);
 
     std::shared_ptr<AlgoRandom> algorithm2 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player2));
@@ -54,5 +84,6 @@ int main() {
 
     g->initGUI();
     g->loop();
+	
 
 }

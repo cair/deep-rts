@@ -6,6 +6,9 @@
 #include "../../player/Player.h"
 
 AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
+
+	player.name_ += " [AlgoRandom]";
+
     defineActionSpace();
     if(!player.targetedUnit) {
         if(player.units.size() == 0) {
@@ -21,8 +24,11 @@ AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 void AlgoRandom::update() {
     // Tick happended
 
+	int nUnits = player.units.size();
 
-    for(auto &u : player.units){
+
+	for (int i = 0; i < nUnits; i++) {
+		std::shared_ptr<Unit> u = player.units[i];
 		if (u->state->id == Constants::State_Idle) {
 			int randomIndex = rand() % actionSpace.size();
 			int actionID = actionSpace[randomIndex];
@@ -63,6 +69,10 @@ void AlgoRandom::defineActionSpace() {
             Constants::ACTION_RC_DOWNLEFT,
             Constants::ACTION_RC_DOWNRIGHT,
             Constants::ACTION_RC_UPLEFT,
-            Constants::ACTION_RC_UPRIGHT
+            Constants::ACTION_RC_UPRIGHT,
+			Constants::ACTION_BUILD_0,
+			Constants::ACTION_BUILD_1,
+			Constants::ACTION_BUILD_2
+
     };
 }

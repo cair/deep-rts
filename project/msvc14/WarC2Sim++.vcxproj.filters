@@ -186,6 +186,9 @@
     <ClInclude Include="..\..\src\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\action\RightClickAction.cpp">
@@ -284,6 +287,9 @@
     <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\zmqAI.cpp">
       <Filter>Source Files\game\algorithms</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAPI.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\proto\GameMessage.proto">
@@ -312,6 +318,9 @@
     </None>
     <None Include="packages.config" />
     <None Include="..\..\src\game\python\Main.py">
+      <Filter>Source Files\game\python</Filter>
+    </None>
+    <None Include="..\..\src\game\python\PyAI.py">
       <Filter>Source Files\game\python</Filter>
     </None>
   </ItemGroup>

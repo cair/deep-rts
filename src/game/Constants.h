@@ -50,6 +50,9 @@ namespace Constants{
     const int ACTION_RC_UPRIGHT = 7;
     const int ACTION_RC_DOWNLEFT = 8;
     const int ACTION_RC_DOWNRIGHT = 9;
+	const int ACTION_BUILD_0 = 10;
+	const int ACTION_BUILD_1 = 11;
+	const int ACTION_BUILD_2 = 12;
 
 
 }

@@ -42,6 +42,15 @@ std::shared_ptr<BaseAction> Algorithm::getAction(int actionID, std::shared_ptr<U
         case Constants::ACTION_RC_RIGHT:
             unitptr->rightClickRelative(1, 0);
             break;
+		case Constants::ACTION_BUILD_0:
+			unitptr->build(0);
+			break;
+		case Constants::ACTION_BUILD_1:
+			unitptr->build(1);
+			break;
+		case Constants::ACTION_BUILD_2:
+			unitptr->build(2);
+			break;
 
     }
 

@@ -129,7 +129,6 @@ long Game::getFrames() {
 Game * Game::getGame(int id)
 {
 	Game *g = games.at(id);
-
 	return g;
 }
 
@@ -146,8 +145,12 @@ bool Game::checkTerminal(){
         }
     }
 
+	std::cout << c << std::endl;
     bool isTerminal = (c == 1);
     terminal = isTerminal;
+	if (terminal) {
+		setUPS(0);
+	}
 
     return terminal;
 }
@@ -178,9 +181,8 @@ Player &Game::addPlayer() {
 }
 
 
-GameMessage Game::serialize() {
-    /// Pov player is AI's player
-    GameMessage gameMessage = GameMessage();
+GameMessage Game::serialize(GameMessage &gameMessage) {
+
 
     ///
     /// TILE DATA
@@ -613,6 +615,7 @@ void Game::load(GameMessage& gameMessage) {
 
 
 }
+
 
 
 void Game::deactivateGUI() {

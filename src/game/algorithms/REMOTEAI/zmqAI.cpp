@@ -19,7 +19,7 @@ zmqAI::zmqAI(){}
 
 void zmqAI::start() {
 
-
+	Game *game = Game::getGame(gameID);
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REP);
 	socket.bind("tcp://*:5000");
@@ -27,6 +27,8 @@ void zmqAI::start() {
 	clock_t now = clock();
 	clock_t next = now + 1000;
 	int counter = 0;
+
+	game->players[playerID]->name_ += " [zmq]";
 
 	while (true) {
 		zmq::message_t request;
@@ -38,7 +40,8 @@ void zmqAI::start() {
 		if (data["type"] == "getState") {
 			// This Means get state
 			std::string json;
-			GameMessage srs = Game::getGame(gameID)->serialize();
+			GameMessage srs;
+			game->serialize(srs);
 			srs.SerializeToString(&json);
 			zmq::message_t reply(json.size());
 			memcpy(reply.data(), json.data(), json.size());

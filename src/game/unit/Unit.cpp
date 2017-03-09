@@ -104,9 +104,11 @@ bool Unit::build(int idx) {
     Tile *placementTile = player_.game_.map.getTile(tile->x - floor(newUnit->width/2), tile->y - floor(newUnit->height/2));
 
     if(!player_.canAfford(newUnit)) {
-        std::cout << "Cannot afford " << newUnit->name << std::endl;
+        //std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
     }
+
+
 
     if(player_.canPlace(getptr(), newUnit, placementTile)) {
 

@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\src\game\algorithms\base\Algorithm.h" />
     <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTS.h" />
     <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTSNode.h" />
+    <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAPI.h" />
     <ClInclude Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.h" />
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\BaseRemoteAI.h" />
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="..\..\src\game\algorithms\base\Algorithm.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTS.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTSNode.cpp" />
+    <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAPI.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\WSAI.cpp" />
@@ -107,6 +109,7 @@
     <None Include="..\..\src\game\python\DQN.py" />
     <None Include="..\..\src\game\python\GameMessage_pb2.py" />
     <None Include="..\..\src\game\python\Main.py" />
+    <None Include="..\..\src\game\python\PyAI.py" />
     <None Include="..\..\src\game\python\RemoteAI.py" />
     <None Include="..\..\src\proto\GameMessage.proto" />
     <None Include="packages.config" />
