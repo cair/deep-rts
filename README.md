@@ -11,7 +11,8 @@ A Warcraft 2 Simulator for (Deep) Reinforment Learning in C++!
 
 ### Installing (Using vcpkg)
 1. Install Anaconda x64 bit
-2. conda create --prefix=C:\Python27 python=2.7
+~~2. In order to automatically link Python, you must add PYTHONPATH to your environment variables: `setx PYTHONPATH "%HOMEDRIVE%%HOMEPATH%\Anaconda3" /m` (Given that you installed Anaconda with default options)~~
+3. conda create --prefix=C:\Python27 python=2.7
 * Install vcpkg
 * Follow integration instructions
 ```bash
