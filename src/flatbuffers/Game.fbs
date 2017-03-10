@@ -1,0 +1,27 @@
+include "Player.fbs";
+namespace State;
+
+table Game {
+	
+	// General Data
+	id:ushort;
+	nPlayers:ushort;
+	running:bool;
+	
+	// Game loop data
+	updateInterval:double;
+	renderInterval:double;
+	captionInterval:double;
+	updateDelta:double;
+	renderDelta:double;
+	ticks:ulong;
+
+
+	players:[Player]; 
+
+	fps:uint;
+	ups:uint;
+}
+
+root_type Game;
+

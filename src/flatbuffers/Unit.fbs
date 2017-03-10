@@ -1,0 +1,91 @@
+
+namespace State;
+
+table Position {
+	x:uint;
+	y:uint;
+}
+
+table Unit {
+	id:ushort;
+	gameID:ushort;
+	playerID:ushort; // ID of player
+
+	typeID:ushort;
+	health:ushort;
+	maxHealth:ushort;
+	currentState:uint;
+	direction:short;
+
+	goundUnit:bool;
+	waterUnit:bool;
+
+	damageMin:ushort;
+	damageMax:ushort;
+	damageRange:ushort;
+	damagePiercing:ushort;
+	armor:ushort;
+
+	speed:ushort;
+	sight:ushort;
+	range:ushort;
+
+	canHarvest:bool;
+	canAttack:bool;
+	canMove:bool;
+	isMilitary:bool;
+	isStructure:bool;
+	isRecallable:bool;
+
+	lumberCost:ushort;
+	goldCost:ushort;
+	oilCost:ushort;
+
+	spawnDuration:ushort;
+
+	foodProduction:ushort;
+	foodConsumption:ushort;
+
+
+	width:ushort;
+	height:ushort;
+
+	name:string;
+
+	// Harvesting
+	harvestTimer:uint;
+	harvestIterator:ushort;
+	harvestTile:uint; // idx of tile
+	
+	// Building
+	spawnTimer:uint;
+	buildEntity:uint;   // idx of unit
+	spawnTile: uint;	// idx of tile
+
+	// Walking
+	walkTimer:uint;
+	walkPath:[uint];
+	walkGoal:uint;
+
+	// General
+	tile:uint; // idx of tile
+
+	stateList:[uint];
+	combatTarget:uint;
+	buildInventory:[uint];
+
+	worldPositionX:uint;
+	worldPositionY:uint;
+	removedFromGame:bool;
+
+	oilCarry:uint;
+	goldCarry:uint;
+	lumberCarry:uint;
+	carryCapacity:uint;
+
+
+
+
+}
+
+root_type Unit;

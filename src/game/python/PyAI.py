@@ -1,19 +1,35 @@
 
 import PyAPIRegistry
+import ctypes
 from GameMessage_pb2 import GameMessage
+import flatbuffers
+from sys import getsizeof
+from binascii import hexlify
+
 
 class PyAI:
     
-    def __init__(self):
-        self.api_id = PyAPIRegistry.hook()
+	def __init__(self):
+		self.__ai__ = PyAPIRegistry.hook(0, 0)
+	
 
-    def getState(self):
-        gMessage = GameMessage()
-        print();
-        return gMessage.ParseFromString(str(PyAPIRegistry.get_state(self.api_id)))
+	def getState(self):
+		pair = PyAPIRegistry.get_state(self.__ai__)
+		protobuffer = pair[0]
+		protobuffer_len = pair[1]
 
-    def getTime(self):
-        pass
+		memarray = (ctypes.c_char*protobuffer_len).from_address(protobuffer)
 
-    def nextFrame(self):
-        pass
+		gMessage = GameMessage()
+		gMessage.ParseFromString(memarray.raw)
+		PyAPIRegistry.free(protobuffer)
+
+		return gMessage
+
+
+
+	def getTime(self):
+		pass
+
+	def nextFrame(self):
+		pass

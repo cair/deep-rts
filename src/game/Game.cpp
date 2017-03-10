@@ -129,6 +129,7 @@ long Game::getFrames() {
 Game * Game::getGame(int id)
 {
 	Game *g = games.at(id);
+	assert(g);
 	return g;
 }
 

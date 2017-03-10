@@ -1,0 +1,30 @@
+include "Unit.fbs";
+namespace State;
+
+
+enum Faction: byte { Human = 0, Orc = 1}
+
+table Player {
+	id:ushort;
+	gameID:ushort;
+	name:string;
+	oil:uint;
+	gold:uint;
+	lumber:uint;
+	foodConsumption:uint;
+	food:uint;
+	faction:Faction;
+	defeated:bool;
+	
+	statGoldGather:uint;
+	statLumberGather:uint;
+	statOilGather:uint;
+	statUnitDamageDone:uint;
+	statUnitDamageTaken:uint;
+	statUnitBuilt:uint;
+	statUnitMilitary:uint;
+	units:[Unit];
+}
+
+root_type Player;
+

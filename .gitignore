@@ -189,3 +189,16 @@ ENV/
 .ropeproject
 project/msvc14/data/
 project/msvc14/x64/
+project/msvc15/x64/
+project/msvc15/data/
+project/msvc15/Y/
+project/msvc15/.vs/
+project/msvc15/State/
+src/flatbuffers/State/
+src/game/serialization/
+src/game/python/State/
+project/msvc15/RemoteAI.py
+project/msvc15/DQN.py
+project/msvc15/GameMessage_pb2.py
+project/msvc15/Main.py
+project/msvc15/PyAI.py
