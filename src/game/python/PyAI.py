@@ -5,26 +5,56 @@ from GameMessage_pb2 import GameMessage
 import flatbuffers
 from sys import getsizeof
 from binascii import hexlify
-
+import numpy as np
 
 class PyAI:
     
 	def __init__(self):
 		self.__ai__ = PyAPIRegistry.hook(0, 0)
+		self.desc = [
+			"t_id",
+			"oil_y",
+			"resources",
+			"lumber_y",
+			"walkable",
+			"harvestable",
+			"swimable",
+			"u_id",
+			"u_type_id",
+			"u_current_state",
+			"gold_carry",
+			"lumber_carry",
+			"oil_carry",
+			"carry_capacity",
+			"direction",
+			"damage_max",
+			"damage_min",
+			"damage_piercing",
+			"damage_range",
+			"health",
+			"health_max",
+			"military",
+			"recallable",
+			"sight",
+			"structure",
+			"player_id",
+			"faction"]
 	
 
 	def getState(self):
+	
 		pair = PyAPIRegistry.get_state(self.__ai__)
-		protobuffer = pair[0]
-		protobuffer_len = pair[1]
+		buf_ptr = pair[0]
+		buf_len = pair[1]
+		ROWS =  pair[2]
+		COLS = pair[3]
+		DEPTH = pair[4]
 
-		memarray = (ctypes.c_char*protobuffer_len).from_address(protobuffer)
+		memarray = (ctypes.c_int*buf_len).from_address(buf_ptr)
 
-		gMessage = GameMessage()
-		gMessage.ParseFromString(memarray.raw)
-		PyAPIRegistry.free(protobuffer)
-
-		return gMessage
+		np_arr = np.array(memarray)
+		np_arr = np_arr.reshape((ROWS, COLS, DEPTH)).transpose()
+		return np_arr
 
 
 

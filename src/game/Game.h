@@ -57,6 +57,7 @@ public:
 
 
     void loop();
+	Tilemap & getMap();
     void update(int ticks);
     void render(int ticks);
     void createPlayers();

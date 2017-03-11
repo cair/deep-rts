@@ -102,7 +102,9 @@ void Tilemap::addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHei
     tile.vertices[3].texCoords = sf::Vector2f((mod * tileWidth) + mod, ((div + 1) * tileHeight) + div);
 }
 
-
+std::vector<Tile> &Tilemap::getTiles() {
+	return tiles;
+}
 
 
 std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {

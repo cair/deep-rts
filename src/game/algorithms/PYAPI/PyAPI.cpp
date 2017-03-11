@@ -4,29 +4,20 @@
 #include "../../player/Player.h"
 #include "../../proto/GameMessage.pb.h"
 #include <flatbuffers\flatbuffers.h>
+#include <numpy\arrayobject.h>
 #include <thread>
 #include <stdlib.h>
 
+
 bool PyAPI::loaded = false;
-int PyAPI::slotCounter = 0;
-std::array<PyAPI *, 16> PyAPI::slots;
-std::vector<PyAPI *> PyAPI::instances;
-std::vector<PyAPI *> PyAPI::freeInstances;
-
-
 void PyAPI::init() {
 	PyImport_AppendInittab("PyAPIRegistry", &PyAPI::PyInit_PyAPIRegistry);
 	Py_Initialize();
-	slots.fill(NULL);
 	std::thread t = std::thread(&PyAPI::start);
 	t.detach();
 
 }
 
-
-void PyAPI::createInstance(std::string scriptName, uint16_t gameID, uint16_t playerID) {
-	
-}
 
 void PyAPI::start() {
 
@@ -50,8 +41,7 @@ void PyAPI::start() {
 	std::cout << "Loading python environment. Please wait!" << std::endl;
 	PyAPI::loaded = false;
 	pModule = PyImport_Import(pName);
-	PyAPI::loaded = true;
-	std::cout << "Load done! Python started!" << std::endl;
+	
 	Py_DECREF(pName);
 
 	if (pModule == NULL) {
@@ -65,6 +55,13 @@ PyAPI::PyAPI(uint16_t gameID, uint16_t playerID):
 	game(Game::getGame(gameID)), 
 	Algorithm(*Game::getGame(gameID)->players[playerID])
 {
+	// Define and allocate space for state buffer
+	G_ROW = 30;
+	G_COL = 30;
+	G_FEATURES = 28;
+
+	flatStateBufferSize = G_ROW * G_COL * G_FEATURES;
+	flatStateBuffer = (int *)malloc(sizeof(int) * flatStateBufferSize);      // allocate MANY ints
 
 
 }
@@ -90,6 +87,11 @@ std::shared_ptr<BaseAction> PyAPI::findBestAction(std::shared_ptr<Unit> unit)
 
 void PyAPI::doAction(std::shared_ptr<BaseAction> action)
 {
+}
+PyObject *PyAPI::registry_loaded(PyObject *self, PyObject *args) {
+	PyAPI::loaded = true;
+	std::cout << "Load done! Python started!" << std::endl;
+	return PyLong_FromLong(1);
 }
 
 PyObject*  PyAPI::registry_free(PyObject* self, PyObject* args)
@@ -142,31 +144,96 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 		return PyLong_FromLongLong(-1);
 	}
 
-	GameMessage gameMessage = GameMessage();
-	api_ptr->game->serialize(gameMessage);
+	int c = 0;
+	for (auto &tile : api_ptr->game->map.tiles) {
+
+		/// Tile
+		api_ptr->flatStateBuffer[c++] = (int)tile.id_;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.tId; // Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.oilYield;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.resources;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.lumberYield;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.walkable;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.harvestable;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.swimable;// Layer
 
 
-	int size = gameMessage.ByteSize();
-	char* array = new char[size];
-	gameMessage.SerializeToArray(array, size);
+		if (tile.occupant) {
+			// Unit
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->id;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->typeId;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->current_state;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->goldCarry;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->lumberCarry;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->oilCarry;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->carryCapacity;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->direction;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damageMax;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damageMin;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damagePiercing;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damageRange;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->health;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->health_max;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->military;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->recallable;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->sight;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->structure;// Layer
 
+			// Player
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->player_.id_;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->player_.faction;// Layer
 
-	// Capsulate flatbuffer pointer into an PyObject. this ensure that the pointer type is preserved when retrieving in python
-	//PyObject *buffer_capsule_ptr = PyCapsule_New((void *)array, "X_C_API", NULL);
-	PyObject *ptr = PyLong_FromLongLong(reinterpret_cast<intptr_t>(array));
-	PyObject *bytesize = PyLong_FromLong(size);
+		}
+		else {
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
 
-	args = PyTuple_New(2);
-	PyTuple_SetItem(args, 0, ptr);
-	PyTuple_SetItem(args, 1, bytesize);
+			// Player
+			api_ptr->flatStateBuffer[c++] = 0;
+			api_ptr->flatStateBuffer[c++] = 0;
+		}
 
+	}
+
+	PyObject *buf_ptr = PyLong_FromLongLong(reinterpret_cast<intptr_t>(api_ptr->flatStateBuffer));
+	PyObject *buf_len = PyLong_FromLongLong(api_ptr->flatStateBufferSize);
+	PyObject *buf_rows = PyLong_FromLongLong(api_ptr->G_ROW);
+	PyObject *buf_cols = PyLong_FromLongLong(api_ptr->G_COL);
+	PyObject *buf_depth = PyLong_FromLongLong(api_ptr->G_FEATURES);
+
+	args = PyTuple_New(5);
+	PyTuple_SetItem(args, 0, buf_ptr);
+	PyTuple_SetItem(args, 1, buf_len);
+	PyTuple_SetItem(args, 2, buf_rows);
+	PyTuple_SetItem(args, 3, buf_cols);
+	PyTuple_SetItem(args, 4, buf_depth);
 	return args;
 }
+
+
+
 
 static struct PyMethodDef methods[] = {
 	{ "hook", PyAPI::registry_hook, METH_VARARGS, "Returns the number" },
 	{ "get_state", PyAPI::registry_get_state, METH_VARARGS, "Show a number" },
 	{ "free", PyAPI::registry_free, METH_VARARGS, "Show a number" },
+	{ "loaded", PyAPI::registry_loaded, METH_VARARGS, "Initial dependency loading is done" },
 	{ NULL, NULL, 0, NULL }
 };
 

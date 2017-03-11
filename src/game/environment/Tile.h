@@ -21,7 +21,6 @@ public:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const{};
     int id_;
     int tId;
-    int reallyjustavariable;
     std::string name;
     bool harvestable;
     bool walkable;

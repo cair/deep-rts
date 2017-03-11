@@ -118,8 +118,10 @@ void Game::loop() {
 
     }
 
+}
 
-
+Tilemap &Game::getMap() {
+	return map;
 }
 
 long Game::getFrames() {
@@ -616,7 +618,6 @@ void Game::load(GameMessage& gameMessage) {
 
 
 }
-
 
 
 void Game::deactivateGUI() {

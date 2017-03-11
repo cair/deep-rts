@@ -25,18 +25,19 @@ class Game;
 class PyAPI: public Algorithm {
 public:
 	Game *game;
+	int *flatStateBuffer;
+	int flatStateBufferSize;
+	int G_ROW;
+	int G_COL;
+	int G_FEATURES;
 
-	static std::vector<PyAPI *> instances;
-	static std::vector<PyAPI *> freeInstances;
-	static std::array<PyAPI *, 16> slots;
-	static int slotCounter;
+
 	static bool loaded;
 
 	static void init();
 
 
-	static void createInstance(std::string scriptName, uint16_t gameID, uint16_t playerID);
-
+	
 	static void start();
 
 	PyAPI(uint16_t gameID, uint16_t playerID);
@@ -49,12 +50,12 @@ public:
 	virtual std::shared_ptr<BaseAction> findBestAction(std::shared_ptr<Unit> unit);
 	virtual void doAction(std::shared_ptr<BaseAction> action);
 
-
+	static PyObject * registry_loaded(PyObject * self, PyObject * args);
 	static PyObject* registry_free(PyObject* self, PyObject* args);
 	static PyObject* registry_hook(PyObject* self, PyObject* args);
 	static PyObject* registry_get_state(PyObject* self, PyObject* args);
-	static PyObject* PyInit_PyAPIRegistry(void);
 
+	static PyObject* PyInit_PyAPIRegistry(void);
 };
 
 

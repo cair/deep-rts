@@ -31,6 +31,7 @@ public:
     Tilemap(std::string mapName);
 
     void addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid, Tile &tile);
+	std::vector<Tile>& getTiles();
     std::vector<Tile *> neighbors(Tile &tile, int const_pathfinding_type);
 
     std::vector<Tile *> getTiles(Tile *source, int width, int height);

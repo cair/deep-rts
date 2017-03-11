@@ -1,8 +1,22 @@
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #endif
+#ifdef LINUX
+#include <unistd.h>
+#endif
+#ifdef WINDOWS
+#include <windows.h>
+#endif
 
-#include <thread>
+void sleep(int sleepMs)
+{
+#ifdef LINUX
+	usleep(sleepMs * 1000);   // usleep takes sleep time in us (1 millionth of a second)
+#endif
+#ifdef WINDOWS
+	Sleep(sleepMs);
+#endif
+}
 
 
 #include "game/Game.h"
@@ -22,10 +36,8 @@ int main() {
     g->start();
 
 	PyAPI::init(); // Init the API
-	while (!PyAPI::loaded) {};
 
 	//std::shared_ptr<zmqAI> ai = zmqAI::createInstance(0, 0);
-	PyAPI::createInstance("Main", 0, 0);
     //player0.setAlgorithm(algorithm0);
 
     //std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
