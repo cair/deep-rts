@@ -20,21 +20,21 @@ StateManager::StateManager()
 
 std::shared_ptr<BaseState> StateManager::getByID(int id){
     switch(id) {
-        case Constants::State_Building:
+        case Constants::State::Building:
             return buildingState;
-        case Constants::State_Spawning:
+        case Constants::State::Spawning:
             return spawnState;
-        case Constants::State_Walking:
+        case Constants::State::Walking:
             return walkingState;
-        case Constants::State_Idle:
+        case Constants::State::Idle:
             return idleState;
-        case Constants::State_Despawned:
+        case Constants::State::Despawned:
             return despawnedState;
-        case Constants::State_Harvesting:
+        case Constants::State::Harvesting:
             return harvestingState;
-        case Constants::State_Combat:
+        case Constants::State::Combat:
             return combatState;
-        case Constants::State_Dead:
+        case Constants::State::Dead:
             return deadState;
     }
 }

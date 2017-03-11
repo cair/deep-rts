@@ -146,40 +146,41 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 	for (auto &tile : api_ptr->game->map.tiles) {
 
 		/// Tile
-		api_ptr->flatStateBuffer[c++] = (int)tile.id_;// Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.tId; // Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.id;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.tileID; // Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.oilYield;// Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.resources;// Layer
+		api_ptr->flatStateBuffer[c++] = (int)tile.getResources();// Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.lumberYield;// Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.walkable;// Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.harvestable;// Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.swimable;// Layer
 
 
-		if (tile.occupant) {
+		std::shared_ptr<Unit> occupant = tile.getOccupant();
+		if (occupant) {
 			// Unit
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->id;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->typeId;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->current_state;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->goldCarry;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->lumberCarry;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->oilCarry;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->carryCapacity;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->direction;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damageMax;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damageMin;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damagePiercing;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->damageRange;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->health;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->health_max;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->military;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->recallable;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->sight;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->structure;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->id;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->typeId;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->current_state;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->goldCarry;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->lumberCarry;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->oilCarry;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->carryCapacity;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->direction;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->damageMax;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->damageMin;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->damagePiercing;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->damageRange;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->health;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->health_max;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->military;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->recallable;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->sight;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->structure;// Layer
 
 			// Player
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->player_.id_;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)tile.occupant->player_.faction;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->player_.id_;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->player_.faction;// Layer
 
 		}
 		else {

@@ -9,7 +9,6 @@
 
 Tilemap::Tilemap(std::string mapName) {
 	json mapData = MapLoader::loadFile(mapName);
-
 	json tilesData = MapLoader::tileProperties();
 	tileset = MapLoader::loadTexture();
 
@@ -18,10 +17,10 @@ Tilemap::Tilemap(std::string mapName) {
     json mapLayer = mapData["layers"][0];
     json tileIDs = mapLayer["data"];
 
-    int mapWidth = mapData["width"];
-    int mapHeight = mapData["height"];
-    int tWidth = tilesetData["tilewidth"];
-    int tHeight = tilesetData["tileheight"];
+    uint16_t mapWidth = mapData["width"];
+	uint16_t mapHeight = mapData["height"];
+	uint16_t tWidth = tilesetData["tilewidth"];
+	uint16_t tHeight = tilesetData["tileheight"];
     tFirstGid = tilesetData["firstgid"];
 
     TILE_WIDTH = tWidth;
@@ -31,10 +30,15 @@ Tilemap::Tilemap(std::string mapName) {
     tileTextureDimension = 32;
     tileWorldDimension = 32;
 
-    int c = 0;
-    for(int y = 0; y < MAP_HEIGHT; y++)
+	// Preallocate
+	tiles.reserve(TILE_WIDTH * TILE_HEIGHT);
+
+
+
+    uint16_t c = 0;
+    for(uint16_t y = 0; y < MAP_HEIGHT; y++)
     {
-        for(int x = 0; x < MAP_WIDTH; x++)
+        for(uint16_t x = 0; x < MAP_WIDTH; x++)
         {
 
             int tId = (int)tileIDs[c] - 1;
@@ -42,8 +46,8 @@ Tilemap::Tilemap(std::string mapName) {
             tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT, *this));
             assert(!tiles.empty());
             Tile &tile = tiles.back();
-            tile.tId = tId;
-            tile.id_ = c;
+            tile.tileID = tId;
+            tile.id = c;
             tile.name = tileData["name"];
             tile.harvestable = tileData["harvestable"];
             tile.walkable = tileData["walkable"];
@@ -51,17 +55,17 @@ Tilemap::Tilemap(std::string mapName) {
             tile.oilYield =  tileData["oil_yield"];
             tile.lumberYield = tileData["lumber_yield"];
             tile.goldYield = tileData["gold_yield"];
-            tile.resources = tileData["resources"];
+			tile.setResources(tileData["resources"]);
             tile.depleteTile = tileData["deplete_tile"];
 
             if(tile.name == "Spawn"){
                 spawnTiles.push_back(c);
                 // Replace spawn data with grass
-                tId = Constants::Tile_Grass;
+                tId = Constants::Tile::Grass;
                 json tileData = tilesData[std::to_string(tId - 1)];
                 tId -= 2; // TODO some fucked up shit goin on here
-                tile.id_ = c;
-                tile.tId = tId;
+                tile.id = c;
+                tile.tileID = tId;
                 tile.name = tileData["name"];
                 tile.harvestable = tileData["harvestable"];
                 tile.walkable = tileData["walkable"];
@@ -69,7 +73,7 @@ Tilemap::Tilemap(std::string mapName) {
                 tile.oilYield =  tileData["oil_yield"];
                 tile.lumberYield = tileData["lumber_yield"];
                 tile.goldYield = tileData["gold_yield"];
-                tile.resources = tileData["resources"];
+                tile.setResources(tileData["resources"]);
                 tile.depleteTile = tileData["deplete_tile"];
             }
 
@@ -77,6 +81,7 @@ Tilemap::Tilemap(std::string mapName) {
             addTileVertices(tId, tWidth, tHeight, tFirstGid, tile);
 
             c++;
+			std::cout << sizeof(std::vector<Tile>) + (sizeof(Tile) * tiles.size()) << std::endl;
         }
     }
 
@@ -107,7 +112,7 @@ std::vector<Tile> &Tilemap::getTiles() {
 }
 
 
-std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {
+std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) {
     std::vector<Tile *> neighbors;
 
     std::pair<int,int> pos[8];
@@ -149,7 +154,7 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, int const_pathfinding_type) {
         Tile &neigh = tiles[idx];
         assert(&neigh);
 
-        if(const_pathfinding_type == Constants::Pathfinding_Walkable && !neigh.canWalkTo())
+        if(type == Constants::Pathfinding::Walkable && !neigh.canWalkTo())
             continue;
 
         neighbors.push_back(&neigh);

@@ -2,8 +2,7 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#ifndef WARC2SIM_BASESTATE_H
-#define WARC2SIM_BASESTATE_H
+#pragma once
 
 
 
@@ -16,11 +15,9 @@ class BaseState {
 
 
 public:
-    int id = 1337;
+    Constants::State id = Constants::State::None;
     std::string name = "**ERR**";
-    BaseState(int id): id(id){
-        std::cout << "setting id to " << id << std::endl;
-
+    BaseState(Constants::State id): id(id){
     };
     virtual void update(std::shared_ptr<Unit> unit)const;
     virtual void init(std::shared_ptr<Unit> unit)const;
@@ -28,4 +25,3 @@ public:
 };
 
 
-#endif //WARC2SIM_BASESTATE_H

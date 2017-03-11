@@ -29,7 +29,7 @@ void AlgoRandom::update() {
 
 	for (int i = 0; i < nUnits; i++) {
 		std::shared_ptr<Unit> u = player.units[i];
-		if (u->state->id == Constants::State_Idle) {
+		if (u->state->id == Constants::State::Idle) {
 			int randomIndex = rand() % actionSpace.size();
 			int actionID = actionSpace[randomIndex];
 			getAction(actionID, u);
@@ -59,20 +59,42 @@ void AlgoRandom::doAction(std::shared_ptr<BaseAction> action) {
 }
 
 void AlgoRandom::defineActionSpace() {
+
+
+
+
+		
+
+		
+
+
+
     actionSpace = {
-            Constants::ACTION_NEXT_UNIT,
-            Constants::ACTION_PREVIOUS_UNIT,
-            Constants::ACTION_RC_DOWN,
-            Constants::ACTION_RC_LEFT,
-            Constants::ACTION_RC_RIGHT,
-            Constants::ACTION_RC_UP,
-            Constants::ACTION_RC_DOWNLEFT,
-            Constants::ACTION_RC_DOWNRIGHT,
-            Constants::ACTION_RC_UPLEFT,
-            Constants::ACTION_RC_UPRIGHT,
-			Constants::ACTION_BUILD_0,
-			Constants::ACTION_BUILD_1,
-			Constants::ACTION_BUILD_2
+		Constants::Action::NextUnit,
+
+		Constants::Action::PreviousUnit,
+
+		Constants::Action::RightUpRight,
+
+		Constants::Action::RightUpLeft,
+
+		Constants::Action::RightDownRight,
+
+		Constants::Action::RightDownLeft,
+
+		Constants::Action::RightUp,
+
+		Constants::Action::RightDown,
+
+		Constants::Action::RightLeft,
+
+		Constants::Action::RightRight,
+
+		Constants::Action::Build0,
+
+		Constants::Action::Build1,
+
+		Constants::Action::Build2
 
     };
 }

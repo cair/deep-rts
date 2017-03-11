@@ -9,16 +9,23 @@
 #include "../unit/Unit.h"
 #include <utility>
 
-Tile::Tile(int x, int y, int width, int height, Tilemap &tilemap):
-x(x), y(y), height(height), width(width), tilemap(tilemap), color(sf::Color(255,0,0,255))
-{
-
-}
+Tile::Tile(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Tilemap &tilemap):
+x(x), y(y), height(height), width(width), tilemap(tilemap)
+{}
 
 
 sf::Vector2f Tile::getPixelPosition()const {
-
     return sf::Vector2f(vertices->position.x, vertices->position.y);
+}
+
+std::shared_ptr<Unit> Tile::getOccupant()
+{
+	return occupant;
+}
+
+uint16_t Tile::getResources()
+{
+	return resources;
 }
 
 bool Tile::isAttackable(std::shared_ptr<Unit> unit) {
@@ -29,37 +36,45 @@ bool Tile::isAttackable(std::shared_ptr<Unit> unit) {
 
 }
 
-bool Tile::isWalkable() {
+bool Tile::isWalkable() const{
     return walkable;
 }
 
-bool Tile::isHarvestable() {
+bool Tile::isHarvestable() const {
     return harvestable;
 }
 
 void Tile::setOccupant(std::shared_ptr<Unit> unit) {
     occupant = unit;
+	needRedraw = true;
 }
 
-bool Tile::canWalkTo() {
+bool Tile::canWalkTo() const {
     return occupant == 0 and walkable;
 }
 
-bool Tile::isBuildable() {
+bool Tile::isBuildable() const {
     return canWalkTo();
 }
 
 
-int Tile::distance(Tile *pTile) {
+uint16_t Tile::distance(Tile *pTile) {
 	return abs(pTile->x - x) + abs(pTile->y - y);
 }
 
 void Tile::setDepleted() {
     this->harvestable = false;
     this->walkable = true;
-
     tilemap.addTileVertices(depleteTile-1, width, height, tilemap.tFirstGid, *this);
+}
 
+void Tile::setResources(uint16_t resource_count)
+{
+	resources = resource_count;
+}
+
+void Tile::takeResource(uint8_t n) {
+	resources -= n;
 }
 
 

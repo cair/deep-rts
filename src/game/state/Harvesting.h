@@ -12,7 +12,7 @@ class Unit;
 
 class Harvesting: public BaseState {
 public:
-    Harvesting():BaseState(Constants::State_Harvesting){
+    Harvesting():BaseState(Constants::State::Harvesting){
         name = "Harvesting";
     }
 

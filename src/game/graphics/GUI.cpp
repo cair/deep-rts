@@ -372,7 +372,7 @@ void GUI::drawSelected(){
         text.setPosition(10,900);
         window.draw(text);
 
-        text.setString("Resources: " + std::to_string(selectedTile->resources));
+        text.setString("Resources: " + std::to_string(selectedTile->getResources()));
         text.setPosition(10,920);
         window.draw(text);
     }
@@ -440,21 +440,21 @@ void GUI::drawTiles(){
 
 
 
-    for(const Tile& tile : game.map.tiles){
+    for(Tile& tile : game.map.tiles){
+	
+		if (showGridLines) {
+			sf::RectangleShape rectangle;
+			rectangle.setSize(sf::Vector2f(32, 32));
+			rectangle.setOutlineThickness(1);
+			rectangle.setPosition(tile.getPixelPosition());
+
+			window.draw(rectangle);
+		}
 
 
-        if(showGridLines){
-            sf::RectangleShape rectangle;
-            rectangle.setSize(sf::Vector2f(32, 32));
-            rectangle.setOutlineColor(tile.color);
-            rectangle.setOutlineThickness(1);
-            rectangle.setPosition(tile.getPixelPosition());
-
-            window.draw(rectangle);
-        }
+		window.draw(tile.vertices, 4, sf::Quads, &game.map.tileset);
 
 
-        window.draw(tile.vertices, 4, sf::Quads, &game.map.tileset);
 
 
 
@@ -491,8 +491,8 @@ void GUI::drawUnits() {
 void GUI::leftClick(Tile &tile) {
     this->selectedTile = &tile;
 
-    if(tile.occupant) {
-        player->targetedUnit = tile.occupant;
+    if(tile.getOccupant()) {
+        player->targetedUnit = tile.getOccupant();
     }else {
         player->targetedUnit = NULL;
     }

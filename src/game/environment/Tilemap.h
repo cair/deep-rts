@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "../Constants.h"
 #include "Tile.h"
 #include "../third_party/json.hpp"
 using json = nlohmann::json;
@@ -32,7 +33,7 @@ public:
 
     void addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid, Tile &tile);
 	std::vector<Tile>& getTiles();
-    std::vector<Tile *> neighbors(Tile &tile, int const_pathfinding_type);
+    std::vector<Tile *> neighbors(Tile &tile, Constants::Pathfinding type);
 
     std::vector<Tile *> getTiles(Tile *source, int width, int height);
 

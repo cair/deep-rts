@@ -29,7 +29,6 @@ void MCTS::calculate(MCTSNode root){
 
 	MCTSNode &current = root;
 	// Load up game state
-	game->load(current.gameState);
 	long counter = 0;
 
 	while (now < timeout) {
@@ -69,7 +68,7 @@ void MCTS::update() {
     // Tick happended
 
     root = MCTSNode(NULL, 0, 0);
-	player.game_.serialize(root.gameState);
+
     calculate(root);
 
 

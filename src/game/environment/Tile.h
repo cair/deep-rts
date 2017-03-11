@@ -14,51 +14,74 @@
 class Unit;
 
 class Tilemap;
-class Tile: public sf::Drawable{
+class Tile{
+private:
+	// Tile data
+	uint16_t resources;
+	std::shared_ptr<Unit> occupant = NULL;
+
 public:
-    Tile(int x, int y, int w, int h, Tilemap &tilemap);
+    Tile(uint16_t x, uint16_t y, uint16_t w, uint16_t h, Tilemap &tilemap);
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const{};
-    int id_;
-    int tId;
+    // Tile data
     std::string name;
-    bool harvestable;
-    bool walkable;
+	uint16_t id;
+	uint16_t tileID;
+	uint8_t oilYield;
+	uint8_t lumberYield;
+	uint8_t goldYield;
+	uint16_t depleteTile;
+	bool harvestable;
+	bool walkable;
     bool swimable;
-    int oilYield;
-    int lumberYield;
-    int goldYield;
-    int resources;
+
+	// Tile Properties
+	uint16_t x;
+	uint16_t y;
+	uint8_t height;
+	uint8_t width;
+
+	// GUI
+	bool needRedraw = true;
+	Tilemap &tilemap;
     sf::Vertex vertices[4];
-	sf::Color color;
-    Tilemap &tilemap;
-    std::shared_ptr<Unit> occupant = NULL;
 
+	// Check functions
     bool isAttackable(std::shared_ptr<Unit> unit);
-    bool isWalkable();
-    bool isHarvestable();
-    void setOccupant(std::shared_ptr<Unit> unit);
+    bool isWalkable()const;
+    bool isHarvestable()const;
+	bool canWalkTo()const;
+	bool isBuildable()const;
+	
+	// Info Functions
+	uint16_t distance(Tile *pTile);
+
+	// Setters
+	void setOccupant(std::shared_ptr<Unit> unit);
+	void setDepleted();
+	void setResources(uint16_t resource_count);
+	void takeResource(uint8_t n);
+
+	// Getters
+	sf::Vector2f getPixelPosition()const;
+	std::shared_ptr<Unit> getOccupant();
+	uint16_t getResources();
 
 
 
-    int x;
-    int y;
 
 
-    sf::Vector2f getPixelPosition()const;
-
-    int height;
-    int width;
 
 
-    bool canWalkTo();
 
-    int distance(Tile *pTile);
 
-    bool isBuildable();
-    int depleteTile;
 
-    void setDepleted();
+
+    
+
+   
+    
+
 };
 
 

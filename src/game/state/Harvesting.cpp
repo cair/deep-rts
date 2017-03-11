@@ -58,10 +58,10 @@ void Harvesting::update(std::shared_ptr<Unit> unit)const{
             unit->player_.statGoldGather += unit->harvestTarget->goldYield;
             unit->player_.statLumberGather += unit->harvestTarget->lumberYield;
             unit->player_.statOilGather += unit->harvestTarget->oilYield;
-            unit->harvestTarget->resources -= unit->harvestTarget->lumberYield + unit->harvestTarget->goldYield + unit->harvestTarget->oilYield;
+			unit->harvestTarget->takeResource(unit->harvestTarget->lumberYield + unit->harvestTarget->goldYield + unit->harvestTarget->oilYield);
 
             // No more resources // TODO constant parameter Config
-            if(unit->harvestTarget->resources < 1) {
+            if(unit->harvestTarget->getResources() < 1) {
                 unit->harvestTarget->setDepleted();
 
                 // Find new harvestable

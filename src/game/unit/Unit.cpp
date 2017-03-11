@@ -90,7 +90,7 @@ Tile *Unit::centerTile() {
 }
 
 bool Unit::build(int idx) {
-    //if(state->id != Constants::State_Idle)
+    //if(state->id != Constants::State::Idle)
     if(state->name != "Idle")
         return false;
 
@@ -168,9 +168,9 @@ void Unit::despawn() {
 
 void Unit::clearTiles(){
     for(auto &t : player_.game_.map.getTiles(tile, width, height)) {
-        t->occupant = NULL;
+        t->setOccupant(NULL);
     }
-    tile->occupant = NULL;
+    tile->setOccupant(NULL);
     tile = NULL;
 }
 
@@ -201,7 +201,7 @@ void Unit::attack(Tile &tile) {
     if(!canAttack)
         return;
 
-    std::shared_ptr<Unit> target = tile.occupant;
+    std::shared_ptr<Unit> target = tile.getOccupant();
     assert(target);
     combatTarget = target;
 
@@ -320,7 +320,7 @@ void Unit::afflictDamage(int dmg_) {
 }
 
 bool Unit::isDead() {
-    return state->id == Constants::State_Dead;
+    return state->id == Constants::State::Dead;
 }
 
 int Unit::getDamage(Unit &target) {
@@ -349,35 +349,35 @@ void Unit::setDirection(int newX, int newY){
 
     if (dx > 0 and dy > 0) {
         // Down Right
-        direction = Constants::D_DownRight;
+        direction = Constants::Direction::DownRight;
         //std::cout << "Down Right" << std::endl;
     } else if (dx < 0 and dy > 0) {
         // Down Left
-        direction = Constants::D_DownLeft;
+        direction = Constants::Direction::DownLeft;
         //std::cout << "Down Left" << std::endl;
     } else if (dx > 0 and dy < 0) {
         // Up Right
-        direction = Constants::D_UpRight;
+        direction = Constants::Direction::UpRight;
         //std::cout << "Up Right" << std::endl;
     } else if (dx < 0 and dy < 0) {
         // Up Left
-        direction = Constants::D_UpLeft;
+        direction = Constants::Direction::UpLeft;
         //std::cout << "Up Left" << std::endl;
     } else if (dx > 0 and dy == 0) {
         // Right
-        direction = Constants::D_Right;
+        direction = Constants::Direction::Right;
         //std::cout << "Right" << std::endl;
     } else if (dx < 0 and dy == 0) {
         // Left
-        direction = Constants::D_Left;
+        direction = Constants::Direction::Left;
         //std::cout << "Left" << std::endl;
     } else if (dx == 0 and dy < 0) {
         // Up
-        direction = Constants::D_Up;
+        direction = Constants::Direction::Up;
         //std::cout << "Up" << std::endl;
     } else if (dx == 0 and dy > 0) {
         // Down
-        direction = Constants::D_Down;
+        direction = Constants::Direction::Down;
         //std::cout << "Down" << std::endl;
     }
 

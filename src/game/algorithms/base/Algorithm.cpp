@@ -12,43 +12,43 @@ void Algorithm::setPlayerName(std::string name){
 std::shared_ptr<BaseAction> Algorithm::getAction(int actionID, std::shared_ptr<Unit> unitptr) {
 
     switch (actionID){
-        case Constants::ACTION_NEXT_UNIT:
+		case Constants::Action::NextUnit:
             unitptr->player_.nextUnit();
             break;
-        case Constants::ACTION_PREVIOUS_UNIT:
+		case Constants::Action::PreviousUnit:
             unitptr->player_.previousUnit();
             break;
-        case Constants::ACTION_RC_UPRIGHT:
+		case Constants::Action::RightUpRight:
             unitptr->rightClickRelative(-1, 1);
             break;
-        case Constants::ACTION_RC_UPLEFT:
+		case Constants::Action::RightUpLeft:
             unitptr->rightClickRelative(-1, -1);
             break;
-        case Constants::ACTION_RC_DOWNRIGHT:
+		case Constants::Action::RightDownRight:
             unitptr->rightClickRelative(1, 1);
             break;
-        case Constants::ACTION_RC_DOWNLEFT:
+		case Constants::Action::RightDownLeft:
             unitptr->rightClickRelative(1, -1);
             break;
-        case Constants::ACTION_RC_UP:
+		case Constants::Action::RightUp:
             unitptr->rightClickRelative(0, -1);
             break;
-        case Constants::ACTION_RC_DOWN:
+		case Constants::Action::RightDown:
             unitptr->rightClickRelative(0, 1);
             break;
-        case Constants::ACTION_RC_LEFT:
+		case Constants::Action::RightLeft:
             unitptr->rightClickRelative(-1, 0);
             break;
-        case Constants::ACTION_RC_RIGHT:
+		case Constants::Action::RightRight:
             unitptr->rightClickRelative(1, 0);
             break;
-		case Constants::ACTION_BUILD_0:
+		case Constants::Action::Build0:
 			unitptr->build(0);
 			break;
-		case Constants::ACTION_BUILD_1:
+		case Constants::Action::Build1:
 			unitptr->build(1);
 			break;
-		case Constants::ACTION_BUILD_2:
+		case Constants::Action::Build2:
 			unitptr->build(2);
 			break;
 

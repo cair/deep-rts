@@ -259,9 +259,9 @@ void Player::previousUnit(){
 
 std::shared_ptr<Unit> Player::createUnit(int type_id) {
     switch (type_id){
-        case Constants::Unit_Peasant:
+        case Constants::Unit::Peasant:
             return std::shared_ptr<Unit>(new Peasant(*this));
-        case Constants::Unit_TownHall:
+        case Constants::Unit::TownHall:
             return std::shared_ptr<Unit>(new TownHall(*this));
 
 

@@ -6,7 +6,7 @@
 #include "../player/Player.h"
 
 TownHall::TownHall(Player &player): Unit(player) {
-    typeId = Constants::Unit_TownHall;
+    typeId = Constants::Unit::TownHall;
     health = 1200;
     health_max = 1200;
     direction = 0;

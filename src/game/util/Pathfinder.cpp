@@ -41,7 +41,7 @@ bool Pathfinder::aStar(std::vector<Tile *> &constructedPath, Tile *start, Tile *
 		}
 
 
-        std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_Walkable);
+        std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding::Walkable);
 
         for (auto next : neighbors) {
 
@@ -97,7 +97,7 @@ Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int
 
 
 			Tile *subject = destination->tilemap.getTile(x, y);
-			if (subject->occupant) {
+			if (subject->getOccupant()) {
 				continue;
 			}
 
@@ -133,14 +133,14 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         assert(current);
         queue.pop();
 
-        if (current->canWalkTo() && !current->occupant) {
+        if (current->canWalkTo() && !current->getOccupant()) {
             return current;
         }
 
         const bool is_in = visited.find(current) != visited.end();
         if(!is_in) {
             visited.insert(current);
-            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_All);
+            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding::All);
             for(auto &i : neighbors) {
                 queue.push(i);
             }
@@ -174,7 +174,7 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
         const bool is_in = visited.find(current) != visited.end();
         if(!is_in) {
             visited.insert(current);
-            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding_All);
+            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding::All);
             for(auto &i : neighbors) {
                 queue.push(i);
             }

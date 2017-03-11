@@ -1,6 +1,5 @@
 #include <zmq.h>
 #include <zmq_utils.h>
-#include "../../third_party/zmq.hpp"
 #include "../../third_party/json.hpp"
 #include "../../proto/GameMessage.pb.h"
 #include "../../Game.h"

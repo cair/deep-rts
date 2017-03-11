@@ -2,8 +2,7 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#ifndef WARC2SIM_UNIT_H
-#define WARC2SIM_UNIT_H
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -161,5 +160,3 @@ public:
 
 
 };
-
-#endif //WARC2SIM_UNIT_H

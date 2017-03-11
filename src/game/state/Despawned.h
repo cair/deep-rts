@@ -12,7 +12,7 @@ class Unit;
 
 class Despawned: public BaseState {
 public:
-    Despawned():BaseState(Constants::State_Despawned){
+    Despawned():BaseState(Constants::State::Despawned){
         name = "Despawned";
     }
 

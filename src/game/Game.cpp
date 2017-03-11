@@ -238,9 +238,9 @@ std::string Game::serialize_json() {
 
 	for (int i = 0; i < numTiles; i++) {
 		Tile &t = map.tiles[i];
-		data["tileIds"].push_back(t.id_);
-		data["tileResources"].push_back(t.resources);
-		data["tileOccupant"].push_back((t.occupant) ? t.occupant->id : -1);
+		data["tileIds"].push_back(t.id);
+		data["tileResources"].push_back(t.getResources());
+		data["tileOccupant"].push_back((t.getOccupant()) ? t.getOccupant()->id : -1);
 	}
 
 
@@ -274,7 +274,7 @@ std::string Game::serialize_json() {
 			data["unitsType"] .push_back(u->typeId);
 			data["unitsHealth"] .push_back(u->health);
 			data["unitsIds"] .push_back(u->id);
-			data["unitsTileID"] .push_back((u->tile) ? u->tile->id_ : -1);
+			data["unitsTileID"] .push_back((u->tile) ? u->tile->id : -1);
 			data["unitsState"] .push_back(u->state->id);
 			data["unitsPlayerID"].push_back(u->player_.id_);
 
@@ -289,17 +289,17 @@ std::string Game::serialize_json() {
 				data["unitsBuildEntity"].push_back(-1);
 
 			if (u->walkingGoal)
-				data["unitsWalkingGoal"].push_back(u->walkingGoal->id_);
+				data["unitsWalkingGoal"].push_back(u->walkingGoal->id);
 			else
 				data["unitsWalkingGoal"].push_back(-1);
 
 			if (u->harvestTarget)
-				data["unitsHarvestTarget"].push_back(u->harvestTarget->id_);
+				data["unitsHarvestTarget"].push_back(u->harvestTarget->id);
 			else
 				data["unitsHarvestTarget"].push_back(-1);
 
 			if (u->spawnTile)
-				data["unitsSpawnTile"].push_back(u->spawnTile->id_);
+				data["unitsSpawnTile"].push_back(u->spawnTile->id);
 			else
 				data["unitsSpawnTile"].push_back(-1);
 

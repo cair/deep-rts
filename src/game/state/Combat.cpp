@@ -35,7 +35,7 @@ void Combat::update(std::shared_ptr<Unit> unit)const{
                 return;
             }
 
-            if(unit->combatTarget->state->id == Constants::State_Idle) {
+            if(unit->combatTarget->state->id == Constants::State::Idle) {
                 unit->combatTarget->attack(*unit->tile);
             }
 

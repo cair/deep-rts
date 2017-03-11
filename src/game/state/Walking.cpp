@@ -52,8 +52,8 @@ void Walking::init(std::shared_ptr<Unit> unit)const{
     unit->walking_timer = 0;
 
 	Tile *goal = NULL;
-	if (unit->walkingGoal->occupant) {
-		std::shared_ptr<Unit> occupant = unit->walkingGoal->occupant;
+	if (unit->walkingGoal->getOccupant()) {
+		std::shared_ptr<Unit> occupant = unit->walkingGoal->getOccupant();
 		Tile *closest  = Pathfinder::find_closest_walkable_tile(unit->tile, occupant->tile, occupant->width);
 		goal = closest;
 	}
