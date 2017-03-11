@@ -79,10 +79,19 @@ void Game::loop() {
 
 
         now = clock();
-		for (auto p : this->players) {
-			p->update();
-		}
-     
+
+        if (now >= this->_update_next) {
+            // Update
+
+            for(auto p : this->players) {
+                p->update();
+            }
+
+            this->_update_next += this->_update_interval;
+            this->_update_delta += 1;
+            this->ticks += 1;
+
+        }
 
         if (now >= this->_render_next) {
             // Render
