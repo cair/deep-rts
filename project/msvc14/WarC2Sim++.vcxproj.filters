@@ -171,12 +171,6 @@
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\BaseRemoteAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\WSAI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game\third_party\zmq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -277,15 +271,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game\util\Pathfinder.cpp">
       <Filter>Source Files\game\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.cpp">
-      <Filter>Source Files\game\algorithms</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\WSAI.cpp">
-      <Filter>Source Files\game\algorithms</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\zmqAI.cpp">
-      <Filter>Source Files\game\algorithms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAPI.cpp">
       <Filter>Source Files\game\algorithms</Filter>

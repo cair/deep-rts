@@ -27,8 +27,6 @@
     <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAPI.h" />
     <ClInclude Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.h" />
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\BaseRemoteAI.h" />
-    <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.h" />
-    <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\WSAI.h" />
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\zmqAI.h" />
     <ClInclude Include="..\..\src\game\Config.h" />
     <ClInclude Include="..\..\src\game\Constants.h" />
@@ -73,9 +71,6 @@
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTSNode.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAPI.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp" />
-    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\CRemoteAI.cpp" />
-    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\WSAI.cpp" />
-    <ClCompile Include="..\..\src\game\algorithms\REMOTEAI\zmqAI.cpp" />
     <ClCompile Include="..\..\src\game\environment\Tile.cpp" />
     <ClCompile Include="..\..\src\game\environment\Tilemap.cpp" />
     <ClCompile Include="..\..\src\game\Game.cpp" />
@@ -186,7 +181,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\include;$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\Lib\site-packages\numpy\core\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -228,7 +223,7 @@ xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Config
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\include;$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\Lib\site-packages\numpy\core\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
