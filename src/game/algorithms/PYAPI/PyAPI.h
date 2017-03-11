@@ -40,7 +40,7 @@ public:
 	
 	static void start();
 
-	PyAPI(uint16_t gameID, uint16_t playerID);
+	PyAPI(uint8_t gameID, uint8_t playerID);
 	std::string scriptName;
 
 

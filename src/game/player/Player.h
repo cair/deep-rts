@@ -51,7 +51,7 @@ public:
     int getGold();
     int getOil();
     int getLumber();
-    int getUnitCount();
+	size_t getUnitCount();
     void subGold(int n);
     void subLumber(int n);
     void subOil(int n);

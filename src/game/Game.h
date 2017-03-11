@@ -19,19 +19,19 @@
 class GUI;
 class Game {
 
-    int n_players;
+    uint8_t n_players;
 
     // Gameclock variables
     clock_t _update_next;
     clock_t _render_next;
     clock_t _stats_next;
 
-    int _update_interval = 0;
-    int _render_interval = 0;
-    int _caption_interval = 1000;
+    clock_t _update_interval = 0;
+    clock_t _render_interval = 0;
+    clock_t _caption_interval = 1000;
 
-    int _update_delta = 0;
-    int _render_delta = 0;
+	uint32_t _update_delta = 0;
+	uint32_t _render_delta = 0;
 
 
     bool running;
@@ -39,15 +39,15 @@ class Game {
 	static std::unordered_map<int, Game *> games;
 public:
 	
-	static Game * getGame(int id);
-	int id;
+	static Game * getGame(uint8_t id);
+	uint8_t id;
 
     Tilemap map;
-    int fps;
-    int ups;
+	uint32_t fps;
+	uint32_t ups;
 
-    int getSeconds();
-    long getFrames();
+	uint64_t getSeconds();
+	uint64_t getFrames();
 
     StateManager stateManager;
     std::vector<std::shared_ptr<Player>> players;
@@ -57,8 +57,8 @@ public:
 
     void loop();
 	Tilemap & getMap();
-    void update(int ticks);
-    void render(int ticks);
+    void update(uint32_t ticks);
+    void render(uint32_t ticks);
     void createPlayers();
     void load_players();
 
@@ -67,18 +67,18 @@ public:
 
     void stop();
 
-    Game(int n_players, bool setup);
+    Game(uint8_t n_players, bool setup);
 
     GUI *gui;
 
     void initGUI();
 
-    void setFPS(int fps_);
+    void setFPS(uint32_t fps_);
 
-    void setUPS(int ups_);
+    void setUPS(uint32_t ups_);
 
-    int currentFPS = 0;
-    int currentUPS = 0;
+	uint32_t currentFPS = 0;
+	uint32_t currentUPS = 0;
 
     bool checkTerminal();
 

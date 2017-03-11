@@ -11,7 +11,7 @@
 
 std::unordered_map<int, Game*> Game::games;
 
-Game::Game(int _nplayers, bool setup):
+Game::Game(uint8_t _nplayers, bool setup):
         map(Tilemap("contested-4v4.json"))
 {
     // Definitions
@@ -19,7 +19,7 @@ Game::Game(int _nplayers, bool setup):
     setFPS(Config::getInstance().getFPS());
     setUPS(Config::getInstance().getUPS());
 
-	id = games.size();
+	id = static_cast<uint8_t>(games.size());
 	games[id] = this;
 
 
@@ -31,7 +31,7 @@ Game::Game(int _nplayers, bool setup):
 
 void Game::createPlayers(){
 
-    for (int i = 0; i < n_players; i++) {
+    for (uint8_t i = 0; i < n_players; i++) {
         addPlayer();
 
     }
@@ -46,16 +46,16 @@ void Game::load_players(){
 
 }
 
-void Game::setFPS(int fps_){
+void Game::setFPS(uint32_t fps_){
     fps = fps_;
-    _render_interval = 1000.0 / fps;
+    _render_interval = static_cast<clock_t>(1000.0 / fps);
 
 
 }
 
-void Game::setUPS(int ups_){
+void Game::setUPS(uint32_t ups_){
     ups = ups_;
-    _update_interval =  1000.0 / ups;
+    _update_interval =  static_cast<clock_t>(1000.0 / ups);
 }
 
 void Game::start(){
@@ -79,19 +79,10 @@ void Game::loop() {
 
 
         now = clock();
-
-        if (now >= this->_update_next) {
-            // Update
-
-            for(auto p : this->players) {
-                p->update();
-            }
-
-            this->_update_next += this->_update_interval;
-            this->_update_delta += 1;
-            this->ticks += 1;
-
-        }
+		for (auto p : this->players) {
+			p->update();
+		}
+     
 
         if (now >= this->_render_next) {
             // Render
@@ -124,18 +115,18 @@ Tilemap &Game::getMap() {
 	return map;
 }
 
-long Game::getFrames() {
+uint64_t Game::getFrames() {
     return this->ticks;
 }
 
-Game * Game::getGame(int id)
+Game * Game::getGame(uint8_t id)
 {
 	Game *g = games.at(id);
 	assert(g);
 	return g;
 }
 
-int Game::getSeconds() {
+uint64_t Game::getSeconds() {
     return this->ticks / Config::getInstance().getTickModifier();
 }
 
@@ -148,7 +139,7 @@ bool Game::checkTerminal(){
         }
     }
 
-	std::cout << c << std::endl;
+
     bool isTerminal = (c == 1);
     terminal = isTerminal;
 	if (terminal) {
@@ -233,7 +224,7 @@ std::string Game::serialize_json() {
 	///
 	/// TILE DATA
 	///
-	const int numTiles = map.tiles.size();
+	const uint16_t numTiles = static_cast<uint16_t>(map.tiles.size());
 
 
 	for (int i = 0; i < numTiles; i++) {
@@ -248,7 +239,7 @@ std::string Game::serialize_json() {
 	///
 	/// PLAYER DATA
 	///
-	int numUnits = 0;
+	size_t numUnits = 0;
 	for (auto &p : players) {
 		numUnits += p->units.size();
 	}

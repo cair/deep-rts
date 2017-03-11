@@ -20,9 +20,7 @@ void PyAPI::init() {
 void PyAPI::start() {
 
 
-	PyObject *pName, *pModule, *pDict, *pFunc;
-	PyObject *pArgs, *pValue;
-	int i;
+	PyObject *pName, *pModule;
 
 	int argc;
 	wchar_t * argv[3];
@@ -49,7 +47,7 @@ void PyAPI::start() {
 	}
 }
 
-PyAPI::PyAPI(uint16_t gameID, uint16_t playerID):
+PyAPI::PyAPI(uint8_t gameID, uint8_t playerID):
 	game(Game::getGame(gameID)), 
 	Algorithm(*Game::getGame(gameID)->players[playerID])
 {

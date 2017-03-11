@@ -81,7 +81,7 @@ Tilemap::Tilemap(std::string mapName) {
             addTileVertices(tId, tWidth, tHeight, tFirstGid, tile);
 
             c++;
-			std::cout << sizeof(std::vector<Tile>) + (sizeof(Tile) * tiles.size()) << std::endl;
+
         }
     }
 

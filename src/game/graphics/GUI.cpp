@@ -40,8 +40,8 @@ GUI::GUI(Game &game) :
 void GUI::createView(){
     const Tilemap &tilemap = game.map;
     this->fullView = sf::View(sf::FloatRect(0, 0,
-                                            tilemap.MAP_WIDTH * tilemap.TILE_WIDTH,
-                                            tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT));
+                                            static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
+                                            static_cast<float_t>(tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT)));
     this->fullView.setViewport(sf::FloatRect(0, 0, 1, 1));
     this->fullView.zoom(1);
 
@@ -89,11 +89,11 @@ sf::Vector2f GUI::getCameraOffset() {
 
 int GUI::mouseClick(int mX, int mY)
 {
-    int x = mX / this->game.map.TILE_WIDTH;
-    int y = mY / this->game.map.TILE_HEIGHT;
-    int cols = this->game.map.MAP_WIDTH;
+    size_t x = mX / this->game.map.TILE_WIDTH;
+	size_t y = mY / this->game.map.TILE_HEIGHT;
+    size_t cols = this->game.map.MAP_WIDTH;
 
-    int idx = cols*y + x;
+    size_t idx = cols*y + x;
 
     return idx;
 

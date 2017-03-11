@@ -18,19 +18,19 @@ public:
         return instance;
     }
 
-    int getFPS() {
+	uint32_t getFPS() {
         return fps;
     }
 
-    int getUPS() {
+	uint32_t getUPS() {
         return ups;
     }
 
-    int getFPSInterval() {
+    double_t getFPSInterval() {
         return 1000.0 / getFPS();
     }
 
-    int getUPSInterval() {
+	double_t getUPSInterval() {
         return 1000.0 / getUPS();
     }
 
@@ -38,7 +38,7 @@ public:
         return mechanicTownHall;
     }
 
-    int getTickModifier() {
+	uint8_t getTickModifier() {
         return tickModifier;
     }
 

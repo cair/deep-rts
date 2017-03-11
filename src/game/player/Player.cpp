@@ -111,7 +111,7 @@ int Player::getLumber() {
     return lumber;
 }
 
-int Player::getUnitCount() {
+size_t Player::getUnitCount() {
     return units.size();
 }
 
@@ -132,22 +132,22 @@ void Player::addOil(int n) {
 }
 
 int Player::getScore() {
-    int GOLD_VALUE = 2;
-    int LUMBER_VALUE = 1;
-    int OIL_VALUE = 3;
+	uint8_t GOLD_VALUE = 2;
+	uint8_t LUMBER_VALUE = 1;
+	uint8_t OIL_VALUE = 3;
 
 
-    int gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
-    int builtScore = statUnitBuilt * 10;
-	int damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
-    int unitScore = units.size() * 5;
+    double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
+	double_t builtScore = statUnitBuilt * 10;
+	double_t damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
+	double_t unitScore = units.size() * 5;
 
 
-    int militaryScore = 0;
-    int defenceScore = 0;
+	double_t militaryScore = 0;
+	double_t defenceScore = 0;
 
 
-    return gatherScore + builtScore + unitScore + militaryScore + defenceScore + damageScore;
+    return static_cast<uint32_t>(gatherScore + builtScore + unitScore + militaryScore + defenceScore + damageScore);
 
 }
 
