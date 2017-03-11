@@ -18,7 +18,7 @@ class Tile{
 private:
 	// Tile data
 	uint16_t resources;
-	std::shared_ptr<Unit> occupant = NULL;
+	Unit* occupant = NULL;
 
 public:
     Tile(uint16_t x, uint16_t y, uint16_t w, uint16_t h, Tilemap &tilemap);
@@ -47,7 +47,7 @@ public:
     sf::Vertex vertices[4];
 
 	// Check functions
-    bool isAttackable(std::shared_ptr<Unit> unit);
+    bool isAttackable(Unit & unit);
     bool isWalkable()const;
     bool isHarvestable()const;
 	bool canWalkTo()const;
@@ -57,14 +57,14 @@ public:
 	uint16_t distance(Tile *pTile);
 
 	// Setters
-	void setOccupant(std::shared_ptr<Unit> unit);
+	void setOccupant(Unit *unit);
 	void setDepleted();
 	void setResources(uint16_t resource_count);
 	void takeResource(uint8_t n);
 
 	// Getters
 	sf::Vector2f getPixelPosition()const;
-	std::shared_ptr<Unit> getOccupant();
+	Unit* getOccupant();
 	uint16_t getResources();
 
 

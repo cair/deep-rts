@@ -14,6 +14,9 @@ std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
         map(Tilemap("contested-4v4.json"))
 {
+	players.reserve(16);
+	units.reserve(100);
+
     // Definitions
     n_players = _nplayers;
     setFPS(Config::getInstance().getFPS());
@@ -83,8 +86,8 @@ void Game::loop() {
         if (now >= this->_update_next) {
             // Update
 
-            for(auto p : this->players) {
-                p->update();
+            for(auto &p : this->units) {
+                p.update();
             }
 
             this->_update_next += this->_update_interval;
@@ -143,7 +146,7 @@ bool Game::checkTerminal(){
 
     int c = 0;
     for(auto &p : players) {
-        if(p->defeated){
+        if(p.defeated){
             c++;
         }
     }
@@ -162,25 +165,29 @@ void Game::addAction(std::shared_ptr<BaseAction> action) {
     executedActions.push_back(action);
 }
 
-Player &Game::addPlayer() {
-    std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(*this));
+Player &Game::addPlayer() { 
+	players.push_back(Player(*this));
+	Player &player = players.back();
+	// Retrieve spawn_point
+	int spawnPointIdx = map.spawnTiles[players.size()];
+
+	// Spawn Initial builder
+	Unit &builder = player.spawn(map.tiles[spawnPointIdx]);
+
+	// If auto-spawn town hall mechanic is activated
+	if (Config::getInstance().getMechanicTownHall()) {
+		// build Town-Hall
+		//builder.build(0);
+	}
 
 
-    // Retrieve spawn_point
-    int spawnPointIdx = map.spawnTiles[players.size()];
-    Tile &spawnTile = map.tiles[spawnPointIdx];
 
+	for (auto &p : players) {
+		std::cout << &p << std::endl;
+	}
+	std::cout << "------" << std::endl;
 
-    // Spawn Initial builder
-    Unit &builder = player->spawn(spawnTile);
-
-    // If auto-spawn town hall mechanic is activated
-    if(Config::getInstance().getMechanicTownHall()) {
-        // build Town-Hall
-        builder.build(0);
-    }
-    players.push_back(player);
-    return *player;
+    return player;
 }
 
 
@@ -250,56 +257,53 @@ std::string Game::serialize_json() {
 	///
 	size_t numUnits = 0;
 	for (auto &p : players) {
-		numUnits += p->units.size();
+		numUnits += 1;// p.units.size(); // TODO
 	}
 
 	int i = 0;
-	for (auto &p : players) {
-		for (auto &u : p->units) {
-			Unit &ut = *u;
-
+	for (auto &u : units) {
 			//std::vector<BaseState *> stateList;
 			//std::vector<Tile *> walking_path;
 
-			data["unitsDirection"].push_back(u->direction);
-			data["unitsHarvestTimer"] .push_back(u->harvestTimer);
-			data["unitsHarvestIterator"] .push_back(u->harvestIterator);
-			data["unitsLumberCarry"] .push_back(u->lumberCarry);
-			data["unitsOilCarry"] .push_back(u->oilCarry);
-			data["unitsGoldCarry"] .push_back(u->goldCarry);
-			data["unitsSpawnTimer"] .push_back(u->spawnTimer);
-			data["unitsBuildTimer"] .push_back(u->buildTimer);
-			data["unitsCombatTimer"] .push_back(u->combatTimer);
-			data["unitsWalkingTimer"] .push_back(u->walking_timer);
-			data["unitsType"] .push_back(u->typeId);
-			data["unitsHealth"] .push_back(u->health);
-			data["unitsIds"] .push_back(u->id);
-			data["unitsTileID"] .push_back((u->tile) ? u->tile->id : -1);
-			data["unitsState"] .push_back(u->state->id);
-			data["unitsPlayerID"].push_back(u->player_.id_);
+			data["unitsDirection"].push_back(u.direction);
+			data["unitsHarvestTimer"] .push_back(u.harvestTimer);
+			data["unitsHarvestIterator"] .push_back(u.harvestIterator);
+			data["unitsLumberCarry"] .push_back(u.lumberCarry);
+			data["unitsOilCarry"] .push_back(u.oilCarry);
+			data["unitsGoldCarry"] .push_back(u.goldCarry);
+			data["unitsSpawnTimer"] .push_back(u.spawnTimer);
+			data["unitsBuildTimer"] .push_back(u.buildTimer);
+			data["unitsCombatTimer"] .push_back(u.combatTimer);
+			data["unitsWalkingTimer"] .push_back(u.walking_timer);
+			data["unitsType"] .push_back(u.typeId);
+			data["unitsHealth"] .push_back(u.health);
+			data["unitsIds"] .push_back(u.id);
+			data["unitsTileID"] .push_back((u.tile) ? u.tile->id : -1);
+			data["unitsState"] .push_back(u.state->id);
+			data["unitsPlayerID"].push_back(u.player_->id_);
 
-			if (u->combatTarget)
-				data["unitsCombatTarget"].push_back(u->combatTarget->id);
+			if (u.combatTarget)
+				data["unitsCombatTarget"].push_back(u.combatTarget->id);
 			else
 				data["unitsCombatTarget"].push_back(-1);
 
-			if (u->buildEntity)
-				data["unitsBuildEntity"].push_back(u->buildEntity->id);
+			if (u.buildEntity)
+				data["unitsBuildEntity"].push_back(u.buildEntity->id);
 			else
 				data["unitsBuildEntity"].push_back(-1);
 
-			if (u->walkingGoal)
-				data["unitsWalkingGoal"].push_back(u->walkingGoal->id);
+			if (u.walkingGoal)
+				data["unitsWalkingGoal"].push_back(u.walkingGoal->id);
 			else
 				data["unitsWalkingGoal"].push_back(-1);
 
-			if (u->harvestTarget)
-				data["unitsHarvestTarget"].push_back(u->harvestTarget->id);
+			if (u.harvestTarget)
+				data["unitsHarvestTarget"].push_back(u.harvestTarget->id);
 			else
 				data["unitsHarvestTarget"].push_back(-1);
 
-			if (u->spawnTile)
-				data["unitsSpawnTile"].push_back(u->spawnTile->id);
+			if (u.spawnTile)
+				data["unitsSpawnTile"].push_back(u.spawnTile->id);
 			else
 				data["unitsSpawnTile"].push_back(-1);
 
@@ -307,24 +311,27 @@ std::string Game::serialize_json() {
 
 
 			i++;
-		}
+	}
 
-		int pid = p->id_;
-		int defeated = p->defeated;
-		int statGoldGather = p->statGoldGather;
-		int statLumberGather = p->statLumberGather;
-		int statOilGather = p->statOilGather;
-		int statUnitDamageTaken = p->statUnitDamageTaken;
-		int statUnitDamageDone = p->statUnitDamageDone;
-		int statUnitBuilt = p->statUnitBuilt;
-		int statUnitMilitary = p->statUnitMilitary;
+	for(auto &p : players){
 
-		int food = p->getFood();
-		int consumedFood = p->getFoodConsumption();
-		int gold = p->getGold();
-		int lumber = p->getLumber();
-		int oil = p->getOil();
-		int unitCount = p->getUnitCount();
+
+		int pid = p.id_;
+		int defeated = p.defeated;
+		int statGoldGather = p.statGoldGather;
+		int statLumberGather = p.statLumberGather;
+		int statOilGather = p.statOilGather;
+		int statUnitDamageTaken = p.statUnitDamageTaken;
+		int statUnitDamageDone = p.statUnitDamageDone;
+		int statUnitBuilt = p.statUnitBuilt;
+		int statUnitMilitary = p.statUnitMilitary;
+
+		int food = p.getFood();
+		int consumedFood = p.getFoodConsumption();
+		int gold = p.getGold();
+		int lumber = p.getLumber();
+		int oil = p.getOil();
+		int unitCount = p.getUnitCount();
 
 		data["playerID"].push_back(pid);
 		data["defeated"].push_back(defeated);

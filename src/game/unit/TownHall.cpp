@@ -5,7 +5,7 @@
 #include "TownHall.h"
 #include "../player/Player.h"
 
-TownHall::TownHall(Player &player): Unit(player) {
+TownHall::TownHall(Player &player): Unit(&player) {
     typeId = Constants::Unit::TownHall;
     health = 1200;
     health_max = 1200;
@@ -49,6 +49,6 @@ TownHall::TownHall(Player &player): Unit(player) {
 
     name = "Town-Hall";
 
-    buildInventory = player_.inventoryManager.townhall;
+    buildInventory = player_->inventoryManager.townhall;
 
 }

@@ -39,9 +39,8 @@ public:
     Game &game_;
     InventoryManager inventoryManager;
 
-    std::vector<std::shared_ptr<Unit>> units;
     sf::Color playerColor;
-    std::shared_ptr<Unit> targetedUnit = NULL;
+    Unit *targetedUnit = NULL;
 
     void update();
 
@@ -58,8 +57,8 @@ public:
     void addGold(int n);
     void addLumber(int n);
     void addOil(int n);
-    void addUnit(std::shared_ptr<Unit> u);
-    std::shared_ptr<Unit> createUnit(int type_id);
+    Unit &addUnit(Unit& u);
+    Unit createUnit(int type_id);
 
     Player(Game &game);
     Unit &spawn(Tile &spawnPoint);
@@ -67,11 +66,11 @@ public:
 
     int id_;
 
-    bool canPlace(std::shared_ptr<Unit> builder, std::shared_ptr<Unit> unit, Tile *tile);
+    bool canPlace(Unit & builder, Unit & unit, Tile *tile);
 
-    bool canAfford(std::shared_ptr<Unit> unit);
+    bool canAfford(Unit & unit);
 
-    void removeUnit(std::shared_ptr<Unit> unit);
+    void removeUnit(Unit & unit);
 
     bool checkDefeat();
 

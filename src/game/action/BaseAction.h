@@ -10,9 +10,9 @@
 
 class BaseAction {
 protected:
-    std::shared_ptr<Unit> unit;
+    Unit & unit;
 public:
-    BaseAction(std::shared_ptr<Unit> unit): unit(unit){};
+    BaseAction(Unit & unit): unit(unit){};
     long tick;                      // At which tick this move was executed;
     virtual void doAction() = 0;         // This function
     virtual void reverseAction() = 0;    // Reverse operation of this action.

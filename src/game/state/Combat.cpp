@@ -8,35 +8,35 @@
 #include "../util/Pathfinder.h"
 
 
-void Combat::update(std::shared_ptr<Unit> unit)const{
+void Combat::update(Unit & unit)const{
 
-    unit->combatTimer += 1;
-    if(unit->combatTimer >= unit->combatInterval) {
+    unit.combatTimer += 1;
+    if(unit.combatTimer >= unit.combatInterval) {
 
-        if(unit->distance(*unit->combatTarget->tile) > unit->damageRange) {
+        if(unit.distance(*unit.combatTarget->tile) > unit.damageRange) {
             // Too far away, Walk
 
-			unit->walkingGoal = unit->combatTarget->tile;
-			unit->transitionState(unit->stateManager.walkingState);
-            unit->enqueueState(unit->stateManager.combatState);
+			unit.walkingGoal = unit.combatTarget->tile;
+			unit.transitionState(unit.stateManager->walkingState);
+            unit.enqueueState(unit.stateManager->combatState);
 
         } else {
             // Can attack
-            int myDamage = unit->getDamage(*unit->combatTarget);
-            unit->combatTarget->afflictDamage(myDamage);
-            unit->player_.statUnitDamageDone += myDamage;
-            unit->combatTarget->player_.statUnitDamageTaken += myDamage;
-            unit->combatTimer = 0;
+            int myDamage = unit.getDamage(*unit.combatTarget);
+            unit.combatTarget->afflictDamage(myDamage);
+            unit.player_->statUnitDamageDone += myDamage;
+            unit.combatTarget->player_->statUnitDamageTaken += myDamage;
+            unit.combatTimer = 0;
 
-            if(unit->combatTarget->isDead()){
-                unit->combatTarget = NULL;
-                unit->combatTimer = 1000;
-                unit->transitionState();
+            if(unit.combatTarget->isDead()){
+                unit.combatTarget = NULL;
+                unit.combatTimer = 1000;
+                unit.transitionState();
                 return;
             }
 
-            if(unit->combatTarget->state->id == Constants::State::Idle) {
-                unit->combatTarget->attack(*unit->tile);
+            if(unit.combatTarget->state->id == Constants::State::Idle) {
+                unit.combatTarget->attack(*unit.tile);
             }
 
         }
@@ -46,13 +46,13 @@ void Combat::update(std::shared_ptr<Unit> unit)const{
 
 }
 
-void Combat::end(std::shared_ptr<Unit> unit)const{
+void Combat::end(Unit & unit)const{
 
 }
 
-void Combat::init(std::shared_ptr<Unit> unit)const{
-    sf::Vector2f dir = unit->distanceVector(*unit->combatTarget->tile);
-    unit->setDirection(dir);
+void Combat::init(Unit & unit)const{
+    sf::Vector2f dir = unit.distanceVector(*unit.combatTarget->tile);
+    unit.setDirection(dir);
 
 
 

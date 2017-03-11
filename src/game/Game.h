@@ -50,7 +50,8 @@ public:
 	uint64_t getFrames();
 
     StateManager stateManager;
-    std::vector<std::shared_ptr<Player>> players;
+    std::vector<Player> players;
+	std::vector<Unit> units;
     std::vector<std::shared_ptr<BaseAction>> executedActions;
     void addAction(std::shared_ptr<BaseAction> action);
 

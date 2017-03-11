@@ -11,7 +11,7 @@
 #include <SFML/Graphics/Texture.hpp>
 
 #include "../environment/Tile.h"
-#include "../state/StateManager.h"
+#include "../state/stateManager.h"
 #include "../Config.h"
 
 
@@ -20,13 +20,12 @@ class BaseState;
 
 
 
-class Unit: public std::enable_shared_from_this<Unit>{
+class Unit{
 private:
     static int gId;
 public:
-    std::shared_ptr<Unit> getptr() {
-        return shared_from_this();
-    }
+	Unit(Player *player);
+	Unit() {}
 
     // Graphics
     double animationInterval = .2 * 10;
@@ -54,7 +53,7 @@ public:
     int goldCarry = 0;
     int oilCarry = 0;
     int carryCapacity = 10;
-    std::vector<std::shared_ptr<Unit>> buildInventory;
+    std::vector<Unit> buildInventory;
     int speed;
     int sight;
     int range;
@@ -82,7 +81,7 @@ public:
     std::string name;
 
 
-    Player &player_;
+    Player *player_;
 
 
     // State attributes
@@ -95,11 +94,11 @@ public:
 
     // Building
     int spawnTimer;
-    std::shared_ptr<Unit> buildEntity = NULL;
+    Unit* buildEntity = NULL;
     int buildTimer;
 
     // Combat
-    std::shared_ptr<Unit> combatTarget = NULL;
+    Unit* combatTarget = NULL;
     int combatTimer = 1000;
     double combatInterval = 1 * 10;
 
@@ -111,13 +110,13 @@ public:
 
 
     Tile *tile = NULL;
-    StateManager& stateManager;
+    StateManager* stateManager;
 	std::shared_ptr<BaseState> state = NULL;
 
     std::vector<std::shared_ptr<BaseState>> stateList;
 
 
-    Unit(Player &player);
+
     bool build(int idx);
     void spawn(Tile &x, int initValue);
     void despawn();
@@ -132,13 +131,13 @@ public:
     void attack(Tile &tile);
     void harvest(Tile &tile);
     int distance(Tile &tile);
-	int Unit::distance(std::shared_ptr<Unit> unit);
+	int Unit::distance(Unit & unit);
     sf::Vector2f distanceVector(Tile &target);
 
 
     void clearTiles();
 
-    std::shared_ptr<Unit> closestRecallBuilding();
+    Unit  *closestRecallBuilding();
 
 
     bool isDead();

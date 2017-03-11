@@ -47,7 +47,7 @@ public:
 	virtual void update();
 	virtual void terminal();
 	virtual void defineActionSpace();
-	virtual std::shared_ptr<BaseAction> findBestAction(std::shared_ptr<Unit> unit);
+	virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);
 	virtual void doAction(std::shared_ptr<BaseAction> action);
 
 	static PyObject * registry_loaded(PyObject * self, PyObject * args);

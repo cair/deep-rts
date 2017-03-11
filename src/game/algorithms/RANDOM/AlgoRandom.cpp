@@ -7,7 +7,7 @@
 
 AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 
-	player.name_ += " [AlgoRandom]";
+	/*player.name_ += " [AlgoRandom]";
 
     defineActionSpace();
     if(!player.targetedUnit) {
@@ -18,17 +18,17 @@ AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 
         // Select first available unit
         player.targetedUnit = player.units[0];
-    }
+    }*/
 }
 
 void AlgoRandom::update() {
     // Tick happended
 
-	int nUnits = player.units.size();
+	/*int nUnits = player.units.size();
 
 
 	for (int i = 0; i < nUnits; i++) {
-		std::shared_ptr<Unit> u = player.units[i];
+		Unit & u = player.units[i];
 		if (u->state->id == Constants::State::Idle) {
 			int randomIndex = rand() % actionSpace.size();
 			int actionID = actionSpace[randomIndex];
@@ -38,7 +38,7 @@ void AlgoRandom::update() {
 		}
 
     
-    }
+    }*/
 
 }
 
@@ -46,7 +46,7 @@ void AlgoRandom::terminal() {
 
 }
 
-std::shared_ptr<BaseAction> AlgoRandom::findBestAction(std::shared_ptr<Unit> unit) {
+std::shared_ptr<BaseAction> AlgoRandom::findBestAction(Unit & unit) {
     int randomIndex = rand() % actionSpace.size();
     int actionID = actionSpace[randomIndex];
     std::shared_ptr<BaseAction> selectedAction = getAction(actionID, unit);

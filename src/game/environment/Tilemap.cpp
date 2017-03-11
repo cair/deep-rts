@@ -31,7 +31,7 @@ Tilemap::Tilemap(std::string mapName) {
     tileWorldDimension = 32;
 
 	// Preallocate
-	tiles.reserve(TILE_WIDTH * TILE_HEIGHT);
+	tiles.reserve(TILE_WIDTH * TILE_HEIGHT * 2);
 
 
 

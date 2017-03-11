@@ -7,21 +7,21 @@
 #include "../util/Pathfinder.h"
 
 
-void Building::update(std::shared_ptr<Unit> unit)const{
+void Building::update(Unit & unit)const{
 
-    unit->buildTimer += 1;
-    if(unit->buildTimer >= unit->buildEntity->spawnDuration) {
+    unit.buildTimer += 1;
+    if(unit.buildTimer >= unit.buildEntity->spawnDuration) {
         // Building is complete
 
-        if(!unit->tile){
+        if(!unit.tile){
             // Unit has no tile, means unit is despawned
-            Tile *firstWalkable = Pathfinder::find_first_walkable_tile(unit->buildEntity->tile);
+            Tile *firstWalkable = Pathfinder::find_first_walkable_tile(unit.buildEntity->tile);
             assert(firstWalkable);
-            unit->setPosition(*firstWalkable);
-            unit->transitionState();
+            unit.setPosition(*firstWalkable);
+            unit.transitionState();
         } else {
             // Unit has tile, needs to transition
-            unit->transitionState();
+            unit.transitionState();
 
         }
 
@@ -30,12 +30,12 @@ void Building::update(std::shared_ptr<Unit> unit)const{
 
 }
 
-void Building::end(std::shared_ptr<Unit> unit)const{
+void Building::end(Unit & unit)const{
 
 }
 
-void Building::init(std::shared_ptr<Unit> unit)const{
-    unit->buildTimer = 0;
+void Building::init(Unit & unit)const{
+    unit.buildTimer = 0;
 
 }
 

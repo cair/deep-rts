@@ -67,7 +67,7 @@ public:
 
     void createView();
 
-    std::shared_ptr<Player> player;
+    Player & player;
 
     void drawStats();
 

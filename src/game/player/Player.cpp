@@ -40,40 +40,38 @@ Player::Player(Game &game): inventoryManager(*this), game_(game) {
 
 Unit& Player::spawn(Tile &spawnPoint) {
     // Spawn a builder
-    std::shared_ptr<Unit> unit;
 
 
-
+	Unit *unit = NULL;
     if(faction == 0) // Human
     {
-        unit = std::shared_ptr<Unit>(new Peasant(*this));
-        units.push_back(unit);
+        
+        unit = &addUnit(Peasant(*this));
     }
     else if(faction == 1) // Orc
     {
-        unit = std::shared_ptr<Unit>(new Peasant(*this));
-        units.push_back(unit);
+		unit = &addUnit(Peasant(*this));
     }
     else {
         assert(false);
     }
 
-    assert(!units.empty());
-    unit->spawn(spawnPoint, unit->spawnDuration);
-
+	assert(unit && "Unit was null for some reason");
+	unit->spawn(spawnPoint, unit->spawnDuration);
 
 
     return *unit;
 }
 
 void Player::update() {
-	if (defeated && units.size() == 0)
+	
+	/*if (defeated && units.size() == 0)
 		return;
 
-    /*for(auto &unit : units) {
+    for(auto &unit : units) {
         unit->update();
-    }*/
-    std::vector<std::shared_ptr<Unit>>::iterator it;
+    }
+    std::vector<Unit &>::iterator it;
     for(it = units.begin(); it != units.end();) {
         (*it)->update();
 
@@ -87,6 +85,7 @@ void Player::update() {
     if(algorithm_) {
         algorithm_->update();
     }
+	*/
 }
 
 
@@ -112,7 +111,7 @@ int Player::getLumber() {
 }
 
 size_t Player::getUnitCount() {
-    return units.size();
+	return -1337; // TODO;
 }
 
 int Player::getId() {
@@ -140,7 +139,7 @@ int Player::getScore() {
     double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
 	double_t builtScore = statUnitBuilt * 10;
 	double_t damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
-	double_t unitScore = units.size() * 5;
+	double_t unitScore = -1337; //units.size() * 5;
 
 
 	double_t militaryScore = 0;
@@ -151,14 +150,14 @@ int Player::getScore() {
 
 }
 
-void Player::removeUnit(std::shared_ptr<Unit> unit) {
-    for(auto p : game_.players) {
-        if(p->targetedUnit == unit) {
-            p->targetedUnit = NULL;
+void Player::removeUnit(Unit & unit) {
+    for(auto &p : game_.players) {
+        if(p.targetedUnit == &unit) {
+            p.targetedUnit = NULL;
         }
     }
 
-    unit->removedFromGame = true;
+    unit.removedFromGame = true;
 
 
     //units.erase(std::remove(units.begin(), units.end(), unit), units.end());
@@ -169,7 +168,7 @@ void Player::removeUnit(std::shared_ptr<Unit> unit) {
 bool Player::checkDefeat(){
 	int aliveUnits = 0;
 
-    bool isDefeated = (units.size() > 0);
+	bool isDefeated = false; // TODO //(units.size() > 0);
     defeated = isDefeated;
 	if (defeated) {
 		name_ += " [DEFEATED]";
@@ -179,10 +178,10 @@ bool Player::checkDefeat(){
     return defeated;
 }
 
-bool Player::canPlace(std::shared_ptr<Unit> builder, std::shared_ptr<Unit> unit, Tile *_tile) {
-
-    for (auto &tile : game_.map.getTiles(_tile, unit->width, unit->height)) {
-        if(tile == builder->tile) // Ignore tile of the builder, this is handled in Unit::Build when builder despawns
+bool Player::canPlace(Unit & builder, Unit & unit, Tile *_tile) {
+	
+    for (auto &tile : game_.map.getTiles(_tile, unit.width, unit.height)) {
+        if(tile == builder.tile) // Ignore tile of the builder, this is handled in Unit::Build when builder despawns
             continue;
 
         if(!tile->isBuildable()) {
@@ -194,14 +193,14 @@ bool Player::canPlace(std::shared_ptr<Unit> builder, std::shared_ptr<Unit> unit,
     return true;
 }
 
-bool Player::canAfford(std::shared_ptr<Unit> unit) {
-    return gold >= unit->goldCost and lumber >= unit->lumberCost and oil >= unit->oilCost;
+bool Player::canAfford(Unit & unit) {
+    return gold >= unit.goldCost and lumber >= unit.lumberCost and oil >= unit.oilCost;
 
 }
 
-void Player::addUnit(std::shared_ptr<Unit> u) {
-    units.push_back(u);
-
+Unit& Player::addUnit(Unit& u) {
+    game_.units.push_back(u);
+	return game_.units.back();
 }
 
 void Player::subOil(int n) {
@@ -225,7 +224,7 @@ void Player::setAlgorithm(std::shared_ptr<Algorithm> theAlg){
 }
 
 int Player::_getNextPrevUnitIdx(){
-    if(units.size() == 0){
+   /* if(units.size() == 0){
         return -1;
     }
     if(!targetedUnit){
@@ -237,32 +236,39 @@ int Player::_getNextPrevUnitIdx(){
             return idx;
         }
         idx++;
-    }
+    }*/
+
+	return -1;
+	// TODO
 }
 
 void Player::nextUnit(){
-    int idx = _getNextPrevUnitIdx() + 1;
+    /*int idx = _getNextPrevUnitIdx() + 1;
     if(idx == -1)
         return;
     idx++;
-    targetedUnit = units[idx % units.size()];
+    targetedUnit = units[idx % units.size()];*/
+
+	// TODO
+	return;
 }
 
 void Player::previousUnit(){
-    int idx = _getNextPrevUnitIdx();
+    /*int idx = _getNextPrevUnitIdx();
     if(idx == -1)
         return;
     idx--;
-    targetedUnit = units[idx % units.size()];
+    targetedUnit = units[idx % units.size()];*/
 
+	// TODO
 }
 
-std::shared_ptr<Unit> Player::createUnit(int type_id) {
+Unit Player::createUnit(int type_id) {
     switch (type_id){
         case Constants::Unit::Peasant:
-            return std::shared_ptr<Unit>(new Peasant(*this));
+			return Peasant(*this);
         case Constants::Unit::TownHall:
-            return std::shared_ptr<Unit>(new TownHall(*this));
+			return TownHall(*this);
 
 
     }

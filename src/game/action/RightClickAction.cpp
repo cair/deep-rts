@@ -4,7 +4,7 @@
 
 #include "RightClickAction.h"
 
-RightClickAction::RightClickAction(std::shared_ptr<Unit> unit) : BaseAction(unit) {
+RightClickAction::RightClickAction(Unit & unit) : BaseAction(unit) {
 
 
 }

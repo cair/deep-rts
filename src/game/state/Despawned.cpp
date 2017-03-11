@@ -3,15 +3,15 @@
 //
 
 #include "Despawned.h"
-void Despawned::update(std::shared_ptr<Unit> unit)const{
+void Despawned::update(Unit & unit)const{
 
 }
 
-void Despawned::end(std::shared_ptr<Unit> unit)const{
+void Despawned::end(Unit & unit)const{
 
 }
 
-void Despawned::init(std::shared_ptr<Unit> unit)const{
+void Despawned::init(Unit & unit)const{
 
 }
 

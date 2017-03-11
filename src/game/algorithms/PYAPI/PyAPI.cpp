@@ -49,7 +49,7 @@ void PyAPI::start() {
 
 PyAPI::PyAPI(uint8_t gameID, uint8_t playerID):
 	game(Game::getGame(gameID)), 
-	Algorithm(*Game::getGame(gameID)->players[playerID])
+	Algorithm(Game::getGame(gameID)->players[playerID])
 {
 	// Define and allocate space for state buffer
 	G_ROW = 30;
@@ -76,7 +76,7 @@ void PyAPI::defineActionSpace()
 {
 }
 
-std::shared_ptr<BaseAction> PyAPI::findBestAction(std::shared_ptr<Unit> unit)
+std::shared_ptr<BaseAction> PyAPI::findBestAction(Unit & unit)
 {
 	return std::shared_ptr<BaseAction>();
 }
@@ -154,7 +154,7 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 		api_ptr->flatStateBuffer[c++] = (int)tile.swimable;// Layer
 
 
-		std::shared_ptr<Unit> occupant = tile.getOccupant();
+		Unit* occupant = tile.getOccupant();
 		if (occupant) {
 			// Unit
 			api_ptr->flatStateBuffer[c++] = (int)occupant->id;// Layer
@@ -177,8 +177,8 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 			api_ptr->flatStateBuffer[c++] = (int)occupant->structure;// Layer
 
 			// Player
-			api_ptr->flatStateBuffer[c++] = (int)occupant->player_.id_;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->player_.faction;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->player_->id_;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->player_->faction;// Layer
 
 		}
 		else {

@@ -27,7 +27,7 @@ public:
             int, std::map<int,
                     std::map<int, std::vector<std::shared_ptr<sf::Sprite>>
                     >>> sprites;
-    sf::Sprite & getNext(std::shared_ptr<Unit> unit);
+    sf::Sprite & getNext(Unit & unit);
 
     void add(const int unit, const int state,  const int direction,int x, int y, int w, int h, int wrs, int hrs,  sf::Texture* texture, bool flip);
     void setup();

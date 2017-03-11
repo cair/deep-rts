@@ -12,7 +12,7 @@ class RightClickAction: public BaseAction {
     int clickX = 0;
     int clickY = 0;
 public:
-    RightClickAction(std::shared_ptr<Unit> unit);
+    RightClickAction(Unit & unit);
     virtual void doAction();
     virtual void reverseAction();
 

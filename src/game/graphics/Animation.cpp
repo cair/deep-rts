@@ -221,11 +221,11 @@ void Animation::setupTownHall(){
 
 }
 
-sf::Sprite &Animation::getNext(std::shared_ptr<Unit> unit) {
-    int state = unit->current_state;
-    int iteration = unit->animationIterator;
-    int unitId = unit->typeId;
-    int direction = unit->direction;
+sf::Sprite &Animation::getNext(Unit & unit) {
+    int state = unit.current_state;
+    int iteration = unit.animationIterator;
+    int unitId = unit.typeId;
+    int direction = unit.direction;
 
     std::vector<std::shared_ptr<sf::Sprite>> &items = Animation::sprites[unitId][state][direction];
 

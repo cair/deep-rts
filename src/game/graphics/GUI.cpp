@@ -22,11 +22,8 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 
 GUI::GUI(Game &game) :
         game(game),
-        window(sf::VideoMode(800, 800), "WarC2Sim++", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/){
-
-
-    player = game.players[0];
-
+        window(sf::VideoMode(800, 800), "WarC2Sim++", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
+		player(game.players[0]){
 
     this->createView();
     this->createFrame();
@@ -199,18 +196,18 @@ void GUI::handleEvents(){
 
                 // Build actions
             else if(event.key.code == sf::Keyboard::Num1) {
-                if(player->targetedUnit){
-                    player->targetedUnit->build(0);
+                if(player.targetedUnit){
+                    player.targetedUnit->build(0);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num2) {
-                if(player->targetedUnit){
-                    player->targetedUnit->build(1);
+                if(player.targetedUnit){
+                    player.targetedUnit->build(1);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num3) {
-                if(player->targetedUnit){
-                    player->targetedUnit->build(2);
+                if(player.targetedUnit){
+                    player.targetedUnit->build(2);
                 }
             }
         }
@@ -293,23 +290,23 @@ void GUI::drawStats(){
     text.setCharacterSize(16);
     text.setFillColor(sf::Color::Yellow);
 
-    text.setString("Lumber: " + std::to_string(player->getLumber()));
+    text.setString("Lumber: " + std::to_string(player.getLumber()));
     text.setPosition(10,10);
     window.draw(text);
 
-    text.setString("Gold: " + std::to_string(player->getGold()));
+    text.setString("Gold: " + std::to_string(player.getGold()));
     text.setPosition(125,10);
     window.draw(text);
 
-    text.setString("Oil: " + std::to_string(player->getOil()));
+    text.setString("Oil: " + std::to_string(player.getOil()));
     text.setPosition(225,10);
     window.draw(text);
 
-    text.setString("Food: " + std::to_string(player->getFoodConsumption()) + "/" + std::to_string(player->getFood()));
+    text.setString("Food: " + std::to_string(player.getFoodConsumption()) + "/" + std::to_string(player.getFood()));
     text.setPosition(300,10);
     window.draw(text);
 
-    text.setString("Units: " + std::to_string(player->getUnitCount()));
+    text.setString("Units: " + std::to_string(player.getUnitCount()));
     text.setPosition(380,10);
     window.draw(text);
 
@@ -321,7 +318,7 @@ void GUI::drawStats(){
     text.setPosition(640,10);
     window.draw(text);
 
-    text.setString("Score: " + std::to_string(player->getScore()));
+    text.setString("Score: " + std::to_string(player.getScore()));
     text.setPosition(810,10);
     window.draw(text);
 
@@ -379,9 +376,9 @@ void GUI::drawSelected(){
 
 
 
-    if (player->targetedUnit) {
+    if (player.targetedUnit) {
         text.setCharacterSize(32);
-        std::shared_ptr<Unit> unit = player->targetedUnit;
+        Unit *unit = player.targetedUnit;
         Unit &lel = *unit;
         text.setString(unit->name + " (" +
                        std::to_string(unit->id ) +
@@ -389,7 +386,7 @@ void GUI::drawSelected(){
                        unit->state->name + " - (" +
                        std::to_string(unit->tile->x) + "," +
                        std::to_string(unit->tile->y) + ") - (" +
-                       std::to_string(unit->player_.id_) + ")"
+                       std::to_string(unit->player_->id_) + ")"
         );
         text.setPosition(320,830);
         window.draw(text);
@@ -467,40 +464,36 @@ void GUI::drawTiles(){
 
 void GUI::drawUnits() {
 
-    for(auto&p : game.players)
-    {
-        for(auto&u: p->units){
-            if(u->tile) {
-                u->animationTimer++;
-                if(u->animationTimer >= u->animationInterval){
-                    u->animationIterator += 1;
-                    u->animationTimer = 0;
+	for (auto&u : game.units) {
+		if (u.tile) {
+			u.animationTimer++;
+			if (u.animationTimer >= u.animationInterval) {
+				u.animationIterator += 1;
+				u.animationTimer = 0;
 
-                }
+			}
 
-                //u->testSprite->setColor(u->player_.playerColor);
-                sf::Sprite &sprite = Animation::getInstance().getNext(u);
-                sprite.setPosition(u->worldPosition);
-                window.draw(sprite);
-            }
-        }
-    }
-
+			//u.testSprite->setColor(u.player_->playerColor);
+			sf::Sprite &sprite = Animation::getInstance().getNext(u);
+			sprite.setPosition(u.worldPosition);
+			window.draw(sprite);
+		}
+	}
 }
 
 void GUI::leftClick(Tile &tile) {
     this->selectedTile = &tile;
 
     if(tile.getOccupant()) {
-        player->targetedUnit = tile.getOccupant();
+        player.targetedUnit = tile.getOccupant();
     }else {
-        player->targetedUnit = NULL;
+        player.targetedUnit = NULL;
     }
 }
 
 void GUI::rightClick(Tile &tile) {
-    if(player->targetedUnit) {
-        player->targetedUnit->rightClick(tile);
+    if(player.targetedUnit) {
+        player.targetedUnit->rightClick(tile);
         this->selectedTile = &tile;
     }
 }
@@ -513,9 +506,9 @@ void GUI::drawScoreBoard() {
 
     int offsetY = 0;
     text.setCharacterSize(18);
-    for (std::shared_ptr<Player> p : game.players) {
-        text.setString(p->name_ + ": " + std::to_string(p->getScore()));
-        text.setFillColor(p->playerColor);
+    for (Player & p : game.players) {
+        text.setString(p.name_ + ": " + std::to_string(p.getScore()));
+        text.setFillColor(p.playerColor);
         text.setPosition(10, 40 + offsetY);
         offsetY += 25;
 

@@ -5,7 +5,7 @@
 #include "Peasant.h"
 #include "../player/Player.h"
 
-Peasant::Peasant(Player &player): Unit(player) {
+Peasant::Peasant(Player &player): Unit(&player) {
     typeId = Constants::Unit::Peasant;
     health = 30;
     health_max = 30;
@@ -48,6 +48,6 @@ Peasant::Peasant(Player &player): Unit(player) {
 
     name = "Peasant";
 
-    buildInventory = player_.inventoryManager.peasant;
+    buildInventory = player_->inventoryManager.peasant;
 
 }

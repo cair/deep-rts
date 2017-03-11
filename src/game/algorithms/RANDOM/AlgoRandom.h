@@ -13,7 +13,7 @@ public:
     AlgoRandom(Player &player);
     virtual void update();
     virtual void terminal();
-    virtual std::shared_ptr<BaseAction> findBestAction(std::shared_ptr<Unit> unit);
+    virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);
     virtual void doAction(std::shared_ptr<BaseAction> action);
     virtual void defineActionSpace();
 

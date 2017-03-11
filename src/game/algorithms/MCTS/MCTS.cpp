@@ -88,7 +88,7 @@ std::shared_ptr<BaseAction> MCTS::findBestAction() {
 	return std::shared_ptr<BaseAction>(NULL);
 }
 
-std::shared_ptr<BaseAction> MCTS::findBestAction(std::shared_ptr<Unit> unit) {
+std::shared_ptr<BaseAction> MCTS::findBestAction(Unit & unit) {
 	///
 	/// Find best move for current state
 	///
