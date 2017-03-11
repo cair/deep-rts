@@ -37,9 +37,6 @@
     <Filter Include="Source Files\game\state">
       <UniqueIdentifier>{f5018d83-417a-4ffc-8f65-1420e525861e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\game\proto">
-      <UniqueIdentifier>{7553f37e-b6cd-46f3-bf66-0f00055c84d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\game\player">
       <UniqueIdentifier>{e2c52f50-0df5-47b2-a588-6e4d7e4740d3}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,12 @@
     </Filter>
     <Filter Include="Source Files\game\python">
       <UniqueIdentifier>{10047431-f91d-4af2-97c3-815f943e1bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\python\Algorithms">
+      <UniqueIdentifier>{2222cfd6-9563-44c2-9b5d-c67f665df6bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\python\Algorithms\DQN">
+      <UniqueIdentifier>{c4fb91a7-b32e-4d46-8e6e-fdeaab6094e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game\lib\ColorConverter.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\game\proto\GameMessage.pb.h">
-      <Filter>Source Files\game\proto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\Constants.h">
       <Filter>Header Files</Filter>
@@ -209,9 +209,6 @@
     <ClCompile Include="..\..\src\game\player\Player.cpp">
       <Filter>Source Files\game\player</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game\proto\GameMessage.pb.cc">
-      <Filter>Source Files\game\proto</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\game\state\BaseState.cpp">
       <Filter>Source Files\game\state</Filter>
     </ClCompile>
@@ -286,9 +283,6 @@
     <None Include="..\..\src\game\python\RemoteAI.py">
       <Filter>Source Files\game\python</Filter>
     </None>
-    <None Include="..\..\src\game\python\GameMessage_pb2.py">
-      <Filter>Source Files\game\python</Filter>
-    </None>
     <None Include="..\..\src\game\python\DQN.py">
       <Filter>Source Files\game\python</Filter>
     </None>
@@ -298,6 +292,9 @@
     </None>
     <None Include="..\..\src\game\python\PyAI.py">
       <Filter>Source Files\game\python</Filter>
+    </None>
+    <None Include="..\..\src\game\python\Algorithms\DQN\DQN.py">
+      <Filter>Source Files\game\python\Algorithms\DQN</Filter>
     </None>
   </ItemGroup>
 </Project>

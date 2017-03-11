@@ -2,8 +2,6 @@
 #include "PyAPI.h"
 #include "../../Game.h"
 #include "../../player/Player.h"
-#include "../../proto/GameMessage.pb.h"
-#include <flatbuffers\flatbuffers.h>
 #include <numpy\arrayobject.h>
 #include <thread>
 #include <stdlib.h>

@@ -41,7 +41,6 @@
     <ClInclude Include="..\..\src\game\lib\PriorityQueue.h" />
     <ClInclude Include="..\..\src\game\loaders\MapLoader.h" />
     <ClInclude Include="..\..\src\game\player\Player.h" />
-    <ClInclude Include="..\..\src\game\proto\GameMessage.pb.h" />
     <ClInclude Include="..\..\src\game\state\BaseState.h" />
     <ClInclude Include="..\..\src\game\state\Building.h" />
     <ClInclude Include="..\..\src\game\state\Combat.h" />
@@ -75,7 +74,6 @@
     <ClCompile Include="..\..\src\game\graphics\GUI.cpp" />
     <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp" />
     <ClCompile Include="..\..\src\game\player\Player.cpp" />
-    <ClCompile Include="..\..\src\game\proto\GameMessage.pb.cc" />
     <ClCompile Include="..\..\src\game\state\BaseState.cpp" />
     <ClCompile Include="..\..\src\game\state\Building.cpp" />
     <ClCompile Include="..\..\src\game\state\Combat.cpp" />
@@ -98,8 +96,8 @@
     <None Include="..\..\src\game\data\config.json" />
     <None Include="..\..\src\game\data\maps\contested-4v4.json" />
     <None Include="..\..\src\game\data\tile_properties.json" />
+    <None Include="..\..\src\game\python\Algorithms\DQN\DQN.py" />
     <None Include="..\..\src\game\python\DQN.py" />
-    <None Include="..\..\src\game\python\GameMessage_pb2.py" />
     <None Include="..\..\src\game\python\Main.py" />
     <None Include="..\..\src\game\python\PyAI.py" />
     <None Include="..\..\src\game\python\RemoteAI.py" />

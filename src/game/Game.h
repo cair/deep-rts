@@ -16,7 +16,6 @@
 
 
 
-class GameMessage;
 class GUI;
 class Game {
 
@@ -87,11 +86,11 @@ public:
 
     Player &addPlayer();
 
+	std::string serialize_json();
+
 
 	void deactivateGUI();
-	GameMessage serialize(GameMessage& gameMessage);
-	std::string serialize_json();
-	void load(GameMessage& gameMessage);
+	
 
 
 };

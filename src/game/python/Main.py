@@ -1,50 +1,9 @@
 
 import sys
-import time
-
-import random
-import numpy as np
-from collections import deque
-
-import PyAPIRegistry
-"""
-import json
-from keras import initializations
-from keras.initializations import normal, identity
-from keras.models import model_from_json
-from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation, Flatten
-from keras.layers.convolutional import Convolution2D, MaxPooling2D
-from keras.optimizers import SGD , Adam
-"""
-PyAPIRegistry.loaded() # Tell C++ that we are done with dependencies
 from PyAI import PyAI
+from Algorithms.DQN.DQN import DQN
+print("Running PyAI using Python %s" % (sys.version))
+PyAPIRegistry.loaded() # Tell C++ that we are done with dependencies
 
-
-
-
-
-def bootstrap():
-    print("called!")
-
-
-pyai = PyAI()
-
-now = time.time()
-next = time.time() + 1
-counter = 0
-while True:
-    now = time.time()
-    pyai.getState()
-    counter += 1
-
-    if(now > next):
-        next = time.time() + 1
-        print("Serialized: " + str(counter) + " times")
-        counter = 0
-
-
-
-#print(sys.argv)
-
-print("Hehehe")
+pyai = PyAI(0, 0)  # Create new AI hook with gameID = 0 playerID= 0
+dqn = DQN(pyai)  # Create new DQN using the pyai hook

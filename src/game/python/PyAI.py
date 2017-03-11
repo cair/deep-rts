@@ -1,16 +1,15 @@
 
 import PyAPIRegistry
 import ctypes
-from GameMessage_pb2 import GameMessage
-import flatbuffers
+
 from sys import getsizeof
 from binascii import hexlify
 import numpy as np
 
 class PyAI:
     
-	def __init__(self):
-		self.__ai__ = PyAPIRegistry.hook(0, 0)
+	def __init__(self, gameID, playerID):
+		self.__ai__ = PyAPIRegistry.hook(gameID, playerID)
 		self.desc = [
 			"t_id",
 			"oil_y",
