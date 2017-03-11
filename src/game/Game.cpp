@@ -15,7 +15,7 @@ Game::Game(uint8_t _nplayers, bool setup):
         map(Tilemap("contested-4v4.json"))
 {
 	players.reserve(16);
-	units.reserve(100);
+	units.reserve(1000);
 
     // Definitions
     n_players = _nplayers;
@@ -45,9 +45,6 @@ void Game::initGUI(){
     this->gui = new GUI(*this);
 }
 
-void Game::load_players(){
-
-}
 
 void Game::setFPS(uint32_t fps_){
     fps = fps_;
@@ -86,9 +83,14 @@ void Game::loop() {
         if (now >= this->_update_next) {
             // Update
 
-            for(auto &p : this->units) {
-                p.update();
+            for(auto &unit : this->units) {
+				unit.update();
             }
+
+			for (auto &p : this->players) {
+				if(p.algorithm_)
+					p.algorithm_->update();
+			}
 
             this->_update_next += this->_update_interval;
             this->_update_delta += 1;
@@ -169,7 +171,7 @@ Player &Game::addPlayer() {
 	players.push_back(Player(*this));
 	Player &player = players.back();
 	// Retrieve spawn_point
-	int spawnPointIdx = map.spawnTiles[players.size()];
+	int spawnPointIdx = map.spawnTiles[players.size() - 1];
 
 	// Spawn Initial builder
 	Unit &builder = player.spawn(map.tiles[spawnPointIdx]);
@@ -188,6 +190,12 @@ Player &Game::addPlayer() {
 	std::cout << "------" << std::endl;
 
     return player;
+}
+
+Unit & Game::getUnit(uint16_t idx)
+{
+	assert((idx > 0 && idx < (units.size())) && "getUnit(idx) failed. Index not in range!");
+	return units[idx];
 }
 
 
@@ -257,7 +265,7 @@ std::string Game::serialize_json() {
 	///
 	size_t numUnits = 0;
 	for (auto &p : players) {
-		numUnits += 1;// p.units.size(); // TODO
+		numUnits += p.unitIndexes.size();
 	}
 
 	int i = 0;

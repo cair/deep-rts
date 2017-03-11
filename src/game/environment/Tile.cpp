@@ -37,7 +37,7 @@ bool Tile::isAttackable(Unit & unit) {
 }
 
 bool Tile::isWalkable() const{
-    return walkable;
+	return occupant == 0 and walkable;
 }
 
 bool Tile::isHarvestable() const {
@@ -48,12 +48,10 @@ void Tile::setOccupant(Unit* unit) {
     occupant = unit;
 }
 
-bool Tile::canWalkTo() const {
-    return occupant == 0 and walkable;
-}
+
 
 bool Tile::isBuildable() const {
-    return canWalkTo();
+	return isWalkable();
 }
 
 

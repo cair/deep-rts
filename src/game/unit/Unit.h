@@ -33,7 +33,7 @@ public:
     int animationIterator = 0;
 
     int id;
-    int typeId;
+	Constants::Unit typeId;
     int health;
     int health_max;
     int current_state;

@@ -57,7 +57,7 @@ public:
     void addGold(int n);
     void addLumber(int n);
     void addOil(int n);
-    Unit &addUnit(Unit& u);
+    Unit &addUnit(Constants::Unit unitType);
     Unit createUnit(int type_id);
 
     Player(Game &game);
@@ -97,8 +97,9 @@ public:
     int statUnitDamageTaken;
     int statUnitBuilt;
     int statUnitMilitary;
-
     int getScore();
+
+	std::vector<uint16_t> unitIndexes; // Vector of all of player's units (Where they are located in vector)
 };
 
 

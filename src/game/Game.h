@@ -52,20 +52,17 @@ public:
     StateManager stateManager;
     std::vector<Player> players;
 	std::vector<Unit> units;
+
     std::vector<std::shared_ptr<BaseAction>> executedActions;
     void addAction(std::shared_ptr<BaseAction> action);
 
 
     void loop();
 	Tilemap & getMap();
-    void update(uint32_t ticks);
-    void render(uint32_t ticks);
     void createPlayers();
-    void load_players();
 
 
     void start();
-
     void stop();
 
     Game(uint8_t n_players, bool setup);
@@ -75,7 +72,6 @@ public:
     void initGUI();
 
     void setFPS(uint32_t fps_);
-
     void setUPS(uint32_t ups_);
 
 	uint32_t currentFPS = 0;
@@ -86,6 +82,7 @@ public:
     bool terminal;
 
     Player &addPlayer();
+	Unit &getUnit(uint16_t idx);
 
 	std::string serialize_json();
 

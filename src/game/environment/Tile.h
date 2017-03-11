@@ -50,7 +50,6 @@ public:
     bool isAttackable(Unit & unit);
     bool isWalkable()const;
     bool isHarvestable()const;
-	bool canWalkTo()const;
 	bool isBuildable()const;
 	
 	// Info Functions

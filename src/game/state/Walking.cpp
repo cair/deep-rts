@@ -6,7 +6,8 @@
 #include "../player/Player.h"
 #include "../Game.h"
 #include "../util/Pathfinder.h"
-
+#include "../util/JPS.h"
+#include <chrono>
 void Walking::update(Unit & unit)const{
     if(!unit.walkingGoal){
         assert(false); //No goal were set!
@@ -23,7 +24,7 @@ void Walking::update(Unit & unit)const{
             unit.walking_path.pop_back();
 
 			// Check if someone is standing on goal
-			if (!nextTile->canWalkTo()) {
+			if (!nextTile->isWalkable()) {
 				unit.transitionState();
 				return;
 			}
@@ -57,20 +58,31 @@ void Walking::init(Unit & unit)const{
 		Tile *closest  = Pathfinder::find_closest_walkable_tile(unit.tile, occupant->tile, occupant->width);
 		goal = closest;
 	}
-	else if (!unit.walkingGoal->canWalkTo()) {
+	else if (!unit.walkingGoal->isWalkable()) {
 		goal = Pathfinder::find_first_walkable_tile(unit.walkingGoal);
-	}
-	else {
+	} else {
 		goal = unit.walkingGoal;
 	}
 
-
 	if (!goal) {
-
 		return;
 	}
-
 	unit.walkingGoal = goal;
-	Pathfinder::aStar(unit.walking_path, unit.tile, goal);
+
+
+	JPS::PathVector path; // The resulting path will go here.
+	bool found = JPS::findPath(path, unit.player_->game_.map, 
+		unit.tile->x, unit.tile->y,
+		unit.walkingGoal->x, unit.walkingGoal->y, 1);
+
+	unit.walking_path.clear();
+
+	for(int i = path.size()-1; i >= 0; i--) {
+		auto &pathItem = path[i];
+		unit.walking_path.push_back(unit.player_->game_.map.getTile(pathItem.x, pathItem.y));
+	}
+
+
+
 }
 

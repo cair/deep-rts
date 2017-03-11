@@ -19,7 +19,7 @@ Player::Player(Game &game): inventoryManager(*this), game_(game) {
                                       0.5,
                                       sqrt(1.0 - fmod(Player::gId * 0.618033988749895, 0.5)));
 
-
+	unitIndexes.reserve(1000);
     faction = 0;
     gold = 1500;
     lumber = 750;
@@ -46,11 +46,11 @@ Unit& Player::spawn(Tile &spawnPoint) {
     if(faction == 0) // Human
     {
         
-        unit = &addUnit(Peasant(*this));
+        unit = &addUnit(Constants::Unit::Peasant);
     }
     else if(faction == 1) // Orc
     {
-		unit = &addUnit(Peasant(*this));
+		unit = &addUnit(Constants::Unit::Peasant);
     }
     else {
         assert(false);
@@ -111,7 +111,7 @@ int Player::getLumber() {
 }
 
 size_t Player::getUnitCount() {
-	return -1337; // TODO;
+	return unitIndexes.size();
 }
 
 int Player::getId() {
@@ -139,7 +139,7 @@ int Player::getScore() {
     double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
 	double_t builtScore = statUnitBuilt * 10;
 	double_t damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
-	double_t unitScore = -1337; //units.size() * 5;
+	double_t unitScore = unitIndexes.size() * 5;
 
 
 	double_t militaryScore = 0;
@@ -168,7 +168,7 @@ void Player::removeUnit(Unit & unit) {
 bool Player::checkDefeat(){
 	int aliveUnits = 0;
 
-	bool isDefeated = false; // TODO //(units.size() > 0);
+	bool isDefeated = (unitIndexes.size() > 0);
     defeated = isDefeated;
 	if (defeated) {
 		name_ += " [DEFEATED]";
@@ -198,8 +198,16 @@ bool Player::canAfford(Unit & unit) {
 
 }
 
-Unit& Player::addUnit(Unit& u) {
-    game_.units.push_back(u);
+Unit& Player::addUnit(Constants::Unit unitType) {
+
+	if (unitType == Constants::Unit::Peasant) {
+		game_.units.push_back(Peasant(*this));
+	}
+	else if (unitType == Constants::Unit::TownHall) {
+		game_.units.push_back(TownHall(*this));
+	}
+
+	unitIndexes.push_back(game_.units.size() - 1);
 	return game_.units.back();
 }
 
@@ -224,43 +232,63 @@ void Player::setAlgorithm(std::shared_ptr<Algorithm> theAlg){
 }
 
 int Player::_getNextPrevUnitIdx(){
-   /* if(units.size() == 0){
+    if(unitIndexes.size() == 0){
         return -1;
     }
     if(!targetedUnit){
         return 0;
     }
-    int idx = 0;
-    for(auto &u : units){
-        if(targetedUnit == u){
+
+    uint16_t idx = 0;
+    for(auto &uIDX : unitIndexes){
+        if(targetedUnit == &game_.getUnit(uIDX)){
             return idx;
         }
         idx++;
-    }*/
+    }
 
 	return -1;
-	// TODO
 }
 
 void Player::nextUnit(){
-    /*int idx = _getNextPrevUnitIdx() + 1;
+
+	// Get which index in the unitIndexes to lookup
+    int idx = _getNextPrevUnitIdx() + 1;
+
+	// Just return if no next unit is returned
     if(idx == -1)
         return;
-    idx++;
-    targetedUnit = units[idx % units.size()];*/
 
-	// TODO
+	// Increment since we want Next unit
+	idx++;
+
+	// Retrieve which index it has
+	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
+
+	// Get unit from the game vector
+	targetedUnit = &game_.getUnit(unitIndex);
+
 	return;
 }
 
 void Player::previousUnit(){
-    /*int idx = _getNextPrevUnitIdx();
-    if(idx == -1)
-        return;
-    idx--;
-    targetedUnit = units[idx % units.size()];*/
+	// Get which index in the unitIndexes to lookup
+	int idx = _getNextPrevUnitIdx() + 1;
 
-	// TODO
+	// Just return if no next unit is returned
+	if (idx == -1)
+		return;
+
+	// Increment since we want Previous unit
+	idx--;
+
+	// Retrieve which index it has
+	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
+
+	// Get unit from the game vector
+	targetedUnit = &game_.getUnit(unitIndex);
+
+	return;
 }
 
 Unit Player::createUnit(int type_id) {

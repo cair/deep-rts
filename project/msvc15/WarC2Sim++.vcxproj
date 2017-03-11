@@ -56,6 +56,7 @@
     <ClInclude Include="..\..\src\game\unit\TownHall.h" />
     <ClInclude Include="..\..\src\game\unit\Unit.h" />
     <ClInclude Include="..\..\src\game\util\ColorConverter.hpp" />
+    <ClInclude Include="..\..\src\game\util\JPS.h" />
     <ClInclude Include="..\..\src\game\util\Pathfinder.h" />
     <ClInclude Include="..\..\src\game\util\PriorityQueue.hpp" />
     <ClInclude Include="..\..\src\main.h" />

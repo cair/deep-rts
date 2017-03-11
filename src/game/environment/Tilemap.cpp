@@ -154,7 +154,7 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
         Tile &neigh = tiles[idx];
         assert(&neigh);
 
-        if(type == Constants::Pathfinding::Walkable && !neigh.canWalkTo())
+        if(type == Constants::Pathfinding::Walkable && !neigh.isWalkable())
             continue;
 
         neighbors.push_back(&neigh);
@@ -187,4 +187,16 @@ std::vector<Tile *> Tilemap::getTiles(Tile *source, int width, int height) {
     }
 
     return tiles;
+}
+
+
+bool Tilemap::operator()(unsigned x, unsigned y) const
+{
+	if (x < MAP_WIDTH && y < MAP_HEIGHT) // Unsigned will wrap if < 0
+	{
+		int idx = MAP_WIDTH*y + x;
+		const Tile &t = tiles[idx];
+		const bool isWalk = t.isWalkable();
+		return isWalk;
+	}
 }

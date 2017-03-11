@@ -41,6 +41,8 @@ public:
 
     json tilesData;
     int tFirstGid;
+
+	bool operator()(unsigned x, unsigned y) const;
 };
 
 

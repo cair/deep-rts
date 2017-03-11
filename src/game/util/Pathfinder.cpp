@@ -88,12 +88,12 @@ Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int
 	int cols = destination->tilemap.MAP_WIDTH;
 
 	Tile *closest = NULL;
-	int tmpClosest = INT32_MAX;
+	uint16_t tmpClosest = INT16_MAX;
 
 	for (int dx = -1; dx <= range; dx++) {
 		for (int dy = -1; dy <= range; dy++) {
-			int x = destination->x + dx;
-			int y = destination->y + dy;
+			uint16_t x = destination->x + dx;
+			uint16_t y = destination->y + dy;
 
 
 			Tile *subject = destination->tilemap.getTile(x, y);
@@ -101,7 +101,7 @@ Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int
 				continue;
 			}
 
-			int dist = start->distance(subject);
+			uint16_t dist = start->distance(subject);
 			if (dist < tmpClosest) {
 				closest = subject;
 				tmpClosest = dist;
@@ -133,7 +133,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         assert(current);
         queue.pop();
 
-        if (current->canWalkTo() && !current->getOccupant()) {
+        if (current->isWalkable() && !current->getOccupant()) {
             return current;
         }
 

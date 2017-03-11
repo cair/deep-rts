@@ -112,7 +112,7 @@ bool Unit::build(int idx) {
 
     if(player_->canPlace(*this, newUnit, placementTile)) {
 
-        Unit &unit = player_->addUnit(Unit(newUnit));
+        Unit &unit = player_->addUnit(newUnit.typeId);
 		unit.player_ = player_;
 
         if(!structure and unit.structure) {
@@ -292,14 +292,12 @@ sf::Vector2f Unit::distanceVector(Tile &target){
 Unit* Unit::closestRecallBuilding() {
     Unit* closest = NULL;
     int dist = INT_MAX;
-    for(auto &u : player_->game_.units) {
-		// TODO fix player
-
-        if(u.recallable) {
-            int d = distance(*u.tile);
+    for(auto &unit : player_->game_.units) {
+        if(unit.recallable && unit.player_ == player_) {
+            int d = distance(*unit.tile);
             if(d < dist) {
                 dist = d;
-                closest = &u;
+                closest = &unit;
             }
         }
     }
