@@ -7,12 +7,15 @@
 
 #include "graphics/GUI.h"
 #include "graphics/Animation.h"
+#include "Config.h"
 
 
 std::unordered_map<int, Game*> Game::games;
 
 Game::Game(uint8_t _nplayers, bool setup):
-        map(Tilemap("contested-4v4.json"))
+        map(Tilemap("contested-4v4.json")),
+		captionConsole(Config::getInstance().getCaptionConsole()),
+		captionWindow(Config::getInstance().getCaptionWindow())
 {
 	players.reserve(16);
 	units.reserve(1000);
@@ -88,6 +91,7 @@ void Game::loop() {
             }
 
 			for (auto &p : this->players) {
+				p.update();
 				if(p.algorithm_)
 					p.algorithm_->update();
 			}
@@ -111,8 +115,14 @@ void Game::loop() {
 
         if (now >= this->_stats_next) {
 
-            gui->caption();
-            std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS<< "]" << std::endl;
+			if (captionWindow) {
+				gui->caption();
+			}
+           
+			if (captionConsole) {
+				std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
+			}
+           
 
             this->currentFPS = this->_render_delta;
             this->currentUPS = this->_update_delta;
@@ -182,19 +192,12 @@ Player &Game::addPlayer() {
 		//builder.build(0);
 	}
 
-
-
-	for (auto &p : players) {
-		std::cout << &p << std::endl;
-	}
-	std::cout << "------" << std::endl;
-
     return player;
 }
 
 Unit & Game::getUnit(uint16_t idx)
 {
-	assert((idx > 0 && idx < (units.size())) && "getUnit(idx) failed. Index not in range!");
+	assert((idx >= 0 && idx < (units.size())) && "getUnit(idx) failed. Index not in range!");
 	return units[idx];
 }
 

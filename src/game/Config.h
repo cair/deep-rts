@@ -42,8 +42,16 @@ public:
         return tickModifier;
     }
 
+	bool getCaptionConsole() {
+		return captionConsole;
+	}
+
+	bool getCaptionWindow() {
+		return captionWindow;
+	}
+
     bool getMechanicHarvestReplay() {
-        return false;
+        return mechanicHarvestForever;
     }
     static void print(std::string data) {
         std::cout << data << std::endl;
@@ -62,8 +70,11 @@ private:
 
     int fps;
     int ups;
-    int mechanicTownHall;
+    bool mechanicTownHall;
     int tickModifier;
+	bool captionConsole;
+	bool captionWindow;
+	bool mechanicHarvestForever;
 
     void load(){
         // Read Map data
@@ -78,7 +89,9 @@ private:
         ups = configuration["ups"];
         tickModifier = configuration["ticks_per_sec"];
         mechanicTownHall = mechanics["town_hall_on_start"];
-
+		mechanicHarvestForever = mechanics["harvest_forever"];
+		captionConsole = configuration["caption"]["console"];
+		captionWindow = configuration["caption"]["window"];
 
 
 

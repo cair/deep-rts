@@ -1,15 +1,12 @@
 import os
+os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0"
 os.environ["KERAS_BACKEND"] = "theano"
-
 import random
 import numpy
 from keras import backend as K
 from keras.models import Model
-
 from keras.layers import Convolution2D, Dense, Flatten, Input, merge
 from keras.optimizers import RMSprop
-
-
 from theano.gradient import disconnected_grad
 
 class DQN:
@@ -100,7 +97,7 @@ class DQN:
 		A = numpy.zeros((self.mbsz, 1), dtype=numpy.int32)
 		R = numpy.zeros((self.mbsz, 1), dtype=numpy.float32)
 		T = numpy.zeros((self.mbsz, 1), dtype=numpy.int32)
-		for i in xrange(self.mbsz):
+		for i in range(self.mbsz):
 			episode = random.randint(max(0, N-50), N-1)
 			num_frames = len(self.states[episode])
 			frame = random.randint(0, num_frames-1)

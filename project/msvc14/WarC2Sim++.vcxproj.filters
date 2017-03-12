@@ -49,6 +49,12 @@
     <Filter Include="Source Files\game\python">
       <UniqueIdentifier>{10047431-f91d-4af2-97c3-815f943e1bb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\python\Algorithms">
+      <UniqueIdentifier>{99685efa-1bea-4884-8251-da755668bdcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\python\Algorithms\DQN">
+      <UniqueIdentifier>{42f128b8-312b-4a07-b3ab-bde8acec2a36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game\action\BaseAction.h">
@@ -295,9 +301,6 @@
     <None Include="..\..\src\game\python\RemoteAI.py">
       <Filter>Source Files\game\python</Filter>
     </None>
-    <None Include="..\..\src\game\python\GameMessage_pb2.py">
-      <Filter>Source Files\game\python</Filter>
-    </None>
     <None Include="..\..\src\game\python\DQN.py">
       <Filter>Source Files\game\python</Filter>
     </None>
@@ -307,6 +310,15 @@
     </None>
     <None Include="..\..\src\game\python\PyAI.py">
       <Filter>Source Files\game\python</Filter>
+    </None>
+    <None Include="..\..\src\game\python\Algorithms\__init__.py">
+      <Filter>Source Files\game\python\Algorithms</Filter>
+    </None>
+    <None Include="..\..\src\game\python\Algorithms\DQN\__init__.py">
+      <Filter>Source Files\game\python\Algorithms\DQN</Filter>
+    </None>
+    <None Include="..\..\src\game\python\Algorithms\DQN\DQN.py">
+      <Filter>Source Files\game\python\Algorithms\DQN</Filter>
     </None>
   </ItemGroup>
 </Project>

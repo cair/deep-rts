@@ -9,10 +9,10 @@
 #include "../graphics/GUI.h"
 #include "../action/RightClickAction.h"
 #include <random>
+#include "../action/BaseAction.h"
 
 int Unit::gId = 0;
 Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateManager){
-
     id = Unit::gId++;
     state = stateManager->despawnedState;
     current_state = state->id;

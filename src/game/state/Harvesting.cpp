@@ -109,7 +109,7 @@ void Harvesting::update(Unit & unit)const{
             unit.lumberCarry = 0;
             unit.oilCarry = 0;
 
-            if(!Config::getInstance().getMechanicHarvestReplay())
+            if(Config::getInstance().getMechanicHarvestReplay())
             {
                 unit.transitionState(unit.stateManager->harvestingState);
             }else{

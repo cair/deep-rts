@@ -1,5 +1,13 @@
+import sys
+import os
+print(sys.path, sys.argv)
 
 import sys
+import gym
+env_name = sys.argv[1] if len(sys.argv) > 1 else "CartPole-v0"
+env = gym.make(env_name)
+print(env.observation_space.shape)
+print(env.action_space.n)
 print("Running PyAI using Python %s" % (sys.version))
 
 from Algorithms.DQN.DQN import DQN

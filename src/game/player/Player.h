@@ -12,7 +12,7 @@
 #include "../environment/Tile.h"
 #include "../unit/InventoryManager.h"
 #include "../algorithms/base/Algorithm.h"
-
+#include <deque>
 
 class AlgoRandom;
 
@@ -23,6 +23,7 @@ private:
     static int gId;
 
     std::string name = "Derp";
+	std::deque<int> actionQueue;
 
 
 
@@ -59,6 +60,8 @@ public:
     void addOil(int n);
     Unit &addUnit(Constants::Unit unitType);
     Unit createUnit(int type_id);
+
+	void queueAction(int actionID);
 
     Player(Game &game);
     Unit &spawn(Tile &spawnPoint);

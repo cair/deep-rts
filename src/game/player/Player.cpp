@@ -86,6 +86,61 @@ void Player::update() {
         algorithm_->update();
     }
 	*/
+
+	if (!actionQueue.empty()) {
+		int actionID = actionQueue.front();
+		actionQueue.pop_front();
+
+		switch(actionID) {
+		case Constants::Action::NextUnit:
+			nextUnit();
+			break;
+		case Constants::Action::PreviousUnit:
+			previousUnit();
+			break;
+		case Constants::Action::RightUpRight:
+			targetedUnit->rightClickRelative(-1, 1);
+			break;
+		case Constants::Action::RightUpLeft:
+			targetedUnit->rightClickRelative(-1, -1);
+			break;
+		case Constants::Action::RightDownRight:
+			targetedUnit->rightClickRelative(1, 1);
+			break;
+		case Constants::Action::RightDownLeft:
+			targetedUnit->rightClickRelative(1, -1);
+			break;
+		case Constants::Action::RightUp:
+			targetedUnit->rightClickRelative(0, -1);
+			break;
+		case Constants::Action::RightDown:
+			targetedUnit->rightClickRelative(0, 1);
+			break;
+		case Constants::Action::RightLeft:
+			targetedUnit->rightClickRelative(-1, 0);
+			break;
+		case Constants::Action::RightRight:
+			targetedUnit->rightClickRelative(1, 0);
+			break;
+		case Constants::Action::Build0:
+			targetedUnit->build(0);
+			break;
+		case Constants::Action::Build1:
+			targetedUnit->build(1);
+			break;
+		case Constants::Action::Build2:
+			targetedUnit->build(2);
+			break;
+
+		}
+
+
+	}
+
+
+	
+
+
 }
 
 
@@ -139,7 +194,7 @@ int Player::getScore() {
     double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
 	double_t builtScore = statUnitBuilt * 10;
 	double_t damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
-	double_t unitScore = unitIndexes.size() * 5;
+	double_t unitScore = statUnitBuilt * 5;
 
 
 	double_t militaryScore = 0;
@@ -168,7 +223,7 @@ void Player::removeUnit(Unit & unit) {
 bool Player::checkDefeat(){
 	int aliveUnits = 0;
 
-	bool isDefeated = (unitIndexes.size() > 0);
+	bool isDefeated = (unitIndexes.size() == 0);
     defeated = isDefeated;
 	if (defeated) {
 		name_ += " [DEFEATED]";
@@ -264,7 +319,7 @@ void Player::nextUnit(){
 
 	// Retrieve which index it has
 	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
-
+	std::cout << static_cast<int>(unitIndex) << " -N- " << unitIndexes.size() << std::endl;
 	// Get unit from the game vector
 	targetedUnit = &game_.getUnit(unitIndex);
 
@@ -284,6 +339,7 @@ void Player::previousUnit(){
 
 	// Retrieve which index it has
 	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
+	std::cout << static_cast<int>(unitIndex) << " -P- " << unitIndexes.size() << std::endl;
 
 	// Get unit from the game vector
 	targetedUnit = &game_.getUnit(unitIndex);
@@ -300,4 +356,8 @@ Unit Player::createUnit(int type_id) {
 
 
     }
+}
+
+void Player::queueAction(int actionID) {
+	actionQueue.push_back(actionID);
 }

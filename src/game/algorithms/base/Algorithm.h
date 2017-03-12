@@ -27,7 +27,7 @@ public:
     virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit) = 0;
     virtual void doAction(std::shared_ptr<BaseAction> action) = 0;
     void setPlayerName(std::string name);
-    std::shared_ptr<BaseAction> getAction(int actionID, Unit & unitptr);
+    std::shared_ptr<BaseAction> getAction(int actionID, Unit *unitptr);
 };
 
 

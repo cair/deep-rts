@@ -5,6 +5,7 @@
 #include <numpy\arrayobject.h>
 #include <thread>
 #include <stdlib.h>
+#include <mutex>          // std::mutex
 
 int setenv(const char *name, const char *value, int overwrite)
 {
@@ -19,10 +20,11 @@ int setenv(const char *name, const char *value, int overwrite)
 
 bool PyAPI::loaded = false;
 void PyAPI::init() {
-	PyImport_AppendInittab("PyAPIRegistry", &PyAPI::PyInit_PyAPIRegistry);
+	
 
-	setenv("PYTHONIOENCODING", "utf-8", 1);
-	Py_Initialize();
+	//setenv("PYTHONIOENCODING", "utf-8", 1);
+
+	//PyAPI::start();
 	std::thread t = std::thread(&PyAPI::start);
 	t.detach();
 
@@ -30,14 +32,14 @@ void PyAPI::init() {
 
 
 void PyAPI::start() {
-
-
+	PyImport_AppendInittab("PyAPIRegistry", &PyAPI::PyInit_PyAPIRegistry);
+	Py_Initialize();
 	PyObject *pName, *pModule;
 
 	int argc;
 	wchar_t * argv[3];
 	argc = 1;
-	argv[0] = L"";
+	argv[0] = L"Main.py";
 
 
 	Py_SetProgramName(argv[0]);
@@ -93,7 +95,10 @@ std::shared_ptr<BaseAction> PyAPI::findBestAction(Unit & unit)
 
 void PyAPI::doAction(std::shared_ptr<BaseAction> action)
 {
+
 }
+
+
 PyObject *PyAPI::registry_loaded(PyObject *self, PyObject *args) {
 	PyAPI::loaded = true;
 	std::cout << "Load done! Python started!" << std::endl;
@@ -136,6 +141,49 @@ PyObject* PyAPI::registry_hook(PyObject* self, PyObject* args)
 	
 	return PyLong_FromLongLong(-1);
 }
+
+
+PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
+{
+	PyObject *aiID;
+	PyObject *pyactionID;
+	PyAPI * api_ptr;
+	int actionID = -1;
+	if (PyArg_UnpackTuple(args, "", 2, 2, &aiID, &pyactionID))
+	{
+		api_ptr = (PyAPI *)PyLong_AsLongLong(aiID);
+		actionID = PyLong_AsLong(pyactionID);
+	}
+	else {
+		PyErr_Print();
+		return PyLong_FromLongLong(-1);
+	}
+
+	if (api_ptr->player.targetedUnit == NULL) {
+		api_ptr->player.nextUnit();
+	}
+
+	uint16_t prevScore = api_ptr->player.getScore();
+	//auto action = api_ptr->getAction(actionID, api_ptr->player.targetedUnit);
+	//api_ptr->doAction(action);
+	// TODO add TEMPORAL WAIT TIME HERE
+
+	api_ptr->player.queueAction(actionID);
+
+	uint16_t scoreDifference = api_ptr->player.getScore() - prevScore;
+	long isTerminal = api_ptr->player.checkDefeat();
+
+	PyObject *reward = PyLong_FromLongLong(scoreDifference);
+	PyObject *terminal = PyBool_FromLong(isTerminal);
+	PyObject *info = PyLong_FromLongLong(1337);
+
+	args = PyTuple_New(3);
+	PyTuple_SetItem(args, 0, reward);
+	PyTuple_SetItem(args, 1, terminal);
+	PyTuple_SetItem(args, 2, info);
+	return args;
+}
+
 
 PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 {
@@ -241,6 +289,7 @@ static struct PyMethodDef methods[] = {
 	{ "get_state", PyAPI::registry_get_state, METH_VARARGS, "Show a number" },
 	{ "free", PyAPI::registry_free, METH_VARARGS, "Show a number" },
 	{ "loaded", PyAPI::registry_loaded, METH_VARARGS, "Initial dependency loading is done" },
+	{ "do_action", PyAPI::registry_do_action, METH_VARARGS, "Do a action" },
 	{ NULL, NULL, 0, NULL }
 };
 

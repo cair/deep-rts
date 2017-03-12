@@ -11,6 +11,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 
 
@@ -18,6 +20,7 @@ class Game;
 class Player;
 class Tile;
 class Unit;
+
 class GUI{
 private:
     Game& game;
@@ -32,9 +35,10 @@ private:
     sf::Font font;
     sf::Text text;
     Tile* selectedTile = NULL;
-
+	std::shared_ptr<sf::Music> music; // Just for completeness
 public:
     GUI(Game &game);
+	void startAudio();
     void caption();
     void render();
     void update();

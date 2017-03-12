@@ -2,10 +2,14 @@
   "fps": 60,
   "ups": 9999999999999,
   "ticks_per_sec": 10,
+  "caption": {
+    "window": true,
+    "console": false
+  },
 
   "mechanics": {
     "town_hall_on_start": true,
-    "auto_farmer": true
+    "harvest_forever": false
   }
 
 

@@ -9,50 +9,10 @@ void Algorithm::setPlayerName(std::string name){
     player.setName(name);
 }
 
-std::shared_ptr<BaseAction> Algorithm::getAction(int actionID, Unit & unitptr) {
-
-    switch (actionID){
-		case Constants::Action::NextUnit:
-            unitptr.player_->nextUnit();
-            break;
-		case Constants::Action::PreviousUnit:
-            unitptr.player_->previousUnit();
-            break;
-		case Constants::Action::RightUpRight:
-            unitptr.rightClickRelative(-1, 1);
-            break;
-		case Constants::Action::RightUpLeft:
-            unitptr.rightClickRelative(-1, -1);
-            break;
-		case Constants::Action::RightDownRight:
-            unitptr.rightClickRelative(1, 1);
-            break;
-		case Constants::Action::RightDownLeft:
-            unitptr.rightClickRelative(1, -1);
-            break;
-		case Constants::Action::RightUp:
-            unitptr.rightClickRelative(0, -1);
-            break;
-		case Constants::Action::RightDown:
-            unitptr.rightClickRelative(0, 1);
-            break;
-		case Constants::Action::RightLeft:
-            unitptr.rightClickRelative(-1, 0);
-            break;
-		case Constants::Action::RightRight:
-            unitptr.rightClickRelative(1, 0);
-            break;
-		case Constants::Action::Build0:
-			unitptr.build(0);
-			break;
-		case Constants::Action::Build1:
-			unitptr.build(1);
-			break;
-		case Constants::Action::Build2:
-			unitptr.build(2);
-			break;
-
-    }
-
+std::shared_ptr<BaseAction> Algorithm::getAction(int actionID, Unit* unitptr) {
+	if(!unitptr && !unitptr->tile) {
+		std::cout << "Avoided crash ( Yes we have bugs, concurrency is gay..." << std::endl;
+		return std::shared_ptr<BaseAction>();
+	}
     return std::shared_ptr<BaseAction>();
 }

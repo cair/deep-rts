@@ -16,7 +16,7 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 #include "GUI.h"
 #include "../Game.h"
 #include "Animation.h"
-#include <SFML/Graphics.hpp>
+#include <thread>
 
 
 
@@ -27,10 +27,21 @@ GUI::GUI(Game &game) :
 
     this->createView();
     this->createFrame();
-
-
     this->font.loadFromFile("./data/fonts/arial.ttf");
 
+
+	std::thread t(std::bind(&GUI::startAudio, this));
+	t.detach();
+	
+}
+
+void GUI::startAudio() {
+	music = std::shared_ptr<sf::Music>(new sf::Music());
+	if (music->openFromFile("./data/audio/song_1.ogg"))
+	{
+		music->setLoop(true);
+		music->play();
+	}
 
 }
 

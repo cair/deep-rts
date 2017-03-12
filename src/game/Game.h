@@ -18,6 +18,8 @@
 
 class GUI;
 class Game {
+	const bool captionWindow;
+	const bool captionConsole;
 
     uint8_t n_players;
 

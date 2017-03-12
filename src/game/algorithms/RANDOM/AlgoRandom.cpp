@@ -30,7 +30,7 @@ void AlgoRandom::update() {
 		if (u.state->id == Constants::State::Idle) {
 			int randomIndex = rand() % actionSpace.size();
 			int actionID = actionSpace[randomIndex];
-			getAction(actionID, u);
+			getAction(actionID, &u);
 			//std::shared_ptr<BaseAction> action = findBestAction(u);
 			//doAction(action);
 		}
@@ -47,7 +47,7 @@ void AlgoRandom::terminal() {
 std::shared_ptr<BaseAction> AlgoRandom::findBestAction(Unit & unit) {
     int randomIndex = rand() % actionSpace.size();
     int actionID = actionSpace[randomIndex];
-    std::shared_ptr<BaseAction> selectedAction = getAction(actionID, unit);
+    std::shared_ptr<BaseAction> selectedAction = getAction(actionID, &unit);
     assert(selectedAction);
     return selectedAction;
 }
