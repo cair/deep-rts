@@ -9,8 +9,8 @@
 #include "../unit/Unit.h"
 #include <utility>
 
-Tile::Tile(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Tilemap &tilemap):
-x(x), y(y), height(height), width(width), tilemap(tilemap)
+Tile::Tile(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Tilemap &tilemap, bool originalWalkable, bool originalHarvestable, uint16_t originalResources):
+x(x), y(y), height(height), width(width), tilemap(tilemap), originalWalkable(originalWalkable), originalHarvestable(originalHarvestable), originalResources(originalResources)
 {}
 
 
@@ -26,6 +26,16 @@ Unit* Tile::getOccupant()
 uint16_t Tile::getResources()
 {
 	return resources;
+}
+
+void Tile::reset()
+{
+	occupant = NULL;
+	harvestable = originalHarvestable;
+	walkable = originalWalkable;
+	resources = originalResources;
+
+
 }
 
 bool Tile::isAttackable(Unit & unit) {
@@ -60,8 +70,8 @@ uint16_t Tile::distance(Tile *pTile) {
 }
 
 void Tile::setDepleted() {
-    this->harvestable = false;
-    this->walkable = true;
+    harvestable = false;
+    walkable = true;
     tilemap.addTileVertices(depleteTile-1, width, height, tilemap.tFirstGid, *this);
 }
 

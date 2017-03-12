@@ -26,11 +26,12 @@ PyAPIRegistry.loaded() # Tell C++ that we are done with dependencies
 for e in range(num_episodes):
     observation = pyai.getState()
     done = False
+    pyai.reset()
     dqn.new_episode()
     total_cost = 0.0
     total_reward = 0.0
     frame = 0
-    while not done:     
+    while not done and frame < 1000:     
         frame += 1
         #env.render()
         action, values = dqn.act(observation)

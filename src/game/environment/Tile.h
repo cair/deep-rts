@@ -20,8 +20,11 @@ private:
 	uint16_t resources;
 	Unit* occupant = NULL;
 
+	const bool originalWalkable;
+	const bool originalHarvestable;
+	const uint16_t originalResources;
 public:
-    Tile(uint16_t x, uint16_t y, uint16_t w, uint16_t h, Tilemap &tilemap);
+    Tile(uint16_t x, uint16_t y, uint16_t w, uint16_t h, Tilemap &tilemap, bool originalWalkable, bool originalHarvestable, uint16_t originalResources);
 
     // Tile data
     std::string name;
@@ -34,6 +37,7 @@ public:
 	bool harvestable;
 	bool walkable;
     bool swimable;
+
 
 	// Tile Properties
 	uint16_t x;
@@ -65,6 +69,9 @@ public:
 	sf::Vector2f getPixelPosition()const;
 	Unit* getOccupant();
 	uint16_t getResources();
+
+
+	void reset();
 
 
 

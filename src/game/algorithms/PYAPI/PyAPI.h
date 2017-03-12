@@ -52,6 +52,7 @@ public:
 	static PyObject *registry_loaded(PyObject * self, PyObject * args);
 	static PyObject *registry_free(PyObject* self, PyObject* args);
 	static PyObject *registry_hook(PyObject* self, PyObject* args);
+	static PyObject * registry_reset(PyObject * self, PyObject * args);
 	static PyObject *registry_do_action(PyObject * self, PyObject * args);
 	static PyObject *registry_get_state(PyObject* self, PyObject* args);
 

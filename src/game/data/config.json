@@ -6,6 +6,9 @@
     "window": true,
     "console": false
   },
+  "logging": {
+  	  "json_scorings": true
+  },
 
   "mechanics": {
     "town_hall_on_start": true,

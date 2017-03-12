@@ -13,6 +13,14 @@ void Combat::update(Unit & unit)const{
     unit.combatTimer += 1;
     if(unit.combatTimer >= unit.combatInterval) {
 
+		// If combat target are despawn in some way (Building, Dead, Despawned) stop attacking...
+		if (!unit.combatTarget->tile) {
+			unit.combatTarget = NULL;
+			unit.combatTimer = 1000;
+			unit.transitionState();
+			return;
+		}
+
         if(unit.distance(*unit.combatTarget->tile) > unit.damageRange) {
             // Too far away, Walk
 

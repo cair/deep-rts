@@ -40,6 +40,9 @@ class PyAI:
             "faction"]
     
 
+    def reset(self):
+        PyAPIRegistry.reset(self.__ai__)
+
     def getState(self):
     
         pair = PyAPIRegistry.get_state(self.__ai__)

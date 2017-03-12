@@ -141,6 +141,24 @@ PyObject* PyAPI::registry_hook(PyObject* self, PyObject* args)
 	return PyLong_FromLongLong(-1);
 }
 
+PyObject* PyAPI::registry_reset(PyObject* self, PyObject* args)
+{
+	PyObject *aiID;
+	PyAPI * api_ptr;
+	if (PyArg_UnpackTuple(args, "", 1, 1, &aiID))
+	{
+		api_ptr = (PyAPI *)PyLong_AsLongLong(aiID);
+	}
+	else {
+		PyErr_Print();
+		return PyLong_FromLongLong(-1);
+	}
+
+	api_ptr->game->reset();
+
+	return PyLong_FromLongLong(1);
+
+}
 
 PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 {
@@ -158,7 +176,7 @@ PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 		return PyLong_FromLongLong(-1);
 	}
 
-	if (api_ptr->player.targetedUnit == NULL and api_ptr->player.unitIndexes.size() > 0) {
+	if (api_ptr->player.targetedUnit == NULL and api_ptr->player.unitIndexes.size() > 0 and !api_ptr->player.defeated) {
 		api_ptr->player.nextUnit();
 	}
 
@@ -289,6 +307,8 @@ static struct PyMethodDef methods[] = {
 	{ "free", PyAPI::registry_free, METH_VARARGS, "Show a number" },
 	{ "loaded", PyAPI::registry_loaded, METH_VARARGS, "Initial dependency loading is done" },
 	{ "do_action", PyAPI::registry_do_action, METH_VARARGS, "Do a action" },
+	{ "reset", PyAPI::registry_reset, METH_VARARGS, "Reset Game" },
+
 	{ NULL, NULL, 0, NULL }
 };
 

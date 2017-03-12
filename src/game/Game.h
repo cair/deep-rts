@@ -22,6 +22,7 @@ class Game {
 	const bool captionConsole;
 
     uint8_t n_players;
+	uint16_t gameNum = 1;
 
     // Gameclock variables
     clock_t _update_next;
@@ -35,7 +36,7 @@ class Game {
 	uint32_t _update_delta = 0;
 	uint32_t _render_delta = 0;
 
-
+	json jsonStatContainer;
     bool running;
     long ticks = 0;
 	static std::unordered_map<int, Game *> games;
@@ -66,6 +67,7 @@ public:
 
     void start();
     void stop();
+	void reset();
 
     Game(uint8_t n_players, bool setup);
 
@@ -84,6 +86,7 @@ public:
     bool terminal;
 
     Player &addPlayer();
+	void spawnPlayer(Player & player);
 	Unit &getUnit(uint16_t idx);
 
 	std::string serialize_json();

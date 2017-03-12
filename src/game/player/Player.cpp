@@ -80,7 +80,7 @@ void Player::update() {
 		Constants::Action actionID = actionQueue.front();
 		actionQueue.pop_front();
 
-		if (!targetedUnit and (actionID != Constants::Action::NextUnit and actionID != Constants::Action::PreviousUnit)) {
+		if (!targetedUnit and (actionID != Constants::Action::NextUnit and actionID != Constants::Action::PreviousUnit) or unitIndexes.empty()) {
 			// No selected unit by the player and he attempts to right click on a targetedUnit
 			return;
 		}
@@ -135,6 +135,30 @@ void Player::update() {
 
 
 
+}
+
+void Player::reset()
+{
+	faction = 0;
+	gold = 1500;
+	lumber = 750;
+	oil = 0;
+	foodConsumption = 0;
+	food = 1;
+	defeated = false;
+
+	statGoldGather = 0;
+	statLumberGather = 0;
+	statOilGather = 0;
+	statUnitDamageDone = 0;
+	statUnitDamageTaken = 0;
+	statUnitBuilt = 0;
+	statUnitMilitary = 0;
+	unitIndexes.clear();
+	targetedUnit = NULL;
+	actionStatistics[20] = { 0 };
+	
+	bool defeated;
 }
 
 
@@ -211,7 +235,10 @@ void Player::removeUnit(Unit & unit) {
 	ptrdiff_t pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
 	unitIndexes.erase(std::remove(unitIndexes.begin(), unitIndexes.end(), pos), unitIndexes.end());
 
-
+	// If no more units in the index list, clear the action queue
+	if (unitIndexes.empty()) {
+		actionQueue.clear();
+	}
 	//units.erase(std::remove(units.begin(), units.end(), unit), units.end());
 	std::cout << "Implement removeUnit" << std::endl;
 
@@ -301,6 +328,7 @@ int Player::_getNextPrevUnitIdx() {
 }
 
 void Player::nextUnit() {
+	//assert(unitIndexes.size() == 0 && "AI is attempting to play on a terminal state!");
 
 	// Get which index in the unitIndexes to lookup
 	int idx = _getNextPrevUnitIdx() + 1;
@@ -322,6 +350,8 @@ void Player::nextUnit() {
 }
 
 void Player::previousUnit() {
+	//assert(unitIndexes.size() == 0 && "AI is attempting to play on a terminal state!");
+
 	// Get which index in the unitIndexes to lookup
 	int idx = _getNextPrevUnitIdx() + 1;
 

@@ -43,7 +43,7 @@ Tilemap::Tilemap(std::string mapName) {
 
             int tId = (int)tileIDs[c] - 1;
             json tileData = tilesData[std::to_string(tId + 1)];
-            tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT, *this));
+            tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT, *this, (bool)tileData["walkable"], (bool)tileData["harvestable"], (uint16_t)tileData["resources"]));
             assert(!tiles.empty());
             Tile &tile = tiles.back();
             tile.tileID = tId;

@@ -319,7 +319,7 @@ void Unit::afflictDamage(int dmg_) {
 }
 
 bool Unit::isDead() {
-    return state->id == Constants::State::Dead;
+    return state->id == Constants::State::Dead or state->id == Constants::State::Despawned;
 }
 
 int Unit::getDamage(Unit &target) {

@@ -8,7 +8,7 @@
 #include "graphics/GUI.h"
 #include "graphics/Animation.h"
 #include "Config.h"
-
+#include "third_party\json.hpp"
 
 std::unordered_map<int, Game*> Game::games;
 
@@ -69,6 +69,33 @@ void Game::stop(){
     this->running = false;
 }
 
+void Game::reset()
+{
+	units.clear();
+	for (auto &tile : map.tiles) {
+		tile.reset();
+	}
+	for (auto &player : players) {
+		player.reset();
+		spawnPlayer(player);
+	}
+	ticks = 0;
+
+
+	if (Config::getInstance().getJsonLogging()) {
+		std::string input = jsonStatContainer.dump();
+		std::ofstream out("games/deeprts_game_" + std::to_string(gameNum) + ".json");
+		out << input;
+		out.close();
+		jsonStatContainer.clear();
+	}
+
+	gameNum += 1;
+
+	
+
+}
+
 
 void Game::loop() {
 
@@ -83,27 +110,46 @@ void Game::loop() {
 
         now = clock();
 
-        if (now >= this->_update_next) {
+        if (now >= _update_next) {
             // Update
 
-            for(auto &unit : this->units) {
+            for(auto &unit : units) {
 				if (unit.removedFromGame) continue;		// Skip unit that is removed from game
 				unit.update();
             }
 
-			for (auto &p : this->players) {
+			for (auto &p : players) {
 				p.update();
 				if(p.algorithm_)
 					p.algorithm_->update();
 			}
 
-            this->_update_next += this->_update_interval;
-            this->_update_delta += 1;
-            this->ticks += 1;
+			// Output all scores etc to file for each game
+			if (Config::getInstance().getJsonLogging()) {
+				// Record data
+				for (auto &p : players) {
+
+					json stat;
+					for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
+						stat.push_back(p.actionStatistics[i]);
+					}
+
+					json player;
+					player["action_stats"] = stat;
+					player["apm"] = p.apm;
+					player["score"] = p.getScore();
+					player["tick"] = ticks;
+					jsonStatContainer[p.id_].push_back(player);
+				}
+			}
+
+            _update_next += _update_interval;
+            _update_delta += 1;
+            ticks += 1;
 
         }
 
-        if (now >= this->_render_next) {
+        if (now >= _render_next) {
             // Render
 
             gui->update();
@@ -189,8 +235,19 @@ void Game::addAction(std::shared_ptr<BaseAction> action) {
 Player &Game::addPlayer() { 
 	players.push_back(Player(*this));
 	Player &player = players.back();
+
+	// If json config logging is enabled
+	if (Config::getInstance().getJsonLogging()) {
+		jsonStatContainer[player.id_] = {};
+	}
+
+	spawnPlayer(player);
+    return player;
+}
+
+void Game::spawnPlayer(Player &player) {
 	// Retrieve spawn_point
-	int spawnPointIdx = map.spawnTiles[players.size() - 1];
+	int spawnPointIdx = map.spawnTiles[player.id_];
 
 	// Spawn Initial builder
 	Unit &builder = player.spawn(map.tiles[spawnPointIdx]);
@@ -201,7 +258,6 @@ Player &Game::addPlayer() {
 		//builder.build(0);
 	}
 
-    return player;
 }
 
 Unit & Game::getUnit(uint16_t idx)

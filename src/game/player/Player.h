@@ -60,6 +60,7 @@ public:
 
 
     void update();
+	void reset();
 
     int getId();
     int getFoodConsumption();
