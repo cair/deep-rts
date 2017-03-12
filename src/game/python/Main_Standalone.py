@@ -1,20 +1,13 @@
-import theano
-theano.config.device = 'cpu'
-theano.config.floatX = 'float32'
+
 import sys
 print("Running PyAI using Python %s" % (sys.version))
 
-import PyAPIRegistry
-from PyAI import PyAI
 from Algorithms.DQN.DQN import DQN
 
-PyAPIRegistry.loaded() # Tell C++ that we are done with dependencies
-
-pyai = PyAI(0, 0)  # Create new AI hook with gameID = 0 playerID= 0
 dqn = DQN()  # Create new DQN using the pyai hook
 
 num_episodes = 20
-
+print("here")
 for e in xrange(num_episodes):
     observation = pyai.getState()
     done = False

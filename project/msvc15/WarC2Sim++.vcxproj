@@ -127,13 +127,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -192,6 +192,8 @@
 copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"
 copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.dll" "$(SolutionDir)$(Platform)\$(Configuration)\"
 copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.pdb" "$(SolutionDir)$(Platform)\$(Configuration)\"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python35.dll" "$(SolutionDir)$(Platform)\$(Configuration)\"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python35.pdb" "$(SolutionDir)$(Platform)\$(Configuration)\"
 xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)" /Y/D/E
 xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Configuration)" /Y/D/E</Command>
     </PreBuildEvent>
@@ -232,6 +234,8 @@ xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Config
 copy "$(VcpkgRoot)bin\zlib1.dll" "$(SolutionDir)$(Platform)\$(Configuration)\zlib.dll"
 copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.dll" "$(SolutionDir)$(Platform)\$(Configuration)\"
 copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python36.pdb" "$(SolutionDir)$(Platform)\$(Configuration)\"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python35.dll" "$(SolutionDir)$(Platform)\$(Configuration)\"
+copy "$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\python35.pdb" "$(SolutionDir)$(Platform)\$(Configuration)\"
 xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)" /Y/D/E
 xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Configuration)" /Y/D/E</Command>
     </PreBuildEvent>

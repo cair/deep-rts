@@ -1,9 +1,14 @@
+import os
+os.environ["KERAS_BACKEND"] = "theano"
+
 import random
 import numpy
+from keras import backend as K
 from keras.models import Model
+
 from keras.layers import Convolution2D, Dense, Flatten, Input, merge
 from keras.optimizers import RMSprop
-from keras import backend as K
+
 
 from theano.gradient import disconnected_grad
 
@@ -107,8 +112,6 @@ class DQN:
 			R[i] = self.rewards[episode][frame]
 		cost = self.train_fn([S, NS, A, R, T])
 		return cost
-
-
 
 
 

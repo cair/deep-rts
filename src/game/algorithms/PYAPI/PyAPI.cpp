@@ -6,10 +6,22 @@
 #include <thread>
 #include <stdlib.h>
 
+int setenv(const char *name, const char *value, int overwrite)
+{
+	int errcode = 0;
+	if (!overwrite) {
+		size_t envsize = 0;
+		errcode = getenv_s(&envsize, NULL, 0, name);
+		if (errcode || envsize) return errcode;
+	}
+	return _putenv_s(name, value);
+}
 
 bool PyAPI::loaded = false;
 void PyAPI::init() {
 	PyImport_AppendInittab("PyAPIRegistry", &PyAPI::PyInit_PyAPIRegistry);
+
+	setenv("PYTHONIOENCODING", "utf-8", 1);
 	Py_Initialize();
 	std::thread t = std::thread(&PyAPI::start);
 	t.detach();
@@ -24,15 +36,13 @@ void PyAPI::start() {
 
 	int argc;
 	wchar_t * argv[3];
-	argc = 3;
-	argv[0] = L"Main";
-	argv[1] = L"-m";
-	argv[2] = L"/tmp/targets.list";
+	argc = 1;
+	argv[0] = L"";
 
 
 	Py_SetProgramName(argv[0]);
-	PySys_SetArgv(argc, argv);
 
+	PySys_SetArgv(argc, argv);
 	pName = PyUnicode_DecodeFSDefault("Main.py");
 	std::cout << "Loading python environment. Please wait!" << std::endl;
 	PyAPI::loaded = false;
