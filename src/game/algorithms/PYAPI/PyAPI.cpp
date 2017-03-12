@@ -47,7 +47,6 @@ void PyAPI::start() {
 	PySys_SetArgv(argc, argv);
 	pName = PyUnicode_DecodeFSDefault("Main.py");
 	std::cout << "Loading python environment. Please wait!" << std::endl;
-	PyAPI::loaded = false;
 	pModule = PyImport_Import(pName);
 	
 	Py_DECREF(pName);
@@ -168,7 +167,7 @@ PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 	//api_ptr->doAction(action);
 	// TODO add TEMPORAL WAIT TIME HERE
 
-	api_ptr->player.queueAction(actionID);
+	api_ptr->player.queueAction(static_cast<Constants::Action>(actionID));
 
 	uint16_t scoreDifference = api_ptr->player.getScore() - prevScore;
 	long isTerminal = api_ptr->player.checkDefeat();

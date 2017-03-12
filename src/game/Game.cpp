@@ -123,6 +123,14 @@ void Game::loop() {
 			if (captionConsole) {
 				std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
 			}
+
+			// Calculate APM
+			if (true /*calculateAPM*/) {
+				for (auto &p : players) {
+					p.apm = (p.apm + (p.apm_counter * 60)) / 2; // Multiplies by 60 since sampling is per second
+					p.apm_counter = 0;
+				}
+			}
            
 
             this->currentFPS = this->_render_delta;

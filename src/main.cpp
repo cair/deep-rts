@@ -36,6 +36,9 @@ int main() {
     g->start();
 
 	PyAPI::init(); // Init the API
+	while (!PyAPI::loaded) {
+
+	}
 
 	//std::shared_ptr<zmqAI> ai = zmqAI::createInstance(0, 0);
     //player0.setAlgorithm(algorithm0);
@@ -44,10 +47,10 @@ int main() {
     //player1.setAlgorithm(algorithm1);
 
     std::shared_ptr<AlgoRandom> algorithm2 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player2));
-    //player2.setAlgorithm(algorithm2);
+    player2.setAlgorithm(algorithm2);
 
     std::shared_ptr<AlgoRandom> algorithm3 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player3));
-    //player3.setAlgorithm(algorithm3);
+    player3.setAlgorithm(algorithm3);
 
 
 	//CRemoteAI ai = CRemoteAI::createInstance(g->id);

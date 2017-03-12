@@ -8,7 +8,7 @@
 
 AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 
-	player.name_ += " [AlgoRandom]";
+	player.name_ += " [RND]";
 
     defineActionSpace();
     if(!player.targetedUnit) {
@@ -24,19 +24,24 @@ AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 void AlgoRandom::update() {
     // Tick happended
 
-	int nUnits = player.unitIndexes.size();
+	int randomIndex = rand() % actionSpace.size();
+	Constants::Action actionID = actionSpace[randomIndex];
+
+	player.queueAction(actionID);
+	/*int nUnits = player.unitIndexes.size();
 	for (int i = 0; i < nUnits; i++) {
 		Unit & u = player.game_.getUnit(player.unitIndexes[i]);
 		if (u.state->id == Constants::State::Idle) {
-			int randomIndex = rand() % actionSpace.size();
+			
 			int actionID = actionSpace[randomIndex];
-			getAction(actionID, &u);
+		
+			
 			//std::shared_ptr<BaseAction> action = findBestAction(u);
 			//doAction(action);
 		}
 
     
-    }
+    }*/
 
 }
 
@@ -71,6 +76,7 @@ void AlgoRandom::defineActionSpace() {
 		Constants::Action::RightRight,
 		Constants::Action::Build0,
 		Constants::Action::Build1,
-		Constants::Action::Build2
+		Constants::Action::Build2,
+		Constants::Action::NoAction
     };
 }

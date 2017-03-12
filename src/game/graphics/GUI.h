@@ -28,7 +28,7 @@ private:
     sf::View povView;
     sf::View fullView;
     sf::View minimapView;
-
+	sf::View frameView;
     void createFrame();
     sf::Texture gameFrameTexture;
     sf::Sprite gameFrame;
@@ -67,6 +67,7 @@ public:
     void leftClick(Tile &tile);
 
     void drawSelected();
+	void drawPlayerSelectedUnit();
     void rightClick(Tile &tile);
 
     void createView();

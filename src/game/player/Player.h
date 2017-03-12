@@ -22,7 +22,7 @@ private:
     static int gId;
 
     std::string name = "Derp";
-	std::deque<int> actionQueue;
+	std::deque<Constants::Action> actionQueue;
 
 
 
@@ -36,10 +36,28 @@ public:
     int food;
     int faction; // 0 = Human, 1 = Orc
 
+	int apm_counter = 0; // Incremental APM counter which is used as a sampler
+	int apm = 0; // Current average APM
+
     Game &game_;
 
     sf::Color playerColor;
     Unit *targetedUnit = NULL;
+
+	int id_;
+	bool defeated;
+	std::string name_;
+	std::shared_ptr<Algorithm> algorithm_ = NULL;
+	int statGoldGather;
+	int statLumberGather;
+	int statOilGather;
+	int statUnitDamageDone;
+	int statUnitDamageTaken;
+	int statUnitBuilt;
+	int statUnitMilitary;
+	int getScore();
+	std::vector<uint16_t> unitIndexes; // Vector of all of player's units (Where they are located in vector)
+
 
     void update();
 
@@ -59,13 +77,14 @@ public:
     Unit &addUnit(Constants::Unit unitType);
     Unit createUnit(int type_id);
 
-	void queueAction(int actionID);
+	void queueAction(Constants::Action actionID);
+	size_t getQueueSize();
 
     Player(Game &game);
     Unit &spawn(Tile &spawnPoint);
 
 
-    int id_;
+ 
 
     bool canPlace(Unit & builder, Unit & unit, Tile *tile);
 
@@ -74,16 +93,13 @@ public:
     void removeUnit(Unit & unit);
 
     bool checkDefeat();
-
-    bool defeated;
-
     void setName(std::string name);
 
-    std::string name_;
+
 
     void setAlgorithm(std::shared_ptr<Algorithm> theAlg);
 
-    std::shared_ptr<Algorithm> algorithm_ = NULL;
+
 
     void nextUnit();
 
@@ -91,16 +107,7 @@ public:
 
     int _getNextPrevUnitIdx();
 
-    int statGoldGather;
-    int statLumberGather;
-    int statOilGather;
-    int statUnitDamageDone;
-    int statUnitDamageTaken;
-    int statUnitBuilt;
-    int statUnitMilitary;
-    int getScore();
-
-	std::vector<uint16_t> unitIndexes; // Vector of all of player's units (Where they are located in vector)
+	
 };
 
 

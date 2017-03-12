@@ -16,9 +16,15 @@ int Player::gId = 0;
 Player::Player(Game &game) : game_(game) {
 	id_ = Player::gId++;
 	name_ = "Player: " + std::to_string(id_);
-	playerColor = ColorConverter::hsv(fmod(Player::gId * 0.618033988749895, 1.0),
-		0.5,
-		sqrt(1.0 - fmod(Player::gId * 0.618033988749895, 0.5)));
+	sf::Color colors[4] = { // TODO use Color generator 
+		sf::Color::Red,
+		sf::Color::Blue,
+		sf::Color::Green,
+		sf::Color::Cyan,
+	};
+	playerColor = colors[id_];
+
+
 
 	unitIndexes.reserve(1000);
 	faction = 0;
@@ -27,6 +33,7 @@ Player::Player(Game &game) : game_(game) {
 	oil = 0;
 	foodConsumption = 0;
 	food = 1;
+	defeated = false;
 
 	statGoldGather = 0;
 	statLumberGather = 0;
@@ -68,10 +75,10 @@ void Player::update() {
 
 
 	if (!actionQueue.empty()) {
-		int actionID = actionQueue.front();
+		Constants::Action actionID = actionQueue.front();
 		actionQueue.pop_front();
 
-		if (!targetedUnit && (actionID != Constants::Action::NextUnit or actionID != Constants::Action::PreviousUnit)) {
+		if (!targetedUnit and (actionID != Constants::Action::NextUnit and actionID != Constants::Action::PreviousUnit)) {
 			// No selected unit by the player and he attempts to right click on a targetedUnit
 			return;
 		}
@@ -209,14 +216,11 @@ void Player::removeUnit(Unit & unit) {
 }
 
 bool Player::checkDefeat() {
-	int aliveUnits = 0;
+	if (defeated) return defeated;
+	if (unitIndexes.size() > 0) return false;
 
-	bool isDefeated = (unitIndexes.size() == 0);
-	defeated = isDefeated;
-	if (defeated) {
-		name_ += " [DEFEATED]";
-	}
-
+	defeated = true;
+	name_ += " [DEFEATED]";
 
 	return defeated;
 }
@@ -308,7 +312,7 @@ void Player::nextUnit() {
 
 	// Retrieve which index it has
 	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
-	std::cout << static_cast<int>(unitIndex) << " -N- " << unitIndexes.size() << std::endl;
+	//std::cout << static_cast<int>(unitIndex) << " -N- " << unitIndexes.size() << std::endl;
 	// Get unit from the game vector
 	targetedUnit = &game_.getUnit(unitIndex);
 
@@ -328,7 +332,7 @@ void Player::previousUnit() {
 
 	// Retrieve which index it has
 	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
-	std::cout << static_cast<int>(unitIndex) << " -P- " << unitIndexes.size() << std::endl;
+	//std::cout << static_cast<int>(unitIndex) << " -P- " << unitIndexes.size() << std::endl;
 
 	// Get unit from the game vector
 	targetedUnit = &game_.getUnit(unitIndex);
@@ -347,6 +351,12 @@ Unit Player::createUnit(int type_id) {
 	}
 }
 
-void Player::queueAction(int actionID) {
+void Player::queueAction(Constants::Action actionID) {
+	apm_counter++;
 	actionQueue.push_back(actionID);
+}
+
+size_t Player::getQueueSize()
+{
+	return actionQueue.size();
 }

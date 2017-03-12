@@ -53,6 +53,12 @@ void GUI::createView(){
     this->fullView.setViewport(sf::FloatRect(0, 0, 1, 1));
     this->fullView.zoom(1);
 
+	this->frameView = sf::View(sf::FloatRect(0, 0,
+		static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
+		static_cast<float_t>(tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT)));
+	this->frameView.setViewport(sf::FloatRect(0.22, 0.09, 0.77, 0.78));
+	this->frameView.zoom(1);
+
 
     this->minimapView = sf::View(sf::FloatRect(0, 0,
                                                tilemap.MAP_WIDTH * tilemap.TILE_WIDTH,
@@ -71,8 +77,8 @@ void GUI::createView(){
 void GUI::createFrame(){
 
     this->gameFrameTexture.loadFromFile("data/textures/game_frame.png");
-
     this->gameFrame.setTexture(this->gameFrameTexture);
+	this->gameFrame.setScale(960.0 / 2560, 960.0 / 1440);
     /*std::cout << this->gameFrameTexture.getSize().x << std::endl;
     this->gameFrame.setScale(sf::Vector2f((float)this->gameFrameTexture.getSize().x / window.getSize().x,
                                           (float)this->gameFrameTexture.getSize().y / window.getSize().y));
@@ -124,6 +130,7 @@ void GUI::handleEvents(){
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
                 int idx = this->mouseClick(worldPos.x, worldPos.y);
+				if (idx > game.map.tiles.size()) return;
                 Tile &t = this->game.map.tiles[idx];
                 this->leftClick(t);
 
@@ -133,6 +140,7 @@ void GUI::handleEvents(){
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
                 int idx = this->mouseClick(worldPos.x, worldPos.y);
+				if (idx > game.map.tiles.size()) return;
                 Tile &t = this->game.map.tiles[idx];
                 this->rightClick(t);
 
@@ -245,6 +253,34 @@ void GUI::render() {
     if(!renderGUI)
         return;
 
+	if (this->toggleFrame) {
+		window.setView(this->frameView);
+		this->drawTiles();
+		this->drawUnits();
+		this->drawPlayerSelectedUnit();
+
+		window.setView(this->fullView);
+		window.draw(this->gameFrame);
+
+		this->drawStats();
+		this->drawSelected();  // Text
+		this->drawStatistics();
+		this->drawScoreBoard();
+		
+
+		// TODO heavy
+		window.setView(this->minimapView);
+		this->drawTiles();
+		this->drawUnits();
+		this->drawPlayerSelectedUnit();
+
+
+		// Update the window
+		window.display();
+		return;
+	}
+
+
     // Draw things here
     window.setView(*this->currentView);
     this->drawTiles();
@@ -256,18 +292,7 @@ void GUI::render() {
     this->drawSelected();  // Text
     this->drawStatistics();
     this->drawScoreBoard();
-
-
-    /*if(this->toggleFrame){
-        window.setView(this->fullView);
-        window.draw(this->gameFrame);
-
-        // TODO heavy
-        window.setView(this->minimapView);
-        this->drawTiles();
-        this->drawUnits();
-    }*/
-
+	this->drawPlayerSelectedUnit();
 
     if(!renderGUI){
         showNoGuiMessage();
@@ -340,21 +365,22 @@ void GUI::drawStatistics(){
     text.setFont(font);
     text.setCharacterSize(16);
     text.setFillColor(sf::Color::Yellow);
+	int offsetX = -780;
 
     text.setString("CurrentFPS: " + std::to_string(game.currentFPS));
-    text.setPosition(790,50);
+    text.setPosition(790 + offsetX,50);
     window.draw(text);
 
     text.setString("CurrentUPS: " + std::to_string(game.currentUPS));
-    text.setPosition(790,75);
+    text.setPosition(790 + offsetX,75);
     window.draw(text);
 
     text.setString("FPS: " + std::to_string(game.fps));
-    text.setPosition(790,100);
+    text.setPosition(790 + offsetX,100);
     window.draw(text);
 
     text.setString("UPS: " + std::to_string(game.ups));
-    text.setPosition(790,125);
+    text.setPosition(790 + offsetX,125);
     window.draw(text);
 }
 
@@ -365,32 +391,34 @@ void GUI::drawSelected(){
     text.setCharacterSize(16);
     text.setFillColor(sf::Color::Yellow);
 
+	int offsetY = -100;
+
     if(selectedTile)
     {
         text.setString("Type: " + selectedTile->name + " - (" + std::to_string(selectedTile->x) + "," + std::to_string(selectedTile->y) + ")");
-        text.setPosition(10,860);
+        text.setPosition(10,860 + offsetY);
         window.draw(text);
 
 
         text.setString((selectedTile->harvestable) ? "Harvestable: Yes" : "Harvestable: No");
-        text.setPosition(10,880);
+        text.setPosition(10,880 + offsetY);
         window.draw(text);
 
         text.setString((selectedTile->walkable) ? "Walkable: Yes" : "Walkable: No");
-        text.setPosition(10,900);
+        text.setPosition(10,900 + offsetY);
         window.draw(text);
 
         text.setString("Resources: " + std::to_string(selectedTile->getResources()));
-        text.setPosition(10,920);
+        text.setPosition(10,920 + offsetY);
         window.draw(text);
     }
 
 
 
     if (player.targetedUnit) {
+		int tOffsetX = 100;
         text.setCharacterSize(32);
         Unit *unit = player.targetedUnit;
-        Unit &lel = *unit;
         text.setString(unit->name + " (" +
                        std::to_string(unit->id ) +
                        ")" + " - " +
@@ -399,46 +427,48 @@ void GUI::drawSelected(){
                        std::to_string(unit->tile->y) + ") - (" +
                        std::to_string(unit->player_->id_) + ")"
         );
-        text.setPosition(320,830);
+        text.setPosition(320 + tOffsetX,830);
         window.draw(text);
 
         text.setCharacterSize(20);
 
         text.setString("Lumber: " + std::to_string(unit->lumberCarry));
-        text.setPosition(270,870);
+        text.setPosition(270 + tOffsetX,870);
         window.draw(text);
 
         text.setString("Gold: " + std::to_string(unit->goldCarry));
-        text.setPosition(270,900);
+        text.setPosition(270 + tOffsetX,900);
         window.draw(text);
 
         text.setString("Oil: " + std::to_string(unit->oilCarry));
-        text.setPosition(270,930);
+        text.setPosition(270 + tOffsetX,930);
         window.draw(text);
 
         text.setString("Health: " + std::to_string(unit->health) + "/" + std::to_string(unit->health_max));
-        text.setPosition(385,870);
+        text.setPosition(385 + tOffsetX,870);
         window.draw(text);
 
         text.setString("Damage: " + std::to_string(unit->damageMin) + " - " + std::to_string(unit->damageMax));
-        text.setPosition(385, 900);
+        text.setPosition(385 + tOffsetX, 900);
         window.draw(text);
 
         text.setString("Armor: " + std::to_string(unit->armor));
-        text.setPosition(385,930);
+        text.setPosition(385 + tOffsetX,930);
         window.draw(text);
 
         text.setString((unit->groundUnit) ? "Ground: Yes" : "Ground: No");
-        text.setPosition(550,870);
+        text.setPosition(550 + tOffsetX,870);
         window.draw(text);
 
         text.setString((unit->waterUnit) ? "Water: Yes" : "Water: No");
-        text.setPosition(550,900);
+        text.setPosition(550 + tOffsetX,900);
         window.draw(text);
 
         text.setString("Speed: " + std::to_string(unit->speed));
-        text.setPosition(550,930);
+        text.setPosition(550 + tOffsetX,930);
         window.draw(text);
+
+	
 
     }
 
@@ -513,20 +543,31 @@ void GUI::drawScoreBoard() {
     sf::Text text;
     text.setFont(font);
 
-
-
     int offsetY = 0;
     text.setCharacterSize(18);
     for (Player & p : game.players) {
-        text.setString(p.name_ + ": " + std::to_string(p.getScore()));
+        text.setString(p.name_ + ": " + std::to_string(p.getScore()) + " | APM: " + std::to_string(p.apm) + " | AQueue: " + std::to_string(p.getQueueSize()));
         text.setFillColor(p.playerColor);
-        text.setPosition(10, 40 + offsetY);
+        text.setPosition(10, 920 - offsetY);
         offsetY += 25;
 
         window.draw(text);
     }
+}
 
+void GUI::drawPlayerSelectedUnit() {
+	for (Player & p : game.players) {
+		// Draw selected unit
+		if (p.targetedUnit) {
+			sf::RectangleShape rectangle(sf::Vector2f((p.targetedUnit->width * 32) + 6, (p.targetedUnit->height * 32) + 6));
+			rectangle.setFillColor(sf::Color::Transparent);
+			rectangle.setOutlineColor(p.playerColor);
+			rectangle.setOutlineThickness(2);
+			rectangle.setPosition(sf::Vector2f(p.targetedUnit->worldPosition.x - 2, p.targetedUnit->worldPosition.y - 2));
 
+			window.draw(rectangle);
+		}
+	}
 }
 
 void GUI::showNoGuiMessage() {

@@ -67,7 +67,8 @@ namespace Constants{
 		NextUnit = 10,
 		Build0 = 11,
 		Build1 = 12,
-		Build2 = 13
+		Build2 = 13,
+		NoAction = 14
 	};
 
 }

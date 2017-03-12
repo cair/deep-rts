@@ -15,7 +15,7 @@ class Algorithm {
 
 protected:
     Player &player;
-    std::vector<int> actionSpace;
+    std::vector<Constants::Action> actionSpace;
 
 public:
     Algorithm(Player &player): player(player){
