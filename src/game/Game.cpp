@@ -87,6 +87,7 @@ void Game::loop() {
             // Update
 
             for(auto &unit : this->units) {
+				if (unit.removedFromGame) continue;		// Skip unit that is removed from game
 				unit.update();
             }
 

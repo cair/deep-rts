@@ -157,5 +157,7 @@ public:
 
     bool removedFromGame = false;
 
+	bool operator==(int id) const;
+	
 
 };

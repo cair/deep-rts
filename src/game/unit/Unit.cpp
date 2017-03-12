@@ -381,3 +381,8 @@ void Unit::setDirection(int newX, int newY){
 
 
 }
+
+bool Unit::operator==(int otherID) const
+{
+	return otherID == id;
+}

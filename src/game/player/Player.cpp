@@ -9,6 +9,7 @@
 #include "../util/ColorConverter.hpp"
 #include "../algorithms/RANDOM/AlgoRandom.h"
 #include "../unit/TownHall.h"
+#include <algorithm>
 
 int Player::gId = 0;
 
@@ -64,29 +65,8 @@ Unit& Player::spawn(Tile &spawnPoint) {
 }
 
 void Player::update() {
-	
-	/*if (defeated && units.size() == 0)
-		return;
 
-    for(auto &unit : units) {
-        unit->update();
-    }
-    std::vector<Unit &>::iterator it;
-    for(it = units.begin(); it != units.end();) {
-        (*it)->update();
-
-        if((*it)->removedFromGame) {
-            it = units.erase(it);
-        }else {
-            it++;
-        }
-    }
-
-    if(algorithm_) {
-        algorithm_->update();
-    }
-	*/
-
+ 
 	if (!actionQueue.empty()) {
 		int actionID = actionQueue.front();
 		actionQueue.pop_front();
@@ -214,6 +194,9 @@ void Player::removeUnit(Unit & unit) {
 
     unit.removedFromGame = true;
 
+	ptrdiff_t pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
+	unitIndexes.erase(std::remove(unitIndexes.begin(), unitIndexes.end(), pos), unitIndexes.end());
+	
 
     //units.erase(std::remove(units.begin(), units.end(), unit), units.end());
     std::cout << "Implement removeUnit" << std::endl;
