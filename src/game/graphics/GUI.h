@@ -36,6 +36,7 @@ private:
     sf::Text text;
     Tile* selectedTile = NULL;
 	std::shared_ptr<sf::Music> music; // Just for completeness
+	int pIterator = 0;
 public:
     GUI(Game &game);
 	void startAudio();
@@ -72,11 +73,13 @@ public:
 
     void createView();
 
-    Player & player;
+    Player *player;
 
     void drawStats();
 
     void drawStatistics();
+
+	void drawActionDistribution();
 
     bool renderGUI = true;
 

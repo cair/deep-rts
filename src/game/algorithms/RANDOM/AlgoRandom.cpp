@@ -6,7 +6,7 @@
 #include "../../player/Player.h"
 #include "../../Game.h"
 
-AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
+AlgoRandom::AlgoRandom(Player &player) : Algorithm(player), rgen(rd()) {
 
 	player.name_ += " [RND]";
 
@@ -24,7 +24,10 @@ AlgoRandom::AlgoRandom(Player &player) : Algorithm(player) {
 void AlgoRandom::update() {
     // Tick happended
 
-	int randomIndex = rand() % actionSpace.size();
+	std::uniform_int_distribution<int> dist(0, actionSpace.size() - 1);
+	
+
+	int randomIndex = dist(rgen);
 	Constants::Action actionID = actionSpace[randomIndex];
 
 	player.queueAction(actionID);
@@ -64,16 +67,16 @@ void AlgoRandom::doAction(std::shared_ptr<BaseAction> action) {
 void AlgoRandom::defineActionSpace() {
 
     actionSpace = {
-		Constants::Action::NextUnit,
 		Constants::Action::PreviousUnit,
-		Constants::Action::RightUpRight,
-		Constants::Action::RightUpLeft,
-		Constants::Action::RightDownRight,
-		Constants::Action::RightDownLeft,
-		Constants::Action::RightUp,
-		Constants::Action::RightDown,
+		Constants::Action::NextUnit,
 		Constants::Action::RightLeft,
 		Constants::Action::RightRight,
+		Constants::Action::RightUp,
+		Constants::Action::RightDown,
+		Constants::Action::RightUpLeft,
+		Constants::Action::RightUpRight,
+		Constants::Action::RightDownLeft,
+		Constants::Action::RightDownRight,
 		Constants::Action::Build0,
 		Constants::Action::Build1,
 		Constants::Action::Build2,

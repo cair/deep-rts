@@ -1,3 +1,5 @@
+
+
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #endif
@@ -36,9 +38,10 @@ int main() {
     g->start();
 
 	PyAPI::init(); // Init the API
-	while (!PyAPI::loaded) {
 
-	}
+	volatile int x = 0;
+	while (!PyAPI::loaded) { x++; x += PyAPI::loaded; x--; }
+
 
 	//std::shared_ptr<zmqAI> ai = zmqAI::createInstance(0, 0);
     //player0.setAlgorithm(algorithm0);

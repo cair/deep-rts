@@ -13,7 +13,8 @@
 
 int Player::gId = 0;
 
-Player::Player(Game &game) : game_(game) {
+Player::Player(Game &game) : game_(game)
+{
 	id_ = Player::gId++;
 	name_ = "Player: " + std::to_string(id_);
 	sf::Color colors[4] = { // TODO use Color generator 
@@ -23,6 +24,7 @@ Player::Player(Game &game) : game_(game) {
 		sf::Color::Cyan,
 	};
 	playerColor = colors[id_];
+	
 
 
 
@@ -353,6 +355,7 @@ Unit Player::createUnit(int type_id) {
 
 void Player::queueAction(Constants::Action actionID) {
 	apm_counter++;
+	actionStatistics[actionID] += 1; // Increment statistics
 	actionQueue.push_back(actionID);
 }
 

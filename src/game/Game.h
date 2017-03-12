@@ -40,7 +40,7 @@ class Game {
     long ticks = 0;
 	static std::unordered_map<int, Game *> games;
 public:
-	
+	bool loaded = false;
 	static Game * getGame(uint8_t id);
 	uint8_t id;
 

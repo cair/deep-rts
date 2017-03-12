@@ -4,6 +4,7 @@
 
 #ifndef WARC2SIM_CONSTANTS_H
 #define WARC2SIM_CONSTANTS_H
+#include <string>
 
 namespace Constants{
 	enum Unit {
@@ -56,19 +57,36 @@ namespace Constants{
 	enum Action {
 
 		PreviousUnit = 1,
-		RightLeft = 2,
-		RightRight = 3,
-		RightUp = 4,
-		RightDown = 5,
-		RightUpLeft = 6,
-		RightUpRight = 7,
-		RightDownLeft = 8,
-		RightDownRight = 9,
-		NextUnit = 10,
+		NextUnit = 2,
+		RightLeft = 3,
+		RightRight = 4,
+		RightUp = 5,
+		RightDown = 6,
+		RightUpLeft = 7,
+		RightUpRight = 8,
+		RightDownLeft = 9,
+		RightDownRight = 10,
 		Build0 = 11,
 		Build1 = 12,
 		Build2 = 13,
 		NoAction = 14
+	};
+
+	const std::string actionNames[14] = {
+		"PrevUnit",
+		"NextUnit",
+		"RightLeft",
+		"RightRight",
+		"RightUp",
+		"RightDown",
+		"RightUpLeft",
+		"RightUpRight",
+		"RightDownLeft",
+		"RightDownRight",
+		"Build0",
+		"Build1",
+		"Build2",
+		"NoAction"
 	};
 
 }

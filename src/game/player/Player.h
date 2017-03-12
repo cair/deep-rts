@@ -13,6 +13,7 @@
 #include "../algorithms/base/Algorithm.h"
 #include <deque>
 
+
 class AlgoRandom;
 
 
@@ -23,7 +24,6 @@ private:
 
     std::string name = "Derp";
 	std::deque<Constants::Action> actionQueue;
-
 
 
 
@@ -78,6 +78,7 @@ public:
     Unit createUnit(int type_id);
 
 	void queueAction(Constants::Action actionID);
+	int actionStatistics[20] = { 0 };
 	size_t getQueueSize();
 
     Player(Game &game);

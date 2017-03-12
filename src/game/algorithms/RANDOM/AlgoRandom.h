@@ -7,6 +7,7 @@
 
 
 #include "../base/Algorithm.h"
+#include <random>
 
 class AlgoRandom: public Algorithm{
 public:
@@ -16,7 +17,8 @@ public:
     virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);
     virtual void doAction(std::shared_ptr<BaseAction> action);
     virtual void defineActionSpace();
-
+	std::random_device rd;
+	std::mt19937 rgen;
 
 };
 

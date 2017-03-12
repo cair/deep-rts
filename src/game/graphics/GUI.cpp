@@ -23,7 +23,7 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 GUI::GUI(Game &game) :
         game(game),
         window(sf::VideoMode(800, 800), "WarC2Sim++", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
-		player(game.players[0]){
+		player(&game.players[pIterator]){
 
     this->createView();
     this->createFrame();
@@ -211,22 +211,34 @@ void GUI::handleEvents(){
             }
 
 
+			else if (event.key.code == sf::Keyboard::J) {
+				// Previous player (Focus)
+				pIterator -= 1;
+				player = &game.players[pIterator % game.players.size()];
+			}
+
+			else if (event.key.code == sf::Keyboard::K) {
+				pIterator += 1;
+				player = &game.players[pIterator % game.players.size()];
+			}
+
+
 
 
                 // Build actions
             else if(event.key.code == sf::Keyboard::Num1) {
-                if(player.targetedUnit){
-                    player.targetedUnit->build(0);
+                if(player->targetedUnit){
+                    player->targetedUnit->build(0);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num2) {
-                if(player.targetedUnit){
-                    player.targetedUnit->build(1);
+                if(player->targetedUnit){
+                    player->targetedUnit->build(1);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num3) {
-                if(player.targetedUnit){
-                    player.targetedUnit->build(2);
+                if(player->targetedUnit){
+                    player->targetedUnit->build(2);
                 }
             }
         }
@@ -266,6 +278,7 @@ void GUI::render() {
 		this->drawSelected();  // Text
 		this->drawStatistics();
 		this->drawScoreBoard();
+		this->drawActionDistribution();
 		
 
 		// TODO heavy
@@ -326,23 +339,23 @@ void GUI::drawStats(){
     text.setCharacterSize(16);
     text.setFillColor(sf::Color::Yellow);
 
-    text.setString("Lumber: " + std::to_string(player.getLumber()));
+    text.setString("Lumber: " + std::to_string(player->getLumber()));
     text.setPosition(10,10);
     window.draw(text);
 
-    text.setString("Gold: " + std::to_string(player.getGold()));
+    text.setString("Gold: " + std::to_string(player->getGold()));
     text.setPosition(125,10);
     window.draw(text);
 
-    text.setString("Oil: " + std::to_string(player.getOil()));
+    text.setString("Oil: " + std::to_string(player->getOil()));
     text.setPosition(225,10);
     window.draw(text);
 
-    text.setString("Food: " + std::to_string(player.getFoodConsumption()) + "/" + std::to_string(player.getFood()));
+    text.setString("Food: " + std::to_string(player->getFoodConsumption()) + "/" + std::to_string(player->getFood()));
     text.setPosition(300,10);
     window.draw(text);
 
-    text.setString("Units: " + std::to_string(player.getUnitCount()));
+    text.setString("Units: " + std::to_string(player->getUnitCount()));
     text.setPosition(380,10);
     window.draw(text);
 
@@ -354,7 +367,7 @@ void GUI::drawStats(){
     text.setPosition(640,10);
     window.draw(text);
 
-    text.setString("Score: " + std::to_string(player.getScore()));
+    text.setString("Score: " + std::to_string(player->getScore()));
     text.setPosition(810,10);
     window.draw(text);
 
@@ -382,8 +395,27 @@ void GUI::drawStatistics(){
     text.setString("UPS: " + std::to_string(game.ups));
     text.setPosition(790 + offsetX,125);
     window.draw(text);
+
+	text.setString("Selected: " + player->name_);
+	text.setPosition(790 + offsetX, 150);
+	window.draw(text);
 }
 
+void GUI::drawActionDistribution() {
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(15);
+	text.setFillColor(sf::Color::Yellow);
+
+	for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
+		text.setString(Constants::actionNames[i] + ": " + std::to_string(player->actionStatistics[i]));
+		text.setPosition(10, 470 + (20 * i));
+		window.draw(text);
+	}
+
+
+
+}
 
 void GUI::drawSelected(){
     sf::Text text;
@@ -415,25 +447,26 @@ void GUI::drawSelected(){
 
 
 
-    if (player.targetedUnit) {
-		int tOffsetX = 100;
+    if (player->targetedUnit) {
+		int tOffsetX = 140;
         text.setCharacterSize(32);
-        Unit *unit = player.targetedUnit;
+        Unit *unit = player->targetedUnit;
+		Tile *tile = (unit->tile) ? unit->tile : game.getMap().getTile(0, 0);
         text.setString(unit->name + " (" +
                        std::to_string(unit->id ) +
                        ")" + " - " +
                        unit->state->name + " - (" +
-                       std::to_string(unit->tile->x) + "," +
-                       std::to_string(unit->tile->y) + ") - (" +
+                       std::to_string(tile->x) + "," +
+                       std::to_string(tile->y) + ") - (" +
                        std::to_string(unit->player_->id_) + ")"
         );
-        text.setPosition(320 + tOffsetX,830);
+        text.setPosition(280 + tOffsetX,830);
         window.draw(text);
 
         text.setCharacterSize(20);
 
         text.setString("Lumber: " + std::to_string(unit->lumberCarry));
-        text.setPosition(270 + tOffsetX,870);
+        text.setPosition(270 + tOffsetX, 870);
         window.draw(text);
 
         text.setString("Gold: " + std::to_string(unit->goldCarry));
@@ -526,15 +559,15 @@ void GUI::leftClick(Tile &tile) {
     this->selectedTile = &tile;
 
     if(tile.getOccupant()) {
-        player.targetedUnit = tile.getOccupant();
+        player->targetedUnit = tile.getOccupant();
     }else {
-        player.targetedUnit = NULL;
+        player->targetedUnit = NULL;
     }
 }
 
 void GUI::rightClick(Tile &tile) {
-    if(player.targetedUnit) {
-        player.targetedUnit->rightClick(tile);
+    if(player->targetedUnit) {
+        player->targetedUnit->rightClick(tile);
         this->selectedTile = &tile;
     }
 }

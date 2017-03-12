@@ -29,7 +29,7 @@ public:
 	Unit() {}
 
     // Graphics
-    double animationInterval = .2 * 10;
+    double animationInterval = .5 * 10;
     int animationTimer = 0;
     int animationIterator = 0;
 
