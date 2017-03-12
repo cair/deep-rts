@@ -13,7 +13,7 @@ from Algorithms.DQN.DQN import DQN
 print("Loaded DQN")
 PyAPIRegistry.loaded() # Tell C++ that we are done with dependencies
 
-pyai = PyAI(0, 0)  # Create new AI hook with gameID = 0 playerID= 0
+pyai = PyAI(0, 1)  # Create new AI hook with gameID = 0 playerID= 0
 observation_space = pyai.getState()
 n_actions = 13
 dqn = DQN(state_size=observation_space.shape,

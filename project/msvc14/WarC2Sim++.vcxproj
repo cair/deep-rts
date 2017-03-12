@@ -55,10 +55,8 @@
     <ClInclude Include="..\..\src\game\state\StateManager.h" />
     <ClInclude Include="..\..\src\game\state\Walking.h" />
     <ClInclude Include="..\..\src\game\third_party\zmq.hpp" />
-    <ClInclude Include="..\..\src\game\unit\InventoryManager.h" />
-    <ClInclude Include="..\..\src\game\unit\Peasant.h" />
-    <ClInclude Include="..\..\src\game\unit\TownHall.h" />
     <ClInclude Include="..\..\src\game\unit\Unit.h" />
+    <ClInclude Include="..\..\src\game\unit\UnitManager.h" />
     <ClInclude Include="..\..\src\game\util\ColorConverter.hpp" />
     <ClInclude Include="..\..\src\game\util\Pathfinder.h" />
     <ClInclude Include="..\..\src\game\util\PriorityQueue.hpp" />
@@ -89,10 +87,8 @@
     <ClCompile Include="..\..\src\game\state\Spawning.cpp" />
     <ClCompile Include="..\..\src\game\state\StateManager.cpp" />
     <ClCompile Include="..\..\src\game\state\Walking.cpp" />
-    <ClCompile Include="..\..\src\game\unit\InventoryManager.cpp" />
-    <ClCompile Include="..\..\src\game\unit\Peasant.cpp" />
-    <ClCompile Include="..\..\src\game\unit\TownHall.cpp" />
     <ClCompile Include="..\..\src\game\unit\Unit.cpp" />
+    <ClCompile Include="..\..\src\game\unit\UnitManager.cpp" />
     <ClCompile Include="..\..\src\game\util\Pathfinder.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>

@@ -14,6 +14,9 @@ void Spawning::update(Unit& unit)const{
         // Unit can spawn
         unit.setPosition(*unit.spawnTile);
         unit.transitionState();
+		if (unit.structure) {
+			unit.direction = Constants::Direction::Up;
+		}
     }
 
 }

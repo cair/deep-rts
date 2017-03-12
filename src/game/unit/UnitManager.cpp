@@ -4,8 +4,18 @@
 
 #include "UnitManager.h"
 
-void UnitManager::constructTownHall(Unit &u) {
+Unit UnitManager::constructUnit(Constants::Unit unitType, Player * player)
+{
+	switch (unitType) {
+	case Constants::Unit::TownHall:
+		return constructTownHall(player);
+	case Constants::Unit::Peasant:
+		return constructPeasant(player);
+	}
+}
 
+Unit UnitManager::constructTownHall(Player *player) {
+	Unit u = Unit(player);
 	u.typeId = Constants::Unit::TownHall;
 	u.health = 1200;
 	u.health_max = 1200;
@@ -27,6 +37,7 @@ void UnitManager::constructTownHall(Unit &u) {
 	u.carryCapacity = 0;
 	u.speed = 0;
 	u.sight = 4;
+	u.range = 0;
 
 	u.canHarvest = false;
 	u.canAttack = false;
@@ -39,7 +50,7 @@ void UnitManager::constructTownHall(Unit &u) {
 	u.goldCost = 500;
 	u.oilCost = 0;
 
-	u.spawnDuration = 1; //255 * Config::getInstance().getTickModifier();
+	u.spawnDuration = 60 * Config::getInstance().getTickModifier(); //255 * Config::getInstance().getTickModifier();
 
 	u.foodProduction = 1;
 	u.foodConsumption = 0;
@@ -51,11 +62,13 @@ void UnitManager::constructTownHall(Unit &u) {
 
 	u.buildInventory = { Constants::Unit::Peasant };
 
-
+	return u;
 }
 
-void UnitManager::constructPeasant(Unit & u)
+Unit UnitManager::constructPeasant(Player *player)
 {
+	Unit u = Unit(player);
+
 	u.typeId = Constants::Unit::Peasant;
 	u.health = 30;
 	u.health_max = 30;
@@ -77,6 +90,7 @@ void UnitManager::constructPeasant(Unit & u)
 	u.carryCapacity = 10;
 	u.speed = 10;
 	u.sight = 4;
+	u.range = 1;
 
 	u.canHarvest = true;
 	u.canAttack = true;
@@ -88,7 +102,7 @@ void UnitManager::constructPeasant(Unit & u)
 	u.goldCost = 400;
 	u.oilCost = 0;
 
-	u.spawnDuration = 45 * Config::getInstance().getTickModifier();
+	u.spawnDuration = 45 * Config::getInstance().getTickModifier(); //45 * Config::getInstance().getTickModifier();
 
 	u.foodProduction = 0;
 	u.foodConsumption = 1;
@@ -100,4 +114,5 @@ void UnitManager::constructPeasant(Unit & u)
 
 	u.buildInventory = { Constants::Unit::TownHall };
 
+	return u;
 }

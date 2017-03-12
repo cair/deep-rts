@@ -1,6 +1,6 @@
 {
   "fps": 60,
-  "ups": 9999999999999,
+  "ups": 60,
   "ticks_per_sec": 10,
   "caption": {
     "window": true,

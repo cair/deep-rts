@@ -1,5 +1,5 @@
 import os
-os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0"
+os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0, lib.cnmem=0.8"
 os.environ["KERAS_BACKEND"] = "theano"
 import random
 import numpy

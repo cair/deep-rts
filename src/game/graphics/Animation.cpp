@@ -208,7 +208,11 @@ void Animation::setupTownHall(){
     int P = Constants::Unit::TownHall;
 
     Animation::add(P, Constants::State::Idle, Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
-    Animation::add(P, Constants::State::Idle, Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
+    Animation::add(P, Constants::State::Idle, Constants::Direction::Up,270, 15,  110, 100, 96, 96, &*buildings, false);
+
+	Animation::add(P, Constants::State::Building, Constants::Direction::Down, 270, 150, 110, 100, 96, 96, &*buildings, false);
+	Animation::add(P, Constants::State::Building, Constants::Direction::Up, 270, 15, 110, 100, 96, 96, &*buildings, false);
+
     Animation::add(P, Constants::State::Dead, Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
     Animation::add(P, Constants::State::Spawning, Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
     Animation::add(P, Constants::State::Despawned,Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);

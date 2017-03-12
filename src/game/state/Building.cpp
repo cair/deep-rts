@@ -22,7 +22,6 @@ void Building::update(Unit & unit)const{
         } else {
             // Unit has tile, needs to transition
             unit.transitionState();
-
         }
 
 

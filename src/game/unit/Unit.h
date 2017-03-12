@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <map>
 #include <SFML/Graphics/Texture.hpp>
+#include "../Constants.h"
 
 #include "../environment/Tile.h"
 #include "../state/stateManager.h"
@@ -53,10 +54,10 @@ public:
     int goldCarry = 0;
     int oilCarry = 0;
     int carryCapacity = 10;
-    std::vector<Unit> buildInventory;
+    std::vector<Constants::Unit> buildInventory;
     int speed;
     int sight;
-    int range;
+    int range = 4;
 
     bool canHarvest;
     bool canAttack;

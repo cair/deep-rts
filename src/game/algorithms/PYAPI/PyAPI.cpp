@@ -159,7 +159,7 @@ PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 		return PyLong_FromLongLong(-1);
 	}
 
-	if (api_ptr->player.targetedUnit == NULL) {
+	if (api_ptr->player.targetedUnit == NULL and api_ptr->player.unitIndexes.size() > 0) {
 		api_ptr->player.nextUnit();
 	}
 

@@ -10,7 +10,6 @@
 #include <memory>
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
-#include "../unit/InventoryManager.h"
 #include "../algorithms/base/Algorithm.h"
 #include <deque>
 
@@ -38,7 +37,6 @@ public:
     int faction; // 0 = Human, 1 = Orc
 
     Game &game_;
-    InventoryManager inventoryManager;
 
     sf::Color playerColor;
     Unit *targetedUnit = NULL;

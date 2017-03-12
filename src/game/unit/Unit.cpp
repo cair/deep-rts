@@ -8,6 +8,7 @@
 #include "../util/Pathfinder.h"
 #include "../graphics/GUI.h"
 #include "../action/RightClickAction.h"
+#include "./UnitManager.h"
 #include <random>
 #include "../action/BaseAction.h"
 
@@ -38,6 +39,7 @@ void Unit::moveRelative(int x, int y) {
 }
 
 void Unit::rightClickRelative(int x, int y) {
+	if (!tile) return; // Not standing on any tiles
 
     int newX = tile->x + x;
     int newY = tile->y + y;
@@ -97,7 +99,7 @@ bool Unit::build(int idx) {
     if((idx < 0 or idx >= buildInventory.size()))
         return false;
 
-	Unit& newUnit = buildInventory[idx];
+	Unit newUnit = UnitManager::constructUnit(buildInventory[idx], player_);
 
     // PlacementTile is based on dimension of the new unit. For example; town hall has
     // 3x Width and 3x Height. We then want to place  the building by the middle tile;
@@ -121,8 +123,8 @@ bool Unit::build(int idx) {
 
             buildEntity = &unit;
             transitionState(stateManager->buildingState);
-            buildEntity->spawn(*spawnTile, 0);
-            buildEntity->setPosition(*spawnTile);
+            buildEntity->spawn(*placementTile, 0);
+            buildEntity->setPosition(*placementTile);
 
 
         }else if(structure and !unit.structure){
