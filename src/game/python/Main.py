@@ -1,7 +1,7 @@
 import sys
 from logconf import logger
 logger.info("Running PyAI using Python %s" % sys.version)
-
+import PyAPIRegistry
 from PyAI import PyAI
 from Algorithms.DQN.DQN import DQN
 
