@@ -1,16 +1,10 @@
-
 import sys
+from logconf import logger
+logger.info("Running PyAI using Python %s" % sys.version)
 
-import time
-
-print("Running PyAI using Python %s" % (sys.version))
-
-import PyAPIRegistry
 from PyAI import PyAI
-
-print("Loaded PyAI")
 from Algorithms.DQN.DQN import DQN
-print("Loaded DQN")
+
 
 pyai = PyAI(0, 1)  # Create new AI hook with gameID = 0 playerID= 0
 observation_space = pyai.getState()
