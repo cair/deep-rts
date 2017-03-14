@@ -203,10 +203,10 @@ void Unit::attack(Tile &tile) {
     Unit* target = tile.getOccupant();
 
 	// Target may have died from another same tick
-	/* (!target) {
+	if (!target) {
 		transitionState();
 		return;
-	}*/
+	}
 
     combatTarget = target;
 

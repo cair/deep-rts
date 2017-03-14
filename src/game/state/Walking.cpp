@@ -59,7 +59,7 @@ void Walking::init(Unit & unit)const{
 		goal = closest;
 	}
 	else if (!unit.walkingGoal->isWalkable()) {
-		//goal = Pathfinder::find_first_walkable_tile(unit.walkingGoal);
+		goal = Pathfinder::find_first_walkable_tile(unit.walkingGoal);
 	} else {
 		goal = unit.walkingGoal;
 	}
