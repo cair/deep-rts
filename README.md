@@ -1,4 +1,4 @@
-# WarC2Sim++
+# DeepRTS
 A Warcraft 2 Simulator for (Deep) Reinforment Learning in C++!
 
 ## Dependencies and use cases
