@@ -70,9 +70,6 @@ public:
     int goldCost;
     int oilCost;
 
-    int spawnDuration;
-    Tile *spawnTile = NULL;
-
     int foodProduction;
     int foodConsumption;
 
@@ -86,6 +83,12 @@ public:
 
 
     // State attributes
+
+	// Spawning
+	int spawnDuration;
+	Tile *spawnTile = NULL;
+	Unit* builtBy = NULL;
+
 
     // Harvesting
     double harvestInterval = .5 * 10;

@@ -20,8 +20,10 @@ void Building::update(Unit & unit)const{
             unit.setPosition(*firstWalkable);
             unit.transitionState();
         } else {
-            // Unit has tile, needs to transition
+			
+			// Unit has tile, needs to transition
             unit.transitionState();
+
         }
 
 
@@ -30,7 +32,7 @@ void Building::update(Unit & unit)const{
 }
 
 void Building::end(Unit & unit)const{
-
+	unit.buildEntity = NULL;
 }
 
 void Building::init(Unit & unit)const{

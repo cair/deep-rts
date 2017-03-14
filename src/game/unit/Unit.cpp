@@ -116,6 +116,7 @@ bool Unit::build(int idx) {
 
         Unit &unit = player_->addUnit(newUnit.typeId);
 		unit.player_ = player_;
+		unit.builtBy = this;
 
         if(!structure and unit.structure) {
            // *this is a unit (peasant), which builds a building
@@ -242,6 +243,7 @@ void Unit::transitionState() {
 		std::shared_ptr<BaseState> nextState = stateManager->idleState;
         //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|" << std::endl;
 		//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|" << std::endl;
+		state->end(*this);
         state = nextState;
         current_state = state->id;
         state->init(*this);
@@ -251,6 +253,7 @@ void Unit::transitionState() {
 	std::shared_ptr<BaseState> nextState = stateList.back();
     //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|y" << std::endl;
 	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|y"  << std::endl;
+	state->end(*this);
     state = nextState;
     stateList.pop_back();
     current_state = state->id;
@@ -262,6 +265,7 @@ void Unit::transitionState() {
 void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
     //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|x" << std::endl;
 	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
+	state->end(*this);
     state = nextState;
     current_state = state->id;
     state->init(*this);
