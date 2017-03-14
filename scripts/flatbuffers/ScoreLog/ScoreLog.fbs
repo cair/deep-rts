@@ -1,0 +1,10 @@
+include "ScorePlayer.fbs";
+namespace Score;
+
+table ScoreLog {
+	gameNum:uint;
+	items:[ScorePlayer];
+}
+
+root_type ScoreLog;
+

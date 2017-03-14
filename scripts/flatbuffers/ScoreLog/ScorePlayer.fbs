@@ -1,0 +1,10 @@
+include "ScoreItem.fbs";
+namespace Score;
+
+table ScorePlayer {
+	playerID:uint;
+	items:[ScoreItem];	
+}
+
+root_type ScorePlayer;
+

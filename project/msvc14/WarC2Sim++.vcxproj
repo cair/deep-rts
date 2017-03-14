@@ -43,7 +43,6 @@
     <ClInclude Include="..\..\src\game\lib\zhelpers.hpp" />
     <ClInclude Include="..\..\src\game\loaders\MapLoader.h" />
     <ClInclude Include="..\..\src\game\player\Player.h" />
-    <ClInclude Include="..\..\src\game\proto\GameMessage.pb.h" />
     <ClInclude Include="..\..\src\game\state\BaseState.h" />
     <ClInclude Include="..\..\src\game\state\Building.h" />
     <ClInclude Include="..\..\src\game\state\Combat.h" />
@@ -60,6 +59,8 @@
     <ClInclude Include="..\..\src\game\util\ColorConverter.hpp" />
     <ClInclude Include="..\..\src\game\util\Pathfinder.h" />
     <ClInclude Include="..\..\src\game\util\PriorityQueue.hpp" />
+    <ClInclude Include="..\..\src\game\util\ScoreLogSerializer.h" />
+    <ClInclude Include="..\..\src\game\util\SharedQueue.h" />
     <ClInclude Include="..\..\src\main.h" />
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +77,6 @@
     <ClCompile Include="..\..\src\game\graphics\GUI.cpp" />
     <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp" />
     <ClCompile Include="..\..\src\game\player\Player.cpp" />
-    <ClCompile Include="..\..\src\game\proto\GameMessage.pb.cc" />
     <ClCompile Include="..\..\src\game\state\BaseState.cpp" />
     <ClCompile Include="..\..\src\game\state\Building.cpp" />
     <ClCompile Include="..\..\src\game\state\Combat.cpp" />
@@ -184,6 +184,8 @@
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\libs\python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -228,6 +230,7 @@ xcopy "$(ProjectDir)..\..\src\game\python\*" "$(SolutionDir)$(Platform)\$(Config
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(HOMEDRIVE)$(HOMEPATH)\Anaconda3\libs\python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\src\game\data" "$(ProjectDir)data\" /Y/D/E

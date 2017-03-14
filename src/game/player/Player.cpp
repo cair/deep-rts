@@ -155,10 +155,9 @@ void Player::reset()
 	statUnitBuilt = 0;
 	statUnitMilitary = 0;
 	unitIndexes.clear();
+	actionQueue.clear();
 	targetedUnit = NULL;
 	actionStatistics[20] = { 0 };
-	
-	bool defeated;
 }
 
 
@@ -210,9 +209,9 @@ int Player::getScore() {
 
 
 	double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
-	double_t builtScore = statUnitBuilt * 10;
+	double_t builtScore = statUnitBuilt;
 	double_t damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
-	double_t unitScore = statUnitBuilt * 5;
+	double_t unitScore = unitIndexes.size();
 
 
 	double_t militaryScore = 0;
@@ -249,8 +248,6 @@ bool Player::checkDefeat() {
 	if (unitIndexes.size() > 0) return false;
 
 	defeated = true;
-	name_ += " [DEFEATED]";
-
 	return defeated;
 }
 
@@ -309,10 +306,12 @@ void Player::setAlgorithm(std::shared_ptr<Algorithm> theAlg) {
 }
 
 int Player::_getNextPrevUnitIdx() {
+	
 	if (unitIndexes.size() == 0) {
 		return -1;
 	}
-	if (!targetedUnit) {
+
+	if (targetedUnit == NULL) {
 		return 0;
 	}
 
@@ -331,7 +330,7 @@ void Player::nextUnit() {
 	//assert(unitIndexes.size() == 0 && "AI is attempting to play on a terminal state!");
 
 	// Get which index in the unitIndexes to lookup
-	int idx = _getNextPrevUnitIdx() + 1;
+	int idx = _getNextPrevUnitIdx();
 
 	// Just return if no next unit is returned
 	if (idx == -1)
@@ -353,7 +352,7 @@ void Player::previousUnit() {
 	//assert(unitIndexes.size() == 0 && "AI is attempting to play on a terminal state!");
 
 	// Get which index in the unitIndexes to lookup
-	int idx = _getNextPrevUnitIdx() + 1;
+	int idx = _getNextPrevUnitIdx();
 
 	// Just return if no next unit is returned
 	if (idx == -1)

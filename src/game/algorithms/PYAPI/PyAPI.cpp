@@ -154,7 +154,7 @@ PyObject* PyAPI::registry_reset(PyObject* self, PyObject* args)
 		return PyLong_FromLongLong(-1);
 	}
 
-	api_ptr->game->reset();
+	api_ptr->game->triggerResetNow();
 
 	return PyLong_FromLongLong(1);
 
@@ -180,22 +180,20 @@ PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 		api_ptr->player.nextUnit();
 	}
 
-	uint16_t prevScore = api_ptr->player.getScore();
+	
 	//auto action = api_ptr->getAction(actionID, api_ptr->player.targetedUnit);
 	//api_ptr->doAction(action);
 	// TODO add TEMPORAL WAIT TIME HERE
 
 	api_ptr->player.queueAction(static_cast<Constants::Action>(actionID));
-
-	uint16_t scoreDifference = api_ptr->player.getScore() - prevScore;
 	long isTerminal = api_ptr->player.checkDefeat();
 
-	PyObject *reward = PyLong_FromLongLong(scoreDifference);
+	PyObject *score = PyLong_FromLongLong(api_ptr->player.getScore());
 	PyObject *terminal = PyBool_FromLong(isTerminal);
-	PyObject *info = PyLong_FromLongLong(1337);
+	PyObject *info = PyLong_FromLongLong(api_ptr->game->getFrames());
 
 	args = PyTuple_New(3);
-	PyTuple_SetItem(args, 0, reward);
+	PyTuple_SetItem(args, 0, score);
 	PyTuple_SetItem(args, 1, terminal);
 	PyTuple_SetItem(args, 2, info);
 	return args;
@@ -245,7 +243,7 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 			api_ptr->flatStateBuffer[c++] = (int)occupant->damagePiercing;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->damageRange;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->health;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->health_max;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->military;//health_max;// Layer  // TODO
 			api_ptr->flatStateBuffer[c++] = (int)occupant->military;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->recallable;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->sight;// Layer

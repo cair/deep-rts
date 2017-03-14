@@ -105,9 +105,6 @@
     <ClInclude Include="..\..\src\game\lib\zhelpers.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\proto\GameMessage.pb.h">
-      <Filter>Source Files\game\proto</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -183,6 +180,12 @@
     <ClInclude Include="..\..\src\game\unit\UnitManager.h">
       <Filter>Source Files\game\unit</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\game\util\ScoreLogSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\util\SharedQueue.h">
+      <Filter>Source Files\game\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\action\RightClickAction.cpp">
@@ -217,9 +220,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game\player\Player.cpp">
       <Filter>Source Files\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\proto\GameMessage.pb.cc">
-      <Filter>Source Files\game\proto</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game\state\BaseState.cpp">
       <Filter>Source Files\game\state</Filter>

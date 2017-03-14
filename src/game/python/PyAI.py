@@ -38,10 +38,12 @@ class PyAI:
             "structure",
             "player_id",
             "faction"]
+        self.last_score = 0
     
 
     def reset(self):
         PyAPIRegistry.reset(self.__ai__)
+        self.last_score = 0
 
     def getState(self):
     
@@ -52,20 +54,25 @@ class PyAI:
         COLS = pair[3]
         DEPTH = pair[4]
 
+
         memarray = (ctypes.c_int*buf_len).from_address(buf_ptr)
 
         np_arr = np.array(memarray)
         np_arr = np_arr.reshape((ROWS, COLS, DEPTH)).transpose()
+
+
         #np_arr = np.expand_dims(np_arr, axis=0)
         return np_arr
 
     def doAction(self, action):
         pair = PyAPIRegistry.do_action(self.__ai__, action)
         observation = self.getState()
-        reward = pair[0] # Reward
+        score = pair[0] # Reward
         done = pair[1] # Terminal
-        info = pair[2] # Dunno what this is?
-        return observation, reward, done, info
+        info = pair[2] # Ticks
+        reward = score - self.last_score
+        self.last_score = score
+        return observation, reward , done, info
         
 
     def getTime(self):

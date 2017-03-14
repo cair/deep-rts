@@ -23,6 +23,9 @@ num_episodes = 200000000000
 
 PyAPIRegistry.loaded() # Tell C++ that we are done with dependencies
 
+
+
+
 for e in range(num_episodes):
     observation = pyai.getState()
     done = False
@@ -31,15 +34,18 @@ for e in range(num_episodes):
     total_cost = 0.0
     total_reward = 0.0
     frame = 0
-    while not done and frame < 1000:     
-        frame += 1
-        #env.render()
+    while not done and frame < 12000:  # 20 * 60 * 10 which is 12000   (20 minutes to seconds times 10 ticks)   # 1000  
+        # Get action based on state observation
         action, values = dqn.act(observation)
-        #action = env.action_space.sample()
+        
+        # Do action
         observation, reward, done, info = pyai.doAction(action)
+        frame = info
+        
+        # Calculate cost
         total_cost += dqn.observe(reward)
         total_reward += reward
 
-    print("total reward", total_reward)
-    print("mean cost", total_cost/frame)
+    print("Total reward", total_reward)
+    print("Mean cost", total_cost/frame)
 print("Done training!")

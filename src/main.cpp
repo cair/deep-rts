@@ -47,7 +47,8 @@ int main() {
     //player0.setAlgorithm(algorithm0);
 
     //std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
-    //player1.setAlgorithm(algorithm1);
+	std::shared_ptr<AlgoRandom> algorithm1 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player0));
+	player1.setAlgorithm(algorithm1);
 
     std::shared_ptr<AlgoRandom> algorithm2 = std::shared_ptr<AlgoRandom>(new AlgoRandom(player2));
     player2.setAlgorithm(algorithm2);

@@ -13,7 +13,8 @@
 #include "player/Player.h"
 #include "environment/Tilemap.h"
 #include "action/BaseAction.h"
-
+#include "util\ScoreLogSerializer.h"
+#include <SFML/System.hpp>
 
 
 class GUI;
@@ -25,19 +26,21 @@ class Game {
 	uint16_t gameNum = 1;
 
     // Gameclock variables
-    clock_t _update_next;
-    clock_t _render_next;
-    clock_t _stats_next;
+	sf::Clock clock;
+    long _update_next;
+    long _render_next;
+    long _stats_next;
 
-    clock_t _update_interval = 0;
-    clock_t _render_interval = 0;
-    clock_t _caption_interval = 1000;
+    int32_t _update_interval = 0;
+	int32_t _render_interval = 0;
+	int32_t _caption_interval = 1000;
 
 	uint32_t _update_delta = 0;
 	uint32_t _render_delta = 0;
 
-	json jsonStatContainer;
+	ScoreLogSerializer scoreLog; // Only in use when scoreLog flag s set in config
     bool running;
+	bool triggerReset;
     long ticks = 0;
 	static std::unordered_map<int, Game *> games;
 public:
@@ -51,6 +54,8 @@ public:
 
 	uint64_t getSeconds();
 	uint64_t getFrames();
+	uint32_t getGameCount();
+
 
     StateManager stateManager;
     std::vector<Player> players;
@@ -77,6 +82,7 @@ public:
 
     void setFPS(uint32_t fps_);
     void setUPS(uint32_t ups_);
+	void triggerResetNow();
 
 	uint32_t currentFPS = 0;
 	uint32_t currentUPS = 0;

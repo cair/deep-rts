@@ -19,33 +19,22 @@ AlgoRandom::AlgoRandom(Player &player) : Algorithm(player), rgen(rd()) {
         // Select first available unit
         player.targetedUnit = &player.game_.getUnit(player.unitIndexes[0]);
     }
+
+	actionInterval = 1000 / 50;
+	nextAction = clock();
 }
 
 void AlgoRandom::update() {
     // Tick happended
-
-	std::uniform_int_distribution<int> dist(0, actionSpace.size() - 1);
+	now = clock();
+	if (now > nextAction) {
+		std::uniform_int_distribution<int> dist(0, actionSpace.size() - 1);
+		int randomIndex = dist(rgen);
+		Constants::Action actionID = actionSpace[randomIndex];
+		player.queueAction(actionID);
+		nextAction = clock() + actionInterval;
+	}
 	
-
-	int randomIndex = dist(rgen);
-	Constants::Action actionID = actionSpace[randomIndex];
-
-	player.queueAction(actionID);
-	/*int nUnits = player.unitIndexes.size();
-	for (int i = 0; i < nUnits; i++) {
-		Unit & u = player.game_.getUnit(player.unitIndexes[i]);
-		if (u.state->id == Constants::State::Idle) {
-			
-			int actionID = actionSpace[randomIndex];
-		
-			
-			//std::shared_ptr<BaseAction> action = findBestAction(u);
-			//doAction(action);
-		}
-
-    
-    }*/
-
 }
 
 void AlgoRandom::terminal() {

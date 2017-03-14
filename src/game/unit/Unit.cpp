@@ -201,14 +201,18 @@ void Unit::attack(Tile &tile) {
         return;
 
     Unit* target = tile.getOccupant();
-    assert(target);
+
+	// Target may have died from another same tick
+	if (!target) {
+		transitionState();
+		return;
+	}
+
     combatTarget = target;
 
     if(distance(tile) > 1){
         enqueueState(stateManager->combatState);
         move(tile);
-
-
     }
     else {
         transitionState(stateManager->combatState);
@@ -295,7 +299,7 @@ Unit* Unit::closestRecallBuilding() {
     Unit* closest = NULL;
     int dist = INT_MAX;
     for(auto &unit : player_->game_.units) {
-        if(unit.recallable && unit.player_ == player_) {
+        if(unit.recallable && unit.player_ == player_ && unit.tile) {
             int d = distance(*unit.tile);
             if(d < dist) {
                 dist = d;

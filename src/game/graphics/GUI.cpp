@@ -22,7 +22,7 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 
 GUI::GUI(Game &game) :
         game(game),
-        window(sf::VideoMode(800, 800), "WarC2Sim++", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
+        window(sf::VideoMode(800, 800), "DeepRTS v1.1", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
 		player(&game.players[pIterator]){
 
     this->createView();
@@ -399,6 +399,10 @@ void GUI::drawStatistics(){
 	text.setString("Selected: " + player->name_);
 	text.setPosition(790 + offsetX, 150);
 	window.draw(text);
+
+	text.setString("Game: " + std::to_string(game.getGameCount()));
+	text.setPosition(790 + offsetX, 175);
+	window.draw(text);
 }
 
 void GUI::drawActionDistribution() {
@@ -591,7 +595,7 @@ void GUI::drawScoreBoard() {
 void GUI::drawPlayerSelectedUnit() {
 	for (Player & p : game.players) {
 		// Draw selected unit
-		if (p.targetedUnit) {
+		if (p.targetedUnit != NULL) {
 			sf::RectangleShape rectangle(sf::Vector2f((p.targetedUnit->width * 32) + 6, (p.targetedUnit->height * 32) + 6));
 			rectangle.setFillColor(sf::Color::Transparent);
 			rectangle.setOutlineColor(p.playerColor);

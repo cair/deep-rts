@@ -15,15 +15,19 @@ std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
         map(Tilemap("contested-4v4.json")),
 		captionConsole(Config::getInstance().getCaptionConsole()),
-		captionWindow(Config::getInstance().getCaptionWindow())
+		captionWindow(Config::getInstance().getCaptionWindow()),
+		scoreLog(_nplayers)	// Only used when scoreLog flag is set in config
 {
 	players.reserve(16);
 	units.reserve(1000);
+
 
     // Definitions
     n_players = _nplayers;
     setFPS(Config::getInstance().getFPS());
     setUPS(Config::getInstance().getUPS());
+
+
 
 	id = static_cast<uint8_t>(games.size());
 	games[id] = this;
@@ -51,14 +55,19 @@ void Game::initGUI(){
 
 void Game::setFPS(uint32_t fps_){
     fps = fps_;
-    _render_interval = static_cast<clock_t>(1000.0 / fps);
+    _render_interval = 1000000 /  fps;
 
 
 }
 
 void Game::setUPS(uint32_t ups_){
     ups = ups_;
-    _update_interval =  static_cast<clock_t>(1000.0 / ups);
+    _update_interval = 1000000 / ups;
+}
+
+void Game::triggerResetNow()
+{
+	triggerReset = true;
 }
 
 void Game::start(){
@@ -71,23 +80,29 @@ void Game::stop(){
 
 void Game::reset()
 {
+	// Remove all units
 	units.clear();
+
+	// Reset all tiles
 	for (auto &tile : map.tiles) {
 		tile.reset();
 	}
+
+	// Reset all players
 	for (auto &player : players) {
 		player.reset();
 		spawnPlayer(player);
 	}
+
+	// Reset tick counter
 	ticks = 0;
 
-
+	// Sav
 	if (Config::getInstance().getJsonLogging()) {
-		std::string input = jsonStatContainer.dump();
-		std::ofstream out("games/deeprts_game_" + std::to_string(gameNum) + ".json");
-		out << input;
-		out.close();
-		jsonStatContainer.clear();
+		
+		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + ".flat");
+		scoreLog.reset();
+
 	}
 
 	gameNum += 1;
@@ -99,25 +114,41 @@ void Game::reset()
 
 void Game::loop() {
 
-    clock_t now = clock();
-    this->_render_next= now + this->_render_interval;
-    this->_update_next = now + this->_update_interval;
-    this->_stats_next = now + 0;
+	
+
+    sf::Time now = clock.getElapsedTime();
+	auto nowMicroSec = now.asMicroseconds();
+    _render_next = nowMicroSec + _render_interval;
+    _update_next = nowMicroSec + _update_interval;
+    _stats_next = nowMicroSec + 0;
 
 
     while(this->running) {
+		now = clock.getElapsedTime();		// Update clock
+		nowMicroSec = now.asMicroseconds();
+        if (nowMicroSec >= _update_next) {
+			// If reset flag is set
+			if (triggerReset) {
+				reset();
+				triggerReset = false;
+
+				// Update Counters and statistics
+				_update_next += _update_interval;
+				_update_delta += 1;
+				ticks += 1;
+
+				continue;
+			}
 
 
-        now = clock();
 
-        if (now >= _update_next) {
-            // Update
-
+            // Iterate through all units
             for(auto &unit : units) {
 				if (unit.removedFromGame) continue;		// Skip unit that is removed from game
 				unit.update();
             }
 
+			// Iterate through all players
 			for (auto &p : players) {
 				p.update();
 				if(p.algorithm_)
@@ -126,30 +157,22 @@ void Game::loop() {
 
 			// Output all scores etc to file for each game
 			if (Config::getInstance().getJsonLogging()) {
-				// Record data
+				
+				int i = 0;
 				for (auto &p : players) {
-
-					json stat;
-					for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
-						stat.push_back(p.actionStatistics[i]);
-					}
-
-					json player;
-					player["action_stats"] = stat;
-					player["apm"] = p.apm;
-					player["score"] = p.getScore();
-					player["tick"] = ticks;
-					jsonStatContainer[p.id_].push_back(player);
+					scoreLog.addElement(i++, p); // Add element for player
 				}
+				scoreLog.nextTick(ticks);	// Moves to "next element"
 			}
 
+			// Update Counters and statistics
             _update_next += _update_interval;
             _update_delta += 1;
             ticks += 1;
 
         }
 
-        if (now >= _render_next) {
+        if (nowMicroSec >= _render_next) {
             // Render
 
             gui->update();
@@ -160,7 +183,7 @@ void Game::loop() {
             this->_render_delta += 1;
         }
 
-        if (now >= this->_stats_next) {
+        if (nowMicroSec >= this->_stats_next) {
 
 			if (captionWindow) {
 				gui->caption();
@@ -179,11 +202,11 @@ void Game::loop() {
 			}
            
 
-            this->currentFPS = this->_render_delta;
-            this->currentUPS = this->_update_delta;
-            this->_render_delta = 0;
-            this->_update_delta = 0;
-            this->_stats_next += 1000;
+            currentFPS = _render_delta;
+            currentUPS = _update_delta;
+            _render_delta = 0;
+            _update_delta = 0;
+            _stats_next += 1000000;
         }
 
     }
@@ -196,6 +219,11 @@ Tilemap &Game::getMap() {
 
 uint64_t Game::getFrames() {
     return this->ticks;
+}
+
+uint32_t Game::getGameCount()
+{
+	return gameNum;
 }
 
 Game * Game::getGame(uint8_t id)
@@ -235,11 +263,6 @@ void Game::addAction(std::shared_ptr<BaseAction> action) {
 Player &Game::addPlayer() { 
 	players.push_back(Player(*this));
 	Player &player = players.back();
-
-	// If json config logging is enabled
-	if (Config::getInstance().getJsonLogging()) {
-		jsonStatContainer[player.id_] = {};
-	}
 
 	spawnPlayer(player);
     return player;

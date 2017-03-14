@@ -1,0 +1,10 @@
+namespace Score;
+
+table ScoreItem {
+	apm:uint;
+	score:uint;
+	action_stats:[uint];	
+}
+
+root_type ScoreItem;
+

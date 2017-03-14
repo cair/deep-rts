@@ -20,6 +20,10 @@ public:
 	std::random_device rd;
 	std::mt19937 rgen;
 
+	clock_t nextAction;
+	clock_t now;
+	double actionInterval;
+
 };
 
 

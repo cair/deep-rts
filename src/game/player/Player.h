@@ -11,8 +11,8 @@
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
 #include "../algorithms/base/Algorithm.h"
+#include "../util/SharedQueue.h"
 #include <deque>
-
 
 class AlgoRandom;
 
@@ -23,7 +23,7 @@ private:
     static int gId;
 
     std::string name = "Derp";
-	std::deque<Constants::Action> actionQueue;
+	SharedQueue<Constants::Action> actionQueue;
 
 
 
@@ -83,6 +83,9 @@ public:
 	size_t getQueueSize();
 
     Player(Game &game);
+
+
+
     Unit &spawn(Tile &spawnPoint);
 
 
