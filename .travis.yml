@@ -39,6 +39,7 @@ install:
   - sh create_buffer.sh
   - cd ../../../
   - ls -la
+  - sudo pip install numpy
 
 
     
