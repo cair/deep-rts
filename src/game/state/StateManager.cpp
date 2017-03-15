@@ -2,7 +2,7 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "stateManager.h"
+#include "StateManager.h"
 
 StateManager::StateManager()
 {

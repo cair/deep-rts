@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Harvesting.h"
-#include "../unit/unit.h"
+#include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
 #include "../player/Player.h"
 
