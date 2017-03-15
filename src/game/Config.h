@@ -57,8 +57,12 @@ public:
         std::cout << data << std::endl;
     }
 
-	const bool getJsonLogging() {
-		return jsonLogging;
+	const bool getLoggingScoring() {
+		return loggingScoring;
+	}
+
+	const bool getDisplay() {
+		return display;
 	}
 
 
@@ -79,7 +83,8 @@ private:
 	bool captionConsole;
 	bool captionWindow;
 	bool mechanicHarvestForever;
-	bool jsonLogging;
+	bool loggingScoring;
+	bool display;
 
     void load(){
         // Read Map data
@@ -97,8 +102,8 @@ private:
 		mechanicHarvestForever = mechanics["harvest_forever"];
 		captionConsole = configuration["caption"]["console"];
 		captionWindow = configuration["caption"]["window"];
-		jsonLogging = logging["json_scorings"];
-
+		loggingScoring = logging["scorings"];
+		display = configuration["display"];
 
 
     }

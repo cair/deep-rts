@@ -49,7 +49,8 @@ void Game::createPlayers(){
 }
 
 void Game::initGUI(){
-    this->gui = new GUI(*this);
+	if(Config::getInstance().getDisplay())
+		this->gui = new GUI(*this);
 }
 
 
@@ -98,7 +99,7 @@ void Game::reset()
 	ticks = 0;
 
 	// Sav
-	if (Config::getInstance().getJsonLogging()) {
+	if (Config::getInstance().getLoggingScoring()) {
 		
 		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + ".flat");
 		scoreLog.reset();
@@ -156,7 +157,7 @@ void Game::loop() {
 			}
 
 			// Output all scores etc to file for each game
-			if (Config::getInstance().getJsonLogging()) {
+			if (Config::getInstance().getLoggingScoring()) {
 				
 				int i = 0;
 				for (auto &p : players) {

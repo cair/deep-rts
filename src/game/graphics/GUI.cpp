@@ -88,7 +88,7 @@ void GUI::createFrame(){
 
 void GUI::caption() {
     std::stringstream ss;
-    ss << "WarC2Sim++ [FPS=" << game.currentFPS << ",UPS=" << game.currentUPS << "]";
+    ss << "DeepRTS v1.1 [FPS=" << game.currentFPS << ",UPS=" << game.currentUPS << "]";
     std::string s = ss.str();
     window.setTitle(s);
 
@@ -287,6 +287,8 @@ void GUI::render() {
 		this->drawUnits();
 		this->drawPlayerSelectedUnit();
 
+
+		window.setView(this->frameView);
 
 		// Update the window
 		window.display();
@@ -554,6 +556,7 @@ void GUI::drawUnits() {
 			//u.testSprite->setColor(u.player_->playerColor);
 			sf::Sprite &sprite = Animation::getInstance().getNext(u);
 			sprite.setPosition(u.worldPosition);
+			sprite.setColor(u.player_->playerColor);
 			window.draw(sprite);
 		}
 	}

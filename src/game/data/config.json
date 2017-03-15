@@ -7,8 +7,9 @@
     "console": false
   },
   "logging": {
-  	  "json_scorings": true
+    "scorings": true
   },
+  "display":  false,
 
   "mechanics": {
     "town_hall_on_start": true,

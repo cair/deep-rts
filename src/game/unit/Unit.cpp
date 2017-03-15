@@ -93,7 +93,7 @@ Tile *Unit::centerTile() {
 
 bool Unit::build(int idx) {
     //if(state->id != Constants::State::Idle)
-    if(state->name != "Idle")
+    if(current_state != Constants::State::Idle)
         return false;
 
     if((idx < 0 or idx >= buildInventory.size()))
