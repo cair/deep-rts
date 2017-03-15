@@ -1,7 +1,7 @@
 # https://github.com/Kitware/CMake/tree/master/Modules
 
 cmake_minimum_required(VERSION 3.5)
-project(WarC2Sim__)
+project(DeepRTS)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -74,7 +74,7 @@ set(SOURCE_FILES
 	src/game/algorithms/MCTS/MCTSNode.cpp
 	src/game/algorithms/MCTS/MCTSNode.h)
 
-add_executable(WarC2Sim__ ${SOURCE_FILES})
+add_executable(DeepRTS ${SOURCE_FILES})
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
@@ -96,10 +96,10 @@ if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     include_directories(${FLATBUFFERS_INCLUDE_DIR})
     include_directories(${PYTHON_INCLUDE_DIR})
-    target_link_libraries(WarC2Sim__ ${FLATBUFFERS_STATIC_LIB})
-    target_link_libraries(WarC2Sim__ ${SFML_LIBRARIES})
-    target_link_libraries(WarC2Sim__ ${PYTHON_LIBRARIES})
-    target_link_libraries(WarC2Sim__ ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(DeepRTS ${FLATBUFFERS_STATIC_LIB})
+    target_link_libraries(DeepRTS ${SFML_LIBRARIES})
+    target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
+    target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
 
 
 else()
