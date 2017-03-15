@@ -13,6 +13,7 @@ before_install:
 - cmake -G "Unix Makefiles"
 - make
 - ./flattests
+- make install
 - cd ..
 - ls -la
 
