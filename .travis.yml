@@ -7,7 +7,7 @@ compiler:
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y libsfml-dev
-- git clone "https://github.com/google/flatbuffers.git"
+- git clone https://github.com/google/flatbuffers.git
 - cd flatbuffers
 - cmake -G "Unix Makefiles"
 - make
@@ -22,12 +22,3 @@ script: make
 
 
 
-
-$ git clone https://github.com/google/flatbuffers.git
-$ cd flatbuffers
-$ cmake -G "Unix Makefiles"
-$ make
-$ ./flattests # this is quick, and should print "ALL TESTS PASSED"
-
-
-libsfml-dev
