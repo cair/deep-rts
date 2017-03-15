@@ -4,7 +4,7 @@
 
 
 #include "Spawning.h"
-#include "../unit/unit.h"
+#include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
 
 void Spawning::update(Unit& unit)const{

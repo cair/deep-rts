@@ -2,11 +2,12 @@
 #include "PyAPI.h"
 #include "../../Game.h"
 #include "../../player/Player.h"
-#include <numpy\arrayobject.h>
+#include <numpy/arrayobject.h>
 #include <thread>
 #include <stdlib.h>
 #include <mutex>          // std::mutex
 
+#if _WIN32
 int setenv(const char *name, const char *value, int overwrite)
 {
 	int errcode = 0;
@@ -17,6 +18,7 @@ int setenv(const char *name, const char *value, int overwrite)
 	}
 	return _putenv_s(name, value);
 }
+#endif
 
 bool PyAPI::loaded = false;
 void PyAPI::init() {

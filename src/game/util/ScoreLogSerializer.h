@@ -2,8 +2,8 @@
 #include "../serialization/ScoreLog_generated.h"
 #include "../serialization/ScorePlayer_generated.h"
 #include "../player/Player.h"
-#include <flatbuffers\flatbuffers.h>
-#include <flatbuffers\util.h>
+#include <flatbuffers/flatbuffers.h>
+#include <flatbuffers/util.h>
 #include <vector>
 class ScoreLogSerializer {
 	std::vector<flatbuffers::Offset<Score::ScoreItem>> elements; // Elements per iteration

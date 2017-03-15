@@ -24,8 +24,8 @@ void sleep(int sleepMs)
 #include "game/Game.h"
 #include "game/algorithms/RANDOM/AlgoRandom.h"
 #include "game/algorithms/MCTS/MCTS.h"
-#include "game/algorithms/REMOTEAI/zmqAI.h"
-#include "game\algorithms\PYAPI\PyAPI.h"
+//#include "game/algorithms/REMOTEAI/zmqAI.h"
+#include "game/algorithms/PYAPI/PyAPI.h"
 
 int main() {
 	

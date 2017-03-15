@@ -8,7 +8,7 @@
 #include "graphics/GUI.h"
 #include "graphics/Animation.h"
 #include "Config.h"
-#include "third_party\json.hpp"
+#include "third_party/json.hpp"
 
 std::unordered_map<int, Game*> Game::games;
 
