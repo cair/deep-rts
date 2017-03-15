@@ -27,9 +27,9 @@ class Game {
 
     // Gameclock variables
 	sf::Clock clock;
-    long _update_next;
-    long _render_next;
-    long _stats_next;
+    uint64_t _update_next;
+	uint64_t _render_next;
+	uint64_t _stats_next;
 
     int32_t _update_interval = 0;
 	int32_t _render_interval = 0;
