@@ -14,8 +14,10 @@ std::unordered_map<int, Game*> Game::games;
 
 Game::Game(uint8_t _nplayers, bool setup):
         map(Tilemap("contested-4v4.json")),
-		captionConsole(Config::getInstance().getCaptionConsole()),
-		captionWindow(Config::getInstance().getCaptionWindow()),
+		doCaptionConsole(Config::getInstance().getCaptionConsole()),
+		doCaptionWindow(Config::getInstance().getCaptionWindow()),
+		doDisplay(Config::getInstance().getDisplay()),
+		doScoreLogging(Config::getInstance().getLoggingScoring()),
 		scoreLog(_nplayers)	// Only used when scoreLog flag is set in config
 {
 	players.reserve(16);
@@ -49,7 +51,7 @@ void Game::createPlayers(){
 }
 
 void Game::initGUI(){
-	if(Config::getInstance().getDisplay())
+	if(doDisplay)
 		this->gui = new GUI(*this);
 }
 
@@ -99,7 +101,7 @@ void Game::reset()
 	ticks = 0;
 
 	// Sav
-	if (Config::getInstance().getLoggingScoring()) {
+	if (doScoreLogging) {
 		
 		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + ".flat");
 		scoreLog.reset();
@@ -157,7 +159,7 @@ void Game::loop() {
 			}
 
 			// Output all scores etc to file for each game
-			if (Config::getInstance().getLoggingScoring()) {
+			if (doScoreLogging) {
 				
 				int i = 0;
 				for (auto &p : players) {
@@ -173,7 +175,7 @@ void Game::loop() {
 
         }
 
-        if (nowMicroSec >= _render_next) {
+        if (doDisplay && nowMicroSec >= _render_next) {
             // Render
 
             gui->update();
@@ -186,11 +188,11 @@ void Game::loop() {
 
         if (nowMicroSec >= this->_stats_next) {
 
-			if (captionWindow) {
+			if (doDisplay && doCaptionWindow) {
 				gui->caption();
 			}
            
-			if (captionConsole) {
+			if (doCaptionConsole) {
 				std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
 			}
 

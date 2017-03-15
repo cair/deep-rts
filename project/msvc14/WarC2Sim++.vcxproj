@@ -37,7 +37,6 @@
     <ClInclude Include="..\..\src\game\graphics\GUI.h" />
     <ClInclude Include="..\..\src\game\lib\ColorConverter.h" />
     <ClInclude Include="..\..\src\game\lib\csv.h" />
-    <ClInclude Include="..\..\src\game\lib\json.h" />
     <ClInclude Include="..\..\src\game\lib\Pathfinder.h" />
     <ClInclude Include="..\..\src\game\lib\PriorityQueue.h" />
     <ClInclude Include="..\..\src\game\lib\zhelpers.hpp" />
@@ -53,6 +52,7 @@
     <ClInclude Include="..\..\src\game\state\Spawning.h" />
     <ClInclude Include="..\..\src\game\state\StateManager.h" />
     <ClInclude Include="..\..\src\game\state\Walking.h" />
+    <ClInclude Include="..\..\src\game\third_party\json.hpp" />
     <ClInclude Include="..\..\src\game\third_party\zmq.hpp" />
     <ClInclude Include="..\..\src\game\unit\Unit.h" />
     <ClInclude Include="..\..\src\game\unit\UnitManager.h" />

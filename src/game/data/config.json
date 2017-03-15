@@ -4,7 +4,7 @@
   "ticks_per_sec": 10,
   "caption": {
     "window": true,
-    "console": false
+    "console": true
   },
   "logging": {
     "scorings": true

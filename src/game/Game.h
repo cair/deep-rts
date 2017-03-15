@@ -19,9 +19,10 @@
 
 class GUI;
 class Game {
-	const bool captionWindow;
-	const bool captionConsole;
-
+	const bool doCaptionWindow;
+	const bool doCaptionConsole;
+	const bool doDisplay;
+	const bool doScoreLogging;
     uint8_t n_players;
 	uint16_t gameNum = 1;
 

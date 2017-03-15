@@ -20,6 +20,8 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 
 
 
+
+
 GUI::GUI(Game &game) :
         game(game),
         window(sf::VideoMode(800, 800), "DeepRTS v1.1", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
@@ -339,8 +341,12 @@ void GUI::drawStats(){
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(16);
-    //text.setFillColor(sf::Color::Yellow);
+
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+    text.setFillColor(sf::Color::Yellow);
+#else
     text.setColor(sf::Color::Yellow);
+#endif
 
     text.setString("Lumber: " + std::to_string(player->getLumber()));
     text.setPosition(10,10);
@@ -380,7 +386,11 @@ void GUI::drawStatistics(){
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(16);
-    text.setColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+	text.setFillColor(sf::Color::Yellow);
+#else
+	text.setColor(sf::Color::Yellow);
+#endif
 	int offsetX = -780;
 
     text.setString("CurrentFPS: " + std::to_string(game.currentFPS));
@@ -412,7 +422,11 @@ void GUI::drawActionDistribution() {
 	sf::Text text;
 	text.setFont(font);
 	text.setCharacterSize(15);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+	text.setFillColor(sf::Color::Yellow);
+#else
 	text.setColor(sf::Color::Yellow);
+#endif
 
 	for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
 		text.setString(Constants::actionNames[i] + ": " + std::to_string(player->actionStatistics[i]));
@@ -428,7 +442,11 @@ void GUI::drawSelected(){
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(16);
-    text.setColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+	text.setFillColor(sf::Color::Yellow);
+#else
+	text.setColor(sf::Color::Yellow);
+#endif
 
 	int offsetY = -100;
 
@@ -588,7 +606,11 @@ void GUI::drawScoreBoard() {
     text.setCharacterSize(18);
     for (Player & p : game.players) {
         text.setString(p.name_ + ": " + std::to_string(p.getScore()) + " | APM: " + std::to_string(p.apm) + " | AQueue: " + std::to_string(p.getQueueSize()));
-        text.setColor(p.playerColor);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+		text.setFillColor(p.playerColor);
+#else
+		text.setColor(p.playerColor);
+#endif
         text.setPosition(10, 920 - offsetY);
         offsetY += 25;
 
@@ -620,14 +642,22 @@ void GUI::showNoGuiMessage() {
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(24);
-    text.setColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+	text.setFillColor(sf::Color::Yellow);
+#else
+	text.setColor(sf::Color::Yellow);
+#endif
     text.setString("GUI is deactivated! Press \"G\" to activate.");
     sf::Vector2u size = window.getSize();
     text.setPosition((size.x / 2) - (text.getLocalBounds().width / 4) ,size.y / 2);
     window.draw(text);
 
     text.setCharacterSize(16);
-    text.setColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+	text.setFillColor(sf::Color::Yellow);
+#else
+	text.setColor(sf::Color::Yellow);
+#endif
     text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View\nF: GameMode (10UPS/60FPS)\nH: Gridlines");
     text.setPosition((size.x / 2), (size.y / 2) + 50);
     window.draw(text);
