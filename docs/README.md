@@ -26,6 +26,10 @@
 
 > 6.4. [MSC. Presentation](./pages/presentation.md) - Meeting minutes presentation (Incremental)
 
+> 6.5. **Deep Q Network**
+
+> 6.5.1 [Initial Results](./pages/dqn/results_1/results_1.md) - The first results from running trials
+
 #### 7. Other
 > 7.1. [Performance Log](./pages/performance_log.md) - Log over DeepRTS Performance
 
