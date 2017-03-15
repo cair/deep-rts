@@ -1,4 +1,6 @@
 # DeepRTS
+[![Build Status](https://travis-ci.org/UIA-CAIR/DeepRTS.svg?branch=c++)](https://travis-ci.org/UIA-CAIR/DeepRTS)
+
 A Warcraft 2 Simulator for (Deep) Reinforment Learning in C++!
 
 ## Dependencies and use cases
