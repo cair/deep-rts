@@ -35,6 +35,9 @@ install:
   - ./flattests
   - sudo make install
   - cd ..
+  - cd src/flatbuffers/ScoreLog/
+  - sh create_buffer.sh
+  - cd ../../../
   - ls -la
 
 
