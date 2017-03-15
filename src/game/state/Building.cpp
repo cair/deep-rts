@@ -3,7 +3,7 @@
 //
 
 #include "Building.h"
-#include "../unit/unit.h"
+#include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
 
 

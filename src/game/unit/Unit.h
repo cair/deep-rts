@@ -12,7 +12,7 @@
 #include "../Constants.h"
 
 #include "../environment/Tile.h"
-#include "../state/stateManager.h"
+#include "../state/StateManager.h"
 #include "../Config.h"
 
 
@@ -135,7 +135,7 @@ public:
     void attack(Tile &tile);
     void harvest(Tile &tile);
     int distance(Tile &tile);
-	int Unit::distance(Unit & unit);
+    int distance(Unit & unit);
     sf::Vector2f distanceVector(Tile &target);
 
 

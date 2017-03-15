@@ -3,7 +3,7 @@
 //
 
 #include "Combat.h"
-#include "../unit/unit.h"
+#include "../unit/Unit.h"
 #include "../player/Player.h"
 #include "../util/Pathfinder.h"
 
