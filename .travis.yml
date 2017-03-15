@@ -13,6 +13,8 @@ before_install:
 - cmake -G "Unix Makefiles"
 - make
 - ./flattests
+- cd ..
+- ls -la
 
 before_script:
   - mkdir build
