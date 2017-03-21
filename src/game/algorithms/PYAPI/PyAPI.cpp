@@ -20,6 +20,11 @@ int setenv(const char *name, const char *value, int overwrite)
 #endif
 
 bool PyAPI::loaded = false;
+std::string PyAPI::getName()
+{
+
+	return std::string();
+}
 void PyAPI::init() {
 	
 
@@ -37,19 +42,18 @@ void PyAPI::start() {
 	Py_Initialize();
 	PyObject *pName, *pModule;
 
-	int argc;
+	int argc = 1; // Argument count
 	wchar_t * argv[3];
-	argc = 1;
 	argv[0] = L"Main.py";
 
 
-	Py_SetProgramName(argv[0]);
+	Py_SetProgramName(argv[0]);	// Set application name
+	PySys_SetArgv(argc, argv); // Set arguments
 
-	PySys_SetArgv(argc, argv);
-	pName = PyUnicode_DecodeFSDefault("Main.py");
+
+	pName = PyUnicode_DecodeFSDefault("Main");	// Name of module
 	std::cout << "Loading python environment. Please wait!" << std::endl;
-	pModule = PyImport_Import(pName);
-	
+	pModule = PyImport_Import(pName); // Get module into C++
 	Py_DECREF(pName);
 
 	if (pModule == NULL) {
@@ -57,11 +61,17 @@ void PyAPI::start() {
 		fprintf(stderr, "Failed to load \"%s\"\n", "Main.py");
 		return;
 	}
+
+	Py_DECREF(pModule);
+
+
+	
 }
 
-PyAPI::PyAPI(uint8_t gameID, uint8_t playerID):
-	game(Game::getGame(gameID)), 
-	Algorithm(Game::getGame(gameID)->players[playerID])
+PyAPI::PyAPI(PyObject *pyaiInstance):
+	pyaiInstance(pyaiInstance),
+	game(Game::getGame(0)),
+	Algorithm(NULL)
 {
 	// Define and allocate space for state buffer
 	G_ROW = 30;
@@ -75,6 +85,11 @@ PyAPI::PyAPI(uint8_t gameID, uint8_t playerID):
 }
 
 
+
+void PyAPI::setPlayer(Player * player_)
+{
+	player = player_;
+}
 
 void PyAPI::update()
 {
@@ -121,25 +136,18 @@ PyObject*  PyAPI::registry_free(PyObject* self, PyObject* args)
 
 PyObject* PyAPI::registry_hook(PyObject* self, PyObject* args)
 {
-	PyObject *gameID;
-	PyObject *playerID;
-	if (PyArg_UnpackTuple(args, "", 2, 2, &gameID, &playerID))
+	PyObject *pyAI;
+	if (!PyArg_UnpackTuple(args, "", 1, 1, &pyAI))
 	{
-
-		PyAPI *api = new PyAPI(PyLong_AsLongLong(gameID), PyLong_AsLongLong(playerID));
-		intptr_t ptr = reinterpret_cast<intptr_t>(api);
-
-		return PyLong_FromLongLong(ptr);
-	}
-	else {
 		PyErr_Print();
-		fprintf(stderr, "Failed to start as you are not inserting correct parameters (hook(float, float))  (hook(0, 0))");
+		fprintf(stderr, "Failed to start as you are not inserting correct parameters (hook(PyAI))  (hook(self))");
 		return PyLong_FromLongLong(-1);
 	}
 
-
-	
-	return PyLong_FromLongLong(-1);
+	PyAPI *api = new PyAPI(pyAI);
+	PyAPI::addAI(api);
+	intptr_t ptr = reinterpret_cast<intptr_t>(api);
+	return PyLong_FromLongLong(ptr);
 }
 
 PyObject* PyAPI::registry_reset(PyObject* self, PyObject* args)
@@ -161,6 +169,18 @@ PyObject* PyAPI::registry_reset(PyObject* self, PyObject* args)
 
 }
 
+PyObject* PyAPI::registry_register(PyObject* self, PyObject* args)
+{
+	PyObject *pyai;
+	if (!PyArg_UnpackTuple(args, "", 1, 1, &pyai))
+	{
+		PyErr_Print();
+		return PyLong_FromLongLong(-1);
+	}
+
+	return PyLong_FromLongLong(1);
+}
+
 PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 {
 	PyObject *aiID;
@@ -177,8 +197,8 @@ PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 		return PyLong_FromLongLong(-1);
 	}
 
-	if (api_ptr->player.targetedUnit == NULL and api_ptr->player.unitIndexes.size() > 0 and !api_ptr->player.defeated) {
-		api_ptr->player.nextUnit();
+	if (api_ptr->player->targetedUnit == NULL and api_ptr->player->unitIndexes.size() > 0 and !api_ptr->player->defeated) {
+		api_ptr->player->nextUnit();
 	}
 
 	
@@ -186,10 +206,10 @@ PyObject* PyAPI::registry_do_action(PyObject* self, PyObject* args)
 	//api_ptr->doAction(action);
 	// TODO add TEMPORAL WAIT TIME HERE
 
-	api_ptr->player.queueAction(static_cast<Constants::Action>(actionID));
-	long isTerminal = api_ptr->player.checkDefeat();
+	api_ptr->player->queueAction(static_cast<Constants::Action>(actionID));
+	long isTerminal = api_ptr->player->checkDefeat();
 
-	PyObject *score = PyLong_FromLongLong(api_ptr->player.getScore());
+	PyObject *score = PyLong_FromLongLong(api_ptr->player->getScore());
 	PyObject *terminal = PyBool_FromLong(isTerminal);
 	PyObject *info = PyLong_FromLongLong(api_ptr->game->getFrames());
 
@@ -307,7 +327,7 @@ static struct PyMethodDef methods[] = {
 	{ "loaded", PyAPI::registry_loaded, METH_VARARGS, "Initial dependency loading is done" },
 	{ "do_action", PyAPI::registry_do_action, METH_VARARGS, "Do a action" },
 	{ "reset", PyAPI::registry_reset, METH_VARARGS, "Reset Game" },
-
+	{ "register", PyAPI::registry_register, METH_VARARGS, "Register a AI"},
 	{ NULL, NULL, 0, NULL }
 };
 
@@ -319,4 +339,9 @@ static struct PyModuleDef modDef = {
 PyObject* PyAPI::PyInit_PyAPIRegistry(void)
 {
 	return PyModule_Create(&modDef);
+}
+
+void PyAPI::addAI(PyAPI *api)
+{
+	PyAPI::availableAI[api->getName()] = api;
 }

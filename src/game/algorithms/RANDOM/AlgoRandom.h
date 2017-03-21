@@ -11,7 +11,7 @@
 
 class AlgoRandom: public Algorithm{
 public:
-    AlgoRandom(Player &player);
+    AlgoRandom(Player *player);
     virtual void update();
     virtual void terminal();
     virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);

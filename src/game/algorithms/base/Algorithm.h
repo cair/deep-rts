@@ -14,11 +14,11 @@ class Action;
 class Algorithm {
 
 protected:
-    Player &player;
+    Player *player = NULL;
     std::vector<Constants::Action> actionSpace;
 
 public:
-    Algorithm(Player &player): player(player){
+    Algorithm(Player *player): player(player){
         defineActionSpace();
     };
     virtual void update() = 0;

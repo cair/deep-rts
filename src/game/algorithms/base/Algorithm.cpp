@@ -6,7 +6,7 @@
 #include "../../player/Player.h"
 
 void Algorithm::setPlayerName(std::string name){
-    player.setName(name);
+    player->setName(name);
 }
 
 std::shared_ptr<BaseAction> Algorithm::getAction(int actionID, Unit* unitptr) {

@@ -6,18 +6,18 @@
 #include "../../player/Player.h"
 #include "../../Game.h"
 
-AlgoRandom::AlgoRandom(Player &player) : Algorithm(player), rgen(rd()) {
+AlgoRandom::AlgoRandom(Player *player) : Algorithm(player), rgen(rd()) {
 
-	player.name_ += " [RND]";
+	player->name_ += " [RND]";
 
     defineActionSpace();
-    if(!player.targetedUnit) {
-        if(player.unitIndexes.size() == 0) {
+    if(!player->targetedUnit) {
+        if(player->unitIndexes.size() == 0) {
             return;
         }
 
         // Select first available unit
-        player.targetedUnit = &player.game_.getUnit(player.unitIndexes[0]);
+        player->targetedUnit = &player->game_.getUnit(player->unitIndexes[0]);
     }
 
 	actionInterval = 1000 / 50;
@@ -32,7 +32,7 @@ void AlgoRandom::update() {
 		int randomIndex = dist(rgen);
 		std::cout << randomIndex << std::endl;
 		Constants::Action actionID = actionSpace[randomIndex];
-		player.queueAction(actionID);
+		player->queueAction(actionID);
 		nextAction = clock() + actionInterval;
 	}
 	

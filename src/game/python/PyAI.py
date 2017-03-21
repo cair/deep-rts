@@ -8,8 +8,9 @@ import numpy as np
 
 class PyAI:
     
-    def __init__(self, gameID, playerID):
-        self.__ai__ = PyAPIRegistry.hook(gameID, playerID)
+    def __init__(self):
+        self.agent = None
+        self.__ai__ = PyAPIRegistry.hook(self)
         self.desc = [
             "t_id",
             "oil_y",

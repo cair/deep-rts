@@ -12,7 +12,7 @@
 class Game;
 class MCTS: public Algorithm  {
 public:
-    MCTS(Player &player);
+    MCTS(Player *player);
     virtual void update();
     virtual void terminal();
     virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);

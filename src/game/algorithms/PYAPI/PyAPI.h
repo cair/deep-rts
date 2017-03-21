@@ -13,7 +13,7 @@
 #include <map>
 #include <array>
 #include <memory>
-
+#include <map>
 #include "../../algorithms/base/Algorithm.h"
 
 
@@ -30,6 +30,13 @@ public:
 	int G_COL;
 	int G_FEATURES;
 
+	std::string getName();
+
+
+
+
+
+
 
 	static bool loaded;
 
@@ -39,10 +46,11 @@ public:
 	
 	static void start();
 
-	PyAPI(uint8_t gameID, uint8_t playerID);
+	PyObject *pyaiInstance;
+	PyAPI(PyObject *pyaiInstance);
 	std::string scriptName;
 
-
+	void setPlayer(Player *player);
 	virtual void update();
 	virtual void terminal();
 	virtual void defineActionSpace();
@@ -52,11 +60,16 @@ public:
 	static PyObject *registry_loaded(PyObject * self, PyObject * args);
 	static PyObject *registry_free(PyObject* self, PyObject* args);
 	static PyObject *registry_hook(PyObject* self, PyObject* args);
-	static PyObject * registry_reset(PyObject * self, PyObject * args);
+	static PyObject *registry_reset(PyObject * self, PyObject * args);
+	static PyObject *registry_register(PyObject* self, PyObject* args);
 	static PyObject *registry_do_action(PyObject * self, PyObject * args);
 	static PyObject *registry_get_state(PyObject* self, PyObject* args);
 
 	static PyObject* PyInit_PyAPIRegistry(void);
+
+private:
+	static void addAI(PyAPI *api);
+	static std::map<std::string, PyAPI*> availableAI;
 };
 
 

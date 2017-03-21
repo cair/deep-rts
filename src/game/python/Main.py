@@ -1,13 +1,32 @@
+
 import sys
 from logconf import logger
 logger.info("Running PyAI using Python %s" % sys.version)
 import PyAPIRegistry
 from PyAI import PyAI
-from Algorithms.DQN.DQN import DQN
+#from Algorithms.DQN.DQN import DQN
+
+"""
+# DQN Setup
+"""
+pyai_dqn = PyAI()  # Create new AI instance
+observation_space = pyai_dqn.getState()	# Retrieve state to shape the network
+"""dqn = DQN(state_size=observation_space.shape,
+              number_of_actions=16,
+              save_name="deeprts")  # Create new DQN using the pyai hook
+pyai_dqn.agent = dqn	# Set Agent to DQN"""
+
+#PyAPIRegistry.register(pyai_dqn)
 
 
-pyai = PyAI(0, 0)  # Create new AI hook with gameID = 0 playerID= 0
-observation_space = pyai.getState()
+"""
+
+
+
+
+
+
+
 n_actions = 16
 dqn = DQN(state_size=observation_space.shape,
               number_of_actions=n_actions,
@@ -43,3 +62,5 @@ for e in range(num_episodes):
     print("Total reward", total_reward)
     print("Mean cost", total_cost/frame)
 print("Done training!")
+
+"""

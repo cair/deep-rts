@@ -7,14 +7,14 @@
 #include "MCTSNode.h"
 #include "../../Game.h"
 
-MCTS::MCTS(Player &player) : Algorithm(player) {
+MCTS::MCTS(Player *player) : Algorithm(player) {
 
     timeBudget = 1000; // 1 second
     depthBudget = 10; // Depth budget (Tree depth)
 	epsilon = 0.9;	// Start of epsilon
 	epsilonModifier = 1000000; // Number of iterations to reach epsilon 0.1
 	epsilonDecent = epsilon / epsilonModifier; // How much epsilon decrease with per iteration
-	playerID = player.id_;  // Index of selected player
+	playerID = player->id_;  // Index of selected player
 
 
     game = new Game(4, false);
