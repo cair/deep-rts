@@ -6,9 +6,9 @@ from PyAI import PyAI
 from Algorithms.DQN.DQN import DQN
 
 
-pyai = PyAI(0, 1)  # Create new AI hook with gameID = 0 playerID= 0
+pyai = PyAI(0, 0)  # Create new AI hook with gameID = 0 playerID= 0
 observation_space = pyai.getState()
-n_actions = 14
+n_actions = 16
 dqn = DQN(state_size=observation_space.shape,
               number_of_actions=n_actions,
               save_name="deeprts")  # Create new DQN using the pyai hook

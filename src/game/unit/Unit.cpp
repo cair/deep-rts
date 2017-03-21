@@ -396,3 +396,58 @@ bool Unit::operator==(int otherID) const
 {
 	return otherID == id;
 }
+
+void Unit::tryAttack()
+{
+	if (!tile) {
+		// FAIL
+		return;
+	}
+
+	std::vector<Tile *> availableAttackable = player_->game_.getMap().neighbors(*tile, Constants::Pathfinding::Attackable);
+	if (availableAttackable.empty()) {
+		// Fail
+		return;
+	}else {
+		// Success
+		attack(*availableAttackable.back());
+	}
+
+}
+
+void Unit::tryMove(int16_t x, int16_t y)
+{
+	if (!tile) {
+		// FAil
+		return;
+	}
+
+	int newX = tile->x + x;
+	int newY = tile->y + y;
+
+	Tile *tile = player_->game_.map.getTile(newX, newY);
+	if (tile->isWalkable()) {
+		move(*tile);
+	}
+	else {
+		// Fail
+		return;
+	}
+}
+
+void Unit::tryHarvest()
+{
+	if (!tile) {
+		// FAIL
+		return;
+	}
+
+	std::vector<Tile *> availableHarvestable = player_->game_.getMap().neighbors(*tile, Constants::Pathfinding::Harvestable);
+	if (availableHarvestable.empty()) {
+		// Fail
+		return;
+	}
+	else {
+		harvest(*availableHarvestable.back());
+	}
+}

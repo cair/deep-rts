@@ -92,29 +92,35 @@ void Player::update() {
 		case Constants::Action::PreviousUnit:
 			previousUnit();
 			break;
-		case Constants::Action::RightUpRight:
-			targetedUnit->rightClickRelative(-1, 1);
+		case Constants::Action::MoveUpRight:
+			targetedUnit->tryMove(-1, 1);
 			break;
-		case Constants::Action::RightUpLeft:
-			targetedUnit->rightClickRelative(-1, -1);
+		case Constants::Action::MoveUpLeft:
+			targetedUnit->tryMove(-1, -1);
 			break;
-		case Constants::Action::RightDownRight:
-			targetedUnit->rightClickRelative(1, 1);
+		case Constants::Action::MoveDownRight:
+			targetedUnit->tryMove(1, 1);
 			break;
-		case Constants::Action::RightDownLeft:
-			targetedUnit->rightClickRelative(1, -1);
+		case Constants::Action::MoveDownLeft:
+			targetedUnit->tryMove(1, -1);
 			break;
-		case Constants::Action::RightUp:
-			targetedUnit->rightClickRelative(0, -1);
+		case Constants::Action::MoveUp:
+			targetedUnit->tryMove(0, -1);
 			break;
-		case Constants::Action::RightDown:
-			targetedUnit->rightClickRelative(0, 1);
+		case Constants::Action::MoveDown:
+			targetedUnit->tryMove(0, 1);
 			break;
-		case Constants::Action::RightLeft:
-			targetedUnit->rightClickRelative(-1, 0);
+		case Constants::Action::MoveLeft:
+			targetedUnit->tryMove(-1, 0);
 			break;
-		case Constants::Action::RightRight:
-			targetedUnit->rightClickRelative(1, 0);
+		case Constants::Action::MoveRight:
+			targetedUnit->tryMove(1, 0);
+			break;
+		case Constants::Action::Attack:
+			targetedUnit->tryAttack(); // TODO
+			break;
+		case Constants::Action::Harvest:
+			targetedUnit->tryHarvest(); // TODO
 			break;
 		case Constants::Action::Build0:
 			targetedUnit->build(0);

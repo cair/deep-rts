@@ -218,37 +218,37 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 	for (auto &tile : api_ptr->game->map.tiles) {
 
 		/// Tile
-		api_ptr->flatStateBuffer[c++] = (int)tile.id;// Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.tileID; // Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.oilYield;// Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.getResources();// Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.lumberYield;// Layer
+		//api_ptr->flatStateBuffer[c++] = (int)tile.id;// Layer
+		//api_ptr->flatStateBuffer[c++] = (int)tile.tileID; // Layer
+		//api_ptr->flatStateBuffer[c++] = (int)tile.oilYield;// Layer
+		//api_ptr->flatStateBuffer[c++] = (int)tile.getResources();// Layer
+		//api_ptr->flatStateBuffer[c++] = (int)tile.lumberYield;// Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.walkable;// Layer
 		api_ptr->flatStateBuffer[c++] = (int)tile.harvestable;// Layer
-		api_ptr->flatStateBuffer[c++] = (int)tile.swimable;// Layer
+		//api_ptr->flatStateBuffer[c++] = (int)tile.swimable;// Layer
 
 
 		Unit* occupant = tile.getOccupant();
 		if (occupant) {
 			// Unit
-			api_ptr->flatStateBuffer[c++] = (int)occupant->id;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->id;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->typeId;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->current_state;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->goldCarry;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->lumberCarry;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->oilCarry;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->carryCapacity;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->goldCarry;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->lumberCarry;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->oilCarry;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->carryCapacity;// Layer
 			api_ptr->flatStateBuffer[c++] = (int)occupant->direction;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->damageMax;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->damageMin;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->damagePiercing;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->damageRange;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->health;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->military;//health_max;// Layer  // TODO
-			api_ptr->flatStateBuffer[c++] = (int)occupant->military;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->recallable;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->sight;// Layer
-			api_ptr->flatStateBuffer[c++] = (int)occupant->structure;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->damageMax;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->damageMin;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->damagePiercing;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->damageRange;// Layer
+			api_ptr->flatStateBuffer[c++] = (int)occupant->health / (int)occupant->health_max; // Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->health_max;//health_max;// Layer  // TODO
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->military;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->recallable;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->sight;// Layer
+			//api_ptr->flatStateBuffer[c++] = (int)occupant->structure;// Layer
 
 			// Player
 			api_ptr->flatStateBuffer[c++] = (int)occupant->player_->id_;// Layer
@@ -256,24 +256,24 @@ PyObject* PyAPI::registry_get_state(PyObject* self, PyObject* args)
 
 		}
 		else {
+			//api_ptr->flatStateBuffer[c++] = 0;
 			api_ptr->flatStateBuffer[c++] = 0;
 			api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
 			api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
 			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
-			api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
+			//api_ptr->flatStateBuffer[c++] = 0;
 
 			// Player
 			api_ptr->flatStateBuffer[c++] = 0;

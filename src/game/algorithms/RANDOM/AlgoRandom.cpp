@@ -30,6 +30,7 @@ void AlgoRandom::update() {
 	if (now > nextAction) {
 		std::uniform_int_distribution<int> dist(0, actionSpace.size() - 1);
 		int randomIndex = dist(rgen);
+		std::cout << randomIndex << std::endl;
 		Constants::Action actionID = actionSpace[randomIndex];
 		player.queueAction(actionID);
 		nextAction = clock() + actionInterval;
@@ -58,14 +59,19 @@ void AlgoRandom::defineActionSpace() {
     actionSpace = {
 		Constants::Action::PreviousUnit,
 		Constants::Action::NextUnit,
-		Constants::Action::RightLeft,
-		Constants::Action::RightRight,
-		Constants::Action::RightUp,
-		Constants::Action::RightDown,
-		Constants::Action::RightUpLeft,
-		Constants::Action::RightUpRight,
-		Constants::Action::RightDownLeft,
-		Constants::Action::RightDownRight,
+
+		Constants::Action::MoveLeft,
+		Constants::Action::MoveRight,
+		Constants::Action::MoveUp,
+		Constants::Action::MoveDown,
+		Constants::Action::MoveUpLeft,
+		Constants::Action::MoveUpRight,
+		Constants::Action::MoveDownLeft,
+		Constants::Action::MoveDownRight,
+
+		Constants::Action::Attack,
+		Constants::Action::Harvest,
+
 		Constants::Action::Build0,
 		Constants::Action::Build1,
 		Constants::Action::Build2,

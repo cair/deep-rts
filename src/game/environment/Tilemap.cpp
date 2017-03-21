@@ -154,10 +154,24 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
         Tile &neigh = tiles[idx];
         assert(&neigh);
 
-        if(type == Constants::Pathfinding::Walkable && !neigh.isWalkable())
-            continue;
-
-        neighbors.push_back(&neigh);
+		if (type == Constants::Pathfinding::All) {
+			neighbors.push_back(&neigh);
+			continue;
+		}
+		else if (type == Constants::Pathfinding::Walkable && neigh.isWalkable()) {
+			neighbors.push_back(&neigh);
+		}
+		else if (type == Constants::Pathfinding::Attackable && neigh.isAttackable(*tile.getOccupant())) {
+			neighbors.push_back(&neigh);
+		}
+		else if (type == Constants::Pathfinding::Harvestable && neigh.isHarvestable()) {
+			neighbors.push_back(&neigh);
+		}
+		else {
+			continue;
+			//assert(false && "No type for neighbour");
+		}
+        
     }
     //}
 

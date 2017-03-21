@@ -11,7 +11,7 @@ from keras.optimizers import RMSprop
 from theano.gradient import disconnected_grad
 
 class DQN:
-	def __init__(self, state_size=None, number_of_actions=1, epsilon=0.1, mbsz=32, discount=0.9, memory=150,save_name='basic', save_freq=10, learning_rate=0.0001):
+	def __init__(self, state_size=None, number_of_actions=1, epsilon=0.1, mbsz=32, discount=0.9, memory=30,save_name='basic', save_freq=10, learning_rate=0.0001):
 		self.state_size = state_size
 		self.number_of_actions = number_of_actions
 		self.epsilon = epsilon
@@ -32,7 +32,7 @@ class DQN:
 	def build_model(self):
 		S = Input(shape=self.state_size)
 		#bnorm = BatchNormalization(mode=0, axis=1)(S)
-		h = Convolution2D(64, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(S)
+		h = Convolution2D(32, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(S)
 		#h = Convolution2D(32, 4, 4, subsample=(2, 2), border_mode='same', activation='relu')(h)
 		h = Flatten()(h)
 		h = Dense(500, activation='relu')(h)

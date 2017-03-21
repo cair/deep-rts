@@ -286,9 +286,6 @@
     <None Include="..\..\README.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\src\game\python\RemoteAI.py">
-      <Filter>Source Files\game\python</Filter>
-    </None>
     <None Include="..\..\src\game\python\DQN.py">
       <Filter>Source Files\game\python</Filter>
     </None>

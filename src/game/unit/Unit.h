@@ -162,6 +162,10 @@ public:
     bool removedFromGame = false;
 
 	bool operator==(int id) const;
+
+	void tryMove(int16_t x, int16_t y);
+	void tryAttack();
+	void tryHarvest();
 	
 
 };

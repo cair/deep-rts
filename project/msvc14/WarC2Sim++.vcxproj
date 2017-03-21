@@ -103,7 +103,6 @@
     <None Include="..\..\src\game\python\DQN.py" />
     <None Include="..\..\src\game\python\Main.py" />
     <None Include="..\..\src\game\python\PyAI.py" />
-    <None Include="..\..\src\game\python\RemoteAI.py" />
     <None Include="..\..\src\proto\GameMessage.proto" />
     <None Include="packages.config" />
   </ItemGroup>

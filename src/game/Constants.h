@@ -40,7 +40,9 @@ namespace Constants{
 
 	enum Pathfinding {
 		Walkable = 1,
-		All = 2
+		All = 2,
+		Attackable = 3,
+		Harvestable = 4
 	};
 
 	enum Direction {
@@ -55,38 +57,49 @@ namespace Constants{
 	};
 
 	enum Action {
-
 		PreviousUnit = 1,
 		NextUnit = 2,
-		RightLeft = 3,
-		RightRight = 4,
-		RightUp = 5,
-		RightDown = 6,
-		RightUpLeft = 7,
-		RightUpRight = 8,
-		RightDownLeft = 9,
-		RightDownRight = 10,
-		Build0 = 11,
-		Build1 = 12,
-		Build2 = 13,
-		NoAction = 14
+
+		MoveLeft = 3,
+		MoveRight = 4,
+		MoveUp = 5,
+		MoveDown = 6,
+		MoveUpLeft = 7,
+		MoveUpRight = 8,
+		MoveDownLeft = 9,
+		MoveDownRight = 10,
+		
+		Attack = 11,
+		Harvest = 12,
+
+		Build0 = 13,
+		Build1 = 14,
+		Build2 = 15,
+		NoAction = 16
 	};
 
-	const std::string actionNames[14] = {
+	const std::string actionNames[16] = {
 		"PrevUnit",
 		"NextUnit",
-		"RightLeft",
-		"RightRight",
-		"RightUp",
-		"RightDown",
-		"RightUpLeft",
-		"RightUpRight",
-		"RightDownLeft",
-		"RightDownRight",
+
+
+		"MoveLeft",
+		"MoveRight",
+		"MoveUp",
+		"MoveDown",
+		"MoveUpLeft",
+		"MoveUpRight",
+		"MoveDownLeft",
+		"MoveDownRight",
+
+		"Attack",
+		"Harvest",
+
 		"Build0",
 		"Build1",
 		"Build2",
-		"NoAction"
+
+		"NoAction",
 	};
 
 }
