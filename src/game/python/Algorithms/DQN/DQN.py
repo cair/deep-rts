@@ -112,12 +112,3 @@ class DQN:
 			R[i] = self.rewards[episode][frame]
 		cost = self.train_fn([S, NS, A, R, T])
 		return cost
-
-
-	def reset():
-		self.observation = pyai.getState()
-		self.done = False
-		self.new_episode()
-		self.total_cost = 0.0
-		self.total_reward = 0.0
-		self.frame = 0

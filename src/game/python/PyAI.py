@@ -40,11 +40,10 @@ class PyAI:
         self.current_reward = reward
 
     def doAction(self):
-
         observation = self.getState()
-
 		# Get action based on state observation
         actionID, values = self.agent.act(observation)
+        self.frame += 1
 
         return actionID
 
@@ -55,8 +54,4 @@ class PyAI:
         self.total_reward = 0.0
         self.frame = 0
 
-    def getTime(self):
-        pass
-
-    def nextFrame(self):
-        pass
+        

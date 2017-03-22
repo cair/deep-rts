@@ -4,6 +4,10 @@
   "fps": 60,
   "ups": 600,
   "ticks_per_sec": 10,
+  "tick_reset": 12000,
+  "ai": {
+	"max_apm": 600
+  },
   "caption": {
     "window": true,
     "console": true

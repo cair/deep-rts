@@ -26,6 +26,10 @@ public:
         return ups;
     }
 
+	uint32_t getAPM() {
+		return apm;
+	}
+
     double_t getFPSInterval() {
         return 1000.0 / getFPS();
     }
@@ -65,6 +69,9 @@ public:
 		return display;
 	}
 
+	const int getTickReset() {
+		return tickReset;
+	}
 
 
 
@@ -78,6 +85,8 @@ private:
 
     int fps;
     int ups;
+	int apm;
+	int tickReset;
     bool mechanicTownHall;
     int tickModifier;
 	bool captionConsole;
@@ -94,7 +103,10 @@ private:
 
         json mechanics = configuration["mechanics"];
 		json logging = configuration["logging"];
+		json ai = configuration["ai"];
 
+		tickReset = configuration["tick_reset"];
+		apm = ai["max_apm"];
         fps = configuration["fps"];
         ups = configuration["ups"];
         tickModifier = configuration["ticks_per_sec"];

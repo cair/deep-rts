@@ -56,7 +56,7 @@ PyAI::PyAI(PyObject *pyaiInstance) :
 	///
 	G_ROW = 30;
 	G_COL = 30;
-	G_FEATURES = 28;
+	G_FEATURES = 8;
 
 	stateBufferSize = G_ROW * G_COL * G_FEATURES;
 	stateBuffer = (char *)malloc(sizeof(char) * stateBufferSize);      // allocate MANY ints
@@ -76,9 +76,10 @@ void PyAI::update()
 {
 	updateState(); // Update state on python side (Python)
 
-	train(); // Train AI (Python)
 
 	int actionID = findAction(); // Determine which action to take (Python)
+
+	train(); // Train AI (Python)
 
 	auto actionC = getAction(actionID); // Translate Action (C++)
 
@@ -89,6 +90,7 @@ void PyAI::update()
 
 void PyAI::reset()
 {
+	lastPlayerScore = player->getScore();
 	PyObject *pyReset = PyObject_CallMethod(pyaiInstance, "reset", NULL); // PyObject_CallMethodObjArgs faster?
 	if (pyReset == NULL) {
 		PyErr_Print();
@@ -144,6 +146,76 @@ void PyAI::defineActionSpace()
 
 void PyAI::updateState()
 {
+	int c = 0;
+	for (auto &tile : game->map.tiles) {
+
+		/// Tile
+		//stateBuffer[c++] = (int)tile.id;// Layer
+		//stateBuffer[c++] = (int)tile.tileID; // Layer
+		//stateBuffer[c++] = (int)tile.oilYield;// Layer
+		//stateBuffer[c++] = (int)tile.getResources();// Layer
+		//stateBuffer[c++] = (int)tile.lumberYield;// Layer
+		stateBuffer[c++] = (int)tile.walkable;// Layer
+		stateBuffer[c++] = (int)tile.harvestable;// Layer
+		//stateBuffer[c++] = (int)tile.swimable;// Layer
+
+
+		Unit* occupant = tile.getOccupant();
+		if (occupant) {
+			// Unit
+			//stateBuffer[c++] = (int)occupant->id;// Layer
+			stateBuffer[c++] = (int)occupant->typeId;// Layer
+			stateBuffer[c++] = (int)occupant->current_state;// Layer
+			//stateBuffer[c++] = (int)occupant->goldCarry;// Layer
+			//stateBuffer[c++] = (int)occupant->lumberCarry;// Layer
+			//stateBuffer[c++] = (int)occupant->oilCarry;// Layer
+			//stateBuffer[c++] = (int)occupant->carryCapacity;// Layer
+			stateBuffer[c++] = (int)occupant->direction;// Layer
+			//stateBuffer[c++] = (int)occupant->damageMax;// Layer
+			//stateBuffer[c++] = (int)occupant->damageMin;// Layer
+			//stateBuffer[c++] = (int)occupant->damagePiercing;// Layer
+			//stateBuffer[c++] = (int)occupant->damageRange;// Layer
+			stateBuffer[c++] = (int)occupant->health / (int)occupant->health_max; // Layer
+			//stateBuffer[c++] = (int)occupant->health_max;//health_max;// Layer  // TODO
+			//stateBuffer[c++] = (int)occupant->military;// Layer
+			//stateBuffer[c++] = (int)occupant->recallable;// Layer
+			//stateBuffer[c++] = (int)occupant->sight;// Layer
+			//stateBuffer[c++] = (int)occupant->structure;// Layer
+
+			// Player
+			stateBuffer[c++] = (int)occupant->player_->id_;// Layer
+			stateBuffer[c++] = (int)occupant->player_->faction;// Layer
+
+		}
+		else {
+			//stateBuffer[c++] = 0;
+			stateBuffer[c++] = 0;
+			stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+			//stateBuffer[c++] = 0;
+
+			// Player
+			stateBuffer[c++] = 0;
+			stateBuffer[c++] = 0;
+		}
+
+	}
+
+
+
 	PyObject *byteArr;
 
 	byteArr = PyByteArray_FromStringAndSize(stateBuffer, stateBufferSize);

@@ -28,6 +28,8 @@ Game::Game(uint8_t _nplayers, bool setup):
     n_players = _nplayers;
     setFPS(Config::getInstance().getFPS());
     setUPS(Config::getInstance().getUPS());
+	setAPM(Config::getInstance().getAPM());
+	tickReset = Config::getInstance().getTickReset();
 
 
 
@@ -68,6 +70,12 @@ void Game::setUPS(uint32_t ups_){
     _update_interval = 1000000 / ups;
 }
 
+void Game::setAPM(uint16_t apm_)
+{
+	apm = apm_;
+	_apm_interval = 1000000 / (apm / 60.0);
+}
+
 void Game::triggerResetNow()
 {
 	triggerReset = true;
@@ -102,12 +110,9 @@ void Game::reset()
 
 	// Sav
 	if (doScoreLogging) {
-		
 		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + ".flat");
 		scoreLog.reset();
-
 	}
-
 	gameNum += 1;
 
 	
@@ -123,6 +128,7 @@ void Game::loop() {
 	auto nowMicroSec = now.asMicroseconds();
     _render_next = nowMicroSec + _render_interval;
     _update_next = nowMicroSec + _update_interval;
+	_apm_next = nowMicroSec + _apm_interval;
     _stats_next = nowMicroSec + 0;
 
 
@@ -131,7 +137,7 @@ void Game::loop() {
 		nowMicroSec = now.asMicroseconds();
         if (nowMicroSec >= _update_next) {
 			// If reset flag is set
-			if (triggerReset) {
+			if (ticks > tickReset || triggerReset) {
 				reset();
 				triggerReset = false;
 
@@ -154,9 +160,26 @@ void Game::loop() {
 			// Iterate through all players
 			for (auto &p : players) {
 				p.update();
-				if(p.algorithm_)
-					p.algorithm_->update();
 			}
+
+			///
+			/// Algorithm Update
+			///
+			if (nowMicroSec >= _apm_next) {
+				for (auto &p : players) {
+					if (!p.algorithm_) continue;
+
+					p.algorithm_->update();
+				}
+
+				_apm_next += _apm_interval;
+			}
+
+			
+				
+					
+
+
 
 			// Output all scores etc to file for each game
 			if (doScoreLogging) {

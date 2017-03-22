@@ -17,7 +17,6 @@ dqn = DQN(state_size=observation_space.shape,
               save_name="deeprts")  # Create new DQN using the pyai hook
 pyai_dqn.agent = dqn	# Set Agent to DQN
 pyai_dqn.reset()
-print("woop")
 
 
 

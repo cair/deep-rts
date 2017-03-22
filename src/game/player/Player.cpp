@@ -164,6 +164,10 @@ void Player::reset()
 	actionQueue.clear();
 	targetedUnit = NULL;
 	actionStatistics[20] = { 0 };
+
+	if (algorithm_) {
+		algorithm_->reset();
+	}
 }
 
 

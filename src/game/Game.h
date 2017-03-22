@@ -31,10 +31,12 @@ class Game {
     uint64_t _update_next;
 	uint64_t _render_next;
 	uint64_t _stats_next;
+	uint64_t _apm_next;
 
     int32_t _update_interval = 0;
 	int32_t _render_interval = 0;
 	int32_t _caption_interval = 1000;
+	int32_t _apm_interval = 0;
 
 	uint32_t _update_delta = 0;
 	uint32_t _render_delta = 0;
@@ -52,6 +54,8 @@ public:
     Tilemap map;
 	uint32_t fps;
 	uint32_t ups;
+	uint32_t apm;
+	uint32_t tickReset;
 
 	uint64_t getSeconds();
 	uint64_t getFrames();
@@ -83,6 +87,7 @@ public:
 
     void setFPS(uint32_t fps_);
     void setUPS(uint32_t ups_);
+	void setAPM(uint16_t apm_);
 	void triggerResetNow();
 
 	uint32_t currentFPS = 0;
