@@ -8,73 +8,52 @@ import numpy as np
 
 class PyAI:
     
-    def __init__(self):
+    def __init__(self, name):
         self.agent = None
-        self.__ai__ = PyAPIRegistry.hook(self)
-        self.desc = [
-            "t_id",
-            "oil_y",
-            "resources",
-            "lumber_y",
-            "walkable",
-            "harvestable",
-            "swimable",
-            "u_id",
-            "u_type_id",
-            "u_current_state",
-            "gold_carry",
-            "lumber_carry",
-            "oil_carry",
-            "carry_capacity",
-            "direction",
-            "damage_max",
-            "damage_min",
-            "damage_piercing",
-            "damage_range",
-            "health",
-            "health_max",
-            "military",
-            "recallable",
-            "sight",
-            "structure",
-            "player_id",
-            "faction"]
-        self.last_score = 0
-    
+        self.name = name
 
-    def reset(self):
-        PyAPIRegistry.reset(self.__ai__)
-        self.last_score = 0
+        self.last_score = 0	# Previous recorded player score
+        self.total_cost = 0
+        self.total_reward = 0
+        self.current_reward = 0
+        self.frame = 0
+        self.state_terminal = False
+
+        self.state_array = None # byte array of current state (can be transformed etc)
+        self.state_rows = None # How many rows the state has
+        self.state_cols = None # How many columns the state has
+        self.state_depth = None # How deep the state is (Channels)
+
+
+        self.__ai__ = PyAPIRegistry.hook(self)	# Hook to the C++ object side
 
     def getState(self):
-    
-        pair = PyAPIRegistry.get_state(self.__ai__)
-        buf_ptr = pair[0]
-        buf_len = pair[1]
-        ROWS =  pair[2]
-        COLS = pair[3]
-        DEPTH = pair[4]
-
-
-        memarray = (ctypes.c_int*buf_len).from_address(buf_ptr)
-
-        np_arr = np.array(memarray)
-        np_arr = np_arr.reshape((ROWS, COLS, DEPTH)).transpose()
-
-
+        np_arr = np.array(self.state_array)
+        np_arr = np_arr.reshape((self.state_rows, self.state_cols, self.state_depth)).transpose()
         #np_arr = np.expand_dims(np_arr, axis=0)
         return np_arr
 
-    def doAction(self, action):
-        pair = PyAPIRegistry.do_action(self.__ai__, action)
+    def train(self, reward):
+        # Calculate cost
+        self.total_cost += self.agent.train(reward)
+        self.total_reward += reward
+        self.current_reward = reward
+
+    def doAction(self):
+
         observation = self.getState()
-        score = pair[0] # Reward
-        done = pair[1] # Terminal
-        info = pair[2] # Ticks
-        reward = score - self.last_score
-        self.last_score = score
-        return observation, reward , done, info
-        
+
+		# Get action based on state observation
+        actionID, values = self.agent.act(observation)
+
+        return actionID
+
+    def reset(self):
+        self.state_terminal = False
+        self.agent.new_episode()
+        self.total_cost = 0.0
+        self.total_reward = 0.0
+        self.frame = 0
 
     def getTime(self):
         pass

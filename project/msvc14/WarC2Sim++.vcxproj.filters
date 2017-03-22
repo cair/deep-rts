@@ -171,9 +171,6 @@
     <ClInclude Include="..\..\src\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game\unit\UnitManager.h">
       <Filter>Source Files\game\unit</Filter>
     </ClInclude>
@@ -184,6 +181,12 @@
       <Filter>Source Files\game\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game\third_party\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\algorithms\base\AIRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -263,11 +266,14 @@
     <ClCompile Include="..\..\src\game\util\Pathfinder.cpp">
       <Filter>Source Files\game\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAPI.cpp">
-      <Filter>Source Files\game\algorithms</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\game\unit\UnitManager.cpp">
       <Filter>Source Files\game\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAI.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\algorithms\base\AIRepository.cpp">
+      <Filter>Source Files\game\algorithms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,9 +291,6 @@
     </None>
     <None Include="..\..\README.md">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\src\game\python\DQN.py">
-      <Filter>Source Files\game\python</Filter>
     </None>
     <None Include="packages.config" />
     <None Include="..\..\src\game\python\Main.py">

@@ -307,7 +307,8 @@ void Player::setName(std::string name) {
 	name_ = name;
 }
 
-void Player::setAlgorithm(std::shared_ptr<Algorithm> theAlg) {
+void Player::setAlgorithm(Algorithm *theAlg) {
+	theAlg->setPlayer(this);
 	algorithm_ = theAlg;
 }
 

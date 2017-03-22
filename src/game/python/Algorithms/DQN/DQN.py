@@ -89,7 +89,7 @@ class DQN:
 		self.actions[-1].append(action)
 		return action, values
 
-	def observe(self, reward):
+	def train(self, reward):
 		self.rewards[-1].append(reward)
 		return self.iterate()
 
@@ -114,7 +114,10 @@ class DQN:
 		return cost
 
 
-
-
-
-
+	def reset():
+		self.observation = pyai.getState()
+		self.done = False
+		self.new_episode()
+		self.total_cost = 0.0
+		self.total_reward = 0.0
+		self.frame = 0

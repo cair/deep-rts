@@ -76,8 +76,8 @@ void MCTS::update() {
 
 }
 
-void MCTS::terminal() {
-
+bool MCTS::terminal() {
+	return false;
 }
 
 std::shared_ptr<BaseAction> MCTS::findBestAction() {

@@ -19,39 +19,25 @@ AlgoRandom::AlgoRandom(Player *player) : Algorithm(player), rgen(rd()) {
         // Select first available unit
         player->targetedUnit = &player->game_.getUnit(player->unitIndexes[0]);
     }
-
-	actionInterval = 1000 / 50;
-	nextAction = clock();
 }
 
 void AlgoRandom::update() {
-    // Tick happended
-	now = clock();
-	if (now > nextAction) {
-		std::uniform_int_distribution<int> dist(0, actionSpace.size() - 1);
-		int randomIndex = dist(rgen);
-		std::cout << randomIndex << std::endl;
-		Constants::Action actionID = actionSpace[randomIndex];
-		player->queueAction(actionID);
-		nextAction = clock() + actionInterval;
-	}
-	
+
+	// AI Find best action
+	int actionID = findAction();
+
+	// Translate AI action to Generic action
+	Constants::Action actionC = getAction(actionID);
+
+	// Queue Action
+	player->queueAction(actionC);
 }
 
-void AlgoRandom::terminal() {
 
-}
-
-std::shared_ptr<BaseAction> AlgoRandom::findBestAction(Unit & unit) {
-    int randomIndex = rand() % actionSpace.size();
-    int actionID = actionSpace[randomIndex];
-    std::shared_ptr<BaseAction> selectedAction = getAction(actionID, &unit);
-    assert(selectedAction);
-    return selectedAction;
-}
-
-void AlgoRandom::doAction(std::shared_ptr<BaseAction> action) {
-    action->doAction();
+int AlgoRandom::findAction() {
+	std::uniform_int_distribution<int> dist(0, actionSpace.size() - 1);
+	int randomIndex = dist(rgen);
+    return randomIndex;
 }
 
 void AlgoRandom::defineActionSpace() {

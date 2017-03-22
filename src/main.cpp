@@ -25,7 +25,8 @@ void sleep(int sleepMs)
 #include "game/algorithms/RANDOM/AlgoRandom.h"
 #include "game/algorithms/MCTS/MCTS.h"
 //#include "game/algorithms/REMOTEAI/zmqAI.h"
-#include "game/algorithms/PYAPI/PyAPI.h"
+#include "game/algorithms/PYAPI/PyAI.h"
+#include "game/algorithms/base/AIRepository.h"
 
 int main() {
 	
@@ -37,23 +38,22 @@ int main() {
     Player &player3 = g->addPlayer();
     g->start();
 
-	PyAPI::init(); // Init the API
-
-	volatile int x = 0;
-	while (!PyAPI::loaded) { x++; x += PyAPI::loaded; x--; }
+	PyAI::start(); // Init the API
 
 
-	//std::shared_ptr<zmqAI> ai = zmqAI::createInstance(0, 0);
-    //player0.setAlgorithm(algorithm0);
+	
+
+	Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
+    player0.setAlgorithm(algorithm0);
 
     //std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
-	std::shared_ptr<AlgoRandom> algorithm1 = std::shared_ptr<AlgoRandom>(new AlgoRandom(&player1));
+	AlgoRandom *algorithm1 = new AlgoRandom(&player1);
 	player1.setAlgorithm(algorithm1);
 
-    std::shared_ptr<AlgoRandom> algorithm2 = std::shared_ptr<AlgoRandom>(new AlgoRandom(&player2));
+	AlgoRandom *algorithm2 = new AlgoRandom(&player2);
     player2.setAlgorithm(algorithm2);
 
-    std::shared_ptr<AlgoRandom> algorithm3 = std::shared_ptr<AlgoRandom>(new AlgoRandom(&player3));
+    AlgoRandom *algorithm3 = new AlgoRandom(&player3);
     player3.setAlgorithm(algorithm3);
 
 

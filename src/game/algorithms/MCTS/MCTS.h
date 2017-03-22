@@ -14,7 +14,7 @@ class MCTS: public Algorithm  {
 public:
     MCTS(Player *player);
     virtual void update();
-    virtual void terminal();
+    virtual bool terminal();
     virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);
     virtual void doAction(std::shared_ptr<BaseAction> action);
     virtual void defineActionSpace();

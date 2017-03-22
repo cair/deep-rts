@@ -47,7 +47,7 @@ public:
 	int id_;
 	bool defeated;
 	std::string name_;
-	std::shared_ptr<Algorithm> algorithm_ = NULL;
+	Algorithm *algorithm_ = NULL;
 	int statGoldGather;
 	int statLumberGather;
 	int statOilGather;
@@ -102,7 +102,7 @@ public:
 
 
 
-    void setAlgorithm(std::shared_ptr<Algorithm> theAlg);
+    void setAlgorithm(Algorithm *theAlg);
 
 
 

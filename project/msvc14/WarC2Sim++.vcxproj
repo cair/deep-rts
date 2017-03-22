@@ -21,10 +21,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\game\action\BaseAction.h" />
     <ClInclude Include="..\..\src\game\action\RightClickAction.h" />
+    <ClInclude Include="..\..\src\game\algorithms\base\AIRepository.h" />
     <ClInclude Include="..\..\src\game\algorithms\base\Algorithm.h" />
     <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTS.h" />
     <ClInclude Include="..\..\src\game\algorithms\MCTS\MCTSNode.h" />
-    <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAPI.h" />
+    <ClInclude Include="..\..\src\game\algorithms\PYAPI\PyAI.h" />
     <ClInclude Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.h" />
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\BaseRemoteAI.h" />
     <ClInclude Include="..\..\src\game\algorithms\REMOTEAI\zmqAI.h" />
@@ -65,10 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\action\RightClickAction.cpp" />
+    <ClCompile Include="..\..\src\game\algorithms\base\AIRepository.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\base\Algorithm.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTS.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\MCTS\MCTSNode.cpp" />
-    <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAPI.cpp" />
+    <ClCompile Include="..\..\src\game\algorithms\PYAPI\PyAI.cpp" />
     <ClCompile Include="..\..\src\game\algorithms\RANDOM\AlgoRandom.cpp" />
     <ClCompile Include="..\..\src\game\environment\Tile.cpp" />
     <ClCompile Include="..\..\src\game\environment\Tilemap.cpp" />
@@ -100,7 +102,6 @@
     <None Include="..\..\src\game\python\Algorithms\DQN\DQN.py" />
     <None Include="..\..\src\game\python\Algorithms\DQN\__init__.py" />
     <None Include="..\..\src\game\python\Algorithms\__init__.py" />
-    <None Include="..\..\src\game\python\DQN.py" />
     <None Include="..\..\src\game\python\Main.py" />
     <None Include="..\..\src\game\python\PyAI.py" />
     <None Include="..\..\src\proto\GameMessage.proto" />
