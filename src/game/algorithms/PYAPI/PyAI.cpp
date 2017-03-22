@@ -74,6 +74,13 @@ PyAI::PyAI(PyObject *pyaiInstance) :
 
 void PyAI::update()
 {
+	///
+	/// Do nothing when defeated
+	///
+	if (player->defeated) {
+		return;
+	}
+
 	updateState(); // Update state on python side (Python)
 
 
