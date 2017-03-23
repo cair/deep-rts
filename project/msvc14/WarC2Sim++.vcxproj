@@ -35,7 +35,10 @@
     <ClInclude Include="..\..\src\game\environment\Tilemap.h" />
     <ClInclude Include="..\..\src\game\Game.h" />
     <ClInclude Include="..\..\src\game\graphics\Animation.h" />
+    <ClInclude Include="..\..\src\game\graphics\GraphicTile.h" />
+    <ClInclude Include="..\..\src\game\graphics\GraphicTilemap.h" />
     <ClInclude Include="..\..\src\game\graphics\GUI.h" />
+    <ClInclude Include="..\..\src\game\graphics\ResourceHandler.h" />
     <ClInclude Include="..\..\src\game\lib\ColorConverter.h" />
     <ClInclude Include="..\..\src\game\lib\csv.h" />
     <ClInclude Include="..\..\src\game\lib\Pathfinder.h" />
@@ -76,6 +79,8 @@
     <ClCompile Include="..\..\src\game\environment\Tilemap.cpp" />
     <ClCompile Include="..\..\src\game\Game.cpp" />
     <ClCompile Include="..\..\src\game\graphics\Animation.cpp" />
+    <ClCompile Include="..\..\src\game\graphics\GraphicTile.cpp" />
+    <ClCompile Include="..\..\src\game\graphics\GraphicTilemap.cpp" />
     <ClCompile Include="..\..\src\game\graphics\GUI.cpp" />
     <ClCompile Include="..\..\src\game\loaders\MapLoader.cpp" />
     <ClCompile Include="..\..\src\game\player\Player.cpp" />

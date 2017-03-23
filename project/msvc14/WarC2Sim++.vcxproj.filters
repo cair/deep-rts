@@ -189,6 +189,15 @@
     <ClInclude Include="..\..\src\game\algorithms\base\AIRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\game\graphics\GraphicTile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\graphics\GraphicTilemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\graphics\ResourceHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game\action\RightClickAction.cpp">
@@ -274,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game\algorithms\base\AIRepository.cpp">
       <Filter>Source Files\game\algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\graphics\GraphicTilemap.cpp">
+      <Filter>Source Files\game\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game\graphics\GraphicTile.cpp">
+      <Filter>Source Files\game\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

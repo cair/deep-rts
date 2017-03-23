@@ -577,9 +577,11 @@ void GUI::drawUnits() {
 
 			//u.testSprite->setColor(u.player_->playerColor);
 			sf::Sprite &sprite = Animation::getInstance().getNext(u);
-			sprite.setPosition(map.gTiles[u.id].getPixelPosition());
-            auto &color = u.player_->playerColor;
-			sprite.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
+			sprite.setPosition(map.gTiles[u.tile->id].getPixelPosition());
+
+            auto &colorData = u.player_->playerColor;
+			auto color = sf::Color(std::get<0>(colorData), std::get<1>(colorData), std::get<2>(colorData));
+			sprite.setColor(color);
 			window.draw(sprite);
 		}
 	}
@@ -612,9 +614,9 @@ void GUI::drawScoreBoard() {
         text.setString(p.name_ + ": " + std::to_string(p.getScore()) + " | APM: " + std::to_string(p.apm) + " | AQueue: " + std::to_string(p.getQueueSize()));
         auto &color = p.playerColor;
 #if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-		text.setFillColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
+		text.setFillColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 #else
-		text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
+		text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 #endif
         text.setPosition(10, 920 - offsetY);
         offsetY += 25;
@@ -630,7 +632,7 @@ void GUI::drawPlayerSelectedUnit() {
 			sf::RectangleShape rectangle(sf::Vector2f((p.targetedUnit->width * 32) + 6, (p.targetedUnit->height * 32) + 6));
 			rectangle.setFillColor(sf::Color::Transparent);
             auto &color = p.playerColor;
-			rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
+			rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 			rectangle.setOutlineThickness(2);
 			rectangle.setPosition(sf::Vector2f(p.targetedUnit->worldPosition.x - 2, p.targetedUnit->worldPosition.y - 2));
 
