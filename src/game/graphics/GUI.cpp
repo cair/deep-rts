@@ -634,7 +634,7 @@ void GUI::drawPlayerSelectedUnit() {
             auto &color = p.playerColor;
 			rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 			rectangle.setOutlineThickness(2);
-			rectangle.setPosition(sf::Vector2f(p.targetedUnit->worldPosition.x - 2, p.targetedUnit->worldPosition.y - 2));
+			rectangle.setPosition(sf::Vector2f((p.targetedUnit->worldPosition.x * 32) - 2, (p.targetedUnit->worldPosition.y * 32) - 2));
 
 			window.draw(rectangle);
 		}

@@ -70,6 +70,9 @@ Unit& Player::spawn(Tile &spawnPoint) {
 	assert(unit && "Unit was null for some reason");
 	unit->spawn(spawnPoint, unit->spawnDuration);
 
+	// Set targeted unit to newly spawned unit
+	targetedUnit = unit;
+
 
 	return *unit;
 }
