@@ -7,9 +7,7 @@
 
 #include <string>
 #include "../environment/Tile.h"
-
-#include <SFML/Graphics/Sprite.hpp>
-#include <memory>
+#include "../util/Position.h"
 
 class Unit;
 
@@ -45,10 +43,10 @@ public:
 	uint8_t height;
 	uint8_t width;
 
-	// GUI
-	bool needRedraw = true;
 	Tilemap &tilemap;
-    sf::Vertex vertices[4];
+
+	Position getPosition();
+
 
 	// Check functions
     bool isAttackable(Unit & unit);
@@ -65,8 +63,6 @@ public:
 	void setResources(uint16_t resource_count);
 	void takeResource(uint8_t n);
 
-	// Getters
-	sf::Vector2f getPixelPosition()const;
 	Unit* getOccupant();
 	uint16_t getResources();
 
@@ -74,20 +70,7 @@ public:
 	void reset();
 
 
-
-
-
-
-
-
-
-
-
-    
-
-   
-    
-
+	bool depleted = false;
 };
 
 

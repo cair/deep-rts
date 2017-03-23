@@ -1,16 +1,14 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-#include <SFML/Graphics/RectangleShape.hpp>
-#include "./Tile.h"
 #include "Tilemap.h"
-#include "../Constants.h"
+#include "./Tile.h"
 #include "../unit/Unit.h"
 
 Tilemap::Tilemap(std::string mapName) {
 	json mapData = MapLoader::loadFile(mapName);
 	json tilesData = MapLoader::tileProperties();
-	tileset = MapLoader::loadTexture();
+
 
 
     json tilesetData = mapData["tilesets"][0];
@@ -77,9 +75,6 @@ Tilemap::Tilemap(std::string mapName) {
                 tile.depleteTile = tileData["deplete_tile"];
             }
 
-
-            addTileVertices(tId, tWidth, tHeight, tFirstGid, tile);
-
             c++;
 
         }
@@ -87,25 +82,7 @@ Tilemap::Tilemap(std::string mapName) {
 
 }
 
-void Tilemap::addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid, Tile &tile)
-{
 
-    unsigned gid = tId + 1;
-    gid -= (firstgid - gid) > 0;
-    sf::Vector2u size = tileset.getSize();
-    unsigned mod = gid % (size.x / tileWidth);
-    unsigned div = gid / (size.x / tileWidth);
-
-    tile.vertices[0].position = sf::Vector2f(tile.x * tileWidth, tile.y * tileHeight);
-    tile.vertices[1].position = sf::Vector2f((tile.x + 1) * tileWidth, tile.y * tileHeight);
-    tile.vertices[2].position = sf::Vector2f((tile.x + 1) * tileWidth, (tile.y + 1) * tileHeight);
-    tile.vertices[3].position = sf::Vector2f(tile.x * tileWidth, (tile.y + 1) * tileHeight);
-
-    tile.vertices[0].texCoords = sf::Vector2f((mod * tileWidth) + mod, (div * tileHeight) + div);
-    tile.vertices[1].texCoords = sf::Vector2f(((mod + 1) * tileWidth) + mod, (div * tileHeight) + div);
-    tile.vertices[2].texCoords = sf::Vector2f(((mod + 1) * tileWidth) + mod, ((div + 1) * tileHeight) + div);
-    tile.vertices[3].texCoords = sf::Vector2f((mod * tileWidth) + mod, ((div + 1) * tileHeight) + div);
-}
 
 std::vector<Tile> &Tilemap::getTiles() {
 	return tiles;

@@ -69,7 +69,7 @@ void Unit::setPosition(Tile &newTile) {
 
     newTile.setOccupant(this);         // Set occupant of new tile to this
     tile = &newTile;                     // Set this units tile to new tile
-    sf::Vector2f newPos = tile->getPixelPosition();
+    Position newPos = tile->getPosition();
     setDirection(newPos.x, newPos.y);
     worldPosition = newPos;
 }
@@ -292,11 +292,11 @@ int Unit::distance(Unit & target) {
 
 }
 
-sf::Vector2f Unit::distanceVector(Tile &target){
+Position Unit::distanceVector(Tile &target){
     int dx = tile->x - target.x;
     int dy = tile->y - target.y;
 
-    return sf::Vector2f(dx, dy);
+    return Position(dx, dy);
 }
 
 Unit* Unit::closestRecallBuilding() {
@@ -343,7 +343,7 @@ int Unit::getDamage(Unit &target) {
 
 }
 
-void Unit::setDirection(sf::Vector2f &dir){
+void Unit::setDirection(Position &dir){
     setDirection(dir.x, dir.y);
 }
 

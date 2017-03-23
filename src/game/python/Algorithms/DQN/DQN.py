@@ -1,6 +1,15 @@
 import os
-os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0, lib.cnmem=0.8"
+from Util import hasCUDASupport
 os.environ["KERAS_BACKEND"] = "theano"
+if(hasCUDASupport()):
+	os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0, lib.cnmem=0.8"
+else:
+	os.environ["THEANO_FLAGS"] ="floatX=float32,device=cpu"
+
+
+
+
+
 import random
 import numpy
 from keras import backend as K

@@ -6,7 +6,7 @@
 #define WARC2SIM_SPRITEMANAGER_H
 
 
-#include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <vector>
 #include <map>
 #include "../unit/Unit.h"

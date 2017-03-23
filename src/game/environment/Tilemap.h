@@ -6,9 +6,7 @@
 #define WARC2SIM_TILESET_H
 
 
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/VertexArray.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
+
 #include "../Constants.h"
 #include "Tile.h"
 #include "../third_party/json.hpp"
@@ -19,7 +17,6 @@ private:
 
 
 public:
-    sf::Texture tileset;
     std::vector<Tile> tiles;
     std::vector<int> spawnTiles;
 
@@ -31,10 +28,8 @@ public:
     float tileWorldDimension;
     Tilemap(std::string mapName);
 
-    void addTileVertices(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid, Tile &tile);
 	std::vector<Tile>& getTiles();
     std::vector<Tile *> neighbors(Tile &tile, Constants::Pathfinding type);
-
     std::vector<Tile *> getTiles(Tile *source, int width, int height);
 
     Tile *getTile(int x, int y);

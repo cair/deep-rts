@@ -14,7 +14,7 @@
 #include "environment/Tilemap.h"
 #include "action/BaseAction.h"
 #include "./util/ScoreLogSerializer.h"
-#include <SFML/System.hpp>
+#include <SFML/System/Clock.hpp>
 
 
 class GUI;

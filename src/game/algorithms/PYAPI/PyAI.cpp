@@ -19,11 +19,12 @@ void PyAI::start() {
 	Py_SetProgramName(argv[0]);	// Set application name
 	PySys_SetArgv(argc, argv); // Set arguments
 
-
-	pName = PyUnicode_DecodeFSDefault("Main");	// Name of module
+	pName = PyUnicode_FromString("Main");
+	//pName = PyUnicode_DecodeFSDefault("Main");	// Name of module
 	std::cout << "Loading python environment. Please wait!" << std::endl;
 	pModule = PyImport_Import(pName); // Get module into C++
 	Py_DECREF(pName);
+
 
 	if (pModule == NULL) {
 		PyErr_Print();

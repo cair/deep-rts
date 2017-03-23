@@ -3,7 +3,7 @@
 //
 
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+
 #include <memory>
 #include "Animation.h"
 #include "../Constants.h"

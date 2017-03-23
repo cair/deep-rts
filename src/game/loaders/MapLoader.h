@@ -8,9 +8,7 @@
 #include <string>
 
 #include "../environment/Tile.h"
-#include <SFML/Graphics/Texture.hpp>
 #include "../third_party/json.hpp"
-
 #include "../environment/Tilemap.h"
 
 using json = nlohmann::json;
@@ -18,14 +16,11 @@ using json = nlohmann::json;
 
 class MapLoader {
 
-    
-
-
 public:
 	static json loadFile(std::string mapFile);
     static Tilemap getTileset(json tilesData, json basic_json);
     static json tileProperties();
-    static sf::Texture loadTexture();
+
 };
 
 

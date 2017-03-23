@@ -6,14 +6,13 @@
 
 
 #include "graphics/GUI.h"
-#include "graphics/Animation.h"
 #include "Config.h"
 #include "third_party/json.hpp"
 
 std::unordered_map<int, Game*> Game::games;
 
 Game::Game(uint8_t _nplayers, bool setup):
-        map(Tilemap("contested-4v4.json")),
+		map(Tilemap("contested-4v4.json")),
 		doCaptionConsole(Config::getInstance().getCaptionConsole()),
 		doCaptionWindow(Config::getInstance().getCaptionWindow()),
 		doDisplay(Config::getInstance().getDisplay()),
@@ -36,19 +35,14 @@ Game::Game(uint8_t _nplayers, bool setup):
 	id = static_cast<uint8_t>(games.size());
 	games[id] = this;
 
-
-    if(setup)
-        Animation::getInstance().setup();
-
-
 }
 
 void Game::createPlayers(){
 
-    for (uint8_t i = 0; i < n_players; i++) {
-        addPlayer();
+	for (uint8_t i = 0; i < n_players; i++) {
+		addPlayer();
 
-    }
+	}
 
 }
 
@@ -59,15 +53,15 @@ void Game::initGUI(){
 
 
 void Game::setFPS(uint32_t fps_){
-    fps = fps_;
-    _render_interval = 1000000 /  fps;
+	fps = fps_;
+	_render_interval = 1000000 /  fps;
 
 
 }
 
 void Game::setUPS(uint32_t ups_){
-    ups = ups_;
-    _update_interval = 1000000 / ups;
+	ups = ups_;
+	_update_interval = 1000000 / ups;
 }
 
 void Game::setAPM(uint16_t apm_)
@@ -82,11 +76,11 @@ void Game::triggerResetNow()
 }
 
 void Game::start(){
-    this->running = true;
+	this->running = true;
 }
 
 void Game::stop(){
-    this->running = false;
+	this->running = false;
 }
 
 void Game::reset()
@@ -115,16 +109,16 @@ void Game::reset()
 	}
 	gameNum += 1;
 
-	
+
 
 }
 
 
 void Game::loop() {
 
-	
 
-    sf::Time now = clock.getElapsedTime();
+
+	sf::Time now = clock.getElapsedTime();
 	auto nowMicroSec = now.asMicroseconds();
     _render_next = nowMicroSec + _render_interval;
     _update_next = nowMicroSec + _update_interval;
@@ -132,10 +126,10 @@ void Game::loop() {
     _stats_next = nowMicroSec + 0;
 
 
-    while(this->running) {
+	while(this->running) {
 		now = clock.getElapsedTime();		// Update clock
 		nowMicroSec = now.asMicroseconds();
-        if (nowMicroSec >= _update_next) {
+		if (nowMicroSec >= _update_next) {
 			// If reset flag is set
 			if (ticks > tickReset || triggerReset) {
 				reset();
@@ -151,11 +145,11 @@ void Game::loop() {
 
 
 
-            // Iterate through all units
-            for(auto &unit : units) {
+			// Iterate through all units
+			for(auto &unit : units) {
 				if (unit.removedFromGame) continue;		// Skip unit that is removed from game
 				unit.update();
-            }
+			}
 
 			// Iterate through all players
 			for (auto &p : players) {
@@ -183,7 +177,7 @@ void Game::loop() {
 
 			// Output all scores etc to file for each game
 			if (doScoreLogging) {
-				
+
 				int i = 0;
 				for (auto &p : players) {
 					scoreLog.addElement(i++, p); // Add element for player
@@ -192,29 +186,29 @@ void Game::loop() {
 			}
 
 			// Update Counters and statistics
-            _update_next += _update_interval;
-            _update_delta += 1;
-            ticks += 1;
+			_update_next += _update_interval;
+			_update_delta += 1;
+			ticks += 1;
 
-        }
+		}
 
-        if (doDisplay && nowMicroSec >= _render_next) {
-            // Render
+		if (doDisplay && nowMicroSec >= _render_next) {
+			// Render
 
-            gui->update();
-            gui->render();
+			gui->update();
+			gui->render();
 
 
-            this->_render_next += this->_render_interval;
-            this->_render_delta += 1;
-        }
+			this->_render_next += this->_render_interval;
+			this->_render_delta += 1;
+		}
 
-        if (nowMicroSec >= this->_stats_next) {
+		if (nowMicroSec >= this->_stats_next) {
 
 			if (doDisplay && doCaptionWindow) {
-				gui->caption();
+				//gui->caption();
 			}
-           
+
 			if (doCaptionConsole) {
 				std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
 			}
@@ -226,16 +220,16 @@ void Game::loop() {
 					p.apm_counter = 0;
 				}
 			}
-           
 
-            currentFPS = _render_delta;
-            currentUPS = _update_delta;
-            _render_delta = 0;
-            _update_delta = 0;
-            _stats_next += 1000000;
-        }
 
-    }
+			currentFPS = _render_delta;
+			currentUPS = _update_delta;
+			_render_delta = 0;
+			_update_delta = 0;
+			_stats_next += 1000000;
+		}
+
+	}
 
 }
 
@@ -244,7 +238,7 @@ Tilemap &Game::getMap() {
 }
 
 uint64_t Game::getFrames() {
-    return this->ticks;
+	return this->ticks;
 }
 
 uint32_t Game::getGameCount()
@@ -260,38 +254,38 @@ Game * Game::getGame(uint8_t id)
 }
 
 uint64_t Game::getSeconds() {
-    return this->ticks / Config::getInstance().getTickModifier();
+	return this->ticks / Config::getInstance().getTickModifier();
 }
 
 bool Game::checkTerminal(){
 
-    int c = 0;
-    for(auto &p : players) {
-        if(p.defeated){
-            c++;
-        }
-    }
+	int c = 0;
+	for(auto &p : players) {
+		if(p.defeated){
+			c++;
+		}
+	}
 
 
-    bool isTerminal = (c == 1);
-    terminal = isTerminal;
+	bool isTerminal = (c == 1);
+	terminal = isTerminal;
 	if (terminal) {
 		setUPS(0);
 	}
 
-    return terminal;
+	return terminal;
 }
 
 void Game::addAction(std::shared_ptr<BaseAction> action) {
-    executedActions.push_back(action);
+	executedActions.push_back(action);
 }
 
-Player &Game::addPlayer() { 
+Player &Game::addPlayer() {
 	players.push_back(Player(*this));
 	Player &player = players.back();
 
 	spawnPlayer(player);
-    return player;
+	return player;
 }
 
 void Game::spawnPlayer(Player &player) {
@@ -387,55 +381,55 @@ std::string Game::serialize_json() {
 
 	int i = 0;
 	for (auto &u : units) {
-			//std::vector<BaseState *> stateList;
-			//std::vector<Tile *> walking_path;
+		//std::vector<BaseState *> stateList;
+		//std::vector<Tile *> walking_path;
 
-			data["unitsDirection"].push_back(u.direction);
-			data["unitsHarvestTimer"] .push_back(u.harvestTimer);
-			data["unitsHarvestIterator"] .push_back(u.harvestIterator);
-			data["unitsLumberCarry"] .push_back(u.lumberCarry);
-			data["unitsOilCarry"] .push_back(u.oilCarry);
-			data["unitsGoldCarry"] .push_back(u.goldCarry);
-			data["unitsSpawnTimer"] .push_back(u.spawnTimer);
-			data["unitsBuildTimer"] .push_back(u.buildTimer);
-			data["unitsCombatTimer"] .push_back(u.combatTimer);
-			data["unitsWalkingTimer"] .push_back(u.walking_timer);
-			data["unitsType"] .push_back(u.typeId);
-			data["unitsHealth"] .push_back(u.health);
-			data["unitsIds"] .push_back(u.id);
-			data["unitsTileID"] .push_back((u.tile) ? u.tile->id : -1);
-			data["unitsState"] .push_back(u.state->id);
-			data["unitsPlayerID"].push_back(u.player_->id_);
+		data["unitsDirection"].push_back(u.direction);
+		data["unitsHarvestTimer"] .push_back(u.harvestTimer);
+		data["unitsHarvestIterator"] .push_back(u.harvestIterator);
+		data["unitsLumberCarry"] .push_back(u.lumberCarry);
+		data["unitsOilCarry"] .push_back(u.oilCarry);
+		data["unitsGoldCarry"] .push_back(u.goldCarry);
+		data["unitsSpawnTimer"] .push_back(u.spawnTimer);
+		data["unitsBuildTimer"] .push_back(u.buildTimer);
+		data["unitsCombatTimer"] .push_back(u.combatTimer);
+		data["unitsWalkingTimer"] .push_back(u.walking_timer);
+		data["unitsType"] .push_back(u.typeId);
+		data["unitsHealth"] .push_back(u.health);
+		data["unitsIds"] .push_back(u.id);
+		data["unitsTileID"] .push_back((u.tile) ? u.tile->id : -1);
+		data["unitsState"] .push_back(u.state->id);
+		data["unitsPlayerID"].push_back(u.player_->id_);
 
-			if (u.combatTarget)
-				data["unitsCombatTarget"].push_back(u.combatTarget->id);
-			else
-				data["unitsCombatTarget"].push_back(-1);
+		if (u.combatTarget)
+			data["unitsCombatTarget"].push_back(u.combatTarget->id);
+		else
+			data["unitsCombatTarget"].push_back(-1);
 
-			if (u.buildEntity)
-				data["unitsBuildEntity"].push_back(u.buildEntity->id);
-			else
-				data["unitsBuildEntity"].push_back(-1);
+		if (u.buildEntity)
+			data["unitsBuildEntity"].push_back(u.buildEntity->id);
+		else
+			data["unitsBuildEntity"].push_back(-1);
 
-			if (u.walkingGoal)
-				data["unitsWalkingGoal"].push_back(u.walkingGoal->id);
-			else
-				data["unitsWalkingGoal"].push_back(-1);
+		if (u.walkingGoal)
+			data["unitsWalkingGoal"].push_back(u.walkingGoal->id);
+		else
+			data["unitsWalkingGoal"].push_back(-1);
 
-			if (u.harvestTarget)
-				data["unitsHarvestTarget"].push_back(u.harvestTarget->id);
-			else
-				data["unitsHarvestTarget"].push_back(-1);
+		if (u.harvestTarget)
+			data["unitsHarvestTarget"].push_back(u.harvestTarget->id);
+		else
+			data["unitsHarvestTarget"].push_back(-1);
 
-			if (u.spawnTile)
-				data["unitsSpawnTile"].push_back(u.spawnTile->id);
-			else
-				data["unitsSpawnTile"].push_back(-1);
-
-
+		if (u.spawnTile)
+			data["unitsSpawnTile"].push_back(u.spawnTile->id);
+		else
+			data["unitsSpawnTile"].push_back(-1);
 
 
-			i++;
+
+
+		i++;
 	}
 
 	for(auto &p : players){
