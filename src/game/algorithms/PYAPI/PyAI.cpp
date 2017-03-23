@@ -136,9 +136,10 @@ int PyAI::findAction()
 		PyErr_Print();
 		return -1;
 	}
+	int actionID = PyLong_AsLong(pyActionID);
 	Py_DECREF(pyActionID);
 
-	int actionID = PyLong_AsLong(pyActionID);
+	
 	return actionID;
 }
 

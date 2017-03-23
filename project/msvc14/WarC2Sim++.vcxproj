@@ -104,6 +104,8 @@
     <None Include="..\..\src\game\data\config.json" />
     <None Include="..\..\src\game\data\maps\contested-4v4.json" />
     <None Include="..\..\src\game\data\tile_properties.json" />
+    <None Include="..\..\src\game\python\Algorithms\DQN2\DQN.py" />
+    <None Include="..\..\src\game\python\Algorithms\DQN2\__init__.py" />
     <None Include="..\..\src\game\python\Algorithms\DQN\DQN.py" />
     <None Include="..\..\src\game\python\Algorithms\DQN\__init__.py" />
     <None Include="..\..\src\game\python\Algorithms\__init__.py" />

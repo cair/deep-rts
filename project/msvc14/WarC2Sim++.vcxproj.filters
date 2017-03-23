@@ -55,6 +55,9 @@
     <Filter Include="Source Files\game\python\Algorithms\DQN">
       <UniqueIdentifier>{42f128b8-312b-4a07-b3ab-bde8acec2a36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\python\Algorithms\DQN2">
+      <UniqueIdentifier>{c1bdeb0a-df89-47ca-9631-7a74a14c1a71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game\action\BaseAction.h">
@@ -322,6 +325,12 @@
     </None>
     <None Include="..\..\src\game\python\Algorithms\DQN\DQN.py">
       <Filter>Source Files\game\python\Algorithms\DQN</Filter>
+    </None>
+    <None Include="..\..\src\game\python\Algorithms\DQN2\__init__.py">
+      <Filter>Source Files\game\python\Algorithms\DQN2</Filter>
+    </None>
+    <None Include="..\..\src\game\python\Algorithms\DQN2\DQN.py">
+      <Filter>Source Files\game\python\Algorithms\DQN2</Filter>
     </None>
   </ItemGroup>
 </Project>

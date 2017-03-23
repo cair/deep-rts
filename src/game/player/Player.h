@@ -41,7 +41,7 @@ public:
 
     Game &game_;
 
-    std::tuple<uint8_t , uint8_t, uint8_t, uint8_t> playerColor;
+    std::tuple<uint8_t , uint8_t, uint8_t> playerColor;
     Unit *targetedUnit = NULL;
 
 	int id_;
