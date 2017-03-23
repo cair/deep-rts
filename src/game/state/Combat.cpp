@@ -59,7 +59,7 @@ void Combat::end(Unit & unit)const{
 }
 
 void Combat::init(Unit & unit)const{
-    sf::Vector2f dir = unit.distanceVector(*unit.combatTarget->tile);
+    Position dir = unit.distanceVector(*unit.combatTarget->tile);
     unit.setDirection(dir);
 
 

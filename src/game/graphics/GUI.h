@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <memory>
+#include "GraphicTilemap.h"
 
 
 class Game;
@@ -34,6 +35,10 @@ private:
     sf::Sprite gameFrame;
     sf::Font font;
     sf::Text text;
+
+	GraphicTilemap map;
+
+
     Tile* selectedTile = NULL;
 	std::shared_ptr<sf::Music> music; // Just for completeness
 	int pIterator = 0;

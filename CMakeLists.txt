@@ -55,24 +55,31 @@ set(SOURCE_FILES
         src/game/algorithms/RANDOM/AlgoRandom.cpp
         src/game/algorithms/RANDOM/AlgoRandom.h
         src/game/algorithms/base/Algorithm.cpp
+		src/game/algorithms/base/AIRepository.cpp
+		src/game/algorithms/base/AIRepository.h
         src/game/action/BaseAction.h
         src/game/action/RightClickAction.cpp
         src/game/action/RightClickAction.h
-#        src/server/Server.cpp
-#        src/server/Server.h
-#        src/server/ServerWorker.h
-#        src/server/ServerTask.h
+
+
         src/game/state/StateManager.h
-	src/game/state/StateManager.cpp
-	src/game/util/ScoreLogSerializer.h
-	src/game/algorithms/PYAPI/PyAPI.h
-	src/game/algorithms/PYAPI/PyAPI.cpp
-	src/game/unit/UnitManager.h
-	src/game/unit/UnitManager.cpp
-        src/game/algorithms/MCTS/MCTS.cpp
-	src/game/algorithms/MCTS/MCTS.h
-	src/game/algorithms/MCTS/MCTSNode.cpp
-	src/game/algorithms/MCTS/MCTSNode.h)
+		src/game/state/StateManager.cpp
+		src/game/util/ScoreLogSerializer.h
+		src/game/algorithms/PYAPI/PyAI.h
+		src/game/algorithms/PYAPI/PyAI.cpp
+		src/game/unit/UnitManager.h
+		src/game/unit/UnitManager.cpp
+		src/game/algorithms/MCTS/MCTS.cpp
+		src/game/algorithms/MCTS/MCTS.h
+		src/game/algorithms/MCTS/MCTSNode.cpp
+		src/game/algorithms/MCTS/MCTSNode.h
+		src/game/graphics/ResourceHandler.h
+		src/game/graphics/GraphicTile.cpp
+		src/game/graphics/GraphicTile.h
+		src/game/util/Position.h
+		src/game/graphics/GraphicTilemap.cpp
+		src/game/graphics/GraphicTilemap.h
+		)
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
@@ -82,6 +89,8 @@ find_package(SFML 2 REQUIRED system window graphics network audio)
 find_package(Flatbuffers REQUIRED)
 find_package(PythonLibs)
 find_package(Threads)
+
+
 message(STATUS "Flatbuffers include dir: ${FLATBUFFERS_INCLUDE_DIR}")
 message(STATUS "Flatbuffers static library: ${FLATBUFFERS_STATIC_LIB}")
 message(STATUS "Flatbuffers compiler: ${FLATBUFFERS_COMPILER}")
@@ -90,6 +99,10 @@ add_custom_command(
         OUTPUT .
         WORKING_DIR ../
         COMMAND ./proto_compile.sh
+)
+
+execute_process (
+        COMMAND bash -c "${CMAKE_SOURCE_DIR}/src/flatbuffers/ScoreLog/create_buffer.sh"
 )
 
 if (SFML_FOUND)
@@ -107,7 +120,18 @@ else()
 endif()
 
 
+add_custom_command(
+		TARGET DeepRTS PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${CMAKE_SOURCE_DIR}/src/game/data/
+		${CMAKE_CURRENT_BINARY_DIR}/data/)
+
+add_custom_command(
+		TARGET DeepRTS PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${CMAKE_SOURCE_DIR}/src/game/python/
+		${CMAKE_CURRENT_BINARY_DIR}/)
 
 
 
-file(COPY src/game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??
+#file(COPY src/game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??

@@ -17,11 +17,12 @@ Player::Player(Game &game) : game_(game)
 {
 	id_ = Player::gId++;
 	name_ = "Player: " + std::to_string(id_);
-	sf::Color colors[4] = { // TODO use Color generator 
-		sf::Color::Red,
-		sf::Color::Blue,
-		sf::Color::Green,
-		sf::Color::Cyan,
+
+	std::tuple<uint8_t , uint8_t, uint8_t, uint8_t> colors[4] = { // TODO use Color generator
+			std::tuple<uint8_t , uint8_t, uint8_t, uint8_t>(255, 0, 0, 1),
+			std::tuple<uint8_t , uint8_t, uint8_t, uint8_t>(0, 0, 255, 1),
+			std::tuple<uint8_t , uint8_t, uint8_t, uint8_t>(0, 255, 0, 1),
+			std::tuple<uint8_t , uint8_t, uint8_t, uint8_t>(0, 255, 255, 1),
 	};
 	playerColor = colors[id_];
 	

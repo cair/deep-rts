@@ -17,7 +17,7 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 #include "../Game.h"
 #include "Animation.h"
 #include <thread>
-
+#include <tuple>
 
 
 
@@ -25,11 +25,14 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 GUI::GUI(Game &game) :
         game(game),
         window(sf::VideoMode(800, 800), "DeepRTS v1.1", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
+        map(game.map.tiles),
 		player(&game.players[pIterator]){
 
     this->createView();
     this->createFrame();
     this->font.loadFromFile("./data/fonts/arial.ttf");
+
+    Animation::getInstance().setup();
 
 
 	std::thread t(std::bind(&GUI::startAudio, this));
@@ -536,19 +539,19 @@ void GUI::drawTiles(){
 
 
 
-    for(Tile& tile : game.map.tiles){
+    for(GraphicTile& gTile : map.gTiles){
 	
 		if (showGridLines) {
 			sf::RectangleShape rectangle;
 			rectangle.setSize(sf::Vector2f(32, 32));
 			rectangle.setOutlineThickness(1);
-			rectangle.setPosition(tile.getPixelPosition());
+			rectangle.setPosition(gTile.getPixelPosition());
 
 			window.draw(rectangle);
 		}
 
 
-		window.draw(tile.vertices, 4, sf::Quads, &game.map.tileset);
+		window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
 
 
 
@@ -574,8 +577,9 @@ void GUI::drawUnits() {
 
 			//u.testSprite->setColor(u.player_->playerColor);
 			sf::Sprite &sprite = Animation::getInstance().getNext(u);
-			sprite.setPosition(u.worldPosition);
-			sprite.setColor(u.player_->playerColor);
+			sprite.setPosition(map.gTiles[u.id].getPixelPosition());
+            auto &color = u.player_->playerColor;
+			sprite.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
 			window.draw(sprite);
 		}
 	}
@@ -606,10 +610,11 @@ void GUI::drawScoreBoard() {
     text.setCharacterSize(18);
     for (Player & p : game.players) {
         text.setString(p.name_ + ": " + std::to_string(p.getScore()) + " | APM: " + std::to_string(p.apm) + " | AQueue: " + std::to_string(p.getQueueSize()));
+        auto &color = p.playerColor;
 #if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-		text.setFillColor(p.playerColor);
+		text.setFillColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
 #else
-		text.setColor(p.playerColor);
+		text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
 #endif
         text.setPosition(10, 920 - offsetY);
         offsetY += 25;
@@ -624,7 +629,8 @@ void GUI::drawPlayerSelectedUnit() {
 		if (p.targetedUnit != NULL) {
 			sf::RectangleShape rectangle(sf::Vector2f((p.targetedUnit->width * 32) + 6, (p.targetedUnit->height * 32) + 6));
 			rectangle.setFillColor(sf::Color::Transparent);
-			rectangle.setOutlineColor(p.playerColor);
+            auto &color = p.playerColor;
+			rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color), std::get<3>(color)));
 			rectangle.setOutlineThickness(2);
 			rectangle.setPosition(sf::Vector2f(p.targetedUnit->worldPosition.x - 2, p.targetedUnit->worldPosition.y - 2));
 

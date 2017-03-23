@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include "Tile.h"
 #include "../player/Player.h"
 #include "../unit/Unit.h"
@@ -14,9 +13,6 @@ x(x), y(y), height(height), width(width), tilemap(tilemap), originalWalkable(ori
 {}
 
 
-sf::Vector2f Tile::getPixelPosition()const {
-    return sf::Vector2f(vertices->position.x, vertices->position.y);
-}
 
 Unit* Tile::getOccupant()
 {
@@ -59,7 +55,6 @@ void Tile::setOccupant(Unit* unit) {
 }
 
 
-
 bool Tile::isBuildable() const {
 	return isWalkable();
 }
@@ -72,7 +67,7 @@ uint16_t Tile::distance(Tile *pTile) {
 void Tile::setDepleted() {
     harvestable = false;
     walkable = true;
-    tilemap.addTileVertices(depleteTile-1, width, height, tilemap.tFirstGid, *this);
+	depleted = true;
 }
 
 void Tile::setResources(uint16_t resource_count)
@@ -82,6 +77,10 @@ void Tile::setResources(uint16_t resource_count)
 
 void Tile::takeResource(uint8_t n) {
 	resources -= n;
+}
+
+Position Tile::getPosition() {
+    return Position(x, y);
 }
 
 

@@ -6,14 +6,12 @@
 
 #include <vector>
 #include <memory>
-#include <SFML/Graphics/Drawable.hpp>
 #include <map>
-#include <SFML/Graphics/Texture.hpp>
 #include "../Constants.h"
-
 #include "../environment/Tile.h"
 #include "../state/StateManager.h"
 #include "../Config.h"
+#include "../util/Position.h"
 
 
 class Player;
@@ -136,7 +134,7 @@ public:
     void harvest(Tile &tile);
     int distance(Tile &tile);
     int distance(Unit & unit);
-    sf::Vector2f distanceVector(Tile &target);
+	Position distanceVector(Tile &target);
 
 
     void clearTiles();
@@ -150,10 +148,10 @@ public:
 
     int getDamage(Unit &target);
 
-    sf::Vector2f worldPosition;
+    Position worldPosition;
 
     void setDirection(int newX, int newY);
-    void setDirection(sf::Vector2f &dir);
+    void setDirection(Position &dir);
 
     void moveRelative(int x, int y);
 

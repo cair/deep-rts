@@ -3,9 +3,6 @@
 //
 
 #include <fstream>
-#include <set>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include "MapLoader.h"
 
 using json = nlohmann::json;
@@ -24,12 +21,4 @@ json MapLoader::tileProperties() {
     map >> data;
     return data;
 }
-
-sf::Texture MapLoader::loadTexture() {
-    // Load textures
-    sf::Texture texture;
-    texture.loadFromFile("data/textures/tiles.png");
-    return texture;
-}
-
 
