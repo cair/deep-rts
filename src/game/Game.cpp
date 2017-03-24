@@ -397,8 +397,8 @@ std::string Game::serialize_json() {
 		data["unitsState"] .push_back(u.state->id);
 		data["unitsPlayerID"].push_back(u.player_->id_);
 
-		if (u.combatTarget)
-			data["unitsCombatTarget"].push_back(u.combatTarget->id);
+		if (u.combatTargetID != -1)
+			data["unitsCombatTarget"].push_back(u.getCombatTarget().id);
 		else
 			data["unitsCombatTarget"].push_back(-1);
 

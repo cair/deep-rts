@@ -210,7 +210,7 @@ void Unit::attack(Tile &tile) {
 		return;
 	}
 
-    combatTarget = target;
+    combatTargetID = target->id;
 
     if(distance(tile) > 1){
         enqueueState(stateManager->combatState);
@@ -476,3 +476,7 @@ Unit &Unit::getBuildEntity() {
     return player_->game_.units[buildEntityID];
 }
 
+Unit &Unit::getCombatTarget() {
+    assert(combatTargetID != -1);
+    return player_->game_.units[combatTargetID];
+}

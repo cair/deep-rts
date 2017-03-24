@@ -104,7 +104,8 @@ public:
     int buildTimer;
 
     // Combat
-    Unit* combatTarget = NULL;
+    int combatTargetID = -1;
+	Unit &getCombatTarget();
     int combatTimer = 1000;
     double combatInterval = 1 * 10;
 

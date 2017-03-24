@@ -12,39 +12,41 @@ void Combat::update(Unit & unit)const{
 
     unit.combatTimer += 1;
     if(unit.combatTimer >= unit.combatInterval) {
+        Unit &combatTarget = unit.getCombatTarget();
+
 
 		// If combat target are despawn in some way (Building, Dead, Despawned) stop attacking...
-		if (!unit.combatTarget->tile) {
-			unit.combatTarget = NULL;
+		if (!combatTarget.tile) {
+			unit.combatTargetID = -1;
 			unit.combatTimer = 1000;
 			unit.transitionState();
 			return;
 		}
 
-        if(unit.distance(*unit.combatTarget->tile) > unit.damageRange) {
+        if(unit.distance(*combatTarget.tile) > unit.damageRange) {
             // Too far away, Walk
 
-			unit.walkingGoal = unit.combatTarget->tile;
+			unit.walkingGoal = combatTarget.tile;
 			unit.transitionState(unit.stateManager->walkingState);
             unit.enqueueState(unit.stateManager->combatState);
 
         } else {
             // Can attack
-            int myDamage = unit.getDamage(*unit.combatTarget);
-            unit.combatTarget->afflictDamage(myDamage);
+            int myDamage = unit.getDamage(combatTarget);
+            combatTarget.afflictDamage(myDamage);
             unit.player_->statUnitDamageDone += myDamage;
-            unit.combatTarget->player_->statUnitDamageTaken += myDamage;
+            combatTarget.player_->statUnitDamageTaken += myDamage;
             unit.combatTimer = 0;
 
-            if(unit.combatTarget->isDead()){
-                unit.combatTarget = NULL;
+            if(combatTarget.isDead()){
+                unit.combatTargetID = Constants::None;
                 unit.combatTimer = 1000;
                 unit.transitionState();
                 return;
             }
 
-            if(unit.combatTarget->state->id == Constants::State::Idle) {
-                unit.combatTarget->attack(*unit.tile);
+            if(combatTarget.state->id == Constants::State::Idle) {
+                combatTarget.attack(*unit.tile);
             }
 
         }
@@ -59,7 +61,7 @@ void Combat::end(Unit & unit)const{
 }
 
 void Combat::init(Unit & unit)const{
-    Position dir = unit.distanceVector(*unit.combatTarget->tile);
+    Position dir = unit.distanceVector(*unit.getCombatTarget().tile);
     unit.setDirection(dir);
 
 
