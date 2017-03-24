@@ -14,10 +14,10 @@ void Spawning::update(Unit& unit)const{
     if(unit.spawnTimer >= unit.spawnDuration) {
 
 		// Check if tile is occupied, if it is. We attempt to find a new one
-		if (!unit.tile && unit.spawnTile->getOccupant()) {
+		if (!unit.tile && unit.getSpawnTile().getOccupant()) {
 			if (unit.builtBy) {
 				Tile *newSpawnTile = Pathfinder::find_first_walkable_tile(unit.builtBy->centerTile());
-				unit.spawnTile = newSpawnTile;
+				unit.spawnTileID = newSpawnTile->id;
 			}
 			else {
 				// Unit must simply wait for tile to be available
@@ -26,7 +26,7 @@ void Spawning::update(Unit& unit)const{
 		}
 
         // Unit can spawn
-        unit.setPosition(*unit.spawnTile);
+        unit.setPosition(unit.getSpawnTile());
         unit.transitionState();
 		if (unit.structure) {
 			unit.direction = Constants::Direction::Up;

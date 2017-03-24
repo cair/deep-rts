@@ -11,13 +11,13 @@ AlgoRandom::AlgoRandom(Player *player) : Algorithm(player), rgen(rd()) {
 	player->name_ += " [RND]";
 
     defineActionSpace();
-    if(!player->targetedUnit) {
+    if(!player->getTargetedUnit()) {
         if(player->unitIndexes.size() == 0) {
             return;
         }
 
         // Select first available unit
-        player->targetedUnit = &player->game_.getUnit(player->unitIndexes[0]);
+        player->targetedUnitID = player->unitIndexes[0];
     }
 }
 

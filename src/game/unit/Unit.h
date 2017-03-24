@@ -84,8 +84,9 @@ public:
 
 	// Spawning
 	int spawnDuration;
-	Tile *spawnTile = NULL;
+	int spawnTileID = -1;
 	Unit* builtBy = NULL;
+	Tile &getSpawnTile();
 
 
     // Harvesting

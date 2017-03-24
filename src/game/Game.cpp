@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "graphics/GUI.h"
+#include "unit/UnitManager.h"
 
 std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
@@ -121,7 +122,7 @@ void Game::loop() {
     _stats_next = nowMicroSec + 0;
 
 
-	while(this->running) {
+	do {
 		now = clock.getElapsedTime();		// Update clock
 		nowMicroSec = now.asMicroseconds();
 		if (nowMicroSec >= _update_next) {
@@ -224,7 +225,7 @@ void Game::loop() {
 			_stats_next += 1000000;
 		}
 
-	}
+	} while(this->running);
 
 }
 
@@ -276,7 +277,7 @@ void Game::addAction(std::shared_ptr<BaseAction> action) {
 }
 
 Player &Game::addPlayer() {
-	players.push_back(Player(*this));
+	players.push_back(Player(*this, players.size()));
 	Player &player = players.back();
 
 	spawnPlayer(player);
@@ -416,8 +417,8 @@ std::string Game::serialize_json() {
 		else
 			data["unitsHarvestTarget"].push_back(-1);
 
-		if (u.spawnTile)
-			data["unitsSpawnTile"].push_back(u.spawnTile->id);
+		if (u.spawnTileID != -1)
+			data["unitsSpawnTile"].push_back(u.getSpawnTile().id);
 		else
 			data["unitsSpawnTile"].push_back(-1);
 
@@ -480,9 +481,85 @@ std::string Game::serialize_json() {
 }
 
 void Game::deactivateGUI() {
-
+	doDisplay = false;
+	doCaptionWindow = false;
+	doCaptionConsole = false;
+	doScoreLogging = false;
 }
 
+void Game::load(Game *other) {
+    // Load game data
+    ticks = other->ticks;
 
+
+	// Load tile data
+	for(int i = 0; i < other->map.tiles.size(); i++) {
+		auto &myTile = map.tiles[i];
+		auto &otherTile = other->map.tiles[i];
+
+		myTile.depleted = otherTile.depleted;
+		myTile.harvestable = otherTile.harvestable;
+		myTile.swimable = otherTile.swimable; // TODO uneccecary ?
+		myTile.walkable = otherTile.walkable;
+		myTile.setResources(otherTile.getResources());
+
+		assert(myTile.id == otherTile.id);
+		assert(myTile.tileID == otherTile.tileID);
+	}
+
+    // Load Units
+    for(int i = 0; i < other->units.size(); i++) {
+        auto &otherUnit = other->units[i];
+
+        auto &myPlayer = players[otherUnit.player_->id_];
+
+        units.push_back(UnitManager::constructUnit(otherUnit.typeId, &myPlayer));
+        auto &myUnit = units.back();
+
+        myUnit.id = otherUnit.id;
+        myUnit.builtBy = NULL; // TODO, this will likely crash
+        myUnit.buildTimer = otherUnit.buildTimer;
+        myUnit.buildEntity = NULL; // TODO, will likely crash aswell, derp
+        myUnit.state = otherUnit.state;
+    }
+
+
+
+    // Load Players
+    for(int i = 0; i < other->players.size(); i++) {
+        auto &myPlayer = players[i];
+        auto &otherPlayer = other->players[i];
+
+        myPlayer.defeated = otherPlayer.defeated;
+        myPlayer.food = otherPlayer.food;
+        myPlayer.foodConsumption = otherPlayer.foodConsumption;
+        myPlayer.gold = otherPlayer.gold;
+        myPlayer.lumber = otherPlayer.lumber;
+        myPlayer.oil = otherPlayer.oil;
+        myPlayer.statGoldGather = otherPlayer.statGoldGather;
+        myPlayer.statLumberGather = otherPlayer.statLumberGather;
+        myPlayer.statOilGather = otherPlayer.statOilGather;
+        myPlayer.statUnitBuilt = otherPlayer.statUnitBuilt;
+        myPlayer.statUnitDamageDone = otherPlayer.statUnitDamageDone;
+        myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
+        myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
+        myPlayer.unitIndexes = otherPlayer.unitIndexes;
+        assert(myPlayer.id_ == otherPlayer.id_);
+
+
+
+    }
+
+    // Load Units
+    units.clear();
+
+
+
+
+
+
+
+
+}
 
 

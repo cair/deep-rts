@@ -22,7 +22,7 @@ Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateMa
 }
 void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
-    spawnTile = &_toSpawnOn;
+    spawnTileID = _toSpawnOn.id;
     transitionState(stateManager->spawnState);
 	enqueueState(stateManager->idleState);
 }
@@ -451,4 +451,10 @@ void Unit::tryHarvest()
 	else {
 		harvest(*availableHarvestable.back());
 	}
+}
+
+
+Tile &Unit::getSpawnTile() {
+    assert(spawnTileID != -1);
+    return player_->game_.map.tiles[spawnTileID];
 }

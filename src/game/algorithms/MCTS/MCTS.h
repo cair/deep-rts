@@ -32,7 +32,7 @@ public:
 
     void calculate(MCTSNode root);
 
-    Game *game;
+    Game *sim;
 	std::mt19937 random_engine;
 };
 

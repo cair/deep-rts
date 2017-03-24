@@ -19,10 +19,10 @@
 
 class GUI;
 class Game {
-	const bool doCaptionWindow;
-	const bool doCaptionConsole;
-	const bool doDisplay;
-	const bool doScoreLogging;
+	bool doCaptionWindow;
+	bool doCaptionConsole;
+
+	bool doScoreLogging;
     uint8_t n_players;
 	uint16_t gameNum = 1;
 
@@ -47,6 +47,7 @@ class Game {
     long ticks = 0;
 	static std::unordered_map<int, Game *> games;
 public:
+	bool doDisplay; // TODO?
 	bool loaded = false;
 	static Game * getGame(uint8_t id);
 	uint8_t id;
@@ -102,6 +103,9 @@ public:
 	Unit &getUnit(uint16_t idx);
 
 	std::string serialize_json();
+
+
+	void load(Game *other);
 
 
 	void deactivateGUI();
