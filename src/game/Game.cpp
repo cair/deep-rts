@@ -3,14 +3,9 @@
 //
 
 #include "Game.h"
-
-
 #include "graphics/GUI.h"
-#include "Config.h"
-#include "third_party/json.hpp"
 
 std::unordered_map<int, Game*> Game::games;
-
 Game::Game(uint8_t _nplayers, bool setup):
 		map(Tilemap("contested-4v4.json")),
 		doCaptionConsole(Config::getInstance().getCaptionConsole()),

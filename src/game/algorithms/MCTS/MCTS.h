@@ -13,12 +13,13 @@ class Game;
 class MCTS: public Algorithm  {
 public:
     MCTS(Player *player);
-    virtual void update();
-    virtual bool terminal();
-    virtual std::shared_ptr<BaseAction> findBestAction(Unit & unit);
-    virtual void doAction(std::shared_ptr<BaseAction> action);
-    virtual void defineActionSpace();
-	std::shared_ptr<BaseAction> findBestAction();
+
+	virtual void update();	// Executes a iteration
+	virtual int findAction(); // Determine which action
+	virtual void train();
+	virtual bool terminal();
+	virtual void defineActionSpace(){};
+	virtual void reset();
 
 
     int timeBudget;

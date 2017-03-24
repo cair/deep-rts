@@ -6,10 +6,14 @@
 #include "../../player/Player.h"
 #include "MCTSNode.h"
 #include "../../Game.h"
+#include <SFML/System/Clock.hpp>
 
 MCTS::MCTS(Player *player) : Algorithm(player) {
 
-    timeBudget = 1000; // 1 second
+
+    int _apm_interval = 1000000 / ( Config::getInstance().getAPM() / 60.0);
+
+    timeBudget = _apm_interval; // 1 second
     depthBudget = 10; // Depth budget (Tree depth)
 	epsilon = 0.9;	// Start of epsilon
 	epsilonModifier = 1000000; // Number of iterations to reach epsilon 0.1
@@ -24,27 +28,29 @@ MCTS::MCTS(Player *player) : Algorithm(player) {
 }
 
 void MCTS::calculate(MCTSNode root){
-	clock_t now = clock();
-	clock_t timeout = now + timeBudget;
+    sf::Clock clock;
+    sf::Time now = clock.getElapsedTime();
+    auto nowMicroSec = now.asMicroseconds();
+	auto timeout = nowMicroSec + timeBudget;
 
 	MCTSNode &current = root;
 	// Load up game state
 	long counter = 0;
+    std::uniform_real_distribution<> dist(0, 1);
 
-	while (now < timeout) {
-		now = clock();
-
-		
+	while (nowMicroSec < timeout) {
+        now = clock.getElapsedTime();		// Update clock
+        nowMicroSec = now.asMicroseconds();
 
 		/*if (current.children.size() == 0) {
 			// Has no children, must select random action
 
 		}
-		else*/ if (std::uniform_real_distribution<>(0.0, 1.0)(random_engine) < epsilon) {
+		else*/ if (dist(random_engine) < epsilon) {
 			// Explore (Random Action)
-			auto action = findBestAction();
+			auto action = findAction();
 
-			std::cout << epsilon << std::endl;
+			//std::cout << epsilon << std::endl;
 			epsilon -= epsilonDecent;
 		}
 		else {
@@ -54,53 +60,36 @@ void MCTS::calculate(MCTSNode root){
 
 
 
+
 		counter++;
 	}
 
-
+    player->queueAction(static_cast<Constants::Action >(1));
 	std::cout << "Iterations: " << std::to_string(counter) << std::endl;
 	
 
 }
 
+int MCTS::findAction() {
+
+}
+
+void MCTS::train() {
+
+}
+
+void MCTS::reset() {
+
+}
 
 void MCTS::update() {
     // Tick happended
 
     root = MCTSNode(NULL, 0, 0);
-
     calculate(root);
-
-
-
-
 }
 
 bool MCTS::terminal() {
 	return false;
 }
 
-std::shared_ptr<BaseAction> MCTS::findBestAction() {
-	///
-	/// Find best move for current state
-	///
-
-	return std::shared_ptr<BaseAction>(NULL);
-}
-
-std::shared_ptr<BaseAction> MCTS::findBestAction(Unit & unit) {
-	///
-	/// Find best move for current state
-	///
-
-	return std::shared_ptr<BaseAction>(NULL);
-}
-
-
-void MCTS::doAction(std::shared_ptr<BaseAction> action) {
-
-}
-
-void MCTS::defineActionSpace() {
-
-}

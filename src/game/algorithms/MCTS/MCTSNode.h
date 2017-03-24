@@ -12,11 +12,11 @@
 class MCTSNode;
 class MCTSNode {
 public:
-    MCTSNode(std::shared_ptr<MCTSNode> parent, int depth, int score);
+    MCTSNode(MCTSNode *parent, int depth, int score);
 
     MCTSNode();
-    std::shared_ptr<MCTSNode> parent;
-    std::vector<std::shared_ptr<MCTSNode>> children;
+    MCTSNode *parent;
+    std::vector<MCTSNode *> children;
     int score;
     int depth;
 

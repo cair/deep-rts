@@ -24,7 +24,6 @@ void sleep(int sleepMs)
 #include "game/Game.h"
 #include "game/algorithms/RANDOM/AlgoRandom.h"
 #include "game/algorithms/MCTS/MCTS.h"
-//#include "game/algorithms/REMOTEAI/zmqAI.h"
 #include "game/algorithms/PYAPI/PyAI.h"
 #include "game/algorithms/base/AIRepository.h"
 
@@ -38,12 +37,12 @@ int main() {
     Player &player3 = g->addPlayer();
     g->start();
 
-	PyAI::start(); // Init the API
+	//PyAI::start(); // Init the API
 
 
 	
-
-	Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
+    Algorithm *algorithm0 = new MCTS(&player0);
+	//Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
 
     //std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
