@@ -9,7 +9,10 @@
 #include "../util/JPS.h"
 
 void Walking::update(Unit & unit)const{
-    if(!unit.walkingGoal){
+	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
+
+
+    if(!walkingGoal){
         assert(false); //No goal were set!
     }
 
@@ -51,29 +54,29 @@ void Walking::end(Unit & unit)const{
 
 void Walking::init(Unit & unit)const{
     unit.walking_timer = 0;
-
+	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 	Tile *goal = NULL;
-	if (unit.walkingGoal->getOccupant()) {
-		Unit* occupant = unit.walkingGoal->getOccupant();
+	if (walkingGoal->getOccupant()) {
+		Unit* occupant = walkingGoal->getOccupant();
 		Tile *closest  = Pathfinder::find_closest_walkable_tile(unit.tile, occupant->tile, occupant->width);
 		goal = closest;
 	}
-	else if (!unit.walkingGoal->isWalkable()) {
-		goal = Pathfinder::find_first_walkable_tile(unit.walkingGoal);
+	else if (!walkingGoal->isWalkable()) {
+		goal = Pathfinder::find_first_walkable_tile(walkingGoal);
 	} else {
-		goal = unit.walkingGoal;
+		goal = walkingGoal;
 	}
 
 	if (!goal) {
 		return;
 	}
-	unit.walkingGoal = goal;
+	unit.walkingGoalID = goal->id;
 
 
 	JPS::PathVector path; // The resulting path will go here.
 	bool found = JPS::findPath(path, unit.player_->game_.map, 
 		unit.tile->x, unit.tile->y,
-		unit.walkingGoal->x, unit.walkingGoal->y, 1);
+		walkingGoal->x, walkingGoal->y, 1);
 
 	unit.walking_path.clear();
 

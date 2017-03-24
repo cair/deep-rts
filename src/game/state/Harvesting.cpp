@@ -33,7 +33,7 @@ void Harvesting::update(Unit & unit)const{
 
             }
 
-            unit.walkingGoal = closestWalkable;
+            unit.walkingGoalID = closestWalkable->id;
             unit.transitionState(unit.stateManager->walkingState);
             unit.enqueueState(unit.stateManager->harvestingState);
         }
@@ -99,7 +99,7 @@ void Harvesting::update(Unit & unit)const{
 
         if(unit.distance(*closestBase) > 1) {
             // Must walk
-            unit.walkingGoal = closestBase->tile;
+            unit.walkingGoalID = closestBase->tile->id;
             unit.transitionState(unit.stateManager->walkingState);
             unit.enqueueState(unit.stateManager->harvestingState);
             return;

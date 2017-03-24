@@ -26,7 +26,7 @@ void Combat::update(Unit & unit)const{
         if(unit.distance(*combatTarget.tile) > unit.damageRange) {
             // Too far away, Walk
 
-			unit.walkingGoal = combatTarget.tile;
+			unit.walkingGoalID = combatTarget.tile->id;
 			unit.transitionState(unit.stateManager->walkingState);
             unit.enqueueState(unit.stateManager->combatState);
 

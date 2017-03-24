@@ -407,8 +407,8 @@ std::string Game::serialize_json() {
 		else
 			data["unitsBuildEntity"].push_back(-1);
 
-		if (u.walkingGoal)
-			data["unitsWalkingGoal"].push_back(u.walkingGoal->id);
+		if (u.walkingGoalID)
+			data["unitsWalkingGoal"].push_back(u.walkingGoalID);
 		else
 			data["unitsWalkingGoal"].push_back(-1);
 

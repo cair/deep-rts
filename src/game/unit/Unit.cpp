@@ -51,7 +51,7 @@ void Unit::rightClickRelative(int x, int y) {
 void Unit::move(Tile &targetTile){
     if (!canMove)
         return;
-    this->walkingGoal = &targetTile;
+    this->walkingGoalID = targetTile.id;
     transitionState(stateManager->walkingState);
 }
 

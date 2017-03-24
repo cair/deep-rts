@@ -112,7 +112,7 @@ public:
     // Walking
     int walking_timer = 0;
     std::vector<Tile *> walking_path;
-    Tile *walkingGoal = NULL;
+    int walkingGoalID = -1;
     double walking_interval = .1 * 10;
 
 
