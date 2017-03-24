@@ -10,6 +10,7 @@
 void Building::update(Unit & unit)const{
     Unit &buildEntity = unit.getBuildEntity();
 
+    unit.buildTimer += 1;
     if(unit.buildTimer >= buildEntity.spawnDuration) {
         // Building is complete
 
