@@ -517,7 +517,7 @@ void Game::load(Game *other) {
         auto &myUnit = units.back();
 
         myUnit.id = otherUnit.id;
-        myUnit.builtBy = NULL; // TODO, this will likely crash
+        myUnit.builtByID = -1; // TODO, this will likely crash
         myUnit.buildTimer = otherUnit.buildTimer;
         myUnit.buildEntity = NULL; // TODO, will likely crash aswell, derp
         myUnit.state = otherUnit.state;

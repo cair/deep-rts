@@ -7,10 +7,14 @@
 #include <string>
 
 namespace Constants{
+
+
 	enum Unit {
 		Peasant = 1,
 		Peon = 2,
-		TownHall = 3
+		TownHall = 3,
+
+		None = -1
 	};
 
 
@@ -35,7 +39,7 @@ namespace Constants{
 		Building = 5,
 		Combat = 6,
 		Dead = 7,
-		None = -1
+		Base = -1,
 	};
 
 	enum Pathfinding {

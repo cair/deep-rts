@@ -85,7 +85,8 @@ public:
 	// Spawning
 	int spawnDuration;
 	int spawnTileID = -1;
-	Unit* builtBy = NULL;
+	int builtByID = -1;
+	Unit &getBuiltBy();
 	Tile &getSpawnTile();
 
 

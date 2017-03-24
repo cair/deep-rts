@@ -15,8 +15,8 @@ void Spawning::update(Unit& unit)const{
 
 		// Check if tile is occupied, if it is. We attempt to find a new one
 		if (!unit.tile && unit.getSpawnTile().getOccupant()) {
-			if (unit.builtBy) {
-				Tile *newSpawnTile = Pathfinder::find_first_walkable_tile(unit.builtBy->centerTile());
+			if (unit.builtByID != Constants::None) {
+				Tile *newSpawnTile = Pathfinder::find_first_walkable_tile(unit.getBuiltBy().centerTile());
 				unit.spawnTileID = newSpawnTile->id;
 			}
 			else {
@@ -40,5 +40,5 @@ void Spawning::init(Unit & unit)const{
 }
 
 void Spawning::end(Unit & unit)const{
-	unit.builtBy = NULL;
+	unit.builtByID = -1;
 }

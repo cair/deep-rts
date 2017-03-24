@@ -15,7 +15,7 @@ class BaseState {
 
 
 public:
-    Constants::State id = Constants::State::None;
+    Constants::State id = Constants::State::Base;
     std::string name = "**ERR**";
     BaseState(Constants::State id): id(id){
     };

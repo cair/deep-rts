@@ -116,7 +116,7 @@ bool Unit::build(int idx) {
 
         Unit &unit = player_->addUnit(newUnit.typeId);
 		unit.player_ = player_;
-		unit.builtBy = this;
+		unit.builtByID = this->id;
 
         if(!structure and unit.structure) {
            // *this is a unit (peasant), which builds a building
@@ -457,4 +457,9 @@ void Unit::tryHarvest()
 Tile &Unit::getSpawnTile() {
     assert(spawnTileID != -1);
     return player_->game_.map.tiles[spawnTileID];
+}
+
+Unit &Unit::getBuiltBy() {
+    assert(builtByID != -1);
+    return player_->game_.units[builtByID];
 }
