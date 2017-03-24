@@ -11,7 +11,7 @@
 MCTS::MCTS(Player *player) : Algorithm(player) {
 
 
-    int _apm_interval = 1000000 / ( Config::getInstance().getAPM() / 60.0);
+	int _apm_interval = Config::getInstance().getAPM() * 60.0;
 
     timeBudget = _apm_interval; // 1 second
     depthBudget = 10; // Depth budget (Tree depth)
@@ -105,7 +105,8 @@ void MCTS::calculate(MCTSNode root){
 		counter++;
 	}
 
-    player->queueAction(static_cast<Constants::Action >(1));
+	auto action = actionSpace[actionDist(random_engine)];
+    player->queueAction(static_cast<Constants::Action >(action));
 	std::cout << "Iterations: " << std::to_string(counter) << " | " << timeout / 1000 << "ms" <<std::endl;
 	
 

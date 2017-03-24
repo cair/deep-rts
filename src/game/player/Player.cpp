@@ -255,7 +255,7 @@ void Player::removeUnit(Unit & unit) {
 		actionQueue.clear();
 	}
 	//units.erase(std::remove(units.begin(), units.end(), unit), units.end());
-	std::cout << "Implement removeUnit" << std::endl;
+	//std::cout << "Implement removeUnit" << std::endl;
 
 }
 
