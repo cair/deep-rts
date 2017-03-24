@@ -317,8 +317,6 @@ void Game::deactivateGUI() {
 void Game::load(Game *other) {
     // Load game data
     ticks = other->ticks;
-    map.spawnTiles = other->map.spawnTiles;
-
     id = other->id;
 
 	// Load tile data
@@ -337,35 +335,6 @@ void Game::load(Game *other) {
 		assert(myTile.tileID == otherTile.tileID);
 	}
 
-    // Load units
-    /*units.clear();
-    for(int i = 0; i < other->units.size(); i++) {
-        Unit otherUnit = other->units[i];
-        units.push_back(otherUnit);
-        Unit &myUnit = units[i];
-
-        std::vector<Tile *> newPath;
-        for(auto &t :myUnit.walking_path) {
-            newPath.push_back(&map.tiles[t->id]);
-        }
-        myUnit.walking_path = newPath;
-
-        //if(otherUnit.tile)
-        //myUnit.tile = &map.tiles[otherUnit.tile->id];
-
-        if(!otherTile) {
-            units[i].tile->setOccupantID(-1);
-            units[i].tile = NULL;
-        }
-        else {
-            units[i].tile = &map.tiles[otherTile->id];
-            units[i].tile->setOccupantID(units[i].id);
-        }
-
-        //assert(&otherUnit == &myUnit);
-        //assert(otherUnit.tile == myUnit.tile);
-
-    }*/
 
     // Load Units
     units.clear();
@@ -435,11 +404,8 @@ void Game::load(Game *other) {
         myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
         myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
 
-       //myPlayer.unitIndexes.clear();
-        // TODO error becuase stack overflow
-        //myPlayer.unitIndexes.insert(myPlayer.unitIndexes.end(), otherPlayer.unitIndexes.begin(), otherPlayer.unitIndexes.end());
-	
-		myPlayer.unitIndexes = otherPlayer.unitIndexes;
+		myPlayer.unitIndexes.clear();
+		myPlayer.unitIndexes.insert(std::end(myPlayer.unitIndexes), std::begin(otherPlayer.unitIndexes), std::end(otherPlayer.unitIndexes));
 
         assert(myPlayer.id_ == otherPlayer.id_);
     }
