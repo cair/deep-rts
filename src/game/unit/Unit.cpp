@@ -14,7 +14,7 @@
 
 int Unit::gId = 0;
 Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateManager){
-    id = Unit::gId++;
+    id = player->game_.units.size();
     state = stateManager->despawnedState;
     current_state = state->id;
 
@@ -159,7 +159,8 @@ bool Unit::build(int idx) {
 void Unit::despawn() {
 
     for(auto &p: player_->game_.players) {
-        p.targetedUnit = NULL;
+        if(p.targetedUnit == this)
+            p.targetedUnit = NULL;
     }
 
     clearTiles();
