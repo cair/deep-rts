@@ -159,8 +159,8 @@ bool Unit::build(int idx) {
 void Unit::despawn() {
 
     for(auto &p: player_->game_.players) {
-        if(p.targetedUnit == this)
-            p.targetedUnit = NULL;
+        if(p.targetedUnitID == this->id)
+            p.targetedUnitID = -1;
     }
 
     clearTiles();

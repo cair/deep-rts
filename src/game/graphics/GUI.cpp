@@ -232,18 +232,18 @@ void GUI::handleEvents(){
 
                 // Build actions
             else if(event.key.code == sf::Keyboard::Num1) {
-                if(player->targetedUnit){
-                    player->targetedUnit->build(0);
+                if(player->getTargetedUnit()){
+                    player->getTargetedUnit()->build(0);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num2) {
-                if(player->targetedUnit){
-                    player->targetedUnit->build(1);
+                if(player->getTargetedUnit()){
+                    player->getTargetedUnit()->build(1);
                 }
             }
             else if(event.key.code == sf::Keyboard::Num3) {
-                if(player->targetedUnit){
-                    player->targetedUnit->build(2);
+                if(player->getTargetedUnit()){
+                    player->getTargetedUnit()->build(2);
                 }
             }
         }
@@ -475,10 +475,10 @@ void GUI::drawSelected(){
 
 
 
-    if (player->targetedUnit) {
+    if (player->getTargetedUnit()){
 		int tOffsetX = 140;
         text.setCharacterSize(32);
-        Unit *unit = player->targetedUnit;
+        Unit *unit = player->getTargetedUnit();
 		Tile *tile = (unit->tile) ? unit->tile : game.getMap().getTile(0, 0);
         text.setString(unit->name + " (" +
                        std::to_string(unit->id ) +
@@ -591,15 +591,15 @@ void GUI::leftClick(Tile &tile) {
     this->selectedTile = &tile;
 
     if(tile.getOccupant()) {
-        player->targetedUnit = tile.getOccupant();
+        player->targetedUnitID = tile.getOccupant()->id;
     }else {
-        player->targetedUnit = NULL;
+        player->targetedUnitID = -1;
     }
 }
 
 void GUI::rightClick(Tile &tile) {
-    if(player->targetedUnit) {
-        player->targetedUnit->rightClick(tile);
+    if(player->getTargetedUnit()) {
+        player->getTargetedUnit()->rightClick(tile);
         this->selectedTile = &tile;
     }
 }
@@ -628,13 +628,14 @@ void GUI::drawScoreBoard() {
 void GUI::drawPlayerSelectedUnit() {
 	for (Player & p : game.players) {
 		// Draw selected unit
-		if (p.targetedUnit != NULL) {
-			sf::RectangleShape rectangle(sf::Vector2f((p.targetedUnit->width * 32) + 6, (p.targetedUnit->height * 32) + 6));
+		if (p.getTargetedUnit()) {
+            Unit *targetedUnit = p.getTargetedUnit();
+			sf::RectangleShape rectangle(sf::Vector2f((targetedUnit->width * 32) + 6, (targetedUnit->height * 32) + 6));
 			rectangle.setFillColor(sf::Color::Transparent);
             auto &color = p.playerColor;
 			rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 			rectangle.setOutlineThickness(2);
-			rectangle.setPosition(sf::Vector2f((p.targetedUnit->worldPosition.x * 32) - 2, (p.targetedUnit->worldPosition.y * 32) - 2));
+			rectangle.setPosition(sf::Vector2f((targetedUnit->worldPosition.x * 32) - 2, (targetedUnit->worldPosition.y * 32) - 2));
 
 			window.draw(rectangle);
 		}

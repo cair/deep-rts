@@ -11,11 +11,11 @@
 #include "../unit/UnitManager.h"
 #include <algorithm>
 
-int Player::gId = 0;
 
-Player::Player(Game &game) : game_(game)
+
+Player::Player(Game &game, int id) : game_(game)
 {
-	id_ = Player::gId++;
+	id_ = id;
 	name_ = "Player: " + std::to_string(id_);
 
 	std::tuple<uint8_t , uint8_t, uint8_t> colors[4] = { // TODO use Color generator
@@ -71,7 +71,7 @@ Unit& Player::spawn(Tile &spawnPoint) {
 	unit->spawn(spawnPoint, unit->spawnDuration);
 
 	// Set targeted unit to newly spawned unit
-	targetedUnit = unit;
+	targetedUnitID = unit->id;
 
 
 	return *unit;
@@ -84,57 +84,59 @@ void Player::update() {
 		Constants::Action actionID = actionQueue.front();
 		actionQueue.pop_front();
 
-		if (!targetedUnit and (actionID != Constants::Action::NextUnit and actionID != Constants::Action::PreviousUnit) or unitIndexes.empty()) {
+		if (!getTargetedUnit() and (actionID != Constants::Action::NextUnit and actionID != Constants::Action::PreviousUnit) or unitIndexes.empty()) {
 			// No selected unit by the player and he attempts to right click on a targetedUnit
 			return;
 		}
 
+		Unit *targetedUnit = getTargetedUnit();
+
 		switch (actionID) {
-		case Constants::Action::NextUnit:
-			nextUnit();
-			break;
-		case Constants::Action::PreviousUnit:
-			previousUnit();
-			break;
-		case Constants::Action::MoveUpRight:
-			targetedUnit->tryMove(-1, 1);
-			break;
-		case Constants::Action::MoveUpLeft:
-			targetedUnit->tryMove(-1, -1);
-			break;
-		case Constants::Action::MoveDownRight:
-			targetedUnit->tryMove(1, 1);
-			break;
-		case Constants::Action::MoveDownLeft:
-			targetedUnit->tryMove(1, -1);
-			break;
-		case Constants::Action::MoveUp:
-			targetedUnit->tryMove(0, -1);
-			break;
-		case Constants::Action::MoveDown:
-			targetedUnit->tryMove(0, 1);
-			break;
-		case Constants::Action::MoveLeft:
-			targetedUnit->tryMove(-1, 0);
-			break;
-		case Constants::Action::MoveRight:
-			targetedUnit->tryMove(1, 0);
-			break;
-		case Constants::Action::Attack:
-			targetedUnit->tryAttack(); // TODO
-			break;
-		case Constants::Action::Harvest:
-			targetedUnit->tryHarvest(); // TODO
-			break;
-		case Constants::Action::Build0:
-			targetedUnit->build(0);
-			break;
-		case Constants::Action::Build1:
-			targetedUnit->build(1);
-			break;
-		case Constants::Action::Build2:
-			targetedUnit->build(2);
-			break;
+			case Constants::Action::NextUnit:
+				nextUnit();
+				break;
+			case Constants::Action::PreviousUnit:
+				previousUnit();
+				break;
+			case Constants::Action::MoveUpRight:
+				targetedUnit->tryMove(-1, 1);
+				break;
+			case Constants::Action::MoveUpLeft:
+				targetedUnit->tryMove(-1, -1);
+				break;
+			case Constants::Action::MoveDownRight:
+				targetedUnit->tryMove(1, 1);
+				break;
+			case Constants::Action::MoveDownLeft:
+				targetedUnit->tryMove(1, -1);
+				break;
+			case Constants::Action::MoveUp:
+				targetedUnit->tryMove(0, -1);
+				break;
+			case Constants::Action::MoveDown:
+				targetedUnit->tryMove(0, 1);
+				break;
+			case Constants::Action::MoveLeft:
+				targetedUnit->tryMove(-1, 0);
+				break;
+			case Constants::Action::MoveRight:
+				targetedUnit->tryMove(1, 0);
+				break;
+			case Constants::Action::Attack:
+				targetedUnit->tryAttack(); // TODO
+				break;
+			case Constants::Action::Harvest:
+				targetedUnit->tryHarvest(); // TODO
+				break;
+			case Constants::Action::Build0:
+				targetedUnit->build(0);
+				break;
+			case Constants::Action::Build1:
+				targetedUnit->build(1);
+				break;
+			case Constants::Action::Build2:
+				targetedUnit->build(2);
+				break;
 
 		}
 
@@ -166,7 +168,7 @@ void Player::reset()
 	statUnitMilitary = 0;
 	unitIndexes.clear();
 	actionQueue.clear();
-	targetedUnit = NULL;
+	targetedUnitID = -1;
 	actionStatistics[20] = { 0 };
 
 	if (algorithm_) {
@@ -238,8 +240,8 @@ int Player::getScore() {
 
 void Player::removeUnit(Unit & unit) {
 	for (auto &p : game_.players) {
-		if (p.targetedUnit == &unit) {
-			p.targetedUnit = NULL;
+		if (p.targetedUnitID == unit.id) {
+			p.targetedUnitID = -1;
 		}
 	}
 
@@ -287,15 +289,10 @@ bool Player::canAfford(Unit & unit) {
 
 Unit& Player::addUnit(Constants::Unit unitType) {
 
-	if (unitType == Constants::Unit::Peasant) {
-		game_.units.push_back(UnitManager::constructPeasant(this));
-		
-	}
-	else if (unitType == Constants::Unit::TownHall) {
-		game_.units.push_back(UnitManager::constructTownHall(this));
-	}
 
-	unitIndexes.push_back(game_.units.size() - 1);
+	game_.units.push_back(UnitManager::constructUnit(unitType, this));
+	uint16_t id = game_.units.back().id;
+	unitIndexes.push_back(id);
 	return game_.units.back();
 }
 
@@ -326,13 +323,13 @@ int Player::_getNextPrevUnitIdx() {
 		return -1;
 	}
 
-	if (targetedUnit == NULL) {
+	if (targetedUnitID == -1) {
 		return 0;
 	}
 
 	uint16_t idx = 0;
 	for (auto &uIDX : unitIndexes) {
-		if (targetedUnit == &game_.getUnit(uIDX)) {
+		if (targetedUnitID == uIDX) {
 			return idx;
 		}
 		idx++;
@@ -358,7 +355,7 @@ void Player::nextUnit() {
 	uint16_t unitIndex = unitIndexes[idx % unitIndexes.size()];
 	//std::cout << static_cast<int>(unitIndex) << " -N- " << unitIndexes.size() << std::endl;
 	// Get unit from the game vector
-	targetedUnit = &game_.getUnit(unitIndex);
+	targetedUnitID = unitIndex;
 
 	return;
 }
@@ -381,20 +378,16 @@ void Player::previousUnit() {
 	//std::cout << static_cast<int>(unitIndex) << " -P- " << unitIndexes.size() << std::endl;
 
 	// Get unit from the game vector
-	targetedUnit = &game_.getUnit(unitIndex);
+	targetedUnitID = unitIndex;
 
 	return;
 }
 
-Unit Player::createUnit(int type_id) {
-	switch (type_id) {
-	case Constants::Unit::Peasant:
-		return UnitManager::constructPeasant(this);
-	case Constants::Unit::TownHall:
-		return UnitManager::constructTownHall(this);
-
-
+Unit *Player::getTargetedUnit() {
+	if(targetedUnitID == -1) {
+		return NULL;
 	}
+	return &game_.units[targetedUnitID];
 }
 
 void Player::queueAction(Constants::Action actionID) {

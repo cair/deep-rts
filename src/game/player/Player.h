@@ -20,9 +20,8 @@ class AlgoRandom;
 class Game;
 class Player {
 private:
-    static int gId;
 
-    std::string name = "Derp";
+    std::string name = "[NO NAME]";
 	SharedQueue<Constants::Action> actionQueue;
 
 
@@ -42,7 +41,7 @@ public:
     Game &game_;
 
     std::tuple<uint8_t , uint8_t, uint8_t> playerColor;
-    Unit *targetedUnit = NULL;
+    int targetedUnitID = -1;
 
 	int id_;
 	bool defeated;
@@ -76,13 +75,14 @@ public:
     void addLumber(int n);
     void addOil(int n);
     Unit &addUnit(Constants::Unit unitType);
-    Unit createUnit(int type_id);
 
 	void queueAction(Constants::Action actionID);
 	int actionStatistics[20] = { 0 };
 	size_t getQueueSize();
 
-    Player(Game &game);
+    Player(Game &game, int id);
+
+	Unit *getTargetedUnit();
 
 
 
