@@ -13,19 +13,22 @@ void Harvesting::update(Unit & unit)const{
     if (unit.harvestIterator == 0) {
         // Go to harvestable_tile;
 
-        if(unit.distance(*unit.harvestTarget) > 1) {
+        Tile *harvestTarget = unit.getTile(unit.harvestTargetID);
+
+
+        if(unit.distance(*harvestTarget) > 1) {
             // Must walk
             // Find closest walkable tile to the target
-            Tile* closestWalkable = Pathfinder::find_first_walkable_tile(unit.harvestTarget);
+            Tile* closestWalkable = Pathfinder::find_first_walkable_tile(harvestTarget);
 
             // If distance is > 1, change harvest_target
-            if(closestWalkable->distance(unit.harvestTarget) > 1) {
+            if(closestWalkable->distance(harvestTarget) > 1) {
                 Tile *closestHarvestable = Pathfinder::find_first_harvestable_tile(closestWalkable);
                 if(!closestHarvestable){
                     unit.transitionState(unit.stateManager->idleState);
                     return;
                 }
-                unit.harvestTarget = closestHarvestable;
+                unit.harvestTargetID = closestHarvestable->id;
 
 
             }
@@ -42,6 +45,7 @@ void Harvesting::update(Unit & unit)const{
 
     } else if (unit.harvestIterator == 1) {
         // Start harvesting
+        Tile *harvestTarget = unit.getTile(unit.harvestTargetID);
 
         unit.harvestTimer += 1;
         if(unit.harvestTimer >= unit.harvestInterval) {
@@ -52,27 +56,27 @@ void Harvesting::update(Unit & unit)const{
                 return;
             }
 
-            unit.lumberCarry += unit.harvestTarget->lumberYield;
-            unit.goldCarry += unit.harvestTarget->goldYield;
-            unit.oilCarry += unit.harvestTarget->oilYield;
-            unit.player_->statGoldGather += unit.harvestTarget->goldYield;
-            unit.player_->statLumberGather += unit.harvestTarget->lumberYield;
-            unit.player_->statOilGather += unit.harvestTarget->oilYield;
-			unit.harvestTarget->takeResource(unit.harvestTarget->lumberYield + unit.harvestTarget->goldYield + unit.harvestTarget->oilYield);
+            unit.lumberCarry += harvestTarget->lumberYield;
+            unit.goldCarry += harvestTarget->goldYield;
+            unit.oilCarry += harvestTarget->oilYield;
+            unit.player_->statGoldGather += harvestTarget->goldYield;
+            unit.player_->statLumberGather += harvestTarget->lumberYield;
+            unit.player_->statOilGather += harvestTarget->oilYield;
+			harvestTarget->takeResource(harvestTarget->lumberYield + harvestTarget->goldYield + harvestTarget->oilYield);
 
             // No more resources // TODO constant parameter Config
-            if(unit.harvestTarget->getResources() < 1) {
-                unit.harvestTarget->setDepleted();
+            if(harvestTarget->getResources() < 1) {
+                harvestTarget->setDepleted();
 
                 // Find new harvestable
-                Tile *closestHarvestable = Pathfinder::find_first_harvestable_tile(unit.harvestTarget);
+                Tile *closestHarvestable = Pathfinder::find_first_harvestable_tile(harvestTarget);
                 if(!closestHarvestable){
                     unit.transitionState(unit.stateManager->idleState);
                     return;
                 }
 
 
-                unit.harvestTarget = closestHarvestable;
+                unit.harvestTargetID = closestHarvestable->id;
             }
 
             unit.harvestTimer = 0;

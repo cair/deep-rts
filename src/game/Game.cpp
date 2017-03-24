@@ -412,8 +412,8 @@ std::string Game::serialize_json() {
 		else
 			data["unitsWalkingGoal"].push_back(-1);
 
-		if (u.harvestTarget)
-			data["unitsHarvestTarget"].push_back(u.harvestTarget->id);
+		if (u.harvestTargetID != -1)
+			data["unitsHarvestTarget"].push_back(u.getTile(u.harvestTargetID)->id);
 		else
 			data["unitsHarvestTarget"].push_back(-1);
 

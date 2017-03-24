@@ -229,7 +229,7 @@ void Unit::harvest(Tile &tile) {
     if(!canHarvest)
         return;
 
-    this->harvestTarget = &tile;
+    this->harvestTargetID = tile.id;
     transitionState(stateManager->harvestingState);
 
 }
@@ -459,7 +459,15 @@ Tile &Unit::getSpawnTile() {
     return player_->game_.map.tiles[spawnTileID];
 }
 
+Tile *Unit::getTile(int tileID) {
+    if(tileID == -1) {
+        return NULL;
+    }
+    return &player_->game_.map.tiles[tileID];
+}
+
 Unit &Unit::getBuiltBy() {
     assert(builtByID != -1);
     return player_->game_.units[builtByID];
 }
+

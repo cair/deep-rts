@@ -94,7 +94,8 @@ public:
     double harvestInterval = .5 * 10;
     int harvestTimer;
     int harvestIterator;
-    Tile *harvestTarget = NULL;
+    int harvestTargetID = -1;
+	Tile *getTile(int tileID);
 
     // Building
     int spawnTimer;
