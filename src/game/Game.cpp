@@ -435,9 +435,11 @@ void Game::load(Game *other) {
         myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
         myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
 
-        myPlayer.unitIndexes.clear();
+       //myPlayer.unitIndexes.clear();
         // TODO error becuase stack overflow
-        myPlayer.unitIndexes.insert(myPlayer.unitIndexes.end(), otherPlayer.unitIndexes.begin(), otherPlayer.unitIndexes.end());
+        //myPlayer.unitIndexes.insert(myPlayer.unitIndexes.end(), otherPlayer.unitIndexes.begin(), otherPlayer.unitIndexes.end());
+	
+		myPlayer.unitIndexes = otherPlayer.unitIndexes;
 
         assert(myPlayer.id_ == otherPlayer.id_);
     }

@@ -2,8 +2,7 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#ifndef WARC2SIM_TILE_H
-#define WARC2SIM_TILE_H
+#pragma once
 
 #include <string>
 #include "../environment/Tile.h"
@@ -77,4 +76,4 @@ public:
 };
 
 
-#endif //WARC2SIM_TILE_H
+

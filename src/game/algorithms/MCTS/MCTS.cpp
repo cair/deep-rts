@@ -53,7 +53,7 @@ MCTS::MCTS(Player *player) : Algorithm(player) {
     sim->doDisplay = true;
     sim->initGUI();
     sim->stop(); // Set Running to false. This allows loop() to only run once (Iterate)
-    sim->setFPS(INT32_MAX);
+    sim->setFPS(600000);
     sim->setUPS(INT32_MAX);
 
 }
@@ -68,7 +68,7 @@ void MCTS::calculate(MCTSNode root){
 	// Load up game state
 	long counter = 0;
     std::uniform_real_distribution<> dist(0, 1);
-    std::uniform_int_distribution<> actionDist(0, actionSpace.size());
+    std::uniform_int_distribution<> actionDist(0, actionSpace.size() - 1);
 
 	while (nowMicroSec < timeout) {
         now = clock.getElapsedTime();		// Update clock
@@ -112,7 +112,7 @@ void MCTS::calculate(MCTSNode root){
 }
 
 int MCTS::findAction() {
-
+	return 0;
 }
 
 void MCTS::train() {

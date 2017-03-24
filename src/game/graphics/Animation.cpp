@@ -8,6 +8,9 @@
 #include "Animation.h"
 #include "../Constants.h"
 
+Animation::Animation() {
+	setup();
+};
 
 void Animation::add(const int unit, const int state, const int direction, int x, int y, int w, int h, int wrs, int hrs, sf::Texture* texture, bool flip) {
 

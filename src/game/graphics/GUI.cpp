@@ -15,7 +15,7 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 
 #include "GUI.h"
 #include "../Game.h"
-#include "Animation.h"
+
 #include <thread>
 #include <tuple>
 
@@ -32,7 +32,6 @@ GUI::GUI(Game &game) :
     this->createFrame();
     this->font.loadFromFile("./data/fonts/arial.ttf");
 
-    Animation::getInstance().setup();
 
 
 	std::thread t(std::bind(&GUI::startAudio, this));
@@ -576,7 +575,7 @@ void GUI::drawUnits() {
 			}
 
 			//u.testSprite->setColor(u.player_->playerColor);
-			sf::Sprite &sprite = Animation::getInstance().getNext(u);
+			sf::Sprite &sprite = animation.getNext(u);
 			sprite.setPosition(map.gTiles[u.tile->id].getPixelPosition());
 
             auto &colorData = u.player_->playerColor;

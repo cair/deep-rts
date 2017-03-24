@@ -15,15 +15,17 @@
 #include <SFML/Audio.hpp>
 #include <memory>
 #include "GraphicTilemap.h"
-
+#include "Animation.h"
 
 class Game;
 class Player;
 class Tile;
 class Unit;
 
+
 class GUI{
 private:
+	Animation animation;
     Game& game;
 
     sf::View povView;
