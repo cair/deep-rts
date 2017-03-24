@@ -307,179 +307,6 @@ Unit & Game::getUnit(uint16_t idx)
 
 
 
-std::string Game::serialize_json() {
-	json data;
-
-	/*data["tileIds"] .push_back();
-	data["tileResources"] .push_back();
-	data["tileOccupant"] .push_back();
-	data["unitsDirection"] .push_back();
-	data["unitsHarvestTimer"] .push_back();
-	data["unitsHarvestIterator"] .push_back();
-	data["unitsLumberCarry"] .push_back();
-	data["unitsOilCarry"] .push_back();
-	data["unitsGoldCarry"] .push_back();
-	data["unitsSpawnTimer"] .push_back();
-	data["unitsBuildTimer"] .push_back();
-	data["unitsCombatTimer"] .push_back();
-	data["unitsWalkingTimer"] .push_back();
-	data["unitsType"] .push_back();
-	data["unitsHealth"] .push_back();
-	data["unitsIds"] .push_back();
-	data["unitsTileID"] .push_back();
-	data["unitsState"] .push_back();
-	data["unitsCombatTarget"] .push_back();
-	data["unitsBuildEntity"] .push_back();
-	data["unitsWalkingGoal"] .push_back();
-	data["unitsHarvestTarget"] .push_back();
-	data["unitsSpawnTile"] .push_back();
-	data["unitsPlayerID"] = {}
-	data["playerID"].push_back(pid);
-	data["defeated"].push_back(defeated);
-	data["statGoldGather"].push_back(statGoldGather);
-	data["statLumberGather"].push_back(statLumberGather);
-	data["statOilGather"].push_back(statOilGather);
-	data["statUnitDamageTaken"].push_back(statUnitDamageTaken);
-	data["statUnitDamageDone"].push_back(statUnitDamageDone);
-	data["statUnitBuilt"].push_back(statUnitBuilt);
-	data["statUnitMilitary"].push_back(statUnitMilitary);
-
-	data["food"].push_back(food);
-	data["consumedFood"].push_back(consumedFood);
-	data["gold"].push_back(gold);
-	data["lumber"].push_back(lumber);
-	data["oil"].push_back(oil);
-	data["unitCount"].push_back(unitCount);
-	data["gameTicks"] = gameTicks;*/
-
-	///
-	/// TILE DATA
-	///
-	const uint16_t numTiles = static_cast<uint16_t>(map.tiles.size());
-
-
-	for (int i = 0; i < numTiles; i++) {
-		Tile &t = map.tiles[i];
-		data["tileIds"].push_back(t.id);
-		data["tileResources"].push_back(t.getResources());
-		data["tileOccupant"].push_back((t.getOccupant()) ? t.getOccupant()->id : -1);
-	}
-
-
-
-	///
-	/// PLAYER DATA
-	///
-	size_t numUnits = 0;
-	for (auto &p : players) {
-		numUnits += p.unitIndexes.size();
-	}
-
-	int i = 0;
-	for (auto &u : units) {
-		//std::vector<BaseState *> stateList;
-		//std::vector<Tile *> walking_path;
-
-		data["unitsDirection"].push_back(u.direction);
-		data["unitsHarvestTimer"] .push_back(u.harvestTimer);
-		data["unitsHarvestIterator"] .push_back(u.harvestIterator);
-		data["unitsLumberCarry"] .push_back(u.lumberCarry);
-		data["unitsOilCarry"] .push_back(u.oilCarry);
-		data["unitsGoldCarry"] .push_back(u.goldCarry);
-		data["unitsSpawnTimer"] .push_back(u.spawnTimer);
-		data["unitsBuildTimer"] .push_back(u.buildTimer);
-		data["unitsCombatTimer"] .push_back(u.combatTimer);
-		data["unitsWalkingTimer"] .push_back(u.walking_timer);
-		data["unitsType"] .push_back(u.typeId);
-		data["unitsHealth"] .push_back(u.health);
-		data["unitsIds"] .push_back(u.id);
-		data["unitsTileID"] .push_back((u.tile) ? u.tile->id : -1);
-		data["unitsState"] .push_back(u.state->id);
-		data["unitsPlayerID"].push_back(u.player_->id_);
-
-		if (u.combatTargetID != -1)
-			data["unitsCombatTarget"].push_back(u.getCombatTarget().id);
-		else
-			data["unitsCombatTarget"].push_back(-1);
-
-		if (u.buildEntityID != -1)
-			data["unitsBuildEntity"].push_back(u.getBuildEntity().id);
-		else
-			data["unitsBuildEntity"].push_back(-1);
-
-		if (u.walkingGoalID)
-			data["unitsWalkingGoal"].push_back(u.walkingGoalID);
-		else
-			data["unitsWalkingGoal"].push_back(-1);
-
-		if (u.harvestTargetID != -1)
-			data["unitsHarvestTarget"].push_back(u.getTile(u.harvestTargetID)->id);
-		else
-			data["unitsHarvestTarget"].push_back(-1);
-
-		if (u.spawnTileID != -1)
-			data["unitsSpawnTile"].push_back(u.getSpawnTile().id);
-		else
-			data["unitsSpawnTile"].push_back(-1);
-
-
-
-
-		i++;
-	}
-
-	for(auto &p : players){
-
-
-		int pid = p.id_;
-		int defeated = p.defeated;
-		int statGoldGather = p.statGoldGather;
-		int statLumberGather = p.statLumberGather;
-		int statOilGather = p.statOilGather;
-		int statUnitDamageTaken = p.statUnitDamageTaken;
-		int statUnitDamageDone = p.statUnitDamageDone;
-		int statUnitBuilt = p.statUnitBuilt;
-		int statUnitMilitary = p.statUnitMilitary;
-
-		int food = p.getFood();
-		int consumedFood = p.getFoodConsumption();
-		int gold = p.getGold();
-		int lumber = p.getLumber();
-		int oil = p.getOil();
-		int unitCount = p.getUnitCount();
-
-		data["playerID"].push_back(pid);
-		data["defeated"].push_back(defeated);
-		data["statGoldGather"].push_back(statGoldGather);
-		data["statLumberGather"].push_back(statLumberGather);
-		data["statOilGather"].push_back(statOilGather);
-		data["statUnitDamageTaken"].push_back(statUnitDamageTaken);
-		data["statUnitDamageDone"].push_back(statUnitDamageDone);
-		data["statUnitBuilt"].push_back(statUnitBuilt);
-		data["statUnitMilitary"].push_back(statUnitMilitary);
-
-		data["food"].push_back(food);
-		data["consumedFood"].push_back(consumedFood);
-		data["gold"].push_back(gold);
-		data["lumber"].push_back(lumber);
-		data["oil"].push_back(oil);
-		data["unitCount"].push_back(unitCount);
-
-	}
-
-	///
-	/// Game Stuff
-	///
-	int gameTicks = ticks;
-	data["gameTicks"] = gameTicks;
-	data["mapSize"] = { map.MAP_WIDTH, map.MAP_HEIGHT };
-
-
-	return data.dump();
-
-
-}
-
 void Game::deactivateGUI() {
 	doDisplay = false;
 	doCaptionWindow = false;
@@ -490,7 +317,6 @@ void Game::deactivateGUI() {
 void Game::load(Game *other) {
     // Load game data
     ticks = other->ticks;
-    units = other->units;
     map.spawnTiles = other->map.spawnTiles;
 
     id = other->id;
@@ -504,29 +330,122 @@ void Game::load(Game *other) {
 		myTile.harvestable = otherTile.harvestable;
 		myTile.swimable = otherTile.swimable; // TODO uneccecary ?
 		myTile.walkable = otherTile.walkable;
+        myTile.setOccupantID(otherTile.getOccupantID());
 		myTile.setResources(otherTile.getResources());
 
 		assert(myTile.id == otherTile.id);
 		assert(myTile.tileID == otherTile.tileID);
 	}
 
+    // Load units
+    /*units.clear();
+    for(int i = 0; i < other->units.size(); i++) {
+        Unit otherUnit = other->units[i];
+        units.push_back(otherUnit);
+        Unit &myUnit = units[i];
+
+        std::vector<Tile *> newPath;
+        for(auto &t :myUnit.walking_path) {
+            newPath.push_back(&map.tiles[t->id]);
+        }
+        myUnit.walking_path = newPath;
+
+        //if(otherUnit.tile)
+        //myUnit.tile = &map.tiles[otherUnit.tile->id];
+
+        if(!otherTile) {
+            units[i].tile->setOccupantID(-1);
+            units[i].tile = NULL;
+        }
+        else {
+            units[i].tile = &map.tiles[otherTile->id];
+            units[i].tile->setOccupantID(units[i].id);
+        }
+
+        //assert(&otherUnit == &myUnit);
+        //assert(otherUnit.tile == myUnit.tile);
+
+    }*/
+
+    // Load Units
+    units.clear();
+    for(int i = 0; i < other->units.size(); i++) {
+        auto &otherUnit = other->units[i];
+        auto &myPlayer = players[otherUnit.player_->id_];
+
+        units.push_back(UnitManager::constructUnit(otherUnit.typeId, &myPlayer));
+        auto &myUnit = units.back();
+
+        myUnit.id = otherUnit.id;
+        myUnit.builtByID = otherUnit.builtByID;
+        myUnit.buildTimer = otherUnit.buildTimer;
+        myUnit.buildEntityID = otherUnit.buildEntityID;
+        myUnit.state = otherUnit.state;
+        myUnit.spawnTileID = otherUnit.spawnTileID;
+        myUnit.spawnTimer = otherUnit.spawnTimer;
+
+        myUnit.animationInterval = otherUnit.animationInterval;
+        myUnit.animationIterator = otherUnit.animationIterator;
+        myUnit.animationTimer = otherUnit.animationTimer;
+
+        if(otherUnit.tile){
+            myUnit.tile = &map.tiles[otherUnit.tile->id];
+        }else {
+            myUnit.tile = NULL;
+        }
+
+        myUnit.walking_timer = otherUnit.walking_timer;
+        myUnit.walkingGoalID = otherUnit.walkingGoalID;
+        myUnit.walking_interval = otherUnit.walking_interval;
+        std::vector<Tile *> newPath;
+        for(auto &t :otherUnit.walking_path) {
+            newPath.push_back(&map.tiles[t->id]);
+        }
+        myUnit.walking_path = newPath;
+
+        myUnit.combatInterval = otherUnit.combatInterval;
+        myUnit.combatTargetID = otherUnit.combatTargetID;
+        myUnit.combatTimer = otherUnit.combatTimer;
+
+        myUnit.harvestTargetID = otherUnit.harvestTargetID;
+        myUnit.harvestInterval = otherUnit.harvestInterval;
+        myUnit.harvestIterator = otherUnit.harvestIterator;
+        myUnit.harvestTimer = otherUnit.harvestTimer;
+
+    }
+
+
+    // Load Players
+    for(int i = 0; i < other->players.size(); i++) {
+        auto &myPlayer = players[i];
+        auto &otherPlayer = other->players[i];
+
+        myPlayer.targetedUnitID = otherPlayer.targetedUnitID;
+        myPlayer.defeated = otherPlayer.defeated;
+        myPlayer.food = otherPlayer.food;
+        myPlayer.foodConsumption = otherPlayer.foodConsumption;
+        myPlayer.gold = otherPlayer.gold;
+        myPlayer.lumber = otherPlayer.lumber;
+        myPlayer.oil = otherPlayer.oil;
+        myPlayer.statGoldGather = otherPlayer.statGoldGather;
+        myPlayer.statLumberGather = otherPlayer.statLumberGather;
+        myPlayer.statOilGather = otherPlayer.statOilGather;
+        myPlayer.statUnitBuilt = otherPlayer.statUnitBuilt;
+        myPlayer.statUnitDamageDone = otherPlayer.statUnitDamageDone;
+        myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
+        myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
+
+        myPlayer.unitIndexes.clear();
+        // TODO error becuase stack overflow
+        myPlayer.unitIndexes.insert(myPlayer.unitIndexes.end(), otherPlayer.unitIndexes.begin(), otherPlayer.unitIndexes.end());
+
+        assert(myPlayer.id_ == otherPlayer.id_);
+    }
+
+
     /*
 
-   // Load Units
-   for(int i = 0; i < other->units.size(); i++) {
-       auto &otherUnit = other->units[i];
 
-       auto &myPlayer = players[otherUnit.player_->id_];
-
-       units.push_back(UnitManager::constructUnit(otherUnit.typeId, &myPlayer));
-       auto &myUnit = units.back();
-
-       myUnit.id = otherUnit.id;
-       myUnit.builtByID = -1; // TODO, this will likely crash
-       myUnit.buildTimer = otherUnit.buildTimer;
-       myUnit.buildEntityID = -1; // TODO, will likely crash aswell, derp
-       myUnit.state = otherUnit.state;
-   }
 
 
 

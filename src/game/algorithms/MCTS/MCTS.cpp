@@ -21,6 +21,28 @@ MCTS::MCTS(Player *player) : Algorithm(player) {
 	playerID = player->id_;  // Index of selected player
 
 
+    actionSpace = {
+            Constants::Action::PreviousUnit,
+            Constants::Action::NextUnit,
+
+            Constants::Action::MoveLeft,
+            Constants::Action::MoveRight,
+            Constants::Action::MoveUp,
+            Constants::Action::MoveDown,
+            Constants::Action::MoveUpLeft,
+            Constants::Action::MoveUpRight,
+            Constants::Action::MoveDownLeft,
+            Constants::Action::MoveDownRight,
+
+            Constants::Action::Attack,
+            Constants::Action::Harvest,
+
+            Constants::Action::Build0,
+            Constants::Action::Build1,
+            Constants::Action::Build2,
+            Constants::Action::NoAction
+    };
+
     sim = new Game(4, false);
     sim->addPlayer();
     sim->addPlayer();
@@ -28,11 +50,11 @@ MCTS::MCTS(Player *player) : Algorithm(player) {
     sim->addPlayer();
 
     sim->deactivateGUI();
-    /*sim->doDisplay = true;
+    sim->doDisplay = true;
     sim->initGUI();
     sim->stop(); // Set Running to false. This allows loop() to only run once (Iterate)
     sim->setFPS(INT32_MAX);
-    sim->setUPS(INT32_MAX);*/
+    sim->setUPS(INT32_MAX);
 
 }
 
@@ -54,12 +76,19 @@ void MCTS::calculate(MCTSNode root){
 
 		if (current.children.size() == 0) {
 			// Has no children, Select random action
+            auto action = actionSpace[actionDist(random_engine)];
+
+
+            sim->players[0].queueAction(action);
 
 
 		}
 		else if (dist(random_engine) < epsilon) {
 			// Explore (Random Action)
             auto action = actionSpace[actionDist(random_engine)];
+
+
+            sim->players[0].queueAction(action);
 
 
 
@@ -96,9 +125,10 @@ void MCTS::reset() {
 
 void MCTS::update() {
     // Tick happended
-    /*sim->load(&player->game_);
+
+    sim->load(&player->game_);
     root = MCTSNode(NULL, 0, 0);
-    calculate(root);*/
+    calculate(root);
 }
 
 bool MCTS::terminal() {

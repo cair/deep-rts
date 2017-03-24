@@ -226,7 +226,7 @@ void Animation::setupTownHall(){
 }
 
 sf::Sprite &Animation::getNext(Unit & unit) {
-    int state = unit.current_state;
+    int state = unit.state->id;
     int iteration = unit.animationIterator;
     int unitId = unit.typeId;
     int direction = unit.direction;

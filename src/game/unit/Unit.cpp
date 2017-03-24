@@ -16,7 +16,6 @@ int Unit::gId = 0;
 Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateManager){
     id = player->game_.units.size();
     state = stateManager->despawnedState;
-    current_state = state->id;
 
 
 }
@@ -93,7 +92,7 @@ Tile *Unit::centerTile() {
 
 bool Unit::build(int idx) {
     //if(state->id != Constants::State::Idle)
-    if(current_state != Constants::State::Idle)
+    if(state->id != Constants::State::Idle)
         return false;
 
     if((idx < 0 or idx >= buildInventory.size()))
@@ -246,7 +245,6 @@ void Unit::transitionState() {
 		//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|" << std::endl;
 		state->end(*this);
         state = nextState;
-        current_state = state->id;
         state->init(*this);
         return;
     }
@@ -257,7 +255,6 @@ void Unit::transitionState() {
 	state->end(*this);
     state = nextState;
     stateList.pop_back();
-    current_state = state->id;
     //state->init(*this);
 
 
@@ -268,7 +265,6 @@ void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
 	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
 	state->end(*this);
     state = nextState;
-    current_state = state->id;
     state->init(*this);
     return;
 }

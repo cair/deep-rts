@@ -102,7 +102,6 @@ public:
 	void spawnPlayer(Player & player);
 	Unit &getUnit(uint16_t idx);
 
-	std::string serialize_json();
 
 
 	void load(Game *other);

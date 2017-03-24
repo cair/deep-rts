@@ -35,7 +35,6 @@ public:
 	Constants::Unit typeId;
     int health;
     int health_max;
-    int current_state;
     int direction;
 
 

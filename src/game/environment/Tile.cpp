@@ -40,11 +40,12 @@ void Tile::reset()
 
 }
 
-bool Tile::isAttackable(Unit & unit) {
-    if (occupantID == -1)
+bool Tile::isAttackable(Unit &unit) {
+	Unit *occupant = getOccupant();
+    if (!occupant)
         return false;
 
-    return getOccupant()->player_->getId() != unit.player_->getId();
+    return occupant->player_->getId() != unit.player_->getId();
 
 }
 
@@ -62,6 +63,13 @@ void Tile::setOccupant(Unit* unit) {
 		return;
 	}
     occupantID = unit->id;
+}
+
+int Tile::getOccupantID() {
+	return occupantID;
+}
+void Tile::setOccupantID(int unitID) {
+	occupantID = unitID;
 }
 
 

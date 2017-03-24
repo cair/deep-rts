@@ -174,7 +174,7 @@ void PyAI::updateState()
 			// Unit
 			//stateBuffer[c++] = (int)occupant->id;// Layer
 			stateBuffer[c++] = (int)occupant->typeId;// Layer
-			stateBuffer[c++] = (int)occupant->current_state;// Layer
+			stateBuffer[c++] = (int)occupant->state->id;// Layer
 			//stateBuffer[c++] = (int)occupant->goldCarry;// Layer
 			//stateBuffer[c++] = (int)occupant->lumberCarry;// Layer
 			//stateBuffer[c++] = (int)occupant->oilCarry;// Layer

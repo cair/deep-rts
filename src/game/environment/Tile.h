@@ -59,11 +59,14 @@ public:
 
 	// Setters
 	void setOccupant(Unit *unit);
+	void setOccupantID(int unitID);
 	void setDepleted();
 	void setResources(uint16_t resource_count);
 	void takeResource(uint8_t n);
 
+	// Getters
 	Unit* getOccupant();
+	int getOccupantID();
 	uint16_t getResources();
 
 
