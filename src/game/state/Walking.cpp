@@ -76,7 +76,7 @@ void Walking::init(Unit & unit)const{
 	JPS::PathVector path; // The resulting path will go here.
 	bool found = JPS::findPath(path, unit.player_->game_.map, 
 		unit.tile->x, unit.tile->y,
-		walkingGoal->x, walkingGoal->y, 1);
+		goal->x, goal->y, 1);
 
 	unit.walking_path.clear();
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Tile.h"
 #include "../player/Player.h"
+#include "../Game.h"
 #include "../unit/Unit.h"
 #include <utility>
 
@@ -16,7 +17,12 @@ x(x), y(y), height(height), width(width), tilemap(tilemap), originalWalkable(ori
 
 Unit* Tile::getOccupant()
 {
-	return occupant;
+	if(occupantID == -1) {
+		return NULL;
+	}
+
+	Unit &occupant = tilemap.game_->units[occupantID];
+	return &occupant;
 }
 
 uint16_t Tile::getResources()
@@ -26,7 +32,7 @@ uint16_t Tile::getResources()
 
 void Tile::reset()
 {
-	occupant = NULL;
+	occupantID = -1;
 	harvestable = originalHarvestable;
 	walkable = originalWalkable;
 	resources = originalResources;
@@ -35,15 +41,15 @@ void Tile::reset()
 }
 
 bool Tile::isAttackable(Unit & unit) {
-    if (!occupant)
+    if (occupantID == -1)
         return false;
 
-    return occupant->player_->getId() != unit.player_->getId();
+    return getOccupant()->player_->getId() != unit.player_->getId();
 
 }
 
 bool Tile::isWalkable() const{
-	return occupant == 0 and walkable;
+	return occupantID == -1 and walkable;
 }
 
 bool Tile::isHarvestable() const {
@@ -51,7 +57,11 @@ bool Tile::isHarvestable() const {
 }
 
 void Tile::setOccupant(Unit* unit) {
-    occupant = unit;
+	if(!unit) {
+		occupantID = -1;
+		return;
+	}
+    occupantID = unit->id;
 }
 
 

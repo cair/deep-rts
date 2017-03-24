@@ -4,8 +4,9 @@
 #include "Tilemap.h"
 #include "./Tile.h"
 #include "../unit/Unit.h"
+#include "../Game.h"
 
-Tilemap::Tilemap(std::string mapName) {
+Tilemap::Tilemap(std::string mapName, Game *game): game_(game){
 	json mapData = MapLoader::loadFile(mapName);
 	json tilesData = MapLoader::tileProperties();
 

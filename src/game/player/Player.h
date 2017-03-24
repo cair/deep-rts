@@ -11,7 +11,7 @@
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
 #include "../algorithms/base/Algorithm.h"
-#include "../util/SharedQueue.h"
+//#include "../util/SharedQueue.h"
 #include <deque>
 
 class AlgoRandom;
@@ -22,7 +22,7 @@ class Player {
 private:
 
     std::string name = "[NO NAME]";
-	SharedQueue<Constants::Action> actionQueue;
+	std::deque<Constants::Action> actionQueue;
 
 
 

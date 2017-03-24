@@ -8,7 +8,7 @@
 
 std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
-		map(Tilemap("contested-4v4.json")),
+		map(Tilemap("contested-4v4.json", this)),
 		doCaptionConsole(Config::getInstance().getCaptionConsole()),
 		doCaptionWindow(Config::getInstance().getCaptionWindow()),
 		doDisplay(Config::getInstance().getDisplay()),
@@ -490,7 +490,10 @@ void Game::deactivateGUI() {
 void Game::load(Game *other) {
     // Load game data
     ticks = other->ticks;
+    units = other->units;
+    map.spawnTiles = other->map.spawnTiles;
 
+    id = other->id;
 
 	// Load tile data
 	for(int i = 0; i < other->map.tiles.size(); i++) {
@@ -507,51 +510,54 @@ void Game::load(Game *other) {
 		assert(myTile.tileID == otherTile.tileID);
 	}
 
-    // Load Units
-    for(int i = 0; i < other->units.size(); i++) {
-        auto &otherUnit = other->units[i];
+    /*
 
-        auto &myPlayer = players[otherUnit.player_->id_];
+   // Load Units
+   for(int i = 0; i < other->units.size(); i++) {
+       auto &otherUnit = other->units[i];
 
-        units.push_back(UnitManager::constructUnit(otherUnit.typeId, &myPlayer));
-        auto &myUnit = units.back();
+       auto &myPlayer = players[otherUnit.player_->id_];
 
-        myUnit.id = otherUnit.id;
-        myUnit.builtByID = -1; // TODO, this will likely crash
-        myUnit.buildTimer = otherUnit.buildTimer;
-        myUnit.buildEntityID = -1; // TODO, will likely crash aswell, derp
-        myUnit.state = otherUnit.state;
-    }
+       units.push_back(UnitManager::constructUnit(otherUnit.typeId, &myPlayer));
+       auto &myUnit = units.back();
 
-
-
-    // Load Players
-    for(int i = 0; i < other->players.size(); i++) {
-        auto &myPlayer = players[i];
-        auto &otherPlayer = other->players[i];
-
-        myPlayer.defeated = otherPlayer.defeated;
-        myPlayer.food = otherPlayer.food;
-        myPlayer.foodConsumption = otherPlayer.foodConsumption;
-        myPlayer.gold = otherPlayer.gold;
-        myPlayer.lumber = otherPlayer.lumber;
-        myPlayer.oil = otherPlayer.oil;
-        myPlayer.statGoldGather = otherPlayer.statGoldGather;
-        myPlayer.statLumberGather = otherPlayer.statLumberGather;
-        myPlayer.statOilGather = otherPlayer.statOilGather;
-        myPlayer.statUnitBuilt = otherPlayer.statUnitBuilt;
-        myPlayer.statUnitDamageDone = otherPlayer.statUnitDamageDone;
-        myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
-        myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
-        myPlayer.unitIndexes = otherPlayer.unitIndexes;
-        assert(myPlayer.id_ == otherPlayer.id_);
+       myUnit.id = otherUnit.id;
+       myUnit.builtByID = -1; // TODO, this will likely crash
+       myUnit.buildTimer = otherUnit.buildTimer;
+       myUnit.buildEntityID = -1; // TODO, will likely crash aswell, derp
+       myUnit.state = otherUnit.state;
+   }
 
 
 
-    }
+   // Load Players
+   for(int i = 0; i < other->players.size(); i++) {
+       auto &myPlayer = players[i];
+       auto &otherPlayer = other->players[i];
 
-    // Load Units
-    units.clear();
+       myPlayer.defeated = otherPlayer.defeated;
+       myPlayer.food = otherPlayer.food;
+       myPlayer.foodConsumption = otherPlayer.foodConsumption;
+       myPlayer.gold = otherPlayer.gold;
+       myPlayer.lumber = otherPlayer.lumber;
+       myPlayer.oil = otherPlayer.oil;
+       myPlayer.statGoldGather = otherPlayer.statGoldGather;
+       myPlayer.statLumberGather = otherPlayer.statLumberGather;
+       myPlayer.statOilGather = otherPlayer.statOilGather;
+       myPlayer.statUnitBuilt = otherPlayer.statUnitBuilt;
+       myPlayer.statUnitDamageDone = otherPlayer.statUnitDamageDone;
+       myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
+       myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
+       myPlayer.unitIndexes = otherPlayer.unitIndexes;
+       assert(myPlayer.id_ == otherPlayer.id_);
+
+
+
+   }
+
+   // Load Units
+   units.clear();
+   */
 
 
 

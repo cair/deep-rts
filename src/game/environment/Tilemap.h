@@ -11,7 +11,7 @@
 #include "Tile.h"
 #include "../third_party/json.hpp"
 using json = nlohmann::json;
-
+class Game;
 class Tilemap{
 private:
 
@@ -19,6 +19,7 @@ private:
 public:
     std::vector<Tile> tiles;
     std::vector<int> spawnTiles;
+	Game *game_;
 
     size_t TILE_WIDTH;
     size_t TILE_HEIGHT;
@@ -26,7 +27,7 @@ public:
     size_t MAP_HEIGHT;
     float tileTextureDimension;
     float tileWorldDimension;
-    Tilemap(std::string mapName);
+    Tilemap(std::string mapName, Game *game);
 
 	std::vector<Tile>& getTiles();
     std::vector<Tile *> neighbors(Tile &tile, Constants::Pathfinding type);

@@ -96,9 +96,7 @@ void MCTS::reset() {
 
 void MCTS::update() {
     // Tick happended
-
     /*sim->load(&player->game_);
-
     root = MCTSNode(NULL, 0, 0);
     calculate(root);*/
 }

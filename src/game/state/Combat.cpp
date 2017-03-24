@@ -23,7 +23,7 @@ void Combat::update(Unit & unit)const{
 			return;
 		}
 
-        if(unit.distance(*combatTarget.tile) > unit.damageRange) {
+        if(unit.distance(combatTarget) > unit.damageRange) {
             // Too far away, Walk
 
 			unit.walkingGoalID = combatTarget.tile->id;

@@ -16,7 +16,7 @@ class Tile{
 private:
 	// Tile data
 	uint16_t resources;
-	Unit* occupant = NULL;
+	int occupantID = -1;
 
 	const bool originalWalkable;
 	const bool originalHarvestable;
