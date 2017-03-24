@@ -402,8 +402,8 @@ std::string Game::serialize_json() {
 		else
 			data["unitsCombatTarget"].push_back(-1);
 
-		if (u.buildEntity)
-			data["unitsBuildEntity"].push_back(u.buildEntity->id);
+		if (u.buildEntityID != -1)
+			data["unitsBuildEntity"].push_back(u.getBuildEntity().id);
 		else
 			data["unitsBuildEntity"].push_back(-1);
 
@@ -519,7 +519,7 @@ void Game::load(Game *other) {
         myUnit.id = otherUnit.id;
         myUnit.builtByID = -1; // TODO, this will likely crash
         myUnit.buildTimer = otherUnit.buildTimer;
-        myUnit.buildEntity = NULL; // TODO, will likely crash aswell, derp
+        myUnit.buildEntityID = -1; // TODO, will likely crash aswell, derp
         myUnit.state = otherUnit.state;
     }
 

@@ -99,7 +99,8 @@ public:
 
     // Building
     int spawnTimer;
-    Unit* buildEntity = NULL;
+    int buildEntityID = -1;
+	Unit &getBuildEntity();
     int buildTimer;
 
     // Combat

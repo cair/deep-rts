@@ -122,19 +122,19 @@ bool Unit::build(int idx) {
            // *this is a unit (peasant), which builds a building
             despawn();
 
-            buildEntity = &unit;
+            buildEntityID = unit.id; // Set id of buildEntity
             transitionState(stateManager->buildingState);
-            buildEntity->spawn(*placementTile, 0);
-            buildEntity->setPosition(*placementTile);
+            unit.spawn(*placementTile, 0);     // Spawn build entity
+            unit.setPosition(*placementTile);  // Set position of build entity
 
 
         }else if(structure and !unit.structure){
             // Structure builds unit (Ie: TownHall builds Peasant)
-            buildEntity = &unit;
+            buildEntityID = unit.id;    // Set build entity ID
             // build entity has no tile, spawn on nearest walkable
             Tile *firstWalkable = Pathfinder::find_first_walkable_tile(centerTile());
             assert(firstWalkable);
-            buildEntity->spawn(*firstWalkable, 0);
+            unit.spawn(*firstWalkable, 0);  // Spawn build entity
 
             transitionState(stateManager->buildingState);
         }
@@ -469,5 +469,10 @@ Tile *Unit::getTile(int tileID) {
 Unit &Unit::getBuiltBy() {
     assert(builtByID != -1);
     return player_->game_.units[builtByID];
+}
+
+Unit &Unit::getBuildEntity() {
+    assert(buildEntityID != -1);
+    return player_->game_.units[buildEntityID];
 }
 

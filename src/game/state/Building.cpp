@@ -8,14 +8,14 @@
 
 
 void Building::update(Unit & unit)const{
+    Unit &buildEntity = unit.getBuildEntity();
 
-    unit.buildTimer += 1;
-    if(unit.buildTimer >= unit.buildEntity->spawnDuration) {
+    if(unit.buildTimer >= buildEntity.spawnDuration) {
         // Building is complete
 
         if(!unit.tile){
             // Unit has no tile, means unit is despawned
-            Tile *firstWalkable = Pathfinder::find_first_walkable_tile(unit.buildEntity->tile);
+            Tile *firstWalkable = Pathfinder::find_first_walkable_tile(buildEntity.tile);
             assert(firstWalkable);
             unit.setPosition(*firstWalkable);
             unit.transitionState();
@@ -32,7 +32,7 @@ void Building::update(Unit & unit)const{
 }
 
 void Building::end(Unit & unit)const{
-	unit.buildEntity = NULL;
+	unit.buildEntityID = -1;
 }
 
 void Building::init(Unit & unit)const{
