@@ -104,10 +104,10 @@ void Game::reset()
 
 	// Sav
 	if (doScoreLogging) {
-		auto ms = duration_cast<std::chrono::milliseconds >(
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds >(
 				std::chrono::system_clock::now().time_since_epoch()
 		);
-		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + "_" + std::to_string(ms) + ".flat");
+		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + "_" + std::to_string(ms.count()) + ".flat");
 		scoreLog.reset();
 	}
 	gameNum += 1;
