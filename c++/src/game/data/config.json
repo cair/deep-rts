@@ -1,0 +1,24 @@
+{
+  "numPlayers": 4,
+  "map": "contested-4v4",
+  "fps": 60,
+  "ups": 600,
+  "ticks_per_sec": 10,
+  "tick_reset": 12000,
+  "ai": {
+	"max_apm": 600
+  },
+  "caption": {
+    "window": true,
+    "console": true
+  },
+  "logging": {
+    "scorings": true
+  },
+  "display":  true,
+
+  "mechanics": {
+    "town_hall_on_start": true,
+    "harvest_forever": false
+  }
+}
