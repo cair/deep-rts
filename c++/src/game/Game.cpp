@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "graphics/GUI.h"
 #include "unit/UnitManager.h"
+#include <chrono>
 
 std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
@@ -103,7 +104,10 @@ void Game::reset()
 
 	// Sav
 	if (doScoreLogging) {
-		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + ".flat");
+		auto ms = duration_cast<std::chrono::milliseconds >(
+				std::chrono::system_clock::now().time_since_epoch()
+		);
+		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + "_" + std::to_string(ms) + ".flat");
 		scoreLog.reset();
 	}
 	gameNum += 1;
