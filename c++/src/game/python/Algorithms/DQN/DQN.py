@@ -7,9 +7,6 @@ else:
 	os.environ["THEANO_FLAGS"] ="floatX=float32,device=cpu"
 
 
-
-
-
 import random
 import numpy
 from keras import backend as K
