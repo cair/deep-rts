@@ -11,9 +11,10 @@ void PyAI::start() {
 	Py_Initialize();
 	PyObject *pName, *pModule;
 
-	int argc = 1; // Argument count
-	wchar_t * argv[3];
-	argv[0] = L"Main.py";
+	int argc = 1; // Argument count'
+	wchar_t * argv[3] = {
+			L"Main.py"
+	};
 
 
 	Py_SetProgramName(argv[0]);	// Set application name
@@ -39,9 +40,9 @@ void PyAI::start() {
 }
 
 PyAI::PyAI(PyObject *pyaiInstance) :
-	pyaiInstance(pyaiInstance),
-	game(Game::getGame(0)),
-	Algorithm(NULL)
+		Algorithm(NULL),
+		game(Game::getGame(0)),
+		pyaiInstance(pyaiInstance)
 {
 	///
 	/// Set name of the PyAI

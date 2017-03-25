@@ -37,4 +37,6 @@ std::shared_ptr<BaseState> StateManager::getByID(int id){
         case Constants::State::Dead:
             return deadState;
     }
+
+    return NULL;
 }

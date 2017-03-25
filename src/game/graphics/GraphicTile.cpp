@@ -7,8 +7,8 @@
 #include <iostream>
 
 GraphicTile::GraphicTile(Tile &dataTile, GraphicTilemap &tilemap):
-        dataTile(dataTile),
-        tilemap(tilemap)
+        tilemap(tilemap),
+        dataTile(dataTile)
 {
 
     setupVerticles(dataTile.tileID, dataTile.width, dataTile.height, 1); // TODO firstgid always 1 ?

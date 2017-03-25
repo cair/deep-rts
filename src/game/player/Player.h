@@ -77,7 +77,7 @@ public:
     Unit &addUnit(Constants::Unit unitType);
 
 	void queueAction(Constants::Action actionID);
-	int actionStatistics[20] = { 0 };
+	int actionStatistics[20];
 	size_t getQueueSize();
 
     Player(Game &game, int id);

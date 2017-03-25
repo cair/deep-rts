@@ -35,7 +35,6 @@ class Game {
 
     int32_t _update_interval = 0;
 	int32_t _render_interval = 0;
-	int32_t _caption_interval = 1000;
 	int32_t _apm_interval = 0;
 
 	uint32_t _update_delta = 0;

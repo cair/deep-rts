@@ -133,5 +133,6 @@ add_custom_command(
 		${CMAKE_CURRENT_BINARY_DIR}/)
 
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/games)
 
 #file(COPY src/game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??

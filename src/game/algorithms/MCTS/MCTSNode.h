@@ -7,20 +7,23 @@
 
 
 #include <memory>
+#include <set>
 #include <vector>
 
 class MCTSNode;
 class MCTSNode {
 public:
-    MCTSNode(MCTSNode *parent, int depth, int score);
 
     MCTSNode();
-    MCTSNode *parent;
-    std::vector<MCTSNode *> children;
+    int id;
+    int parent;
+    std::vector<int> children;
+    std::vector<int> childrenActions;
     int score;
     int depth;
-
     int action = 0;
+    int visited = 0;
+    int sumScore = 0;
 
 };
 

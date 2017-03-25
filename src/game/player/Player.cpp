@@ -5,11 +5,10 @@
 
 #include "Player.h"
 #include "../Game.h"
-#include "../util/ColorConverter.hpp"
 #include "../algorithms/RANDOM/AlgoRandom.h"
-#include "../unit/Unit.h"
 #include "../unit/UnitManager.h"
 #include <algorithm>
+
 
 
 
@@ -17,6 +16,7 @@ Player::Player(Game &game, int id) : game_(game)
 {
 	id_ = id;
 	name_ = "Player: " + std::to_string(id_);
+    std::fill(actionStatistics, actionStatistics+20, 0);
 
 	std::tuple<uint8_t , uint8_t, uint8_t> colors[4] = { // TODO use Color generator
 			std::tuple<uint8_t , uint8_t, uint8_t>(255, 0, 0),
@@ -84,7 +84,12 @@ void Player::update() {
 		Constants::Action actionID = actionQueue.front();
 		actionQueue.pop_front();
 
-		if (!getTargetedUnit() and (actionID != Constants::Action::NextUnit and actionID != Constants::Action::PreviousUnit) or unitIndexes.empty()) {
+		// No units to perform action on
+		if(unitIndexes.empty()) {
+			return;
+		}
+
+		if (!getTargetedUnit() && (actionID != Constants::Action::NextUnit && actionID != Constants::Action::PreviousUnit)) {
 			// No selected unit by the player and he attempts to right click on a targetedUnit
 			return;
 		}
@@ -123,10 +128,10 @@ void Player::update() {
 				targetedUnit->tryMove(1, 0);
 				break;
 			case Constants::Action::Attack:
-				targetedUnit->tryAttack(); // TODO
+				targetedUnit->tryAttack();
 				break;
 			case Constants::Action::Harvest:
-				targetedUnit->tryHarvest(); // TODO
+				targetedUnit->tryHarvest();
 				break;
 			case Constants::Action::Build0:
 				targetedUnit->build(0);
@@ -137,6 +142,9 @@ void Player::update() {
 			case Constants::Action::Build2:
 				targetedUnit->build(2);
 				break;
+            case Constants::Action::NoAction:
+                break;
+
 
 		}
 
@@ -169,7 +177,7 @@ void Player::reset()
 	unitIndexes.clear();
 	actionQueue.clear();
 	targetedUnitID = -1;
-	actionStatistics[20] = { 0 };
+    std::fill(actionStatistics, actionStatistics+20, 0);
 
 	if (algorithm_) {
 		algorithm_->reset();
@@ -221,12 +229,12 @@ void Player::addOil(int n) {
 int Player::getScore() {
 	uint8_t GOLD_VALUE = 2;
 	uint8_t LUMBER_VALUE = 1;
-	uint8_t OIL_VALUE = 3;
+	//uint8_t OIL_VALUE = 3;
 
 
 	double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
 	double_t builtScore = statUnitBuilt;
-	double_t damageScore = std::max(0.0, statUnitDamageDone - (statUnitDamageTaken * .5));
+	double_t damageScore = std::max(0.0, (statUnitDamageDone * 2) - (statUnitDamageTaken * .5));
 	double_t unitScore = unitIndexes.size();
 
 

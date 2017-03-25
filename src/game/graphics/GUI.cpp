@@ -24,8 +24,8 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 
 GUI::GUI(Game &game) :
         game(game),
-        window(sf::VideoMode(800, 800), "DeepRTS v1.1", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
         map(game.map.tiles),
+        window(sf::VideoMode(800, 800), "DeepRTS v1.1", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
 		player(&game.players[pIterator]){
 
     this->createView();

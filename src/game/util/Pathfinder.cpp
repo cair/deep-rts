@@ -85,8 +85,6 @@ Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int
 	std::set<Tile *> visited;
 	std::queue<Tile *> queue;
 
-	int cols = destination->tilemap.MAP_WIDTH;
-
 	Tile *closest = NULL;
 	uint16_t tmpClosest = INT16_MAX;
 

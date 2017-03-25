@@ -2,7 +2,7 @@ import os
 from Util import hasCUDASupport
 os.environ["KERAS_BACKEND"] = "theano"
 if(hasCUDASupport()):
-	os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0, lib.cnmem=0.8"
+	os.environ["THEANO_FLAGS"] ="floatX=float32,device=cuda, lib.cnmem=0.8"
 else:
 	os.environ["THEANO_FLAGS"] ="floatX=float32,device=cpu"
 

@@ -37,16 +37,14 @@ int main() {
     Player &player3 = g->addPlayer();
     g->start();
 
-	//PyAI::start(); // Init the API
+	PyAI::start(); // Init the API
 
 
 	
     Algorithm *algorithm0 = new MCTS(&player0);
-	//Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
 
-    //std::shared_ptr<MCTS> algorithm1 = std::shared_ptr<MCTS>(new MCTS(player1));
-	AlgoRandom *algorithm1 = new AlgoRandom(&player1);
+    Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
 	player1.setAlgorithm(algorithm1);
 
 	AlgoRandom *algorithm2 = new AlgoRandom(&player2);

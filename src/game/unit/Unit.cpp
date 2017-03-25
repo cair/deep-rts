@@ -144,15 +144,14 @@ bool Unit::build(int idx) {
         player_->subOil(unit.oilCost);
         player_->statUnitBuilt += 1;
 
+        return true;
+
     } else {
-        std::cout << "Cannot build here" << std::endl;
+        return false;
     }
 
 
-
-
-
-
+    return false;
 }
 
 void Unit::despawn() {

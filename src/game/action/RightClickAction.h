@@ -9,8 +9,8 @@
 #include "BaseAction.h"
 
 class RightClickAction: public BaseAction {
-    int clickX = 0;
-    int clickY = 0;
+    int clickX;
+    int clickY;
 public:
     RightClickAction(Unit & unit);
     virtual void doAction();

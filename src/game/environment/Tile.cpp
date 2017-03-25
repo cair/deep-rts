@@ -6,11 +6,25 @@
 #include "Tile.h"
 #include "../player/Player.h"
 #include "../Game.h"
-#include "../unit/Unit.h"
-#include <utility>
 
-Tile::Tile(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Tilemap &tilemap, bool originalWalkable, bool originalHarvestable, uint16_t originalResources):
-x(x), y(y), height(height), width(width), tilemap(tilemap), originalWalkable(originalWalkable), originalHarvestable(originalHarvestable), originalResources(originalResources)
+Tile::Tile(
+		uint16_t x,
+		uint16_t y,
+		uint16_t width,
+		uint16_t height,
+		Tilemap &tilemap,
+		bool originalWalkable,
+		bool originalHarvestable,
+        uint16_t originalResources):
+        originalWalkable(originalWalkable),
+        originalHarvestable(originalHarvestable),
+        originalResources(originalResources),
+        x(x),
+        y(y),
+        height(height),
+        width(width),
+        tilemap(tilemap)
+
 {}
 
 
@@ -78,8 +92,8 @@ bool Tile::isBuildable() const {
 }
 
 
-uint16_t Tile::distance(Tile *pTile) {
-	return abs(pTile->x - x) + abs(pTile->y - y);
+uint16_t Tile::distance(Tile *target) {
+    return static_cast<int>(hypot(x - target->x, y - target->y));
 }
 
 void Tile::setDepleted() {

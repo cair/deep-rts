@@ -14,6 +14,8 @@ class MCTS: public Algorithm  {
 public:
     MCTS(Player *player);
 
+	Player *simPlayer;
+
 	virtual void update();	// Executes a iteration
 	virtual int findAction(); // Determine which action
 	virtual void train();
@@ -30,7 +32,12 @@ public:
 	int playerID;
     MCTSNode root;
 
-    void calculate(MCTSNode root);
+    void calculate();
+	int randomAction();
+	MCTSNode *UCBSelection(MCTSNode *node);
+	MCTSNode *BestChildOfSumScore(MCTSNode *node);
+
+	std::vector<MCTSNode> nodes;
 
     Game *sim;
 	std::mt19937 random_engine;

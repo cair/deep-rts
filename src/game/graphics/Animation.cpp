@@ -16,8 +16,10 @@ void Animation::add(const int unit, const int state, const int direction, int x,
 
     std::shared_ptr<sf::Sprite> sprite = std::shared_ptr<sf::Sprite>(new sf::Sprite());
     sprite->setTexture(*texture);
-    if(flip)
-        w * -1;
+    if(flip) {
+        //wrs *= -1; // TODO this messes up placement
+    }
+
     sprite->setTextureRect(sf::IntRect(x, y, w, h));
     sprite->setScale((double)wrs/w,(double)hrs/h);
     Animation::sprites[unit][state][direction].push_back(sprite);

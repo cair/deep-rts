@@ -8,12 +8,15 @@
 
 std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
-		map(Tilemap("contested-4v4.json", this)),
+
+        doCaptionWindow(Config::getInstance().getCaptionWindow()),
 		doCaptionConsole(Config::getInstance().getCaptionConsole()),
-		doCaptionWindow(Config::getInstance().getCaptionWindow()),
+        doScoreLogging(Config::getInstance().getLoggingScoring()),
+        scoreLog(_nplayers),	// Only used when scoreLog flag is set in config
 		doDisplay(Config::getInstance().getDisplay()),
-		doScoreLogging(Config::getInstance().getLoggingScoring()),
-		scoreLog(_nplayers)	// Only used when scoreLog flag is set in config
+		map(Tilemap("contested-4v4.json", this))
+
+
 {
 	players.reserve(16);
 	units.reserve(1000);
@@ -294,7 +297,7 @@ void Game::spawnPlayer(Player &player) {
 	// If auto-spawn town hall mechanic is activated
 	if (Config::getInstance().getMechanicTownHall()) {
 		// build Town-Hall
-		//builder.build(0);
+		builder.build(0);
 	}
 
 }
@@ -404,53 +407,11 @@ void Game::load(Game *other) {
         myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
         myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
 
-		myPlayer.unitIndexes.clear();
-		myPlayer.unitIndexes.insert(std::end(myPlayer.unitIndexes), std::begin(otherPlayer.unitIndexes), std::end(otherPlayer.unitIndexes));
+        myPlayer.unitIndexes.clear();
+        myPlayer.unitIndexes.insert(std::end(myPlayer.unitIndexes), std::begin(otherPlayer.unitIndexes), std::end(otherPlayer.unitIndexes));
 
         assert(myPlayer.id_ == otherPlayer.id_);
     }
-
-
-    /*
-
-
-
-
-
-   // Load Players
-   for(int i = 0; i < other->players.size(); i++) {
-       auto &myPlayer = players[i];
-       auto &otherPlayer = other->players[i];
-
-       myPlayer.defeated = otherPlayer.defeated;
-       myPlayer.food = otherPlayer.food;
-       myPlayer.foodConsumption = otherPlayer.foodConsumption;
-       myPlayer.gold = otherPlayer.gold;
-       myPlayer.lumber = otherPlayer.lumber;
-       myPlayer.oil = otherPlayer.oil;
-       myPlayer.statGoldGather = otherPlayer.statGoldGather;
-       myPlayer.statLumberGather = otherPlayer.statLumberGather;
-       myPlayer.statOilGather = otherPlayer.statOilGather;
-       myPlayer.statUnitBuilt = otherPlayer.statUnitBuilt;
-       myPlayer.statUnitDamageDone = otherPlayer.statUnitDamageDone;
-       myPlayer.statUnitDamageTaken = otherPlayer.statUnitDamageTaken;
-       myPlayer.statUnitMilitary = otherPlayer.statUnitMilitary;
-       myPlayer.unitIndexes = otherPlayer.unitIndexes;
-       assert(myPlayer.id_ == otherPlayer.id_);
-
-
-
-   }
-
-   // Load Units
-   units.clear();
-   */
-
-
-
-
-
-
 
 
 }

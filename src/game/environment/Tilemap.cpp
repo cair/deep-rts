@@ -191,4 +191,6 @@ bool Tilemap::operator()(unsigned x, unsigned y) const
 		const bool isWalk = t.isWalkable();
 		return isWalk;
 	}
+
+    return false;
 }

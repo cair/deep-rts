@@ -4,8 +4,6 @@
 
 #include "MCTSNode.h"
 
-MCTSNode::MCTSNode(MCTSNode *parent, int depth, int score): parent(parent), depth(depth), score(score) {
+MCTSNode::MCTSNode() {
 
 }
-
-MCTSNode::MCTSNode() {}
