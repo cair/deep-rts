@@ -4,37 +4,22 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-chmod +x -R ../src/flatbuffers/
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+chmod +x -R ../c++/src/flatbuffers/
 
-# BUILD TOOLS
-# sfml-window
-apt-get install libx11-dev -y
-apt-get install libxcb1-dev -y
-apt-get install libx11-xcb-dev -y
-apt-get install libxcb-randr0-dev -y
-apt-get install libxcb-image0-dev -y
-apt-get install libgl1-mesa-dev -y
-apt-get install libudev-dev -y
-
-# sfml-graphics
-apt-get install libfreetype6-dev -y
-apt-get install libjpeg-dev -y
-
-# sfml-audio
-apt-get install libopenal-dev -y
-apt-get install libflac-dev -y
-apt-get install libvorbis-dev -y
-
+# Packages
+apt-get install libx11-dev libxcb1-dev libx11-xcb-dev libxcb-randr0-dev libxcb-image0-dev libgl1-mesa-dev libudev-dev libfreetype6-dev libjpeg-dev libopenal-dev libflac-dev libvorbis-dev -y
 
 # SFML
 rm -rf /tmp/sfml/
 cd /tmp/
 mkdir sfml
 cd sfml
-wget -O sfml.zip https://www.sfml-dev.org/files/SFML-2.4.2-sources.zip
-unzip -j sfml.zip
+wget -O sfml.zip http://mirror2.sfml-dev.org/files/SFML-2.4.2-sources.zip
+unzip -o sfml.zip
+cd SFML-2.4.2
 cmake .
-make
+make -j 8
 make install
 
 
@@ -48,11 +33,19 @@ else
     git clone https://github.com/google/flatbuffers.git
     cd flatbuffers
     cmake -G "Unix Makefiles"
-    make
+    make -j 8
     ./flattests
     make install
     cd
 fi
+
+# Generate Flatbuffer headers
+cd $DIR
+ls -la
+cd ../c++/src/flatbuffers/ScoreLog
+sh create_buffer.sh
+
+
 # PYTHON 3
 apt-get install python3 python3-pip -y
 pip3 install keras theano flatbuffers
