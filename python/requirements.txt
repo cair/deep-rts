@@ -1,0 +1,4 @@
+pygame
+tornado
+cython
+plotly

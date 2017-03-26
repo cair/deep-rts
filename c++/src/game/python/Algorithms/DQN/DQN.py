@@ -2,7 +2,7 @@ import os
 from Util import hasCUDASupport
 os.environ["KERAS_BACKEND"] = "theano"
 if(hasCUDASupport()):
-	os.environ["THEANO_FLAGS"] ="floatX=float32,device=cuda, lib.cnmem=0.8"
+	os.environ["THEANO_FLAGS"] ="floatX=float32,device=gpu0"
 else:
 	os.environ["THEANO_FLAGS"] ="floatX=float32,device=cpu"
 
@@ -17,7 +17,7 @@ from keras.optimizers import RMSprop
 from theano.gradient import disconnected_grad
 
 class DQN:
-	def __init__(self, state_size=None, number_of_actions=1, epsilon=0.1, mbsz=32, discount=0.9, memory=80,save_name='basic', save_freq=10, learning_rate=0.0001):
+	def __init__(self, state_size=None, number_of_actions=1, epsilon=0.1, mbsz=32, discount=0.9, memory=40,save_name='basic', save_freq=10, learning_rate=0.0001):
 		self.state_size = state_size
 		self.number_of_actions = number_of_actions
 		self.epsilon = epsilon
@@ -39,6 +39,7 @@ class DQN:
 		S = Input(shape=self.state_size)
 		h = Convolution2D(16, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(S)
 		h = Convolution2D(32, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(h)
+		h = Convolution2D(64, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(h)
 		h = Flatten()(h)
 		h = Dense(256, activation='relu')(h)
 		V = Dense(self.number_of_actions)(h)
