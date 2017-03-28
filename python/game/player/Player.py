@@ -13,7 +13,7 @@ class Player:
     def __init__(self, game, id):
         self.id = id
         self.game = game
-
+        self.unitManager = UnitManager
         self.name = "Player %s" % id
 
         self.player_color = (255, 255, 0) # TODO color

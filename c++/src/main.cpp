@@ -44,8 +44,11 @@ int main() {
     Algorithm *algorithm0 = new MCTS(&player0);
     player0.setAlgorithm(algorithm0);
 
-    Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
-	player1.setAlgorithm(algorithm1);
+    Algorithm *algorithm1 = new MCTS(&player1);
+    player1.setAlgorithm(algorithm1);
+
+    //Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
+	//player1.setAlgorithm(algorithm1);
 
 	AlgoRandom *algorithm2 = new AlgoRandom(&player2);
     player2.setAlgorithm(algorithm2);

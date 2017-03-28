@@ -5,7 +5,7 @@ from collections import deque
 
 from game import Config
 from game import Constants
-from game.unit.UnitManager import UnitManager
+
 from game.util.Pathfinding import a_star_search
 
 

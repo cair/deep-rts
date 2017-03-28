@@ -26,6 +26,7 @@ public:
 
     int timeBudget;
     int depthBudget;
+	double startEpsilon;
 	double epsilon;
 	double epsilonModifier;
 	double epsilonDecent;

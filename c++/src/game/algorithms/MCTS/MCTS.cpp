@@ -19,9 +19,11 @@ MCTS::MCTS(Player *player) : Algorithm(player) {
         nodes.back().id = i;
     }
 
+    startEpsilon = 0.9;
+
     timeBudget = _apm_interval; // 1 second
     depthBudget = 20; // Depth budget (Tree depth)
-    epsilon = 0.9;	// Start of epsilon
+    epsilon = startEpsilon;	// Start of epsilon
     epsilonModifier = 1000000; // Number of iterations to reach epsilon 0.1
     epsilonDecent = epsilon / epsilonModifier; // How much epsilon decrease with per iteration
     playerID = player->id_;  // Index of selected player
@@ -284,6 +286,12 @@ void MCTS::calculate(){
     auto bestNode = BestChildOfSumScore(&nodes[0]);
     player->queueAction(static_cast<Constants::Action >(bestNode->action));
     //std::cout << "Iterations: " << std::to_string(iterator) << " | " << timeout / 1000 << "ms" <<std::endl;
+
+    // Tune epsilon
+    epsilonModifier = (epsilonDecent + iterator) / 2;
+    epsilonDecent =  epsilon / epsilonModifier;
+    epsilon = startEpsilon;  // Reset epsilon;
+
 
 
 }
