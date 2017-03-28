@@ -1,0 +1,2 @@
+TYPE_HUMAN = "0"
+TYPE_ORC = "1"

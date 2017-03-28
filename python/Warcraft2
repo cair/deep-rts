@@ -1,0 +1,443 @@
+Human Building Listing - Version 1.0
+By Roland Carlos
+FongSucks@hotmail.com
+
+---------------
+Version Updates
+
+1.0 - January 15, 1999: Descriptions added.
+0.5 - January 13, 1999: First release of guide. Basic stats included,
+descriptions soon to be included.
+
+------------
+Little Intro
+As the First War was finished, the Human lands in the south lay in ruins. The
+powers of the Azerothians were not enough to protect their lands. While
+planning new strategies to get back the lands of the South, new buildings
+were devised. Their new allies, the Dwarves and Elves also brought some of
+their building plans over for use by the Alliance. Peasants work hard in the
+creation of these buildings.
+
+Explanations:
+Visual Range - How far the building can see
+HP - How much damage it can take
+Build Time - How much time it takes to build
+Gold Cost - How much gold it costs to build this building
+Lumber Cost - How much lumber it costs to build this building
+Oil Cost - How much oil it costs to build this building
+Armor - How much protection this building has
+Requirements - What, if anything, is needed to build this building
+Options - The options this building has (Requirements listed)
+(GUARD & CANNON TOWER ONLY)
+Basic Damage - The damage that is done that is affected by armor
+Piercing Damage - The damage that is done regardless of any factors
+Effective Damage - The least damage done to the most
+Attack Range - How far it can attack
+
+---------
+Town Hall
+
+Visual Range: 4
+HP: 1,200
+Build Time: 255
+Gold Cost: 1,200
+Lumber Cost: 800
+Armor: 20
+Requirements: None
+
+The Town Hall provides 5 supply points.
+
+Options:
+Train Peasant
+Upgrade to Keep (Requires Barracks)
+
+The Town Hall is the most important building of all, because without it, you
+would not be able to collect gold, a important resource. The Town Hall is the
+only place where you get build Peasants. The Town Hall should be guarded all
+the time by other units and also should be at the center of your town. Make
+sure that the Town Hall is placed as close as possible to the closest Gold
+Mine and that you have two by the time you need to upgrade one since
+upgrading makes the Town Hall not be able to make Peasants.
+
+----
+Keep
+
+Visual Range: 6
+HP: 1,400
+Build Time: 200
+Gold Cost: 2,000
+Lumber Cost: 1,000
+Oil Cost: 200
+Armor: 20
+Requirements: Barracks
+
+The Keep makes every gold returned by a Peasant have a +10 bonus.
+
+Options:
+Train Peasant
+Upgrade to Castle (Requires Lumber Mill, Blacksmith, Stables)
+
+The Keep is just like the Town Hall, except stronger and a better visual
+range. You should only make Keeps in developed cities, not unguarded or wild
+expansions.
+
+------
+Castle
+
+Visual Range: 9
+HP: 1,600
+Build Time: 200
+Gold Cost: 2,500
+Lumber Cost: 1,200
+Oil Cost: 500
+Armor: 20
+Requirements: Lumber Mill, Blacksmith, Stables
+
+The Keep makes every gold returned by a Peasant have a +20 bonus.
+
+Options:
+Train Peasant
+
+The final level of the Town Hall, it is the strongest and the one with the
+most vision. You should only build Castles at major cities, like your first
+city.
+
+----
+Farm
+
+Visual Range: 3
+HP: 400
+Build Time: 100
+Gold Cost: 500
+Lumber Cost: 250
+Armor: 20
+Requirements: None
+
+The Farm provides 5 supply points.
+
+You build farms so you gain supply units to build units. You can use farms
+to block up choke points or to use as cover for towers. Use make sure you
+have a surplus so when you lose farms, you don't lose the ability to make
+units.
+
+--------
+Barracks
+
+Visual Range: 3
+HP: 800
+Build Time: 200
+Gold Cost: 700
+Lumber Cost: 450
+Armor: 20
+Requirements: None
+
+Options:
+Train Footman
+Train Archer (Requires Lumber Mill)
+Train Ranger (Overrides Archer, Requires Keep, Lumber Mill, Ranger Upgrade)
+Build Ballista (Requires Lumber Mill, Blacksmith)
+Train Knight (Requires Stables)
+Train Paladin (Overrides Knight, Requires Stables, Church, Paladin Upgrade)
+
+The Barracks is where you can make the basic fighting units. You will only
+be able to make the Footman at first, but after you build the right
+buildings, you can make the more advanced fighting units. Footmen are good
+in early attacking, but knights and archers should be used as the game goes
+on.
+
+-----------------
+Elven Lumber Mill
+
+Visual Range: 3
+HP: 600
+Build Time: 150
+Gold Cost: 600
+Lumber Cost: 450
+Armor: 20
+Requirements: None
+
+The Elven Lumber Mill makes every lumber returned by a Peasant have a +25
+bonus.
+
+Options:
+Upgrade Arrows 1 (Damage +1, Build Time: 200, Gold: 300, Lumber: 300)
+Upgrade Arrows 2 (Damage +1, Build Time: 250, Gold: 900, Lumber: 500)
+Elven Ranger Training (Requires Keep, Build Time: 250, Gold: 1,500)
+Scouting Research (Sight +9, Build Time: 250, Gold: 1,500)
+Longbow Research (Range +1, Build Time: 250, Gold: 2,000)
+Marksmanship Research (Damage +3, Build Time: 250, Gold: 2,500)
+
+The Lumber Mill should be built near trees that are far away from your Town
+Hall, but still in your city. Peasants will bring their lumber to the Lumber
+Mill instead of the Town Hall if the Mill is closer. Also, the Lumber Mill
+is a requirement for many of the advanced buildings and it also has some
+good Archer upgrades.
+
+----------
+Blacksmith
+
+Visual Range: 3
+HP: 775
+Build Time: 200
+Gold Cost: 800
+Lumber Cost: 450
+Oil Cost: 100
+Armor: 20
+Requirements: None
+
+Options:
+Upgrade Swords 1 (Damage +2, Build Time: 200, Gold: 800)
+Upgrade Swords 2 (Damage +2, Build Time: 250, Gold: 2,400)
+Upgrade Shields 1 (Armor +2, Build Time: 200, Gold: 300, Lumber: 300)
+Upgrade Shields 2 (Armor +2, Build Time: 250, Gold: 900, Lumber: 500)
+Upgrade Ballista 1 (Damage +15, Build Time: 250, Gold: 1,500)
+Upgrade Ballista 2 (Damage +15, Build Time: 250, Gold: 4,000)
+
+The Blacksmith is built for upgrades for your Footmen, Knights, and Archers.
+Very important, since as the game goes on, the Level of your fighters counts
+a lot between winning and losing. Make sure to upgrade when resources and
+time allow.
+
+-----------
+Scout Tower
+
+Visual Range: 9
+HP: 100
+Build Time: 60
+Gold Cost: 550
+Lumber Cost: 200
+Armor: 20
+Requirements: None
+
+Options:
+Upgrade to Guard Tower (Requires Lumber Mill)
+Upgrade to Cannon Tower (Requires Blacksmith)
+
+You should only build Scout Towers so you can upgrade them. Building just
+Scout Towers is a waste of resources and space. All they can do is see far,
+and that isnt a good reason to build them.
+
+-----------
+Guard Tower
+
+Visual Range: 9
+HP: 130
+Build Time: 140
+Gold Cost: 500
+Lumber Cost: 150
+Armor: 20
+Requirements: Lumber Mill
+Basic Damage: 4
+Piercing Damage: 12
+Effective Damage: 6-16
+Attack Range: 6
+
+Guard Towers are good for defending since they do not do splash damage and
+that they can attack air units. The range is good too, but not as much as a
+Ballista/Catapult. Their HP total is lower than a Cannon Tower though.
+
+------------
+Cannon Tower
+
+Visual Range: 9
+HP: 160
+Build Time: 190
+Gold Cost: 1,000
+Lumber Cost: 300
+Armor: 20
+Requirements: Blacksmith
+Basic Damage: 50
+Piercing Damage: 0
+Effective Damage: 10-50
+Attack Range: 7
+
+Cannon Towers are good since they do a lot more damage than a Guard Tower.
+However, it does splash damage so it can hurt units that are near the blast
+(even allies). The range is still not longer than that of a
+Ballista/Catapult and it cannot attack air units.
+
+-------
+Stables
+
+Visual Range: 3
+HP: 500
+Build Time: 150
+Gold Cost: 1,000
+Lumber Cost: 300
+Armor: 20
+Requirements: Keep
+
+Build the Stables as soon as you make the Keep so you can build Knights.
+Knights are very important in the ground fight.
+
+------
+Church
+
+Visual Range: 3
+HP: 700
+Build Time: 175
+Gold Cost: 900
+Lumber Cost: 500
+Armor: 20
+Requirements: Castle
+
+Options:
+Paladin Training (Build Time: 250, Gold: 1,000)
+Research Healing (Build Time: 200, Gold: 1,000)
+Reserach Exorcism (Build Time: 200, Gold: 2,000)
+
+The Church should be built as soon as you make the Castle. The ability to
+have Paladin is very important. The spells they have can change the flow of
+battle to your advantage due to the spells the Paladin have.
+
+----------------
+Gnomish Inventor
+
+Visual Range: 3
+HP: 500
+Build Time: 150
+Gold Cost: 1,000
+Lumber Cost: 400
+Armor: 20
+Requirements: Keep
+
+Options:
+Build Flying Machine
+Train Dwarven Demolition Squad
+
+The Gnomish Inventor is important since you can make the flying scout as well
+as the suicide bomber. Both are fun to use and deploy and the bomber can
+wreck havoc on enemy buildings.
+
+----------
+Mage Tower
+
+Visual Range: 3
+HP: 500
+Build Time: 125
+Gold Cost: 1,000
+Lumber Cost: 200
+Armor: 20
+Requirements: Castle
+
+Options:
+Train Mage
+Research Slow (Build Time: 100, Gold: 500)
+Research Flame Shield (Build Time: 100, Gold: 1,000)
+Research Invisibility (Build Time: 200, Gold: 2,500)
+Research Polymorph (Build Time: 200, Gold: 2,000)
+Research Blizzard (Build Time: 200, Gold: 2,000)
+
+The Mage Tower is very important to you at the Castle Stage. The battle will
+go from the ground to air and magic. Whoever gets Magic first and uses it
+well will most likely win the war.
+
+--------------
+Gryphon Aviary
+
+Visual Range: 3
+HP: 500
+Build Time: 150
+Gold Cost: 1,000
+Lumber Cost: 400
+Armor: 20
+Requirements: Castle
+
+Options:
+Train Gryphon Rider
+
+The second part of the Castle battles are the Air. The Gryphon Riders are
+slow to build and expensive, but when made, are a powerful ally. Make sure
+not to lose this building.
+
+--------
+Shipyard
+
+Visual Range: 3
+HP: 1,100
+Build Time: 200
+Gold Cost: 800
+Lumber Cost: 450
+Armor: 20
+Requirements: Lumber Mill
+
+Options:
+Build Oil Tanker
+Build Destroyer
+Build Transport (Requires Foundry)
+Build Battleship (Requires Foundry)
+Build Gnomish Submarine (Requires Gnomish Inventor)
+
+You will only build Shipyards if needed. On island map, power over the seas
+is critcal. Also note this is where Oil Tankers will return Oil so build it
+close to Oil spots until a Refinery can be built. Build as many of these
+across the shore as possible so you can build as many ships as possible.
+
+-------
+Foundry
+
+Visual Range: 3
+HP: 750
+Build Time: 175
+Gold Cost: 700
+Lumber Cost: 400
+Oil Cost: 400
+Armor: 20
+Requirements: Shipyard
+
+Options:
+Upgrade Ship Cannons 1 (Damage +5, Build Time: 200, Gold: 700, Lumber: 100,
+Oil: 1,000)
+Upgrade Ship Cannons 2 (Damage +5, Build Time: 250, Gold: 2,000, Lumber: 250,
+Oil: 3,000)
+Upgrade Ship Armor 1 (Armor +5, Build Time: 200, Gold: 500, Lumber: 500)
+Upgrade Ship Armor 2 (Armor +5, Build Time: 250, Gold: 1,500, Lumber: 900)
+
+The Foundry is important since you can upgrade your ships and make the
+advanced ships. Build the Foundry as soon as Oil allows.
+
+------------
+Oil Refinery
+
+Visual Range: 3
+HP: 600
+Build Time: 225
+Gold Cost: 800
+Lumber Cost: 350
+Oil Cost: 200
+Armor: 20
+Requirements: Shipyard
+
+The Oil Refinery makes every oil barrel brought back by a Oil Tanker have a
++25 bonus.
+
+The Oil Refinery should be built at far away Oil Spots so your Oil Tankers
+will not have to go far to return oil.
+
+------------
+Oil Platform
+
+Visual Range: 3
+HP: 650
+Build Time: 200
+Gold Cost: 700
+Lumber Cost: 450
+Armor: 20
+Requirements: Oil Tanker
+
+Protect these as much as you can. Damage done to these cannot be healed, so
+if your Oil Platform is at red, decide if it is worth the risk of protecting.
+
+----------
+Disclaimer
+
+This guide can and should be given out as long as it is not altered in any
+way. The guide's purpose is to help people play Warcraft 2 and that is its
+only purpose. This guide cannot be used in any commerically such as, but not
+limited to, Magazines, Books, Guides, without first contacting the author for
+his consent. Credit must given if you take information from this guide.
+
+Warcraft 2 is a trademark of Blizzard Inc., copyright 1996.
+All other trademarks copyright their respective owners.
+
+Copyright Roland Carlos 1999
