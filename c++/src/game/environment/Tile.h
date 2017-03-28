@@ -7,6 +7,7 @@
 #include <string>
 #include "../environment/Tile.h"
 #include "../util/Position.h"
+#include <stdint.h>
 
 class Unit;
 
