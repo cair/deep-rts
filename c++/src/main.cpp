@@ -46,7 +46,7 @@ int main() {
 
 	AlgoRandom *algorithm1 = new AlgoRandom(&player1);
 //    Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
-    //player1.setAlgorithm(algorithm1);
+    player1.setAlgorithm(algorithm1);
 
 	AlgoRandom *algorithm2 = new AlgoRandom(&player2);
     player2.setAlgorithm(algorithm2);
