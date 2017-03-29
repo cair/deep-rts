@@ -4,6 +4,7 @@ from game import Constants
 from game.unit.UnitManager import UnitManager
 from game import Config
 from collections import deque
+from game import Constants
 
 import numpy as np
 
@@ -59,7 +60,6 @@ class Player:
         unit.spawn(spawn_tile, unit.spawn_duration)
 
         self.targeted_unit_id = unit.id
-
         return unit
 
     def add_unit(self, unit_type):
@@ -84,55 +84,55 @@ class Player:
         if not self.unit_indexes:
             return
 
-        if self.targeted_unit_id == -1 and action_id != Action.NextUnit and action_id != Action.PreviousUnit:
+        if self.targeted_unit_id == -1 and action_id != Constants.Action.NextUnit and action_id != Constants.Action.PreviousUnit:
             return
         
         targeted_unit = self.targeted_unit()
 
-        if action_id == Action.NextUnit:
+        if action_id == Constants.Action.NextUnit:
             self.nextUnit()
-        elif action_id == Action.PreviousUnit:
+        elif action_id == Constants.Action.PreviousUnit:
             self.previousUnit()
-        elif action_id == Action.MoveUpRight:
+        elif action_id == Constants.Action.MoveUpRight:
             targeted_unit.tryMove(-1, 1);
         
-        elif action_id == Action.MoveUpLeft:
+        elif action_id == Constants.Action.MoveUpLeft:
             targeted_unit.tryMove(-1, -1);
         
-        elif action_id == Action.MoveDownRight:
+        elif action_id == Constants.Action.MoveDownRight:
             targeted_unit.tryMove(1, 1);
         
-        elif action_id == Action.MoveDownLeft:
+        elif action_id == Constants.Action.MoveDownLeft:
             targeted_unit.tryMove(1, -1);
         
-        elif action_id == Action.MoveUp:
+        elif action_id == Constants.Action.MoveUp:
             targeted_unit.tryMove(0, -1);
         
-        elif action_id == Action.MoveDown:
+        elif action_id == Constants.Action.MoveDown:
             targeted_unit.tryMove(0, 1);
         
-        elif action_id == Action.MoveLeft:
+        elif action_id == Constants.Action.MoveLeft:
             targeted_unit.tryMove(-1, 0);
         
-        elif action_id == Action.MoveRight:
+        elif action_id == Constants.Action.MoveRight:
             targeted_unit.tryMove(1, 0);
         
-        elif action_id == Action.Attack:
+        elif action_id == Constants.Action.Attack:
             targeted_unit.tryAttack();
         
-        elif action_id == Action.Harvest:
+        elif action_id == Constants.Action.Harvest:
             targeted_unit.tryHarvest();
         
-        elif action_id == Action.Build0:
+        elif action_id == Constants.Action.Build0:
             targeted_unit.build(0);
         
-        elif action_id == Action.Build1:
+        elif action_id == Constants.Action.Build1:
             targeted_unit.build(1);
         
-        elif action_id == Action.Build2:
+        elif action_id == Constants.Action.Build2:
             targeted_unit.build(2);
         
-        elif action_id == Action.NoAction:
+        elif action_id == Constants.Action.NoAction:
             pass
         else:
             assert False

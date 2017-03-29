@@ -234,7 +234,7 @@ int Player::getScore() {
 
 	double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
 	double_t builtScore = statUnitBuilt;
-	double_t damageScore = std::max(0.0, (statUnitDamageDone * 2) - (statUnitDamageTaken * .5));
+	double_t damageScore = std::max(0.0, (statUnitDamageDone * 10) - (statUnitDamageTaken * .5));
 	double_t unitScore = unitIndexes.size();
 
 

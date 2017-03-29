@@ -15,7 +15,7 @@
   "logging": {
     "scorings": true
   },
-  "display":  false,
+  "display":  true,
 
   "mechanics": {
     "town_hall_on_start": true,

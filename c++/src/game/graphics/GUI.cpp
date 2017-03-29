@@ -1,23 +1,6 @@
-//
-// Created by Per-Arne on 24.02.2017.
-//
-/*
- *
-2
-down vote
-accepted
-I've run into a similar issue myself and only after starting the application outside of the CLion IDE you'll actually get the informative error, which is that you're missing a DLL.
-
-If you use the dynamic libraries, you'll have to copy the DLLs into the working directory or next to your application. Also don't forget to copy over the OpenAL DLL that ships with SFML if you ever want to use the audio module.
-
-I really hope JetBrains can report the missing DLL error better in their IDE.
- */
-
+#include <thread>
 #include "GUI.h"
 #include "../Game.h"
-
-#include <thread>
-#include <tuple>
 
 
 
@@ -25,31 +8,67 @@ I really hope JetBrains can report the missing DLL error better in their IDE.
 GUI::GUI(Game &game) :
         game(game),
         map(game.map.tiles),
-        window(sf::VideoMode(800, 800), "DeepRTS v1.1", sf::Style::Titlebar | sf::Style::Close /*| sf::Style::Resize*/),
-		player(&game.players[pIterator]){
+        window(sf::VideoMode(1280, 1280), "DeepRTS v1.3", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize),
+        player(&game.players[pIterator]){
 
-    this->createView();
-    this->createFrame();
-    this->font.loadFromFile("./data/fonts/arial.ttf");
+    setupView();
+    setupFrame();
+    setupFont();
+    setupAudio();
+    setupPlot();
 
 
 
-	std::thread t(std::bind(&GUI::startAudio, this));
-	t.detach();
-	
-}
 
-void GUI::startAudio() {
-	music = std::shared_ptr<sf::Music>(new sf::Music());
-	if (music->openFromFile("./data/audio/song_1.ogg"))
-	{
-		music->setLoop(true);
-		music->play();
-	}
+
+
+
 
 }
 
-void GUI::createView(){
+void GUI::setupPlot() {
+
+    plot.setPosition(sf::Vector2f(13, 240));
+    plot.setSize(sf::Vector2f(180, 205));
+    plot.setTitle("DeepRTS Agent Performance");
+    plot.setFont("./data/fonts/arial.ttf");
+    plot.setXLabel("Tick");
+    plot.setYLabel("Score");
+    plot.setBackgroundColor(sf::Color(rand()%255, rand()%255, rand()%255));
+    plot.setTitleColor(sf::Color::Black);
+
+    for(auto &player : game.players) {
+
+        sf::plot::Curve &curve = plot.createCurve(
+                player.name_,
+                sf::Color(std::get<0>(player.playerColor), std::get<1>(player.playerColor), std::get<2>(player.playerColor))
+        );
+        curve.setLimit(20000);
+        curve.setLabel(player.name_);
+        curve.addValue(0);
+
+    }
+}
+
+void GUI::setupFont() {
+    if(font.loadFromFile("./data/fonts/arial.ttf")) {
+        // Loaded font
+
+    } else {
+        assert(false && "Could not load font");
+    }
+}
+
+void GUI::setupAudio(){
+    if (music.openFromFile("./data/audio/song_1.ogg"))
+    {
+        music.setLoop(true);
+        music.play();
+    }
+
+}
+
+void GUI::setupView(){
     const Tilemap &tilemap = game.map;
     this->fullView = sf::View(sf::FloatRect(0, 0,
                                             static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
@@ -57,17 +76,11 @@ void GUI::createView(){
     this->fullView.setViewport(sf::FloatRect(0, 0, 1, 1));
     this->fullView.zoom(1);
 
-	this->frameView = sf::View(sf::FloatRect(0, 0,
-		static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
-		static_cast<float_t>(tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT)));
-	this->frameView.setViewport(sf::FloatRect(0.22, 0.09, 0.77, 0.78));
-	this->frameView.zoom(1);
-
-
-    this->minimapView = sf::View(sf::FloatRect(0, 0,
-                                               tilemap.MAP_WIDTH * tilemap.TILE_WIDTH,
-                                               tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT));
-    this->minimapView.setViewport(sf::FloatRect(.01, .25, .20, .22));
+    this->frameView = sf::View(sf::FloatRect(0, 0,
+                                             static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
+                                             static_cast<float_t>(tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT)));
+    this->frameView.setViewport(sf::FloatRect(0.22, 0.09, 0.77, 0.78));
+    this->frameView.zoom(1);
 
     this->povView = sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
     this->povView.setViewport(sf::FloatRect(0, 0, 1, 1));
@@ -78,24 +91,15 @@ void GUI::createView(){
 }
 
 
-void GUI::createFrame(){
+void GUI::setupFrame(){
 
     this->gameFrameTexture.loadFromFile("data/textures/game_frame.png");
     this->gameFrame.setTexture(this->gameFrameTexture);
-	this->gameFrame.setScale(960.0 / 2560, 960.0 / 1440);
-    /*std::cout << this->gameFrameTexture.getSize().x << std::endl;
-    this->gameFrame.setScale(sf::Vector2f((float)this->gameFrameTexture.getSize().x / window.getSize().x,
-                                          (float)this->gameFrameTexture.getSize().y / window.getSize().y));
-                                          */
-
+    this->gameFrame.setScale(960.0 / 2560, 960.0 / 1440);
 }
 
-void GUI::caption() {
-    std::stringstream ss;
-    ss << "DeepRTS v1.1 [FPS=" << game.currentFPS << ",UPS=" << game.currentUPS << "]";
-    std::string s = ss.str();
-    window.setTitle(s);
-
+void GUI::reset() {
+    plot.reset();
 }
 
 sf::Vector2f GUI::getCameraOffset() {
@@ -108,7 +112,7 @@ sf::Vector2f GUI::getCameraOffset() {
 int GUI::mouseClick(int mX, int mY)
 {
     size_t x = mX / this->game.map.TILE_WIDTH;
-	size_t y = mY / this->game.map.TILE_HEIGHT;
+    size_t y = mY / this->game.map.TILE_HEIGHT;
     size_t cols = this->game.map.MAP_WIDTH;
 
     size_t idx = cols*y + x;
@@ -134,7 +138,7 @@ void GUI::handleEvents(){
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
                 int idx = this->mouseClick(worldPos.x, worldPos.y);
-				if (idx > game.map.tiles.size()) return;
+                if (idx > game.map.tiles.size()) return;
                 Tile &t = this->game.map.tiles[idx];
                 this->leftClick(t);
 
@@ -144,7 +148,7 @@ void GUI::handleEvents(){
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                 sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
                 int idx = this->mouseClick(worldPos.x, worldPos.y);
-				if (idx > game.map.tiles.size()) return;
+                if (idx > game.map.tiles.size()) return;
                 Tile &t = this->game.map.tiles[idx];
                 this->rightClick(t);
 
@@ -215,16 +219,16 @@ void GUI::handleEvents(){
             }
 
 
-			else if (event.key.code == sf::Keyboard::J) {
-				// Previous player (Focus)
-				pIterator -= 1;
-				player = &game.players[pIterator % game.players.size()];
-			}
+            else if (event.key.code == sf::Keyboard::J) {
+                // Previous player (Focus)
+                pIterator -= 1;
+                player = &game.players[pIterator % game.players.size()];
+            }
 
-			else if (event.key.code == sf::Keyboard::K) {
-				pIterator += 1;
-				player = &game.players[pIterator % game.players.size()];
-			}
+            else if (event.key.code == sf::Keyboard::K) {
+                pIterator += 1;
+                player = &game.players[pIterator % game.players.size()];
+            }
 
 
 
@@ -262,64 +266,45 @@ void GUI::handleEvents(){
 
 void GUI::render() {
 
-
+    // Handle input events
     handleEvents();
 
-
-    if(!renderGUI)
-        return;
-
-	if (this->toggleFrame) {
-		window.setView(this->frameView);
-		this->drawTiles();
-		this->drawUnits();
-		this->drawPlayerSelectedUnit();
-
-		window.setView(this->fullView);
-		window.draw(this->gameFrame);
-
-		this->drawStats();
-		this->drawSelected();  // Text
-		this->drawStatistics();
-		this->drawScoreBoard();
-		this->drawActionDistribution();
-		
-
-		// TODO heavy
-		window.setView(this->minimapView);
-		this->drawTiles();
-		this->drawUnits();
-		this->drawPlayerSelectedUnit();
-
-
-		window.setView(this->frameView);
-
-		// Update the window
-		window.display();
-		return;
-	}
-
-
-    // Draw things here
-    window.setView(*this->currentView);
-    this->drawTiles();
-    this->drawUnits();
-
-    window.setView(this->fullView);
-
-    this->drawStats();
-    this->drawSelected();  // Text
-    this->drawStatistics();
-    this->drawScoreBoard();
-	this->drawPlayerSelectedUnit();
-
+    // If nogui is toggled (Black screen)
     if(!renderGUI){
         showNoGuiMessage();
         return;
     }
 
+    // Set to frame view
+    window.setView(this->frameView);
+    this->drawTiles();
+    this->drawUnits();
+    this->drawPlayerSelectedUnit();
+
+
+    // Full view (0,0, w,h)
+    window.setView(this->fullView);
+    window.draw(this->gameFrame);
+
+    this->drawStats();
+    this->drawSelected();  // Text
+    this->drawStatistics();
+    this->drawScoreBoard();
+    this->drawActionDistribution();
+
+
+
+    // Update plot
+    for(auto &p : game.players){
+        sf::plot::Curve &curve = plot.getCurve(p.name_);
+        curve.addValue(p.getScore());
+    }
+    plot.prepare();
+    window.draw(plot);
+
     // Update the window
     window.display();
+
 
 }
 
@@ -344,7 +329,7 @@ void GUI::drawStats(){
     text.setFont(font);
     text.setCharacterSize(16);
 
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
     text.setFillColor(sf::Color::Yellow);
 #else
     text.setColor(sf::Color::Yellow);
@@ -388,12 +373,12 @@ void GUI::drawStatistics(){
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(16);
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-	text.setFillColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
+    text.setFillColor(sf::Color::Yellow);
 #else
-	text.setColor(sf::Color::Yellow);
+    text.setColor(sf::Color::Yellow);
 #endif
-	int offsetX = -780;
+    int offsetX = -780;
 
     text.setString("CurrentFPS: " + std::to_string(game.currentFPS));
     text.setPosition(790 + offsetX,50);
@@ -411,30 +396,30 @@ void GUI::drawStatistics(){
     text.setPosition(790 + offsetX,125);
     window.draw(text);
 
-	text.setString("Selected: " + player->name_);
-	text.setPosition(790 + offsetX, 150);
-	window.draw(text);
+    text.setString("Selected: " + player->name_);
+    text.setPosition(790 + offsetX, 150);
+    window.draw(text);
 
-	text.setString("Game: " + std::to_string(game.getGameCount()));
-	text.setPosition(790 + offsetX, 175);
-	window.draw(text);
+    text.setString("Game: " + std::to_string(game.getGameCount()));
+    text.setPosition(790 + offsetX, 175);
+    window.draw(text);
 }
 
 void GUI::drawActionDistribution() {
-	sf::Text text;
-	text.setFont(font);
-	text.setCharacterSize(15);
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-	text.setFillColor(sf::Color::Yellow);
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(15);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
+    text.setFillColor(sf::Color::Yellow);
 #else
-	text.setColor(sf::Color::Yellow);
+    text.setColor(sf::Color::Yellow);
 #endif
 
-	for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
-		text.setString(Constants::actionNames[i] + ": " + std::to_string(player->actionStatistics[i]));
-		text.setPosition(10, 470 + (20 * i));
-		window.draw(text);
-	}
+    for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
+        text.setString(Constants::actionNames[i] + ": " + std::to_string(player->actionStatistics[i]));
+        text.setPosition(10, 470 + (20 * i));
+        window.draw(text);
+    }
 
 
 
@@ -444,13 +429,13 @@ void GUI::drawSelected(){
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(16);
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-	text.setFillColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
+    text.setFillColor(sf::Color::Yellow);
 #else
-	text.setColor(sf::Color::Yellow);
+    text.setColor(sf::Color::Yellow);
 #endif
 
-	int offsetY = -100;
+    int offsetY = -100;
 
     if(selectedTile)
     {
@@ -475,10 +460,10 @@ void GUI::drawSelected(){
 
 
     if (player->getTargetedUnit()){
-		int tOffsetX = 140;
+        int tOffsetX = 140;
         text.setCharacterSize(32);
         Unit *unit = player->getTargetedUnit();
-		Tile *tile = (unit->tile) ? unit->tile : game.getMap().getTile(0, 0);
+        Tile *tile = (unit->tile) ? unit->tile : game.getMap().getTile(0, 0);
         text.setString(unit->name + " (" +
                        std::to_string(unit->id ) +
                        ")" + " - " +
@@ -528,7 +513,7 @@ void GUI::drawSelected(){
         text.setPosition(550 + tOffsetX,930);
         window.draw(text);
 
-	
+
 
     }
 
@@ -539,18 +524,18 @@ void GUI::drawTiles(){
 
 
     for(GraphicTile& gTile : map.gTiles){
-	
-		if (showGridLines) {
-			sf::RectangleShape rectangle;
-			rectangle.setSize(sf::Vector2f(32, 32));
-			rectangle.setOutlineThickness(1);
-			rectangle.setPosition(gTile.getPixelPosition());
 
-			window.draw(rectangle);
-		}
+        if (showGridLines) {
+            sf::RectangleShape rectangle;
+            rectangle.setSize(sf::Vector2f(32, 32));
+            rectangle.setOutlineThickness(1);
+            rectangle.setPosition(gTile.getPixelPosition());
+
+            window.draw(rectangle);
+        }
 
 
-		window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
+        window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
 
 
 
@@ -565,25 +550,25 @@ void GUI::drawTiles(){
 
 void GUI::drawUnits() {
 
-	for (auto&u : game.units) {
-		if (u.tile) {
-			u.animationTimer++;
-			if (u.animationTimer >= u.animationInterval) {
-				u.animationIterator += 1;
-				u.animationTimer = 0;
+    for (auto&u : game.units) {
+        if (u.tile) {
+            u.animationTimer++;
+            if (u.animationTimer >= u.animationInterval) {
+                u.animationIterator += 1;
+                u.animationTimer = 0;
 
-			}
+            }
 
-			//u.testSprite->setColor(u.player_->playerColor);
-			sf::Sprite &sprite = animation.getNext(u);
-			sprite.setPosition(map.gTiles[u.tile->id].getPixelPosition());
+            //u.testSprite->setColor(u.player_->playerColor);
+            sf::Sprite &sprite = animation.getNext(u);
+            sprite.setPosition(map.gTiles[u.tile->id].getPixelPosition());
 
             auto &colorData = u.player_->playerColor;
-			auto color = sf::Color(std::get<0>(colorData), std::get<1>(colorData), std::get<2>(colorData));
-			sprite.setColor(color);
-			window.draw(sprite);
-		}
-	}
+            auto color = sf::Color(std::get<0>(colorData), std::get<1>(colorData), std::get<2>(colorData));
+            sprite.setColor(color);
+            window.draw(sprite);
+        }
+    }
 }
 
 void GUI::leftClick(Tile &tile) {
@@ -612,10 +597,10 @@ void GUI::drawScoreBoard() {
     for (Player & p : game.players) {
         text.setString(p.name_ + ": " + std::to_string(p.getScore()) + " | APM: " + std::to_string(p.apm) + " | AQueue: " + std::to_string(p.getQueueSize()));
         auto &color = p.playerColor;
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-		text.setFillColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
+        text.setFillColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 #else
-		text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+        text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 #endif
         text.setPosition(10, 920 - offsetY);
         offsetY += 25;
@@ -625,20 +610,20 @@ void GUI::drawScoreBoard() {
 }
 
 void GUI::drawPlayerSelectedUnit() {
-	for (Player & p : game.players) {
-		// Draw selected unit
-		if (p.getTargetedUnit()) {
+    for (Player & p : game.players) {
+        // Draw selected unit
+        if (p.getTargetedUnit()) {
             Unit *targetedUnit = p.getTargetedUnit();
-			sf::RectangleShape rectangle(sf::Vector2f((targetedUnit->width * 32) + 6, (targetedUnit->height * 32) + 6));
-			rectangle.setFillColor(sf::Color::Transparent);
+            sf::RectangleShape rectangle(sf::Vector2f((targetedUnit->width * 32) + 6, (targetedUnit->height * 32) + 6));
+            rectangle.setFillColor(sf::Color::Transparent);
             auto &color = p.playerColor;
-			rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
-			rectangle.setOutlineThickness(2);
-			rectangle.setPosition(sf::Vector2f((targetedUnit->worldPosition.x * 32) - 2, (targetedUnit->worldPosition.y * 32) - 2));
+            rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+            rectangle.setOutlineThickness(2);
+            rectangle.setPosition(sf::Vector2f((targetedUnit->worldPosition.x * 32) - 2, (targetedUnit->worldPosition.y * 32) - 2));
 
-			window.draw(rectangle);
-		}
-	}
+            window.draw(rectangle);
+        }
+    }
 }
 
 void GUI::showNoGuiMessage() {
@@ -650,10 +635,10 @@ void GUI::showNoGuiMessage() {
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(24);
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-	text.setFillColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
+    text.setFillColor(sf::Color::Yellow);
 #else
-	text.setColor(sf::Color::Yellow);
+    text.setColor(sf::Color::Yellow);
 #endif
     text.setString("GUI is deactivated! Press \"G\" to activate.");
     sf::Vector2u size = window.getSize();
@@ -661,10 +646,10 @@ void GUI::showNoGuiMessage() {
     window.draw(text);
 
     text.setCharacterSize(16);
-#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4  
-	text.setFillColor(sf::Color::Yellow);
+#if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
+    text.setFillColor(sf::Color::Yellow);
 #else
-	text.setColor(sf::Color::Yellow);
+    text.setColor(sf::Color::Yellow);
 #endif
     text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View\nF: GameMode (10UPS/60FPS)\nH: Gridlines");
     text.setPosition((size.x / 2), (size.y / 2) + 50);

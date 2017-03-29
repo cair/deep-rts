@@ -4,7 +4,7 @@ import time
 
 
 from game import Config
-from game.graphics.NoGUI import NoGUI
+from game.graphics.GUI import GUI
 from game.player.Player import Player
 from game.state.StateManager import StateManager
 from sfml.sf import Clock
@@ -43,7 +43,7 @@ class Game:
 
 
         # Create GUI
-        self.gui = NoGUI(self)
+        self.gui = GUI(self)
 
         self.clock = Clock()
 

@@ -74,12 +74,29 @@ set(SOURCE_FILES
 		src/game/algorithms/MCTS/MCTS.h
 		src/game/algorithms/MCTS/MCTSNode.cpp
 		src/game/algorithms/MCTS/MCTSNode.h
+		src/game/algorithms/MCAS/MCAS.cpp
+		src/game/algorithms/MCAS/MCAS.h
+		src/game/algorithms/MCAS/MCASNode.cpp
+		src/game/algorithms/MCAS/MCASNode.h
 		src/game/graphics/ResourceHandler.h
 		src/game/graphics/GraphicTile.cpp
 		src/game/graphics/GraphicTile.h
 		src/game/util/Position.h
 		src/game/graphics/GraphicTilemap.cpp
 		src/game/graphics/GraphicTilemap.h
+
+		src/game/graphics/plot/area.cpp
+		src/game/graphics/plot/area.h
+		src/game/graphics/plot/axis.cpp
+		src/game/graphics/plot/axis.h
+		src/game/graphics/plot/curve.cpp
+		src/game/graphics/plot/curve.h
+		src/game/graphics/plot/grid.cpp
+		src/game/graphics/plot/grid.h
+		src/game/graphics/plot/line.cpp
+		src/game/graphics/plot/line.h
+		src/game/graphics/plot/plot.cpp
+		src/game/graphics/plot/plot.h
 		)
 
 add_executable(DeepRTS ${SOURCE_FILES})

@@ -24,6 +24,7 @@ void sleep(int sleepMs)
 #include "game/Game.h"
 #include "game/algorithms/RANDOM/AlgoRandom.h"
 #include "game/algorithms/MCTS/MCTS.h"
+#include "game/algorithms/MCAS/MCAS.h"
 #include "game/algorithms/PYAPI/PyAI.h"
 #include "game/algorithms/base/AIRepository.h"
 
@@ -41,10 +42,11 @@ int main() {
 
 
 	
-    Algorithm *algorithm0 = new MCTS(&player0);
+    Algorithm *algorithm0 = new MCAS(&player0);
     player0.setAlgorithm(algorithm0);
 
-	AlgoRandom *algorithm1 = new AlgoRandom(&player1);
+
+    Algorithm *algorithm1 = new MCTS(&player1);
 //    Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
     player1.setAlgorithm(algorithm1);
 

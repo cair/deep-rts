@@ -85,6 +85,9 @@ void Game::stop(){
 
 void Game::reset()
 {
+	// Reset GUI
+	//gui->reset();
+
 	// Remove all units
 	units.clear();
 

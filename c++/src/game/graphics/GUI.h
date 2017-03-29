@@ -16,6 +16,8 @@
 #include <memory>
 #include "GraphicTilemap.h"
 #include "Animation.h"
+#include "plot/plot.h"
+
 
 class Game;
 class Player;
@@ -32,24 +34,34 @@ private:
     sf::View fullView;
     sf::View minimapView;
 	sf::View frameView;
-    void createFrame();
+
+	void setupAudio();
+	void setupPlot();
+    void setupFrame();
+	void setupView();
+	void setupFont();
+
     sf::Texture gameFrameTexture;
     sf::Sprite gameFrame;
     sf::Font font;
     sf::Text text;
+	sf::Music music;
+
+	sf::plot::Plot plot;
 
 	GraphicTilemap map;
 
 
     Tile* selectedTile = NULL;
-	std::shared_ptr<sf::Music> music; // Just for completeness
+
 	int pIterator = 0;
 public:
     GUI(Game &game);
-	void startAudio();
+
     void caption();
     void render();
     void update();
+	void reset();
 
 
 
@@ -78,7 +90,6 @@ public:
 	void drawPlayerSelectedUnit();
     void rightClick(Tile &tile);
 
-    void createView();
 
     Player *player;
 
