@@ -113,7 +113,7 @@ public:
     int _getNextPrevUnitIdx();
 
 
-	
+    void rightClick(Position pos);
 };
 
 

@@ -15,6 +15,8 @@ GraphicTile::GraphicTile(Tile &dataTile, GraphicTilemap &tilemap):
 }
 
 
+
+
 void GraphicTile::setupVerticles(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid)
 {
 

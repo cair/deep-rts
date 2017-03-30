@@ -27,6 +27,7 @@ void sleep(int sleepMs)
 #include "game/algorithms/MCAS/MCAS.h"
 #include "game/algorithms/PYAPI/PyAI.h"
 #include "game/algorithms/base/AIRepository.h"
+#include "game/algorithms/MCTSDirect/MCTSDirect.h"
 
 int main() {
 	
@@ -38,26 +39,26 @@ int main() {
     Player &player3 = g->addPlayer();
     g->start();
 
-//	PyAI::start(); // Init the API
+	PyAI::start(); // Init the API
 
 
 	
-    Algorithm *algorithm0 = new MCAS(&player0);
+
+    Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
 
-
     Algorithm *algorithm1 = new MCTS(&player1);
-//    Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
     player1.setAlgorithm(algorithm1);
 
-	AlgoRandom *algorithm2 = new AlgoRandom(&player2);
+    MCTSDirect *algorithm2 = new MCTSDirect(&player2);
     player2.setAlgorithm(algorithm2);
 
-    AlgoRandom *algorithm3 = new AlgoRandom(&player3);
+    Algorithm *algorithm3 = new MCAS(&player3);
     player3.setAlgorithm(algorithm3);
 
-
-	//CRemoteAI ai = CRemoteAI::createInstance(g->id);
+    //    Algorithm * algorithm1 = AIRepository::getInstance().getAI("DQN");
+    //AlgoRandom *algorithm3 = new AlgoRandom(&player3);
+    //CRemoteAI ai = CRemoteAI::createInstance(g->id);
 
     g->initGUI();
     g->loop();

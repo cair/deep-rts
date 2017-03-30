@@ -97,7 +97,7 @@ set(SOURCE_FILES
 		src/game/graphics/plot/line.h
 		src/game/graphics/plot/plot.cpp
 		src/game/graphics/plot/plot.h
-		)
+        src/game/algorithms/MCTSDirect/MCTSDirect.cpp src/game/algorithms/MCTSDirect/MCTSDirect.h)
 
 add_executable(DeepRTS ${SOURCE_FILES})
 

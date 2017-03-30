@@ -16,6 +16,7 @@ int Unit::gId = 0;
 Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateManager){
     id = player->game_.units.size();
     state = stateManager->despawnedState;
+    stateList.reserve(50);
 
 
 }
@@ -23,7 +24,7 @@ void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
     spawnTileID = _toSpawnOn.id;
     transitionState(stateManager->spawnState);
-	enqueueState(stateManager->idleState);
+    enqueueState(stateManager->idleState);
 }
 
 void Unit::moveRelative(int x, int y) {
@@ -38,7 +39,7 @@ void Unit::moveRelative(int x, int y) {
 }
 
 void Unit::rightClickRelative(int x, int y) {
-	if (!tile) return; // Not standing on any tiles
+    if (!tile) return; // Not standing on any tiles
 
     int newX = tile->x + x;
     int newY = tile->y + y;
@@ -79,15 +80,15 @@ void Unit::update() {
 }
 
 Tile *Unit::centerTile() {
-	int addX = floor(width / 2);
-	int addY = floor(height / 2);
+    int addX = floor(width / 2);
+    int addY = floor(height / 2);
 
-	if (addX == 0 && addY == 0) {
-		assert(tile);
-		return tile;
-	}
+    if (addX == 0 && addY == 0) {
+        assert(tile);
+        return tile;
+    }
 
-	return player_->game_.map.getTile(tile->x + addX, tile->y + addY);
+    return player_->game_.map.getTile(tile->x + addX, tile->y + addY);
 }
 
 bool Unit::build(int idx) {
@@ -98,12 +99,12 @@ bool Unit::build(int idx) {
     if((idx < 0 or idx >= buildInventory.size()))
         return false;
 
-	Unit newUnit = UnitManager::constructUnit(buildInventory[idx], player_);
+    Unit newUnit = UnitManager::constructUnit(buildInventory[idx], player_);
 
     // PlacementTile is based on dimension of the new unit. For example; town hall has
     // 3x Width and 3x Height. We then want to place  the building by the middle tile;
     Tile *placementTile = player_->game_.map.getTile(tile->x - floor(newUnit.width/2), tile->y - floor(newUnit.height/2));
-	assert(placementTile && "PlacementTile was null in build()");
+    assert(placementTile && "PlacementTile was null in build()");
     if(!player_->canAfford(newUnit)) {
         //std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
@@ -114,11 +115,11 @@ bool Unit::build(int idx) {
     if(player_->canPlace(*this, newUnit, placementTile)) {
 
         Unit &unit = player_->addUnit(newUnit.typeId);
-		unit.player_ = player_;
-		unit.builtByID = this->id;
+        unit.player_ = player_;
+        unit.builtByID = this->id;
 
         if(!structure and unit.structure) {
-           // *this is a unit (peasant), which builds a building
+            // *this is a unit (peasant), which builds a building
             despawn();
 
             buildEntityID = unit.id; // Set id of buildEntity
@@ -173,26 +174,28 @@ void Unit::clearTiles(){
     tile = NULL;
 }
 
-void Unit::rightClick(Tile &tile) {
-	stateList.clear();
-	transitionState();
+void Unit::rightClick(Tile &targetTile) {
+    // For these actions, the unit must be spawned already
+    if(!tile) {
+        return;
+    }
 
 
-    std::shared_ptr<BaseAction> action = std::shared_ptr<BaseAction>(new RightClickAction(*this));
-    player_->game_.addAction(action);
+    stateList.clear();
+    transitionState();
 
 
-    if(tile.isHarvestable()){
+    if(targetTile.isHarvestable()){
         //  Harvest
-        harvest(tile);
+        harvest(targetTile);
     }
-    else if(tile.isAttackable(*this)){
+    else if(targetTile.isAttackable(*this)){
         // Attack
-        attack(tile);
+        attack(targetTile);
     }
-    else if(tile.isWalkable()){
+    else if(targetTile.isWalkable()){
         // Walk
-        move(tile);
+        move(targetTile);
     }
 }
 
@@ -202,11 +205,11 @@ void Unit::attack(Tile &tile) {
 
     Unit* target = tile.getOccupant();
 
-	// Target may have died from another same tick
-	if (!target) {
-		transitionState();
-		return;
-	}
+    // Target may have died from another same tick
+    if (!target) {
+        transitionState();
+        return;
+    }
 
     combatTargetID = target->id;
 
@@ -233,26 +236,26 @@ void Unit::harvest(Tile &tile) {
 }
 
 void Unit::enqueueState(std::shared_ptr<BaseState> state) {
-    stateList.push_back(state);
+    stateList.push_back(state->id);
 }
 
 void Unit::transitionState() {
     if(stateList.empty()) {
         // No states to transition to, enter idle state
-		std::shared_ptr<BaseState> nextState = stateManager->idleState;
+        std::shared_ptr<BaseState> nextState = stateManager->idleState;
         //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|" << std::endl;
-		//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|" << std::endl;
-		state->end(*this);
+        //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|" << std::endl;
+        state->end(*this);
         state = nextState;
         state->init(*this);
         return;
     }
 
-	std::shared_ptr<BaseState> nextState = stateList.back();
+    auto nextState = stateList.back();
     //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|y" << std::endl;
-	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|y"  << std::endl;
-	state->end(*this);
-    state = nextState;
+    //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|y"  << std::endl;
+    state->end(*this);
+    state = stateManager->getByID(nextState);
     stateList.pop_back();
     //state->init(*this);
 
@@ -261,8 +264,8 @@ void Unit::transitionState() {
 
 void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
     //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|x" << std::endl;
-	//std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
-	state->end(*this);
+    //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
+    state->end(*this);
     state = nextState;
     state->init(*this);
     return;
@@ -277,14 +280,14 @@ int Unit::distance(Tile &target) {
 
 
 int Unit::distance(Unit & target) {
-	int targ_x = target.tile->x;
-	int targ_y = target.tile->y;
-	int dim_x = floor(target.width / 2);
-	int dim_y = floor(target.height / 2);
+    int targ_x = target.tile->x;
+    int targ_y = target.tile->y;
+    int dim_x = floor(target.width / 2);
+    int dim_y = floor(target.height / 2);
 
-	double d = hypot(tile->x - (targ_x + dim_x), tile->y - (targ_y + dim_y));
+    double d = hypot(tile->x - (targ_x + dim_x), tile->y - (targ_y + dim_y));
 
-	return (int)d - dim_x;
+    return (int)d - dim_x;
 
 }
 
@@ -390,62 +393,62 @@ void Unit::setDirection(int newX, int newY){
 
 bool Unit::operator==(int otherID) const
 {
-	return otherID == id;
+    return otherID == id;
 }
 
 void Unit::tryAttack()
 {
-	if (!tile) {
-		// FAIL
-		return;
-	}
+    if (!tile) {
+        // FAIL
+        return;
+    }
 
-	std::vector<Tile *> availableAttackable = player_->game_.getMap().neighbors(*tile, Constants::Pathfinding::Attackable);
-	if (availableAttackable.empty()) {
-		// Fail
-		return;
-	}else {
-		// Success
-		attack(*availableAttackable.back());
-	}
+    std::vector<Tile *> availableAttackable = player_->game_.getMap().neighbors(*tile, Constants::Pathfinding::Attackable);
+    if (availableAttackable.empty()) {
+        // Fail
+        return;
+    }else {
+        // Success
+        attack(*availableAttackable.back());
+    }
 
 }
 
 void Unit::tryMove(int16_t x, int16_t y)
 {
-	if (!tile) {
-		// FAil
-		return;
-	}
+    if (!tile) {
+        // FAil
+        return;
+    }
 
-	int newX = tile->x + x;
-	int newY = tile->y + y;
+    int newX = tile->x + x;
+    int newY = tile->y + y;
 
-	Tile *tile = player_->game_.map.getTile(newX, newY);
-	if (tile->isWalkable()) {
-		move(*tile);
-	}
-	else {
-		// Fail
-		return;
-	}
+    Tile *tile = player_->game_.map.getTile(newX, newY);
+    if (tile->isWalkable()) {
+        move(*tile);
+    }
+    else {
+        // Fail
+        return;
+    }
 }
 
 void Unit::tryHarvest()
 {
-	if (!tile) {
-		// FAIL
-		return;
-	}
+    if (!tile) {
+        // FAIL
+        return;
+    }
 
-	std::vector<Tile *> availableHarvestable = player_->game_.getMap().neighbors(*tile, Constants::Pathfinding::Harvestable);
-	if (availableHarvestable.empty()) {
-		// Fail
-		return;
-	}
-	else {
-		harvest(*availableHarvestable.back());
-	}
+    std::vector<Tile *> availableHarvestable = player_->game_.getMap().neighbors(*tile, Constants::Pathfinding::Harvestable);
+    if (availableHarvestable.empty()) {
+        // Fail
+        return;
+    }
+    else {
+        harvest(*availableHarvestable.back());
+    }
 }
 
 

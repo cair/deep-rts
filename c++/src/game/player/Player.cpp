@@ -233,8 +233,8 @@ int Player::getScore() {
 
 
 	double_t gatherScore = (statGoldGather * GOLD_VALUE + statLumberGather * LUMBER_VALUE) * .5;
-	double_t builtScore = statUnitBuilt;
-	double_t damageScore = std::max(0.0, (statUnitDamageDone * 10) - (statUnitDamageTaken * .5));
+	double_t builtScore = statUnitBuilt * 2;
+	double_t damageScore = std::max(0.0, (statUnitDamageDone * .6) - (statUnitDamageTaken * .5));
 	double_t unitScore = unitIndexes.size();
 
 
@@ -322,6 +322,7 @@ void Player::setName(std::string name) {
 
 void Player::setAlgorithm(Algorithm *theAlg) {
 	theAlg->setPlayer(this);
+	setName(theAlg->getName());
 	algorithm_ = theAlg;
 }
 
@@ -396,6 +397,19 @@ Unit *Player::getTargetedUnit() {
 		return NULL;
 	}
 	return &game_.units[targetedUnitID];
+}
+
+void Player::rightClick(Position pos) {
+    if(pos.x < 0 || pos.y < 0 || pos.x > game_.getMap().MAP_WIDTH || pos.y > game_.getMap().MAP_HEIGHT) {
+        return;
+    }
+    Tile* t = game_.getMap().getTile(pos.x, pos.y);
+    Unit* targetedUnit = getTargetedUnit();
+    if(!targetedUnit) {
+        return;
+    }
+    targetedUnit->rightClick(*t);
+
 }
 
 void Player::queueAction(Constants::Action actionID) {

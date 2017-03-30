@@ -31,6 +31,7 @@ public:
 
 	static std::vector<Tile *> reconstruct_path(Tile *start, Tile *goal, std::unordered_map<Tile*, Tile*>& came_from);
 
+    static Tile *find_first_attackable_tile(Tile *start);
 };
 
 

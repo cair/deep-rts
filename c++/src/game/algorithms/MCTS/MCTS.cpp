@@ -6,10 +6,9 @@
 #include "../../player/Player.h"
 #include "MCTSNode.h"
 #include "../../Game.h"
-#include <SFML/System/Clock.hpp>
 
 MCTS::MCTS(Player *player) : Algorithm(player) {
-
+    setName("MCTS");
 
     int _apm_interval = Config::getInstance().getAPM() * 60.0;
 
@@ -65,7 +64,7 @@ MCTS::MCTS(Player *player) : Algorithm(player) {
     sim->setUPS(INT32_MAX);
 
     // Set simulation player
-    simPlayer = &sim->players[0];
+    simPlayer = &sim->players[playerID];
 
 }
 
@@ -242,10 +241,11 @@ void MCTS::calculate(){
             /*MCTSNode *nextNode = BestChildOfSumScore(currentNode);
             currentNode = nextNode;*/
 
+
         }
 
         // Execute current node
-        sim->players[0].queueAction(static_cast<Constants::Action>(currentNode->action));
+        simPlayer->queueAction(static_cast<Constants::Action>(currentNode->action));
 
 
         // Simulate

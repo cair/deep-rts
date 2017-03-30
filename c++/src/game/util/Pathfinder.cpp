@@ -182,6 +182,38 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
     return NULL;
 }
 
+Tile *Pathfinder::find_first_attackable_tile(Tile *start) {
+    /**
+   * This is a breadth-first search which looks for a walkable tile
+    */
+
+    std::set<Tile *> visited;
+    std::queue<Tile *> queue;
+
+    queue.push(start);
+
+    while(queue.size() > 0) {
+
+        Tile *current = queue.front();
+
+        queue.pop();
+
+        if (current->isAttackable(*start->getOccupant())) {
+            return current;
+        }
+        const bool is_in = visited.find(current) != visited.end();
+        if(!is_in) {
+            visited.insert(current);
+            std::vector<Tile*> neighbors = current->tilemap.neighbors(*current, Constants::Pathfinding::All);
+            for(auto &i : neighbors) {
+                queue.push(i);
+            }
+        }
+    }
+
+    return NULL;
+}
+
 
 std::vector<Tile*> Pathfinder::reconstruct_path(Tile * start, Tile * goal, std::unordered_map<Tile*, Tile*>& came_from)
 {

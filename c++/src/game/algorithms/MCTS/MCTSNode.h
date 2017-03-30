@@ -9,6 +9,7 @@
 #include <memory>
 #include <set>
 #include <vector>
+#include "../../Constants.h"
 
 class MCTSNode;
 class MCTSNode {
@@ -22,6 +23,7 @@ public:
     int score;
     int depth;
     int action = 0;
+    Constants::Action actionTypeDEBUG;
     int visited = 0;
     int sumScore = 0;
 

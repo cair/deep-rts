@@ -8,7 +8,7 @@
 #include <functional>
 #include <vector>
 #include <queue>
-
+#include <iostream>
 template<typename T, typename priority_t>
 struct PriorityQueue {
   typedef std::pair<priority_t, T> PQElement;
@@ -26,5 +26,14 @@ struct PriorityQueue {
     elements.pop();
     return best_item;
   }
+    inline void clear()
+    {
+
+      while(!empty()){
+
+        elements.pop();
+      }
+    }
+
 };
 #endif //WARC2SIM_PRIORITYQUEUE_H

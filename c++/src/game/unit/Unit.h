@@ -119,7 +119,7 @@ public:
     StateManager* stateManager;
 	std::shared_ptr<BaseState> state = NULL;
 
-    std::vector<std::shared_ptr<BaseState>> stateList;
+    std::vector<Constants::State> stateList;
 
 
 
