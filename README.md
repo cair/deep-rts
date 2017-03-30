@@ -1,11 +1,12 @@
 # DeepRTS  [![Build Status](https://travis-ci.org/UIA-CAIR/DeepRTS.svg)](https://travis-ci.org/UIA-CAIR/DeepRTS) [![Documentation](https://img.shields.io/badge/docs-readme-blue.svg)](https://github.com/UIA-CAIR/DeepRTS/blob/c%2B%2B/docs/README.md) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/UIA-CAIR/DeepRTS/c%2B%2B/LICENCE.MIT)
+![./docs/Logo.png](./docs/Logo.png)
 
-A Real-Time Strategy Simulator for (Deep) Reinforment Learning in C++!
+A Real-Time Strategy Simulator for (Deep) Reinforment Learning in C++ and Python!
 
-## Dependencies and use cases
-* SFML - used for drawing graphics in presentation mode, not used when deactivated in configs (except for a few calls like sf::Vector)
-* Flatbuffers - Future Serialization library
-* Python 3.6.x - For use with scientific Machine learning connected to the game
-* Optional:
-    * ZeroMQ is a hyper-ultra-mega lightweight and fast message queue which is used to transfer messages between runtimes like Python. This is specifically useful when you dont want to use C++ for the AI part.
+![./docs/DeepRTS.png](./docs/DeepRTS.png)
+
+## External Dependencies
+* SFML - Graphical Library for demonstration and debugging
+* Flatbuffers - Serialization library for gamestate logs
+* (optional) Python 3.x - API for Scientific artificial intelligence development
 
