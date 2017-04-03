@@ -11,6 +11,7 @@ libfreetype6-dev \
 libjpeg-dev \
 libopenal-dev \
 libflac-dev \
-libvorbis-dev -y
+libvorbis-dev \
+cmake -y
 
 echo "Apt dependencies installed!"
