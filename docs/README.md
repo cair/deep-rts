@@ -35,3 +35,5 @@
 
 > 7.2. [MCGS Idea Email](./emails/mcgs_idea.md) - The initial idea of MCGS
 
+> 7.3. [JSON Performance Considerations](./pages/json_performance.md)
+
