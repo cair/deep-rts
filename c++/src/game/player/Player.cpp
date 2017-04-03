@@ -255,7 +255,7 @@ void Player::removeUnit(Unit & unit) {
 
 	unit.removedFromGame = true;
 
-	ptrdiff_t pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
+	auto pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
 	unitIndexes.erase(std::remove(unitIndexes.begin(), unitIndexes.end(), pos), unitIndexes.end());
 
 	// If no more units in the index list, clear the action queue

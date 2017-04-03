@@ -2,25 +2,28 @@
 // Created by Per-Arne on 24.02.2017.
 //
 #include "Tilemap.h"
-#include "./Tile.h"
+
 #include "../unit/Unit.h"
 #include "../Game.h"
+#include "../loaders/ResourceLoader.h"
 
 Tilemap::Tilemap(std::string mapName, Game *game): game_(game){
-	json mapData = MapLoader::loadFile(mapName);
-	json tilesData = MapLoader::tileProperties();
+    ResourceLoader::getInstance().loadMapJSON(mapName);
+
+	auto mapData = ResourceLoader::getInstance().mapJSON.GetObject();
+	auto tilesData = ResourceLoader::getInstance().tileJSON.GetObject();
 
 
 
-    json tilesetData = mapData["tilesets"][0];
-    json mapLayer = mapData["layers"][0];
-    json tileIDs = mapLayer["data"];
+    auto tilesetData = mapData["tilesets"].GetArray()[0].GetObject();
+    auto mapLayer = mapData["layers"].GetArray()[0].GetObject();
+    auto tileIDs = mapLayer["data"].GetArray();
 
-    uint16_t mapWidth = mapData["width"];
-	uint16_t mapHeight = mapData["height"];
-	uint16_t tWidth = tilesetData["tilewidth"];
-	uint16_t tHeight = tilesetData["tileheight"];
-    tFirstGid = tilesetData["firstgid"];
+    int mapWidth = mapData["width"].GetInt();
+    int mapHeight = mapData["height"].GetInt();
+    int tWidth = tilesetData["tilewidth"].GetInt();
+    int tHeight = tilesetData["tileheight"].GetInt();
+    tFirstGid = tilesetData["firstgid"].GetInt();
 
     TILE_WIDTH = tWidth;
     TILE_HEIGHT = tHeight;
@@ -40,40 +43,49 @@ Tilemap::Tilemap(std::string mapName, Game *game): game_(game){
         for(uint16_t x = 0; x < MAP_WIDTH; x++)
         {
 
-            int tId = (int)tileIDs[c] - 1;
-            json tileData = tilesData[std::to_string(tId + 1)];
-            tiles.push_back(Tile(x, y, TILE_WIDTH, TILE_HEIGHT, *this, (bool)tileData["walkable"], (bool)tileData["harvestable"], (uint16_t)tileData["resources"]));
+            int tId = tileIDs[c].GetInt() - 1;
+            auto tileData = tilesData[std::to_string(tId + 1).c_str()].GetObject();
+
+            tiles.push_back(
+                    Tile(x,
+                         y,
+                         TILE_WIDTH,
+                         TILE_HEIGHT,
+                         *this,
+                         tileData["walkable"].GetBool(),
+                         tileData["harvestable"].GetBool(),
+                         tileData["resources"].GetUint()));
             assert(!tiles.empty());
             Tile &tile = tiles.back();
             tile.tileID = tId;
             tile.id = c;
-            tile.name = tileData["name"];
-            tile.harvestable = tileData["harvestable"];
-            tile.walkable = tileData["walkable"];
-            tile.swimable = tileData["swimable"];
-            tile.oilYield =  tileData["oil_yield"];
-            tile.lumberYield = tileData["lumber_yield"];
-            tile.goldYield = tileData["gold_yield"];
-			tile.setResources(tileData["resources"]);
-            tile.depleteTile = tileData["deplete_tile"];
+            tile.name = tileData["name"].GetString();
+            tile.harvestable = tileData["harvestable"].GetBool();
+            tile.walkable = tileData["walkable"].GetBool();
+            tile.swimable = tileData["swimable"].GetBool();
+            tile.oilYield =  tileData["oil_yield"].GetUint();
+            tile.lumberYield = tileData["lumber_yield"].GetUint();
+            tile.goldYield = tileData["gold_yield"].GetUint();
+			tile.setResources(tileData["resources"].GetUint64());
+            tile.depleteTile = tileData["deplete_tile"].GetUint();
 
             if(tile.name == "Spawn"){
                 spawnTiles.push_back(c);
                 // Replace spawn data with grass
                 tId = Constants::Tile::Grass;
-                json tileData = tilesData[std::to_string(tId - 1)];
+                auto tileData = tilesData[std::to_string(tId - 1).c_str()].GetObject();
                 tId -= 2; // TODO some fucked up shit goin on here
                 tile.id = c;
                 tile.tileID = tId;
-                tile.name = tileData["name"];
-                tile.harvestable = tileData["harvestable"];
-                tile.walkable = tileData["walkable"];
-                tile.swimable = tileData["swimable"];
-                tile.oilYield =  tileData["oil_yield"];
-                tile.lumberYield = tileData["lumber_yield"];
-                tile.goldYield = tileData["gold_yield"];
-                tile.setResources(tileData["resources"]);
-                tile.depleteTile = tileData["deplete_tile"];
+                tile.name = tileData["name"].GetString();
+                tile.harvestable = tileData["harvestable"].GetBool();
+                tile.walkable = tileData["walkable"].GetBool();
+                tile.swimable = tileData["swimable"].GetBool();
+                tile.oilYield =  tileData["oil_yield"].GetUint();
+                tile.lumberYield = tileData["lumber_yield"].GetUint();
+                tile.goldYield = tileData["gold_yield"].GetUint();
+                tile.setResources(tileData["resources"].GetUint64());
+                tile.depleteTile = tileData["deplete_tile"].GetUint();
             }
 
             c++;

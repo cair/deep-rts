@@ -1,0 +1,6 @@
+names
+tqdm
+keras
+scipy
+tensorflow-gpu
+plotly

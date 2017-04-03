@@ -9,14 +9,14 @@
 #include "../../player/Player.h"
 #include "../../Game.h"
 #include "../../util/Pathfinder.h"
-
+#include <algorithm>
 MCTSDirect::MCTSDirect(Player *player) : Algorithm(player) {
     setName("MCTSDirect");
 
 
     int _apm_interval = Config::getInstance().getAPM() * 60.0;
 
-    nodes.reserve(10000000);
+    nodes.reserve(100000);
     for(int i = 0; i < nodes.capacity(); i++) {
         nodes.push_back(MCTSNode());
         nodes.back().id = i;

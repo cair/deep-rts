@@ -10,6 +10,7 @@
 #include "../action/RightClickAction.h"
 #include "./UnitManager.h"
 #include <random>
+#include <climits>
 #include "../action/BaseAction.h"
 
 int Unit::gId = 0;

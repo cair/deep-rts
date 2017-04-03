@@ -13,7 +13,7 @@
 #include "player/Player.h"
 #include "environment/Tilemap.h"
 #include "action/BaseAction.h"
-#include "./util/ScoreLogSerializer.h"
+#include "logging/LogGame.h"
 #include <SFML/System/Clock.hpp>
 
 
@@ -23,8 +23,7 @@ class Game {
 	bool doCaptionConsole;
 
 	bool doScoreLogging;
-    uint8_t n_players;
-	uint16_t gameNum = 1;
+    uint16_t gameNum = 1;
 
     // Gameclock variables
 	sf::Clock clock;
@@ -40,7 +39,7 @@ class Game {
 	uint32_t _update_delta = 0;
 	uint32_t _render_delta = 0;
 
-	ScoreLogSerializer scoreLog; // Only in use when scoreLog flag s set in config
+	LogGame gameLog; // Only in use when scoreLog flag s set in config
     bool running;
 	bool triggerReset;
     long ticks = 0;
@@ -107,9 +106,9 @@ public:
 
 
 	void deactivateGUI();
-	
 
 
+    uint8_t n_players;
 };
 
 

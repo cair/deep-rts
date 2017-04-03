@@ -13,7 +13,7 @@ Game::Game(uint8_t _nplayers, bool setup):
         doCaptionWindow(Config::getInstance().getCaptionWindow()),
 		doCaptionConsole(Config::getInstance().getCaptionConsole()),
         doScoreLogging(Config::getInstance().getLoggingScoring()),
-        scoreLog(_nplayers),	// Only used when scoreLog flag is set in config
+        gameLog(*this),	// Only used when doScoreLogging flag is set in config
 		doDisplay(Config::getInstance().getDisplay()),
 		map(Tilemap("contested-4v4.json", this))
 
@@ -107,11 +107,8 @@ void Game::reset()
 
 	// Sav
 	if (doScoreLogging) {
-		auto ms = std::chrono::duration_cast<std::chrono::milliseconds >(
-				std::chrono::system_clock::now().time_since_epoch()
-		);
-		scoreLog.serialize(gameNum, "games/deeprts_game_" + std::to_string(gameNum) + "_" + std::to_string(ms.count()) + ".flat");
-		scoreLog.reset();
+		gameLog.serialize();
+		gameLog.reset();
 	}
 	gameNum += 1;
 
@@ -183,12 +180,7 @@ void Game::loop() {
 
 			// Output all scores etc to file for each game
 			if (doScoreLogging) {
-
-				int i = 0;
-				for (auto &p : players) {
-					scoreLog.addElement(i++, p); // Add element for player
-				}
-				scoreLog.nextTick(ticks);	// Moves to "next element"
+				gameLog.record();	// Moves to "next element"
 			}
 
 			// Update Counters and statistics

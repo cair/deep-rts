@@ -9,8 +9,9 @@
 
 #include "../Constants.h"
 #include "Tile.h"
-#include "../third_party/json.hpp"
-using json = nlohmann::json;
+#include <vector>
+#include "rapidjson/document.h"
+
 class Game;
 class Tilemap{
 private:
@@ -35,7 +36,7 @@ public:
 
     Tile *getTile(int x, int y);
 
-    json tilesData;
+    rapidjson::Document tilesData;
     int tFirstGid;
 
 	bool operator()(unsigned x, unsigned y) const;

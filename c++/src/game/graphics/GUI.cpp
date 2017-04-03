@@ -14,7 +14,7 @@ GUI::GUI(Game &game) :
     setupView();
     setupFrame();
     setupFont();
-    setupAudio();
+    //setupAudio();
     setupPlot();
 
 
@@ -60,10 +60,11 @@ void GUI::setupFont() {
 }
 
 void GUI::setupAudio(){
-    if (music.openFromFile("./data/audio/song_1.ogg"))
+    sf::Music *music = new sf::Music();
+    if (music->openFromFile("./data/audio/song_1.ogg"))
     {
-        music.setLoop(true);
-        music.play();
+        music->setLoop(true);
+        music->play();
     }
 
 }
@@ -302,6 +303,7 @@ void GUI::render() {
     plot.prepare();
     window.draw(plot);
 
+    window.setView(this->frameView);
     // Update the window
     window.display();
 

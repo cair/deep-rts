@@ -45,7 +45,7 @@ private:
     sf::Sprite gameFrame;
     sf::Font font;
     sf::Text text;
-	sf::Music music;
+
 
 	sf::plot::Plot plot;
 

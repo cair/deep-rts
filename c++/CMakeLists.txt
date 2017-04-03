@@ -11,9 +11,6 @@ set(SOURCE_FILES
         src/main.cpp
         src/game/Game.cpp
         src/game/Game.h
-        src/game/third_party/json.hpp
-        src/game/loaders/MapLoader.cpp
-        src/game/loaders/MapLoader.h
         src/game/environment/Tile.cpp
         src/game/environment/Tile.h
         src/game/player/Player.cpp
@@ -56,72 +53,58 @@ set(SOURCE_FILES
         src/game/algorithms/RANDOM/AlgoRandom.cpp
         src/game/algorithms/RANDOM/AlgoRandom.h
         src/game/algorithms/base/Algorithm.cpp
-		src/game/algorithms/base/AIRepository.cpp
-		src/game/algorithms/base/AIRepository.h
+        src/game/algorithms/base/AIRepository.cpp
+        src/game/algorithms/base/AIRepository.h
         src/game/action/BaseAction.h
         src/game/action/RightClickAction.cpp
         src/game/action/RightClickAction.h
 
 
         src/game/state/StateManager.h
-		src/game/state/StateManager.cpp
-		src/game/util/ScoreLogSerializer.h
-		src/game/algorithms/PYAPI/PyAI.h
-		src/game/algorithms/PYAPI/PyAI.cpp
-		src/game/unit/UnitManager.h
-		src/game/unit/UnitManager.cpp
-		src/game/algorithms/MCTS/MCTS.cpp
-		src/game/algorithms/MCTS/MCTS.h
-		src/game/algorithms/MCTS/MCTSNode.cpp
-		src/game/algorithms/MCTS/MCTSNode.h
-		src/game/algorithms/MCAS/MCAS.cpp
-		src/game/algorithms/MCAS/MCAS.h
-		src/game/algorithms/MCAS/MCASNode.cpp
-		src/game/algorithms/MCAS/MCASNode.h
-		src/game/graphics/ResourceHandler.h
-		src/game/graphics/GraphicTile.cpp
-		src/game/graphics/GraphicTile.h
-		src/game/util/Position.h
-		src/game/graphics/GraphicTilemap.cpp
-		src/game/graphics/GraphicTilemap.h
+        src/game/state/StateManager.cpp
+        src/game/util/ScoreLogSerializer.h
+        src/game/algorithms/PYAPI/PyAI.h
+        src/game/algorithms/PYAPI/PyAI.cpp
+        src/game/unit/UnitManager.h
+        src/game/unit/UnitManager.cpp
+        src/game/algorithms/MCTS/MCTS.cpp
+        src/game/algorithms/MCTS/MCTS.h
+        src/game/algorithms/MCTS/MCTSNode.cpp
+        src/game/algorithms/MCTS/MCTSNode.h
+        src/game/algorithms/MCAS/MCAS.cpp
+        src/game/algorithms/MCAS/MCAS.h
+        src/game/algorithms/MCAS/MCASNode.cpp
+        src/game/algorithms/MCAS/MCASNode.h
+        src/game/graphics/ResourceHandler.h
+        src/game/graphics/GraphicTile.cpp
+        src/game/graphics/GraphicTile.h
+        src/game/util/Position.h
+        src/game/graphics/GraphicTilemap.cpp
+        src/game/graphics/GraphicTilemap.h
 
-		src/game/graphics/plot/area.cpp
-		src/game/graphics/plot/area.h
-		src/game/graphics/plot/axis.cpp
-		src/game/graphics/plot/axis.h
-		src/game/graphics/plot/curve.cpp
-		src/game/graphics/plot/curve.h
-		src/game/graphics/plot/grid.cpp
-		src/game/graphics/plot/grid.h
-		src/game/graphics/plot/line.cpp
-		src/game/graphics/plot/line.h
-		src/game/graphics/plot/plot.cpp
-		src/game/graphics/plot/plot.h
-        src/game/algorithms/MCTSDirect/MCTSDirect.cpp src/game/algorithms/MCTSDirect/MCTSDirect.h)
+        src/game/graphics/plot/area.cpp
+        src/game/graphics/plot/area.h
+        src/game/graphics/plot/axis.cpp
+        src/game/graphics/plot/axis.h
+        src/game/graphics/plot/curve.cpp
+        src/game/graphics/plot/curve.h
+        src/game/graphics/plot/grid.cpp
+        src/game/graphics/plot/grid.h
+        src/game/graphics/plot/line.cpp
+        src/game/graphics/plot/line.h
+        src/game/graphics/plot/plot.cpp
+        src/game/graphics/plot/plot.h
+        src/game/algorithms/MCTSDirect/MCTSDirect.cpp src/game/algorithms/MCTSDirect/MCTSDirect.h src/game/loaders/ResourceLoader.cpp src/game/loaders/ResourceLoader.h src/game/logging/LogGame.h src/game/logging/LogPlayer.h src/game/logging/LogTick.h src/game/logging/LogGame.cpp)
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 find_package(SFML 2 REQUIRED system window graphics network audio)
-find_package(Flatbuffers REQUIRED)
 find_package(PythonLibs)
+find_package(RapidJSON REQUIRED)
 find_package(Threads)
 
-
-message(STATUS "Flatbuffers include dir: ${FLATBUFFERS_INCLUDE_DIR}")
-message(STATUS "Flatbuffers static library: ${FLATBUFFERS_STATIC_LIB}")
-message(STATUS "Flatbuffers compiler: ${FLATBUFFERS_COMPILER}")
-
-add_custom_command(
-        OUTPUT .
-        WORKING_DIR ../
-        COMMAND ./proto_compile.sh
-)
-
-execute_process (
-        COMMAND bash -c "${CMAKE_SOURCE_DIR}/src/flatbuffers/ScoreLog/create_buffer.sh"
-)
 
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
@@ -139,16 +122,16 @@ endif()
 
 
 add_custom_command(
-		TARGET DeepRTS PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		${CMAKE_SOURCE_DIR}/src/game/data/
-		${CMAKE_CURRENT_BINARY_DIR}/data/)
+        TARGET DeepRTS PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/src/game/data/
+        ${CMAKE_CURRENT_BINARY_DIR}/data/)
 
 add_custom_command(
-		TARGET DeepRTS PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		${CMAKE_SOURCE_DIR}/src/game/python/
-		${CMAKE_CURRENT_BINARY_DIR}/)
+        TARGET DeepRTS PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/src/game/python/
+        ${CMAKE_CURRENT_BINARY_DIR}/)
 
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/games)

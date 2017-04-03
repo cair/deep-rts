@@ -7,13 +7,14 @@
 #include "MCASNode.h"
 #include "../../Game.h"
 #include <SFML/System/Clock.hpp>
+#include <algorithm>
 
 MCAS::MCAS(Player *player) : Algorithm(player) {
     setName("MCAS");
 
     int _apm_interval = Config::getInstance().getAPM() * 60.0;
 
-    nodes.reserve(10000000);
+    nodes.reserve(100000);
     for(int i = 0; i < nodes.capacity(); i++) {
         nodes.push_back(MCASNode());
         nodes.back().id = i;

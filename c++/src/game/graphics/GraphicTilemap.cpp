@@ -3,7 +3,7 @@
 //
 
 #include "GraphicTilemap.h"
-#include "../loaders/MapLoader.h"
+
 
 GraphicTilemap::GraphicTilemap(std::vector<Tile> &dataTiles) {
     loadTexture();

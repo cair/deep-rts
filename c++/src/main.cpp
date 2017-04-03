@@ -39,7 +39,7 @@ int main() {
     Player &player3 = g->addPlayer();
     g->start();
 
-	PyAI::start(); // Init the API
+    PyAI::start(); // Init the API
 
 
 	

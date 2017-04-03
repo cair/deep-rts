@@ -6,13 +6,14 @@
 #include "../../player/Player.h"
 #include "MCTSNode.h"
 #include "../../Game.h"
+#include <algorithm>
 
 MCTS::MCTS(Player *player) : Algorithm(player) {
     setName("MCTS");
 
     int _apm_interval = Config::getInstance().getAPM() * 60.0;
 
-    nodes.reserve(10000000);
+    nodes.reserve(100000);
     for(int i = 0; i < nodes.capacity(); i++) {
         nodes.push_back(MCTSNode());
         nodes.back().id = i;
@@ -191,6 +192,7 @@ void MCTS::calculate(){
 
             // If randomAction is in children, use that, else create new leafNode
             //auto it = currentNode->childrenActions.find(randomAction);
+
             auto it = std::find(currentNode->childrenActions.begin(), currentNode->childrenActions.end(), randomAction);
             const bool is_in = it != currentNode->childrenActions.end();
             if(is_in) {

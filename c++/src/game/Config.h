@@ -6,7 +6,9 @@
 #define WARC2SIM_CONFIG_H
 
 #include <fstream>
-#include "loaders/MapLoader.h"
+#include <rapidjson/istreamwrapper.h>
+#include <cmath>
+#include "loaders/ResourceLoader.h"
 
 class Config
 {
@@ -97,25 +99,23 @@ private:
 
     void load(){
         // Read Map data
-        std::ifstream confData("./data/config.json");
-        json configuration;
-        confData >> configuration;
+        auto conf = ResourceLoader::getInstance().configJSON.GetObject();
 
-        json mechanics = configuration["mechanics"];
-		json logging = configuration["logging"];
-		json ai = configuration["ai"];
+        auto mechanics = conf["mechanics"].GetObject();
+		auto logging = conf["logging"].GetObject();
+		auto ai = conf["ai"].GetObject();
 
-		tickReset = configuration["tick_reset"];
-		apm = ai["max_apm"];
-        fps = configuration["fps"];
-        ups = configuration["ups"];
-        tickModifier = configuration["ticks_per_sec"];
-        mechanicTownHall = mechanics["town_hall_on_start"];
-		mechanicHarvestForever = mechanics["harvest_forever"];
-		captionConsole = configuration["caption"]["console"];
-		captionWindow = configuration["caption"]["window"];
-		loggingScoring = logging["scorings"];
-		display = configuration["display"];
+		tickReset = conf["tick_reset"].GetInt();
+		apm = ai["max_apm"].GetInt();
+        fps = conf["fps"].GetInt64();
+        ups = conf["ups"].GetInt64();
+        tickModifier = conf["ticks_per_sec"].GetInt64();
+        mechanicTownHall = mechanics["town_hall_on_start"].GetBool();
+		mechanicHarvestForever = mechanics["harvest_forever"].GetBool();
+		captionConsole = conf["caption"]["console"].GetBool();
+		captionWindow = conf["caption"]["window"].GetBool();
+		loggingScoring = logging["scorings"].GetBool();
+		display = conf["display"].GetBool();
 
 
     }
