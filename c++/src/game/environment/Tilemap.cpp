@@ -136,7 +136,7 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
         int x = tile.x + i.first;
         int y = tile.y + i.second;
 
-        if(x < 0 or y < 0 or x > MAP_WIDTH-1 or y > MAP_WIDTH-1)
+        if(x < 0 || y < 0 || x > MAP_WIDTH-1 || y > MAP_WIDTH-1)
             continue;
 
         int idx = MAP_WIDTH*y + x;

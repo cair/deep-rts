@@ -64,7 +64,7 @@ bool Tile::isAttackable(Unit &unit) {
 }
 
 bool Tile::isWalkable() const{
-	return occupantID == -1 and walkable;
+	return occupantID == -1 && walkable;
 }
 
 bool Tile::isHarvestable() const {

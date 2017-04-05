@@ -97,13 +97,13 @@ bool Unit::build(int idx) {
     if(state->id != Constants::State::Idle)
         return false;
 
-    if((idx < 0 or idx >= buildInventory.size()))
+    if((idx < 0 || idx >= buildInventory.size()))
         return false;
 
     Unit newUnit = UnitManager::constructUnit(buildInventory[idx], player_);
 
     // PlacementTile is based on dimension of the new unit. For example; town hall has
-    // 3x Width and 3x Height. We then want to place  the building by the middle tile;
+    // 3x Width && 3x Height. We then want to place  the building by the middle tile;
     Tile *placementTile = player_->game_.map.getTile(tile->x - floor(newUnit.width/2), tile->y - floor(newUnit.height/2));
     assert(placementTile && "PlacementTile was null in build()");
     if(!player_->canAfford(newUnit)) {
@@ -119,7 +119,7 @@ bool Unit::build(int idx) {
         unit.player_ = player_;
         unit.builtByID = this->id;
 
-        if(!structure and unit.structure) {
+        if(!structure && unit.structure) {
             // *this is a unit (peasant), which builds a building
             despawn();
 
@@ -129,7 +129,7 @@ bool Unit::build(int idx) {
             unit.setPosition(*placementTile);  // Set position of build entity
 
 
-        }else if(structure and !unit.structure){
+        }else if(structure && !unit.structure){
             // Structure builds unit (Ie: TownHall builds Peasant)
             buildEntityID = unit.id;    // Set build entity ID
             // build entity has no tile, spawn on nearest walkable
@@ -327,7 +327,7 @@ void Unit::afflictDamage(int dmg_) {
 }
 
 bool Unit::isDead() {
-    return state->id == Constants::State::Dead or state->id == Constants::State::Despawned;
+    return state->id == Constants::State::Dead || state->id == Constants::State::Despawned;
 }
 
 int Unit::getDamage(Unit &target) {
@@ -354,35 +354,35 @@ void Unit::setDirection(int newX, int newY){
     int dx = (newX - oldX);
     int dy = (newY - oldY);
 
-    if (dx > 0 and dy > 0) {
+    if (dx > 0 && dy > 0) {
         // Down Right
         direction = Constants::Direction::DownRight;
         //std::cout << "Down Right" << std::endl;
-    } else if (dx < 0 and dy > 0) {
+    } else if (dx < 0 && dy > 0) {
         // Down Left
         direction = Constants::Direction::DownLeft;
         //std::cout << "Down Left" << std::endl;
-    } else if (dx > 0 and dy < 0) {
+    } else if (dx > 0 && dy < 0) {
         // Up Right
         direction = Constants::Direction::UpRight;
         //std::cout << "Up Right" << std::endl;
-    } else if (dx < 0 and dy < 0) {
+    } else if (dx < 0 && dy < 0) {
         // Up Left
         direction = Constants::Direction::UpLeft;
         //std::cout << "Up Left" << std::endl;
-    } else if (dx > 0 and dy == 0) {
+    } else if (dx > 0 && dy == 0) {
         // Right
         direction = Constants::Direction::Right;
         //std::cout << "Right" << std::endl;
-    } else if (dx < 0 and dy == 0) {
+    } else if (dx < 0 && dy == 0) {
         // Left
         direction = Constants::Direction::Left;
         //std::cout << "Left" << std::endl;
-    } else if (dx == 0 and dy < 0) {
+    } else if (dx == 0 && dy < 0) {
         // Up
         direction = Constants::Direction::Up;
         //std::cout << "Up" << std::endl;
-    } else if (dx == 0 and dy > 0) {
+    } else if (dx == 0 && dy > 0) {
         // Down
         direction = Constants::Direction::Down;
         //std::cout << "Down" << std::endl;

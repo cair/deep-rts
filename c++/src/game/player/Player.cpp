@@ -291,7 +291,7 @@ bool Player::canPlace(Unit & builder, Unit & unit, Tile *_tile) {
 }
 
 bool Player::canAfford(Unit & unit) {
-	return gold >= unit.goldCost and lumber >= unit.lumberCost and oil >= unit.oilCost;
+	return gold >= unit.goldCost && lumber >= unit.lumberCost && oil >= unit.oilCost;
 
 }
 

@@ -1,6 +1,7 @@
 FROM nvidia/cuda
 MAINTAINER Per-Arne Andersen
 
+ADD . /data
 
 RUN cat /etc/apt/sources.list
 RUN apt-get update && apt-get install git -y
