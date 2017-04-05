@@ -30,7 +30,7 @@ void sleep(int sleepMs)
 #include "game/algorithms/MCTSDirect/MCTSDirect.h"
 
 int main() {
-	
+
 	// Create game instance
     Game *g = new Game(4, true);
     Player &player0 = g->addPlayer();

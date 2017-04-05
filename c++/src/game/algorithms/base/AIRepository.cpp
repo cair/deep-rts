@@ -12,6 +12,6 @@ void AIRepository::addAI(Algorithm *ai) {
 
 Algorithm *AIRepository::getAI(std::string aiName) {
 	Algorithm *ai = availableAI[aiName];
-	assert(ai && "Invalid AI name. Doesnt exist! or DQN si NULLPTR");
+	assert(ai && "Invalid AI name. Doesnt exist! or DQN is NULLPTR");
 	return ai;
 }
