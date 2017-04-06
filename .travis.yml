@@ -12,5 +12,8 @@ script:
 - docker ps -a
 
 after_success:
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" hub.docker.com;
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     - docker push cair/deeprts;
+
+notifications:
+  webhooks: https://discordapp.com/api/webhooks/299549422986067968/0TjN9PW6LcP7Nc-gqFg5nh21mDsww9Qp6vG_F8734A2d_iwPVNRUdx_xUi-xo86pvDHW/travis
