@@ -12,6 +12,7 @@ libjpeg-dev \
 libopenal-dev \
 libflac-dev \
 libvorbis-dev \
+curl \
 cmake -y
 
 echo "Apt dependencies installed!"
