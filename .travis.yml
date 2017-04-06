@@ -12,7 +12,5 @@ script:
 - docker ps -a
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" hub.docker.com;
-    docker push cair/deeprts;
-    fi
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" hub.docker.com;
+    - docker push cair/deeprts;
