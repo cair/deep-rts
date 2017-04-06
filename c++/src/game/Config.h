@@ -71,6 +71,10 @@ public:
 		return display;
 	}
 
+	void forceDisplay(bool val) {
+		display = val;
+	}
+
 	const int getTickReset() {
 		return tickReset;
 	}

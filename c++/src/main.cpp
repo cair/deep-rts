@@ -29,7 +29,26 @@ void sleep(int sleepMs)
 #include "game/algorithms/base/AIRepository.h"
 #include "game/algorithms/MCTSDirect/MCTSDirect.h"
 
+
+#ifdef LINUX
+#include <X11/Xlib.h>
+void ensureDisplay() {
+    Display *display = XOpenDisplay(NULL);
+    if (!display) {
+        std::cout << "Failed to open X11 display. Force-Disabling Display for this session" << std::endl;
+        Config::getInstance().forceDisplay(false);
+    }
+
+}
+#endif
+
+
 int main() {
+#ifdef LINUX
+    ensureDisplay();
+#endif
+
+
 
 	// Create game instance
     Game *g = new Game(4, true);

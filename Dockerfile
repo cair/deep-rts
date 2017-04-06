@@ -1,4 +1,4 @@
-FROM nvidia/cuda
+FROM nvidia/cuda:8.0-runtime-ubuntu16.04
 MAINTAINER Per-Arne Andersen
 
 RUN apt-get update && apt-get install -y apt-utils
