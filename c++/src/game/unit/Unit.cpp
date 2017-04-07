@@ -486,3 +486,26 @@ Unit &Unit::getCombatTarget() {
     assert(combatTargetID != -1);
     return player_->game_.units[combatTargetID];
 }
+
+std::set<int> Unit::getVisionTileIDs() {
+
+    std::set<int> tileIDs = std::set<int>();
+    if(!tile){
+        return tileIDs;
+    }
+
+    // Current tile is the upper right
+    int tileX = tile->x;
+    int tileY = tile->y;
+
+    // Calculate vision tiles
+    for(int x = -sight; x < width + sight; x++) {
+        for(int y = -sight; y < height + sight; y++){
+            int tX = tileX + x;
+            int yY = tileY + y;
+            int idx = player_->game_.getMap().MAP_HEIGHT*yY + tX;
+            tileIDs.insert(idx);
+        }
+    }
+    return tileIDs;
+}

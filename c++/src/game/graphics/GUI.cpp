@@ -523,28 +523,43 @@ void GUI::drawSelected(){
 
 void GUI::drawTiles(){
 
+    if(Config::getInstance().mechanicFOW){
+        auto &gMap = game.getMap();
+        sf::RectangleShape rectangle;
+        rectangle.setSize(sf::Vector2f(gMap.MAP_WIDTH * gMap.TILE_WIDTH, gMap.TILE_HEIGHT * gMap.MAP_HEIGHT));
+        rectangle.setFillColor(sf::Color::Black);
+        rectangle.setPosition(0, 0);
+        window.draw(rectangle);
 
+        for(auto &u : game.units) {
+            auto idxs = u.getVisionTileIDs();
 
-    for(GraphicTile& gTile : map.gTiles){
-
-        if (showGridLines) {
-            sf::RectangleShape rectangle;
-            rectangle.setSize(sf::Vector2f(32, 32));
-            rectangle.setOutlineThickness(1);
-            rectangle.setPosition(gTile.getPixelPosition());
-
-            window.draw(rectangle);
+            for(auto &idx : idxs) {
+                auto &gTile = map.gTiles[idx];
+                window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
+            }
         }
 
+    } else {
+        for(GraphicTile& gTile : map.gTiles){
 
-        window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
+            if (showGridLines) {
+                sf::RectangleShape rectangle;
+                rectangle.setSize(sf::Vector2f(32, 32));
+                rectangle.setOutlineThickness(1);
+                rectangle.setPosition(gTile.getPixelPosition());
 
-
-
-
-
-
+                window.draw(rectangle);
+            }
+            window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
+        }
     }
+
+
+
+
+
+
 
 
 

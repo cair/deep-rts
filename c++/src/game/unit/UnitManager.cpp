@@ -51,7 +51,7 @@ Unit UnitManager::constructFarm(Player *player) {
     u.oilCarry = 0;
     u.carryCapacity = 0;
     u.speed = 0;
-    u.sight = 4;
+    u.sight = 2;
 
 
     u.canHarvest = false;
@@ -226,7 +226,7 @@ Unit UnitManager::constructPeasant(Player *player)
     u.oilCarry = 0;
     u.carryCapacity = 10;
     u.speed = 10;
-    u.sight = 4;
+    u.sight = 2;
 
 
     u.canHarvest = true;
@@ -290,7 +290,7 @@ Unit UnitManager::constructFootman(Player *player) {
     u.oilCarry = 0;
     u.carryCapacity = 0;
     u.speed = 10;
-    u.sight = 4;
+    u.sight = 3;
 
 
     u.canHarvest = false;
@@ -345,7 +345,7 @@ Unit UnitManager::constructArcher(Player *player) {
     u.oilCarry = 0;
     u.carryCapacity = 0;
     u.speed = 10;
-    u.sight = 5; // +4
+    u.sight = 4; // +4
 
 
     u.canHarvest = false;

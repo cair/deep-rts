@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <set>
 #include "../Constants.h"
 #include "../environment/Tile.h"
 #include "../state/StateManager.h"
@@ -94,6 +95,7 @@ public:
     int harvestIterator;
     int harvestTargetID = -1;
 	Tile *getTile(int tileID);
+    std::set<int> getVisionTileIDs();
 
     // Building
     int spawnTimer;

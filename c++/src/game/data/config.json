@@ -21,6 +21,7 @@
     "town_hall_on_start": true,
     "harvest_forever": false,
     "instant_build": true,
+    "fog_of_war": true,
     "food": false,
     "farm": false,
     "barracks": false,
