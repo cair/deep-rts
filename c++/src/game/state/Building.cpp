@@ -5,6 +5,7 @@
 #include "Building.h"
 #include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
+#include "../player/Player.h"
 
 
 void Building::update(Unit & unit)const{
@@ -20,6 +21,8 @@ void Building::update(Unit & unit)const{
             assert(firstWalkable);
             unit.setPosition(*firstWalkable);
             unit.transitionState();
+            unit.player_->food += unit.foodProduction;
+            unit.player_->foodConsumption += unit.foodConsumption;
         } else {
 			
 			// Unit has tile, needs to transition

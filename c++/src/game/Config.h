@@ -79,6 +79,12 @@ public:
 		return tickReset;
 	}
 
+	bool mechanicFood;
+	bool mechanicFarm;
+	bool mechanicBarracks;
+	bool mechanicFootman;
+	bool mechanicArcher;
+
 
 
 private:
@@ -101,6 +107,9 @@ private:
 	bool loggingScoring;
 	bool display;
 
+
+
+
     void load(){
         // Read Map data
         auto conf = ResourceLoader::getInstance().configJSON.GetObject();
@@ -114,13 +123,19 @@ private:
         fps = conf["fps"].GetInt64();
         ups = conf["ups"].GetInt64();
         tickModifier = conf["ticks_per_sec"].GetInt64();
-        mechanicTownHall = mechanics["town_hall_on_start"].GetBool();
-		mechanicHarvestForever = mechanics["harvest_forever"].GetBool();
 		captionConsole = conf["caption"]["console"].GetBool();
 		captionWindow = conf["caption"]["window"].GetBool();
 		loggingScoring = logging["scorings"].GetBool();
 		display = conf["display"].GetBool();
 
+		mechanicTownHall = mechanics["town_hall_on_start"].GetBool();
+		mechanicHarvestForever = mechanics["harvest_forever"].GetBool();
+
+		mechanicArcher = mechanics["archer"].GetBool();
+		mechanicBarracks = mechanics["barracks"].GetBool();
+		mechanicFarm = mechanics["farm"].GetBool();
+		mechanicFootman = mechanics["footman"].GetBool();
+		mechanicFood = mechanics["food"].GetBool();
 
     }
 

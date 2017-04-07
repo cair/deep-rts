@@ -23,8 +23,13 @@ void Combat::update(Unit & unit)const{
 			return;
 		}
 
-        if(unit.distance(combatTarget) > unit.damageRange) {
+        int distance = unit.distance(combatTarget);
+        if(distance > unit.damageRange) {
             // Too far away, Walk
+
+            // Only walk distance difference steps before transition back to attack
+            int diff = distance - unit.damageRange;
+            unit.stepsLeft = diff;
 
 			unit.walkingGoalID = combatTarget.tile->id;
 			unit.transitionState(unit.stateManager->walkingState);
@@ -37,6 +42,7 @@ void Combat::update(Unit & unit)const{
             unit.player_->statUnitDamageDone += myDamage;
             combatTarget.player_->statUnitDamageTaken += myDamage;
             unit.combatTimer = 0;
+
 
             if(combatTarget.isDead()){
                 unit.combatTargetID = Constants::None;

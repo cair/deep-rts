@@ -112,6 +112,7 @@ public:
     int walking_timer = 0;
     std::vector<Tile *> walking_path;
     int walkingGoalID = -1;
+	int stepsLeft = 0; // If value is 0 it is ignored. However, Walking is transitioned when stepsLeft = 1 (Which decrements it to 0)
     double walking_interval = .1 * 10;
 
 

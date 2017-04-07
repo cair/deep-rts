@@ -18,12 +18,12 @@ Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateMa
     id = player->game_.units.size();
     state = stateManager->despawnedState;
     stateList.reserve(50);
-
-
 }
 void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
     spawnTileID = _toSpawnOn.id;
+    player_->food += foodProduction;
+    player_->foodConsumption += foodConsumption;
     transitionState(stateManager->spawnState);
     enqueueState(stateManager->idleState);
 }
@@ -102,6 +102,13 @@ bool Unit::build(int idx) {
 
     Unit newUnit = UnitManager::constructUnit(buildInventory[idx], player_);
 
+
+    // Check food restriction
+    if(Config::getInstance().mechanicFood && newUnit.foodConsumption + player_->foodConsumption > player_->food) {
+        return false;
+    }
+
+
     // PlacementTile is based on dimension of the new unit. For example; town hall has
     // 3x Width && 3x Height. We then want to place  the building by the middle tile;
     Tile *placementTile = player_->game_.map.getTile(tile->x - floor(newUnit.width/2), tile->y - floor(newUnit.height/2));
@@ -163,6 +170,8 @@ void Unit::despawn() {
             p.targetedUnitID = -1;
     }
 
+    player_->food -= foodProduction;
+    player_->foodConsumption -= foodConsumption;
     clearTiles();
     transitionState(stateManager->despawnedState);
 }
@@ -213,15 +222,8 @@ void Unit::attack(Tile &tile) {
     }
 
     combatTargetID = target->id;
+    transitionState(stateManager->combatState);
 
-    if(distance(tile) > 1){
-        enqueueState(stateManager->combatState);
-        move(tile);
-    }
-    else {
-        transitionState(stateManager->combatState);
-
-    }
 
 
 
@@ -334,7 +336,8 @@ int Unit::getDamage(Unit &target) {
 
     // TODO better random
     double output = damageMin + (rand() % (damageMax - damageMin + 1));
-    double myDamage = output - target.armor + damagePiercing;
+    double myDamage = (output - (target.armor*0.12)) + damagePiercing;
+    myDamage = std::max(0.0, myDamage);
 
     double mini = myDamage * .50;
     double output2 = mini + (rand() % (int)(myDamage - mini + 1));

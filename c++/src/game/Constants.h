@@ -14,6 +14,11 @@ namespace Constants{
 		Peon = 2,
 		TownHall = 3,
 
+		Barracks = 4,
+		Footman = 5,
+		Farm = 6,
+		Archer = 7,
+
 		None = -1
 	};
 

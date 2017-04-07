@@ -26,6 +26,7 @@ void Walking::update(Unit & unit)const{
             Tile * nextTile = unit.walking_path.back();
             unit.walking_path.pop_back();
 
+
 			// Check if someone is standing on goal
 			if (!nextTile->isWalkable()) {
 				unit.transitionState();
@@ -35,6 +36,13 @@ void Walking::update(Unit & unit)const{
 
             unit.setPosition(*nextTile);
             unit.walking_timer = 0;
+
+            if(unit.stepsLeft == 1) {
+                unit.transitionState();
+            }
+            if(unit.stepsLeft >= 1) {
+                unit.stepsLeft --;
+            }
 
 
         }

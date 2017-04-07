@@ -133,7 +133,9 @@ void Game::loop() {
 		now = clock.getElapsedTime();		// Update clock
 		nowMicroSec = now.asMicroseconds();
 		if (nowMicroSec >= _update_next) {
-			// If reset flag is set
+
+
+            // If reset flag is set
 			if (ticks > tickReset || triggerReset) {
 				reset();
 				triggerReset = false;

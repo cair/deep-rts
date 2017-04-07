@@ -6,6 +6,7 @@
 #include "Spawning.h"
 #include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
+#include "../player/Player.h"
 
 void Spawning::update(Unit& unit)const{
     unit.spawnTimer += 1;
@@ -31,6 +32,7 @@ void Spawning::update(Unit& unit)const{
 		if (unit.structure) {
 			unit.direction = Constants::Direction::Up;
 		}
+
     }
 
 }

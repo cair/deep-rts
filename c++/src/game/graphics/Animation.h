@@ -29,11 +29,15 @@ public:
 private:
     std::shared_ptr<sf::Texture> peasant;
     std::shared_ptr<sf::Texture> buildings;
+    std::shared_ptr<sf::Texture> archer;
+    std::shared_ptr<sf::Texture> footman;
 
     void setupPeasant();
     void setupTownHall();
-
-
+    void setupFarm();
+    void setupBarracks();
+    void setupFootman();
+    void setupArcher();
 };
 
 
