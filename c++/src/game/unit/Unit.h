@@ -27,7 +27,7 @@ public:
 	Unit() {}
 
     // Graphics
-    double animationInterval = .5 * 10;
+    double animationInterval = 1 * 10;
     int animationTimer = 0;
     int animationIterator = 0;
 
@@ -54,7 +54,6 @@ public:
     std::vector<Constants::Unit> buildInventory;
     int speed;
     int sight;
-    int range = 4;
 
     bool canHarvest;
     bool canAttack;
@@ -113,7 +112,7 @@ public:
     std::vector<Tile *> walking_path;
     int walkingGoalID = -1;
 	int stepsLeft = 0; // If value is 0 it is ignored. However, Walking is transitioned when stepsLeft = 1 (Which decrements it to 0)
-    double walking_interval = .1 * 10;
+    double walking_interval = 1 * 5;
 
 
     Tile *tile = NULL;

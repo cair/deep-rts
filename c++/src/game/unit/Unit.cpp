@@ -203,10 +203,14 @@ void Unit::rightClick(Tile &targetTile) {
         // Attack
         attack(targetTile);
     }
-    else if(targetTile.isWalkable()){
+    /*else if(targetTile.isRepairable(*this)){
+        repair(targetTile);
+    }*/
+    else {
         // Walk
         move(targetTile);
     }
+
 }
 
 void Unit::attack(Tile &tile) {

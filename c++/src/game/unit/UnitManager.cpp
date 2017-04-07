@@ -52,7 +52,7 @@ Unit UnitManager::constructFarm(Player *player) {
     u.carryCapacity = 0;
     u.speed = 0;
     u.sight = 4;
-    u.range = 0;
+
 
     u.canHarvest = false;
     u.canAttack = false;
@@ -107,7 +107,7 @@ Unit UnitManager::constructBarracks(Player *player) {
     u.carryCapacity = 0;
     u.speed = 0;
     u.sight = 3;
-    u.range = 0;
+
 
     u.canHarvest = false;
     u.canAttack = false;
@@ -170,7 +170,7 @@ Unit UnitManager::constructTownHall(Player *player) {
     u.carryCapacity = 0;
     u.speed = 0;
     u.sight = 4;
-    u.range = 0;
+
 
     u.canHarvest = false;
     u.canAttack = false;
@@ -227,7 +227,7 @@ Unit UnitManager::constructPeasant(Player *player)
     u.carryCapacity = 10;
     u.speed = 10;
     u.sight = 4;
-    u.range = 1;
+
 
     u.canHarvest = true;
     u.canAttack = true;
@@ -291,7 +291,7 @@ Unit UnitManager::constructFootman(Player *player) {
     u.carryCapacity = 0;
     u.speed = 10;
     u.sight = 4;
-    u.range = 1;
+
 
     u.canHarvest = false;
     u.canAttack = true;
@@ -346,7 +346,7 @@ Unit UnitManager::constructArcher(Player *player) {
     u.carryCapacity = 0;
     u.speed = 10;
     u.sight = 5; // +4
-    u.range = 4;
+
 
     u.canHarvest = false;
     u.canAttack = true;

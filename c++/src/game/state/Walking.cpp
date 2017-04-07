@@ -61,8 +61,6 @@ void Walking::end(Unit & unit)const{
 }
 
 void Walking::init(Unit & unit)const{
-    // Reset Walking Timer
-    unit.walking_timer = 0;
 
     // Retrieve Tile* from walkingGoalID
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
