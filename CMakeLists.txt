@@ -107,16 +107,24 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 find_package(SFML 2 REQUIRED system window graphics network audio)
 find_package(PythonLibs REQUIRED)
 find_package(RapidJSON REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(uWS REQUIRED)
 find_package(Threads)
 
 
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
-    include_directories(${FLATBUFFERS_INCLUDE_DIR})
+    include_directories(${UWS_INCLUDE_DIR})
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    include_directories(${OPENSSL_INCLUDE_DIR})
     include_directories(${PYTHON_INCLUDE_DIR})
-    target_link_libraries(DeepRTS ${FLATBUFFERS_STATIC_LIB})
     target_link_libraries(DeepRTS ${SFML_LIBRARIES})
+    target_link_libraries(DeepRTS ${UWS_LIBRARIES})
+    target_link_libraries(DeepRTS ${ZLIB_LIBRARIES})
+    target_link_libraries(DeepRTS ${OPENSSL_LIBRARIES})
     target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
+
     target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
 
 

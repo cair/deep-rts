@@ -13,10 +13,10 @@
 void sleep(int sleepMs)
 {
 #ifdef LINUX
-	usleep(sleepMs * 1000);   // usleep takes sleep time in us (1 millionth of a second)
+    usleep(sleepMs * 1000);   // usleep takes sleep time in us (1 millionth of a second)
 #endif
 #ifdef WINDOWS
-	Sleep(sleepMs);
+    Sleep(sleepMs);
 #endif
 }
 
@@ -40,15 +40,25 @@ void ensureDisplay() {
 }
 #endif
 
-
+#include <uWS/uWS.h>
 int main() {
 #ifdef __linux__
     ensureDisplay();
 #endif
 
+    /*
+    uWS::Hub h;
+    h.onMessage([](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
+        ws->send(message, length, opCode);
+    });
 
 
-	// Create game instance
+    std::cout << "lel lets go" << std::endl;
+    h.listen(3000);
+    h.run();*/
+
+
+    // Create game instance
     Game *g = new Game(4, true);
     Player &player0 = g->addPlayer();
     Player &player1 = g->addPlayer();
@@ -59,7 +69,7 @@ int main() {
     PyAI::start(); // Init the API
 
 
-	
+
 
     Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
@@ -79,6 +89,6 @@ int main() {
 
     g->initGUI();
     g->loop();
-	
+
 
 }

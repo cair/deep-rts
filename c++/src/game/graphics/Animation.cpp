@@ -223,11 +223,6 @@ void Animation::setupTownHall(){
     Animation::add(P, Constants::State::Despawned,Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
     Animation::add(P, Constants::State::Combat, Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
     Animation::add(P, Constants::State::Harvesting,Constants::Direction::Down,270, 150,  110, 100, 96, 96, &*buildings, false);
-
-
-
-
-
 }
 
 sf::Sprite &Animation::getNext(Unit & unit) {
