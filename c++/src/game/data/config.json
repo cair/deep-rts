@@ -20,6 +20,7 @@
   "mechanics": {
     "town_hall_on_start": true,
     "harvest_forever": false,
+    "instant_build": true,
     "food": false,
     "farm": false,
     "barracks": false,

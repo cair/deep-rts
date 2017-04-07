@@ -65,7 +65,11 @@ Unit UnitManager::constructFarm(Player *player) {
     u.goldCost = 500;
     u.oilCost = 0;
 
-    u.spawnDuration = 100 * Config::getInstance().getTickModifier(); //255 * Config::getInstance().getTickModifier();
+    if(Config::getInstance().mechanicInstantBuild) {
+        u.spawnDuration = 0;
+    } else {
+        u.spawnDuration = 100 * Config::getInstance().getTickModifier();
+    }
 
     u.foodProduction = 4;
     u.foodConsumption = 0;
@@ -116,7 +120,12 @@ Unit UnitManager::constructBarracks(Player *player) {
     u.goldCost = 700;
     u.oilCost = 0;
 
-    u.spawnDuration = 100 * Config::getInstance().getTickModifier(); //255 * Config::getInstance().getTickModifier();
+    if(Config::getInstance().mechanicInstantBuild) {
+        u.spawnDuration = 0;
+    } else {
+        u.spawnDuration = 100 * Config::getInstance().getTickModifier();
+    }
+
 
     u.foodProduction = 0;
     u.foodConsumption = 0;
@@ -174,7 +183,11 @@ Unit UnitManager::constructTownHall(Player *player) {
     u.goldCost = 500;
     u.oilCost = 0;
 
-    u.spawnDuration = 60 * Config::getInstance().getTickModifier(); //255 * Config::getInstance().getTickModifier();
+    if(Config::getInstance().mechanicInstantBuild) {
+        u.spawnDuration = 0;
+    } else {
+        u.spawnDuration = 60 * Config::getInstance().getTickModifier();
+    }
 
     u.foodProduction = 1;
     u.foodConsumption = 0;
@@ -226,7 +239,12 @@ Unit UnitManager::constructPeasant(Player *player)
     u.goldCost = 400;
     u.oilCost = 0;
 
-    u.spawnDuration = 45 * Config::getInstance().getTickModifier(); //45 * Config::getInstance().getTickModifier();
+    if(Config::getInstance().mechanicInstantBuild) {
+        u.spawnDuration = 0;
+    } else {
+        u.spawnDuration = 45 * Config::getInstance().getTickModifier();
+    }
+
 
     u.foodProduction = 0;
     u.foodConsumption = 1;
@@ -285,7 +303,11 @@ Unit UnitManager::constructFootman(Player *player) {
     u.goldCost = 600;
     u.oilCost = 0;
 
-    u.spawnDuration = 60 * Config::getInstance().getTickModifier(); //45 * Config::getInstance().getTickModifier();
+    if(Config::getInstance().mechanicInstantBuild) {
+        u.spawnDuration = 0;
+    } else {
+        u.spawnDuration = 60 * Config::getInstance().getTickModifier();
+    }
 
     u.foodProduction = 0;
     u.foodConsumption = 1;
@@ -336,7 +358,12 @@ Unit UnitManager::constructArcher(Player *player) {
     u.goldCost = 500;
     u.oilCost = 0;
 
-    u.spawnDuration = 75 * Config::getInstance().getTickModifier(); //45 * Config::getInstance().getTickModifier();
+    if(Config::getInstance().mechanicInstantBuild) {
+        u.spawnDuration = 0;
+    } else {
+        u.spawnDuration = 75 * Config::getInstance().getTickModifier();
+    }
+
 
     u.foodProduction = 0;
     u.foodConsumption = 1;

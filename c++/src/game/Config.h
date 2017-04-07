@@ -84,6 +84,7 @@ public:
 	bool mechanicBarracks;
 	bool mechanicFootman;
 	bool mechanicArcher;
+    bool mechanicInstantBuild;
 
 
 
@@ -136,6 +137,7 @@ private:
 		mechanicFarm = mechanics["farm"].GetBool();
 		mechanicFootman = mechanics["footman"].GetBool();
 		mechanicFood = mechanics["food"].GetBool();
+		mechanicInstantBuild = mechanics["instant_build"].GetBool();
 
     }
 
