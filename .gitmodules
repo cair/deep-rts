@@ -1,0 +1,4 @@
+[submodule "DeepRTS-A-Flexible-Machine-Learning-platform-for-Real-Time-Strategy-Games"]
+	path = paper
+	url = https://github.com/perara/DeepRTS-A-Flexible-Machine-Learning-platform-for-Real-Time-Strategy-Games.git
+	branch = master
