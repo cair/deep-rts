@@ -2,9 +2,9 @@
   "numPlayers": 4,
   "map": "contested-4v4",
   "fps": 60,
-  "ups": 10,
+  "ups": 400,
   "ticks_per_sec": 10,
-  "tick_reset": 100000,
+  "tick_reset": 10000,
   "ai": {
 	"max_apm": 300
   },
@@ -13,7 +13,7 @@
     "console": true
   },
   "logging": {
-    "scorings": false
+    "scorings": true
   },
   "display":  true,
 
