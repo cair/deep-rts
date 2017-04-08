@@ -1,13 +1,40 @@
 
 import sys
+import os
 from logconf import logger
 logger.info("Running PyAI using Python %s" % sys.version)
-import PyAPIRegistry
-from PyAI import PyAI
-from Algorithms.DQN.DQN import DQN
+BASE_PATH = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(BASE_PATH,"Algorithms"))
+for d_name in [d for d in os.listdir("Algorithms") if os.path.isdir(os.path.join(BASE_PATH,"Algorithms", d))]:
+    dr = os.path.join(BASE_PATH,"Algorithms", d_name)
+    if "__pycache__" in dr:
+        continue
+
+    files = os.listdir(dr)
+
+    if "Runner.py" in files:
+        logger.info("Found Runner.py which indicates a algorithm at %s. Adding..." % d_name)
+        exec("from %s import %s" % (d_name, "Runner"))
+
+    else:
+        logger.info("Runner.py not found. Ignoring algorithm at %s" % d_name)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 """
 # DQN Setup
+"""
 """
 pyai_dqn = PyAI(name="DQN")  # Create new AI instance
 
@@ -17,7 +44,7 @@ dqn = DQN(state_size=observation_space.shape,
               save_name="deeprts")  # Create new DQN using the pyai hook
 pyai_dqn.agent = dqn	# Set Agent to DQN
 pyai_dqn.reset()
-
+"""
 
 
 

@@ -35,16 +35,20 @@ void ensureDisplay() {
     if (!std::getenv("DISPLAY")) {
         std::cout << "Failed to open X11 display. Force-Disabling Display for this session" << std::endl;
         Config::getInstance().forceDisplay(false);
+
     }
 
 }
 #endif
+
 
 #include <uWS/uWS.h>
 int main() {
 #ifdef __linux__
     ensureDisplay();
 #endif
+
+
 
     /*
     uWS::Hub h;
@@ -66,8 +70,12 @@ int main() {
     Player &player3 = g->addPlayer();
     g->start();
 
-    /*
+
     PyAI::start(); // Init the API
+
+    /*
+
+
 
     Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
