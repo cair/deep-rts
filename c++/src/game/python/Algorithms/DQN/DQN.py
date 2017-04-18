@@ -37,8 +37,8 @@ class DQN:
 
 	def build_model(self):
 		S = Input(shape=self.state_size)
-		h = Conv2D(256, (1,1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(S)
-		h = Conv2D(128, (1,1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(h)
+		h = Conv2D(128, (1,1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(S)
+		h = Conv2D(64, (1,1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(h)
 		#h = Conv2D(128, (1, 1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(h)
 		h = Flatten()(h)
 		h = Dense(256, activation='relu')(h)
