@@ -442,27 +442,27 @@ void GUI::drawSelected(){
     if(selectedTile)
     {
         text.setString("Type: " + selectedTile->name + " - (" + std::to_string(selectedTile->x) + "," + std::to_string(selectedTile->y) + ")");
-        text.setPosition(10,860 + offsetY);
+        text.setPosition(800,960 + offsetY);
         window.draw(text);
 
 
         text.setString((selectedTile->harvestable) ? "Harvestable: Yes" : "Harvestable: No");
-        text.setPosition(10,880 + offsetY);
+        text.setPosition(800,980 + offsetY);
         window.draw(text);
 
         text.setString((selectedTile->walkable) ? "Walkable: Yes" : "Walkable: No");
-        text.setPosition(10,900 + offsetY);
+        text.setPosition(800,1000 + offsetY);
         window.draw(text);
 
         text.setString("Resources: " + std::to_string(selectedTile->getResources()));
-        text.setPosition(10,920 + offsetY);
+        text.setPosition(800,1020 + offsetY);
         window.draw(text);
     }
 
 
 
     if (player->getTargetedUnit()){
-        int tOffsetX = 140;
+        int tOffsetX = 80;
         text.setCharacterSize(32);
         Unit *unit = player->getTargetedUnit();
         Tile *tile = (unit->tile) ? unit->tile : game.getMap().getTile(0, 0);
@@ -474,7 +474,7 @@ void GUI::drawSelected(){
                        std::to_string(tile->y) + ") - (" +
                        std::to_string(unit->player_->id_) + ")"
         );
-        text.setPosition(280 + tOffsetX,830);
+        text.setPosition(270 + tOffsetX,830);
         window.draw(text);
 
         text.setCharacterSize(20);

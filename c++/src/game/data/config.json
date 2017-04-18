@@ -4,7 +4,7 @@
   "fps": 60,
   "ups": 400,
   "ticks_per_sec": 10,
-  "tick_reset": 10000,
+  "tick_reset": 36000,
   "ai": {
 	"max_apm": 300
   },
