@@ -73,10 +73,6 @@ int main() {
 
     PyAI::start(); // Init the API
 
-    /*
-
-
-
     Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
 
@@ -87,7 +83,7 @@ int main() {
     player2.setAlgorithm(algorithm2);
 
     Algorithm *algorithm3 = new MCAS(&player3);
-    player3.setAlgorithm(algorithm3);*/
+    player3.setAlgorithm(algorithm3);
 
 
     g->initGUI();

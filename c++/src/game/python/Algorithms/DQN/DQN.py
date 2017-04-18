@@ -11,13 +11,13 @@ import random
 import numpy
 from keras import backend as K
 from keras.models import Model
-from keras.layers import Convolution2D, Dense, Flatten, Input, merge
+from keras.layers import Conv2D, Dense, Flatten, Input, merge
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import RMSprop
 from theano.gradient import disconnected_grad
 
 class DQN:
-	def __init__(self, state_size=None, number_of_actions=1, epsilon=0.1, mbsz=32, discount=0.9, memory=40,save_name='basic', save_freq=10, learning_rate=0.0001):
+	def __init__(self, state_size=None, number_of_actions=1, epsilon=0.1, mbsz=32, discount=0.9, memory=40, save_name='basic', save_freq=10, learning_rate=0.0001):
 		self.state_size = state_size
 		self.number_of_actions = number_of_actions
 		self.epsilon = epsilon
@@ -37,9 +37,9 @@ class DQN:
 
 	def build_model(self):
 		S = Input(shape=self.state_size)
-		h = Convolution2D(16, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(S)
-		h = Convolution2D(32, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(h)
-		h = Convolution2D(64, 1, 1, subsample=(1, 1), border_mode='same', activation='relu')(h)
+		h = Conv2D(256, (1,1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(S)
+		h = Conv2D(128, (1,1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(h)
+		#h = Conv2D(128, (1, 1), padding="same", kernel_initializer="uniform", strides=(1, 1), activation="relu")(h)
 		h = Flatten()(h)
 		h = Dense(256, activation='relu')(h)
 		V = Dense(self.number_of_actions)(h)
