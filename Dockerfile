@@ -25,5 +25,5 @@ ADD . /data
 RUN git clone https://github.com/UIA-CAIR/DeepRTS.git && cd DeepRTS/scripts/INSTALL && sh install.sh
 
 # Compile and run DeepRTS
-ENTRYPOINT cd /DeepRTS/ && mkdir build && cd build && cmake .. && make -j 8 && chmod +x ../scripts/paralell.sh && ../scripts/paralell.sh && bash
+ENTRYPOINT cd /DeepRTS/ && mkdir build && cd build && cmake .. && make -j 8 && chmod +x ../scripts/paralell.sh && sh ../scripts/paralell.sh && bash
 
