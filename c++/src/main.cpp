@@ -74,7 +74,7 @@ int main() {
     PyAI::start(); // Init the API
 
     Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
-    //player0.setAlgorithm(algorithm0);
+    player0.setAlgorithm(algorithm0);
 
     Algorithm *algorithm1 = new MCTS(&player1);
     player1.setAlgorithm(algorithm1);

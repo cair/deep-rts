@@ -356,7 +356,7 @@ void MCAS::calculate(){
     epsilonModifier = (epsilonDecent + iterator) / 2;
     epsilonDecent =  epsilon / epsilonModifier;
     epsilon = startEpsilon;  // Reset epsilon;
-    std::cout << "Iterations: " << std::to_string(iterator) << " | " << timeout / 1000 << "ms" <<std::endl;
+    //std::cout << "Iterations: " << std::to_string(iterator) << " | " << timeout / 1000 << "ms" <<std::endl;
 
 
 }

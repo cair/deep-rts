@@ -294,7 +294,7 @@ void MCTSDirect::calculate(){
     //player->queueAction(static_cast<Constants::Action >(bestNode->action));
     translateAction(bestNode);
     bestActionQueue.clear();
-    std::cout << "Direct Iterations: " << std::to_string(iterator) << " | " << timeout / 1000 << "ms" <<std::endl;
+    //std::cout << "Direct Iterations: " << std::to_string(iterator) << " | " << timeout / 1000 << "ms" <<std::endl;
 
     // Tune epsilon
     epsilonModifier = (epsilonDecent + iterator) / 2;
