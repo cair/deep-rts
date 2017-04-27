@@ -13,6 +13,8 @@ libopenal-dev \
 libflac-dev \
 libvorbis-dev \
 curl \
-cmake -y
+cmake \
+xorg-dev \
+libglu1-mesa-dev -y
 
 echo "Apt dependencies installed!"
