@@ -3,14 +3,15 @@ This scripts visualize the score graph scaling
 """
 import plotly
 import plotly.graph_objs as go
-
-from game.Game import Game
-from game.logic.Player import Player
+from game.WarC2 import Game
+from game.logic.Player.Player import Player
+from game.logic.Unit.Peasant import Peasant
+from game.logic.Unit.Footman import Footman
+from game.logic.Unit.TownHall import TownHall
 from game.logic.Unit.Barracks import Barracks
 from game.logic.Unit.Farm import Farm
-from game.logic.Unit.Footman import Footman
-from game.logic.Unit.Peasant import Peasant
-from game.logic.Unit.TownHall import TownHall
+from reports.Mocks import MockGame
+import numpy as np
 
 """score_types = [
     'score_unit',

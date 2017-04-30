@@ -53,7 +53,7 @@ class GameClock:
         self._update_ticks = data['_update_ticks']
         self._render_ticks = data['_render_ticks']
 
-    def shedule(self, func, interval):
+    def schedule(self, func, interval):
         self._shedules.append([func, interval, time.time(), len(self._shedules)])
 
     def render(self, func, interval):

@@ -3,7 +3,7 @@ from threading import Thread
 from ai.LocalAI.EventLoop import EventLoop
 from game import Config
 from game.ParallellWorker import ParallellWorker
-from game.Game import Game
+from game.WarC2 import Game
 from game.api.LocalAI import LocalAI
 
 

@@ -1,14 +1,16 @@
-from game import Constants
+from game.state.GenericState import GenericState
+from game.const.State import ID_Idle
 
-class Idle:
-    name = "Idle"
-    id = Constants.State.Idle
+class Idle(GenericState):
+    id = "Idle"
+    type = ID_Idle
 
-    def update(self, unit):
+    def __init__(self, unit):
+        super().__init__(unit)
+
+    def update(self, tick):
         pass
 
-    def end(self, unit):
-        pass
 
-    def init(self, unit):
-        pass
+# Register to Generic State
+GenericState.registry[Idle.type] = Idle

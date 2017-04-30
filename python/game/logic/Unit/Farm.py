@@ -1,7 +1,6 @@
-from game import Config
 from game import const
-
-from game.unit.Unit import Unit
+from game import Config
+from game.logic.Unit.Unit import Unit
 
 
 class Farm(Unit):

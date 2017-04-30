@@ -4,7 +4,7 @@ from threading import Thread
 from ai.algorithms.GreedyMCTS.MCTSAction import MCTSAction
 from ai.algorithms.GreedyMCTS import Policies
 from ai.algorithms.GreedyMCTS.MCTS import MCTS
-from game.Game import Game
+from game.WarC2 import Game
 
 g = Game.start(2, None)
 g.set_gui()

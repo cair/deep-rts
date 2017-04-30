@@ -1,9 +1,28 @@
-from game import Constants
+from game.state.GenericState import GenericState
+from game import const
 
-class Building:
-    name = "Building"
-    id = Constants.State.Building
+class Building(GenericState):
+    id = "Building"
+    type = const.State.ID_Building
 
+    def __init__(self, unit):
+        super().__init__(unit)
+        self.data = self.unit.d['s'][Building.type]
+
+    def init(self):
+
+        target_clazz = self.player.UnitManager.get_class_by_id(self.data['target_id'])
+
+        # Create initial instance of unit
+        entity = target_clazz(self.unit.player)
+        entity.add_to_game()
+        if self.unit.structure == const.Unit.TYPE_UNIT:
+            entity.d['x'] = self.unit.d['x'] - entity.dimension
+            entity.d['y'] = self.unit.d['y'] - entity.dimension
+            self.unit.despawn()
+            entity.spawn()
+
+        self.data['entity_id'] = entity.unit_id
 
     def spawn_subject(self, unit1, unit2):
         """
@@ -27,7 +46,7 @@ class Building:
 
         return True
 
-    def update(self, unit):
+    def update(self, tick):
 
         self.data['build_timer'] += tick
 
@@ -51,21 +70,3 @@ class Building:
                 self.transition()
                 #self.data['entity_id'] = None
                 #self.data['build_timer'] = 0
-
-    def end(self, unit):
-        pass
-
-    def init(self, unit):
-
-        target_clazz = self.player.UnitManager.get_class_by_id(self.data['target_id'])
-
-        # Create initial instance of unit
-        entity = target_clazz(self.unit.player)
-        entity.add_to_game()
-        if self.unit.structure == const.Unit.TYPE_UNIT:
-            entity.d['x'] = self.unit.d['x'] - entity.dimension
-            entity.d['y'] = self.unit.d['y'] - entity.dimension
-            self.unit.despawn()
-            entity.spawn()
-
-        self.data['entity_id'] = entity.unit_id

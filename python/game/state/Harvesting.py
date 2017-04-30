@@ -1,14 +1,31 @@
 from game import Config
-from game import Constants
+from game import const
+from game.state.GenericState import GenericState
 
 
 
 
-class Harvesting:
-    name = "Harvesting"
-    id = Constants.State.Harvesting
+class Harvesting(GenericState):
+    id = "Harvesting"
+    type = const.State.ID_Harvesting
 
 
+    # Harvesting
+    harvest_interval = .5 * Config.FRAME_MULTIPLIER
+    harvest_timer = 0
+    harvest_iterator = 1
+
+    RETURN = 0
+    HARVEST = 1
+
+    harvest_target = None
+
+    def __init__(self, unit):
+        super().__init__(unit)
+        self.data = unit.d['s'][Harvesting.type]
+
+    def init(self):
+        self.data['harvest_timer'] = 0
 
     def stage_goto_harvest(self):
         tiles = self.game.AdjacentMap.adjacent_walkable(self.game, *self.data['harvest_target'], 1)
@@ -77,7 +94,7 @@ class Harvesting:
         self.unit.d['inventory_oil'] = 0
         self.data['harvest_iterator'] = Harvesting.HARVEST
 
-    def update(self, unit):
+    def update(self, tick):
         self.data['harvest_timer'] += tick
 
         if self.data['harvest_iterator'] == Harvesting.HARVEST:
@@ -127,9 +144,3 @@ class Harvesting:
                     self.unit.harvest(*self.data['harvest_target'])
                 else:
                     self.transition()
-
-    def end(self, unit):
-        pass
-
-    def init(self, unit):
-        self.data['harvest_timer'] = 0

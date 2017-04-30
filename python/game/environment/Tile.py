@@ -2,25 +2,30 @@
 
 class Tile:
 
-    def __init__(self, tilemap, x, y, w, h):
-        self.id = None
-        self.tile_id = None
+    def __init__(self, x, y, width, height, tilemap, originalWalkable, originalHarvestable, originalResources):
+        pass
 
-        self.name = None
 
-        self.tilemap = tilemap
-        self.x = x
-        self.y = y
-        self.width = w
-        self.height = h
 
-        self.walkable = False
-        self.harvestable = False
-        self.swimable = False
+    def get_occupant(self):
+        pass
 
-        self.resources = 0
-        self.oil_yield = 0
-        self.lumber_yield = 0
-        self.gold_yield = 0
+    def get_resources(self):
+        pass
 
-        self.deplete_tile = None
+    def reset(self):
+        pass
+
+    def is_attackable(self):
+        pass
+
+    def is_walkable(self):
+        pass
+
+    def is_harvestable(self):
+        pass
+
+    def set_occupant(self):
+        pass
+
+    

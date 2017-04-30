@@ -2,7 +2,7 @@ import json
 
 import time
 import ujson
-from game.Game import Game
+from game.WarC2 import Game
 
 
 g = Game()

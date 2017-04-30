@@ -2,7 +2,7 @@ import time
 from threading import Thread
 
 from game import Config
-from game.Game import Game
+from game.WarC2 import Game
 import numpy as np
 
 from ai.algorithms.GreedyMCTS.MCTSAction import MCTSAction

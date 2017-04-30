@@ -8,7 +8,7 @@ class NoGUI:
     def render(self):
         pass
 
-    def update(self):
+    def process(self):
         pass
 
     def reset(self):

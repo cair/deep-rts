@@ -1,15 +1,19 @@
 from game import Config
-from game import Constants
+from game import const
+from game.state.GenericState import GenericState
 
 
-class Combat:
-    name = "Combat"
-    id = Constants.State.Combat
+class Combat(GenericState):
+    id = "Combat"
+    type = const.State.ID_Combat
 
-    def __init__(self):
-        pass
+    attack_interval = 1.25 * Config.FRAME_MULTIPLIER
 
-    def update(self, unit):
+    def __init__(self, unit):
+        super().__init__(unit)
+        self.data = self.unit.d['s'][Combat.type]
+
+    def update(self, tick):
         self.data['attack_timer'] += tick
 
         if self.data['attack_timer'] >= self.attack_interval:
@@ -62,8 +66,3 @@ class Combat:
 
             self.data['attack_timer'] = 0
 
-    def end(self, unit):
-        pass
-
-    def init(self, unit):
-        pass

@@ -1,82 +1,81 @@
-import json
-import os
-
-from game import Constants
-from game.environment.Tile import Tile
-PATH = os.path.dirname(os.path.realpath(__file__))
-
+from game.loaders.ResourceLoader import ResourceLoader
+from game.const import Map
 class Tilemap:
 
-    def __init__(self, map_name):
-        """
-        # Load map based on map_name
-        :param map_name: 
-        """
-        self.map_name = map_name
 
-        # Load map data
-        with open(os.path.join(PATH, "../data/maps/%s" % map_name), "r") as file:
-            self.map_data = json.load(file)
+    def __init__(self, map_name, game):
 
-        # Load tile data
-        with open(os.path.join(PATH, "../data/tile_properties.json"), "r") as file:
-            self.tiles_data = json.load(file)
+        mapJSON, tileJSON = ResourceLoader.loadMapJSON()
 
-        # Define map configuration
-        self.TILE_WIDTH = self.map_data["tilewidth"]
-        self.TILE_HEIGHT = self.map_data["tileheight"]
-        self.MAP_WIDTH = self.map_data["width"]
-        self.MAP_HEIGHT = self.map_data["height"]
+        tileset_data = mapJSON["tilesets"][0]
+        map_layer = mapJSON["layers"][0]
+        tileIDs = map_layer["data"]
+
+        mapWidth = mapJSON["width"]
+        mapHeight = mapJSON["height"]
+        tWidth = tileset_data["tilewidth"]
+        tHeight = tileset_data["tileheight"]
+        tFirstGid = tileset_data["firstgid"]
+
+        self.TILE_WIDTH = tWidth
+        self.TILE_HEIGHT = tHeight
+        self.MAP_WIDTH = mapWidth
+        self.MAP_HEIGHT = mapHeight
+        self.tileTextureDimension = 32
+        self.tileWorldDimension = 32
         self.tiles = []
-        self.spawn_tiles = []
+        self.spawnTiles = []
 
-        tileset_data = self.map_data["tilesets"][0]
-        map_layer = self.map_data["layers"][0]
-        tile_ids = map_layer["data"]
-        first_gid = tileset_data["firstgid"]
-
-        i = 0
+        c = 0
         for y in range(self.MAP_HEIGHT):
             for x in range(self.MAP_WIDTH):
 
-                tile_id = tile_ids[i] - 1
-                tile_data = self.tiles_data[str(tile_id + 1)]
+                tId = tileIDs[c] - 1
+                tileData = tileJSON[str(tId + 1)]
 
-                tile = Tile(self, x, y, self.TILE_WIDTH, self.TILE_HEIGHT)
-                tile.id = i
-                tile.tile_id = tile_id
-                tile.name = tile_data["name"]
-
-                tile.harvestable = tile_data["harvestable"]
-                tile.walkable = tile_data["walkable"]
-                tile.swimable = tile_data["swimable"]
-
-                tile.resources = tile_data["resources"]
-                tile.oil_yield = tile_data["oil_yield"]
-                tile.gold_yield = tile_data["gold_yield"]
-                tile.lumber_yield = tile_data["lumber_yield"]
-
-                tile.deplete_tile = tile_data["deplete_tile"]
-
-                if tile.name == "Spawn":
-                    self.spawn_tiles.append(i)
-                    tile.id = i
-                    tile.tile_id = Constants.Tile.Grass - 2  # CONSTANTS GRASS TODO
-                    tile.name = tile_data["name"]
-
-                    tile.harvestable = tile_data["harvestable"]
-                    tile.walkable = tile_data["walkable"]
-                    tile.swimable = tile_data["swimable"]
-
-                    tile.resources = tile_data["resources"]
-                    tile.oil_yield = tile_data["oil_yield"]
-                    tile.gold_yield = tile_data["gold_yield"]
-                    tile.lumber_yield = tile_data["lumber_yield"]
-
-                    tile.deplete_tile = tile_data["deplete_tile"]
+                tile = Tile(
+                    x,
+                    y,
+                    self.TILE_WIDTH,
+                    self.TILE_HEIGHT,
+                    self, tileData["walkable"],
+                    tileData["harvestable"],
+                    tileData["resources"]
+                )
 
                 self.tiles.append(tile)
-                i += 1
+                tile.tileID = tId
+                tile.id = c
+                tile.name = tileData["name"]
+                tile.harvestable = tileData["harvestable"]
+                tile.walkable = tileData["walkable"]
+                tile.swimable = tileData["swimable"]
+                tile.oilYield =  tileData["oil_yield"]
+                tile.lumberYield = tileData["lumber_yield"]
+                tile.goldYield = tileData["gold_yield"]
+                tile.setResources(tileData["resources"])
+                tile.depleteTile = tileData["deplete_tile"]
+
+                if tile.name == "Spawn":
+                    self.spawnTiles.push_back(c)
+                    # Replace spawn data with grass
+                    tId = Map.ID_GRASS
+                    tileData = tileJSON[str(tId - 1)]
+
+                    tId -= 2  # TODO some fucked up shit goin on here
+                    tile.id = c
+                    tile.tileID = tId
+                    tile.name = tileData["name"]
+                    tile.harvestable = tileData["harvestable"]
+                    tile.walkable = tileData["walkable"]
+                    tile.swimable = tileData["swimable"]
+                    tile.oilYield =  tileData["oil_yield"]
+                    tile.lumberYield = tileData["lumber_yield"]
+                    tile.goldYield = tileData["gold_yield"]
+                    tile.setResources(tileData["resources"])
+                    tile.depleteTile = tileData["deplete_tile"]
+                    
+                c += 1
 
 
 

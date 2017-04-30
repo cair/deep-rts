@@ -27,7 +27,7 @@ INTERFACE = AI_LOCAL
 NO_FOG = True
 DEBUG = False
 AI_FRAME_SKIP = 50 # Skip Event notification every X frames (Only State Events)
-TICK_MULTIPLIER = 10
+FRAME_MULTIPLIER = 8
 
 
 GUI_ON = True
@@ -48,7 +48,7 @@ AI_SAVESTATE = False
 
 SAVE_FREQUENCY = 10
 SAVE_TO_FILE = True
-FPS = 1
+FPS = 60
 UPS = 999999
 
 MULTIPROCESSING_WORKERS = 0 #multiprocessing.cpu_count()
@@ -58,4 +58,5 @@ REPORT_DIR = os.path.join(BASE_PATH, "../reports/")
 WEB_PORT = 8888
 
 
-VERSION = 1.0
+VERSION = Version.get_version()
+
