@@ -20,6 +20,7 @@ class GUIState:
         self.SCROLL_RIGHT = False
         self.SCROLL_UP = False
         self.unit = None
+        self.draw_display = True
 
 
 class Button:
@@ -159,6 +160,7 @@ class GUI:
 
         self.canvas_size = (MapLoader.width * const.Map.TILE_SIZE, MapLoader.height * const.Map.TILE_SIZE)
         self.window_size = (800, 600)
+        self.current_scale = (1.0, 1.0)
 
         pygame.init()
         pygame.display.set_caption('WarC2Sim')
@@ -424,6 +426,11 @@ class GUI:
                 unit.animation_iterator += 1
                 unit.animation_timer = 0
 
+    def render_no_display(self):
+        self.display.fill((0, 0, 0))
+        self.display.blit(
+            Overlay.font.render("Press \"G\" to activate display.", 1, (255, 255, 0)), (self.canvas_size[0] / 3, self.canvas_size[1] / 3))
+
     def scroll_process(self):
         if self.gstate.SCROLL_UP:
             self.camera_y = min(0, self.camera_y + 20)
@@ -475,26 +482,35 @@ class GUI:
                 x, y = event.pos
                 x += self.camera_x * -1
                 y += self.camera_y * -1
-                tile_x = int(x / const.Map.TILE_SIZE)
-                tile_y = int(y / const.Map.TILE_SIZE)
+                tile_x = int(x / (const.Map.TILE_SIZE * self.current_scale[0]))
+                tile_y = int(y / (const.Map.TILE_SIZE * self.current_scale[1]))
                 self.left_click(tile_x, tile_y)
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == const.Input.ID_MOUSE_RIGHT:
                 x, y = event.pos
                 x += self.camera_x * -1
                 y += self.camera_y * -1
-                tile_x = int(x / const.Map.TILE_SIZE)
-                tile_y = int(y / const.Map.TILE_SIZE)
+                tile_x = int(x / (const.Map.TILE_SIZE * self.current_scale[0]))
+                tile_y = int(y / (const.Map.TILE_SIZE * self.current_scale[1]))
                 self.right_click(tile_x, tile_y)
-            elif (event.type == KEYDOWN):
-                if (event.key == K_w):
+
+            elif event.type == KEYDOWN:
+                if event.key == K_w:
                     self.gstate.SCROLL_UP = True
-                elif (event.key == K_a):
+                elif event.key == K_a:
                     self.gstate.SCROLL_LEFT = True
-                elif (event.key == K_s):
+                elif event.key == K_s:
                     self.gstate.SCROLL_DOWN = True
-                elif (event.key == K_d):
+                elif event.key == K_d:
                     self.gstate.SCROLL_RIGHT = True
+                elif event.key == K_g:
+                    self.gstate.draw_display = not self.gstate.draw_display
+                elif event.key == K_v:
+                    self.current_scale = (1.0, 1.0)
+                elif event.key == K_b:
+                    self.current_scale = (self.window_size[0] / self.canvas_size[0], self.window_size[1] / self.canvas_size[1])
+
+
             elif event.type == KEYUP:
                 if event.key == K_w:
                     self.gstate.SCROLL_UP = False
@@ -523,15 +539,23 @@ class GUI:
     def render(self):
         self.process()
 
-        # Draw Tile map
-        self.render_tiles()
-        self.render_units(1)
+        if self.gstate.draw_display:
+            # Draw Tile map
+            self.render_tiles()
+            self.render_units(1)
 
-        self.display.blit(self.canvas, (self.camera_x, self.camera_y))
+           # self.display.blit(self.canvas, (self.camera_x, self.camera_y))
+            self.display.blit(pygame.transform.scale(self.canvas,
+                                                     (int(self.canvas_size[0] * self.current_scale[0]),
+                                                      int(self.canvas_size[1] * self.current_scale[1]))
+                                                     ), (0, 0))
+
+            Overlay.render_top_panel(self)
+            Overlay.render_bottom_panel(self)
 
 
-        Overlay.render_top_panel(self)
-        Overlay.render_bottom_panel(self)
+        else:
+            self.render_no_display()
 
         #pygame.display.flip()
         pygame.display.update()
