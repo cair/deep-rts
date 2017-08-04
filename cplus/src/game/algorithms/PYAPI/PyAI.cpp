@@ -229,6 +229,7 @@ void PyAI::updateState()
 	PyObject_SetAttrString(pyaiInstance, "state_depth", PyLong_FromLong(G_FEATURES));
 
 	Py_DECREF(byteArr); // TODO should this be done?
+
 }
 
 /*void PyAI::getStateBytes() {

@@ -1,36 +1,47 @@
+try:
+    import PyAPIRegistry
+except ImportError as e:
 
-import PyAPIRegistry
-import ctypes
+    class PyAPIRegistry:
 
-from sys import getsizeof
-from binascii import hexlify
+        def __init__(self):
+            pass
+
+        @staticmethod
+        def hook(clazz):
+            clazz.state_array = np.zeros((30, 30, 4))
+            clazz.state_cols = 30
+            clazz.state_rows = 30
+            clazz.state_depth = 4
+
+            return "test"
+
 import numpy as np
 
+
 class PyAI:
-    
     def __init__(self, name):
         self.agent = None
         self.name = name
 
-        self.last_score = 0	# Previous recorded player score
+        self.last_score = 0  # Previous recorded player score
         self.total_cost = 0
         self.total_reward = 0
         self.current_reward = 0
         self.frame = 0
         self.state_terminal = False
 
-        self.state_array = None # byte array of current state (can be transformed etc)
-        self.state_rows = None # How many rows the state has
-        self.state_cols = None # How many columns the state has
-        self.state_depth = None # How deep the state is (Channels)
+        self.state_array = None  # byte array of current state (can be transformed etc)
+        self.state_rows = None  # How many rows the state has
+        self.state_cols = None  # How many columns the state has
+        self.state_depth = None  # How deep the state is (Channels)
 
-
-        self.__ai__ = PyAPIRegistry.hook(self)	# Hook to the C++ object side
+        self.__ai__ = PyAPIRegistry.hook(self)  # Hook to the C++ object side
 
     def getState(self):
         np_arr = np.array(self.state_array)
         np_arr = np_arr.reshape((self.state_rows, self.state_cols, self.state_depth)).transpose()
-        #np_arr = np.expand_dims(np_arr, axis=0)
+        # np_arr = np.expand_dims(np_arr, axis=0)
         return np_arr
 
     def train(self, reward):
@@ -41,7 +52,7 @@ class PyAI:
 
     def doAction(self):
         observation = self.getState()
-		# Get action based on state observation
+        # Get action based on state observation
         actionID, values = self.agent.act(observation)
         self.frame += 1
 
@@ -53,5 +64,3 @@ class PyAI:
         self.total_cost = 0.0
         self.total_reward = 0.0
         self.frame = 0
-
-        
