@@ -56,8 +56,8 @@ class DQN:
         advantage = Dense(self.action_size)(fc1)
         value = Dense(1)(fc2)
 
-        # policy = keras.layers.merge([advantage, value], mode=lambda x: x[0]-K.mean(x[0])+x[1],  output_shape=(self.action_size,))
-        policy = Dense(self.action_size, activation="linear")(fc1)
+        policy = keras.layers.merge([advantage, value], mode=lambda x: x[0]-K.mean(x[0])+x[1],  output_shape=(self.action_size,))
+        #policy = Dense(self.action_size, activation="linear")(fc1)
 
         model = Model(inputs=[input_layer], outputs=[policy])
         # model = Model(inputs=[input_layer, input_layer_2], outputs=[policy])

@@ -1,7 +1,7 @@
 # https://github.com/Kitware/CMake/tree/master/Modules
 
 cmake_minimum_required(VERSION 2.8.7)
-project(DeepRTS)
+project(DeepRTS C CXX)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 set(CMAKE_CXX_STANDARD 14)
@@ -98,40 +98,41 @@ set(SOURCE_FILES
         cplus/src/game/logging/LogGame.h
         cplus/src/game/logging/LogPlayer.h
         cplus/src/game/logging/LogTick.h
-        cplus/src/game/logging/LogGame.cpp)
+        cplus/src/game/logging/LogGame.cpp cplus/src/game/GameWrapper.cpp cplus/src/game/GameWrapper.h)
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
 
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 find_package(SFML 2 REQUIRED system window graphics network audio)
-find_package(PythonLibs REQUIRED)
+#find_package(Python 3 REQUIRED)
+find_package(PythonLibs 3 REQUIRED)
 find_package(RapidJSON REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(uWS REQUIRED)
 find_package(Threads)
+find_package(Boost COMPONENTS python-py35 REQUIRED )
 
 
-if (SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
-    include_directories(${UWS_INCLUDE_DIR})
-    include_directories(${ZLIB_INCLUDE_DIRS})
-    include_directories(${OPENSSL_INCLUDE_DIR})
-    include_directories(${PYTHON_INCLUDE_DIR})
-    target_link_libraries(DeepRTS ${SFML_LIBRARIES})
-    target_link_libraries(DeepRTS ${UWS_LIBRARIES})
-    target_link_libraries(DeepRTS ${ZLIB_LIBRARIES})
-    target_link_libraries(DeepRTS ${OPENSSL_LIBRARIES})
-    target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
 
-    target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
+include_directories(${SFML_INCLUDE_DIR})
+include_directories(${UWS_INCLUDE_DIR})
+include_directories(${ZLIB_INCLUDE_DIRS})
+include_directories(${OPENSSL_INCLUDE_DIR})
+include_directories(${PYTHON_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIR})
+target_link_libraries(DeepRTS ${SFML_LIBRARIES})
+target_link_libraries(DeepRTS ${UWS_LIBRARIES})
+target_link_libraries(DeepRTS ${ZLIB_LIBRARIES})
+target_link_libraries(DeepRTS ${OPENSSL_LIBRARIES})
+target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
+target_link_libraries(DeepRTS ${Boost_LIBRARIES})
+target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
 
-
-else()
-    message( FATAL_ERROR "You can not do this at all, CMake will exit. ${SFML_FOUND}" )
-endif()
-
+# Compile python
+PYTHON_ADD_MODULE(DeepRTS2 ${SOURCE_FILES})
 
 add_custom_command(
         TARGET DeepRTS PRE_BUILD
@@ -147,5 +148,6 @@ add_custom_command(
 
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/games)
+
 
 #file(COPY c++/src/game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??

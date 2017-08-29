@@ -17,10 +17,6 @@ if not MapLoader.preloaded:
     MapLoader.preload(Config.GAME_MAP)
     AdjacentMap.generate()
 
-    if Config.GUI_ON:
-        Graphics = GUI()
-
-
 class Game:
     def __init__(self, players=2, ai_instance=False):
         """
@@ -56,7 +52,7 @@ class Game:
         self.players = []
 
         # Create GUI
-        self.gui = NoGUI(self)
+        self.gui = GUI(self) if Config.GUI_ON else NoGUI(self)
 
     def init(self, no_players=False):
         self.clock = GameClock()
@@ -73,8 +69,6 @@ class Game:
         if not Config.GUI_ON and not self.ai_instance:
             return
 
-        self.gui = Graphics
-        self.gui.game = self
         self.gui.player = self.players[0]
 
     def get_unit(self, x, y):

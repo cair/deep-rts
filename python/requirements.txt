@@ -2,3 +2,4 @@ pygame
 tornado
 cython
 plotly
+websockets

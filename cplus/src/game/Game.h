@@ -9,13 +9,11 @@
 #include <memory>
 #include <map>
 #include <unordered_map>
-
 #include "player/Player.h"
 #include "environment/Tilemap.h"
 #include "action/BaseAction.h"
 #include "logging/LogGame.h"
 #include <SFML/System/Clock.hpp>
-
 
 class GUI;
 class Game {
@@ -77,6 +75,7 @@ public:
     void start();
     void stop();
 	void reset();
+
 
     Game(uint8_t n_players, bool setup);
 
