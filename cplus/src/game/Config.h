@@ -113,6 +113,7 @@ private:
 
 
     void load(){
+
         // Read Map data
         auto conf = ResourceLoader::getInstance().configJSON.GetObject();
 

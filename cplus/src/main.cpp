@@ -64,14 +64,15 @@ int main() {
 
     // Create game instance
     Game *g = new Game(4, true);
-    Player &player0 = g->addPlayer();
-    Player &player1 = g->addPlayer();
-    Player &player2 = g->addPlayer();
-    Player &player3 = g->addPlayer();
+    //Player &player0 = g->addPlayer();
+    //Player &player1 = g->addPlayer();
+    //Player &player2 = g->addPlayer();
+    //Player &player3 = g->addPlayer();
+    g->createPlayers();
     g->start();
 
 
-    PyAI::start(); // Init the API
+    /*PyAI::start(); // Init the API
 
     Algorithm * algorithm0 = AIRepository::getInstance().getAI("DQN");
     player0.setAlgorithm(algorithm0);
@@ -83,7 +84,7 @@ int main() {
     player2.setAlgorithm(algorithm2);
 
     Algorithm *algorithm3 = new MCAS(&player3);
-    player3.setAlgorithm(algorithm3);
+    player3.setAlgorithm(algorithm3);*/
 
 
     g->initGUI();

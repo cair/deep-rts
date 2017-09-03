@@ -6,25 +6,7 @@ from game.api.Interface import Interface
 from game.api.Event import Event, DummyEvent
 from game.logic.UnitManager import UnitManager
 
-
-
 class Player:
-    """cdef public int id;
-    cdef public object game;
-    cdef public object Map;
-    cdef public object UnitManager;
-    cdef public object Event;
-    cdef public object Interface;
-
-    cdef str name; # char*
-    cdef public str race; # char*
-
-    cdef public dict statistics;
-    cdef public list units;
-    cdef public list vision;
-    cdef public bint defeated; # 0 or 1
-
-    cdef public int lumber, gold, oil, food, consumed_food;"""
 
     def __init__(self, game, _id, name="[NO-NAME]", ai_instance=False):
         self.id = _id

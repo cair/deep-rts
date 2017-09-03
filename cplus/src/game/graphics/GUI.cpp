@@ -8,21 +8,16 @@
 GUI::GUI(Game &game) :
         game(game),
         map(game.map.tiles),
-        window(sf::VideoMode(1280, 1280), "DeepRTS v1.3", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize),
-        player(&game.players[pIterator]){
-
+        window(sf::VideoMode(1280, 1280), "DeepRTS v1.3", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize){
     setupView();
     setupFrame();
     setupFont();
     //setupAudio();
     setupPlot();
 
-
-
-
-
-
-
+    if(game.players.size() > pIterator) {
+        player = &game.players[pIterator];
+    }
 
 }
 
@@ -222,13 +217,18 @@ void GUI::handleEvents(){
 
             else if (event.key.code == sf::Keyboard::J) {
                 // Previous player (Focus)
-                pIterator -= 1;
-                player = &game.players[pIterator % game.players.size()];
+                if(game.players.size() > 0) {
+                    pIterator -= 1;
+                    player = &game.players[pIterator % game.players.size()];
+                }
+
             }
 
             else if (event.key.code == sf::Keyboard::K) {
-                pIterator += 1;
-                player = &game.players[pIterator % game.players.size()];
+                if(game.players.size() > 0) {
+                    pIterator += 1;
+                    player = &game.players[pIterator % game.players.size()];
+                }
             }
 
 
@@ -287,11 +287,14 @@ void GUI::render() {
     window.setView(this->fullView);
     window.draw(this->gameFrame);
 
-    this->drawStats();
-    this->drawSelected();  // Text
-    this->drawStatistics();
-    this->drawScoreBoard();
-    this->drawActionDistribution();
+    if(player != nullptr){
+        this->drawStats();
+        this->drawSelected();  // Text
+        this->drawStatistics();
+        this->drawScoreBoard();
+        this->drawActionDistribution();
+    }
+
 
 
 
@@ -589,6 +592,8 @@ void GUI::drawUnits() {
 }
 
 void GUI::leftClick(Tile &tile) {
+    if(player == nullptr) return;
+
     this->selectedTile = &tile;
 
     if(tile.getOccupant()) {
@@ -599,6 +604,8 @@ void GUI::leftClick(Tile &tile) {
 }
 
 void GUI::rightClick(Tile &tile) {
+    if(player == nullptr) return;
+
     if(player->getTargetedUnit()) {
         player->getTargetedUnit()->rightClick(tile);
         this->selectedTile = &tile;

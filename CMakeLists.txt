@@ -98,7 +98,7 @@ set(SOURCE_FILES
         cplus/src/game/logging/LogGame.h
         cplus/src/game/logging/LogPlayer.h
         cplus/src/game/logging/LogTick.h
-        cplus/src/game/logging/LogGame.cpp cplus/src/game/GameWrapper.cpp cplus/src/game/GameWrapper.h)
+        cplus/src/game/logging/LogGame.cpp)
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
@@ -113,8 +113,6 @@ find_package(ZLIB REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(uWS REQUIRED)
 find_package(Threads)
-find_package(Boost COMPONENTS python-py35 REQUIRED )
-
 
 
 include_directories(${SFML_INCLUDE_DIR})
@@ -130,9 +128,6 @@ target_link_libraries(DeepRTS ${OPENSSL_LIBRARIES})
 target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
 target_link_libraries(DeepRTS ${Boost_LIBRARIES})
 target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
-
-# Compile python
-PYTHON_ADD_MODULE(DeepRTS2 ${SOURCE_FILES})
 
 add_custom_command(
         TARGET DeepRTS PRE_BUILD
