@@ -5,7 +5,6 @@
 #ifndef DEEPRTS_RESOURCELOADER_H
 #define DEEPRTS_RESOURCELOADER_H
 
-
 #include <rapidjson/document.h>
 
 class ResourceLoader {

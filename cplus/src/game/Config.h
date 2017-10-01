@@ -6,7 +6,6 @@
 #define WARC2SIM_CONFIG_H
 
 #include <fstream>
-#include <rapidjson/istreamwrapper.h>
 #include <cmath>
 #include "loaders/ResourceLoader.h"
 
@@ -132,6 +131,7 @@ private:
 
 
     void load(){
+
         // Read Map data
         auto conf = ResourceLoader::getInstance().configJSON.GetObject();
 

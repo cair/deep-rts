@@ -10,7 +10,78 @@ from game import Config
 from game.logic import Unit
 from game.util import SpriteUtil
 from game.loaders.MapLoader import MapLoader
+import game.graphics.GUIUtil as GUIUtil
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
+
+class OverlaySurface(pygame.Surface):
+    def __init__(self, size, gui, game):
+        pygame.Surface.__init__(self, size=size)
+        self.game = game
+        self.gui = gui
+
+    def draw(self):
+        pass
+
+    def event(self):
+        pass
+
+
+class PlayerSurface(pygame.Surface):
+    def __init__(self, size, gui, game):
+        pygame.Surface.__init__(self, size=size)
+        self.game = game
+        self.gui = gui
+
+    def draw(self):
+        pass
+
+    def event(self):
+        pass
+
+
+class MapSurface(pygame.Surface):
+    def __init__(self, size, gui, game):
+        pygame.Surface.__init__(self, size=size)
+
+        self.font_small = pygame.font.SysFont("arial", 10)
+
+        self.game = game
+        self.gui = gui
+
+        self.tiles_sprite = GUIUtil.tile_sprites()
+
+    def draw_tiles(self):
+        pygame.draw.rect(self, (255, 0, 0), (0, 0, MapLoader.height * const.Map.TILE_SIZE, MapLoader.width * const.Map.TILE_SIZE))
+
+        for x, y in self.gui.player.vision:
+            self.blit(self.tiles_sprite[x][y], (x * const.Map.TILE_SIZE, y * const.Map.TILE_SIZE))
+
+            # Render State List
+            if Config.DEBUG:
+                self.blit(
+                    self.font_small.render("(%s,%s)" % (x, y), 1, (255, 255, 0)),
+                    (x * const.Map.TILE_SIZE, y * const.Map.TILE_SIZE)
+                )
+
+
+
+
+    def draw(self):
+
+        self.draw_tiles()
+
+        pass
+
+    def event(self):
+        pass
+
+
+
+
+
+
+
 
 class GUIState:
 
@@ -148,9 +219,44 @@ class Overlay:
         gui.display.blit(Overlay.font.render(line_3, 1, (255, 255, 0)), (150, 565))
         gui.display.blit(Overlay.font.render(thestr, 1, (255, 255, 0)), (150, 585))
 
-
-
 class GUI:
+
+    def __init__(self, game):
+        pygame.init()
+        pygame.display.set_caption('DeepRTS v1.3')
+
+        self.game = game
+
+        self.window_size = (800, 600)
+        self.display = pygame.display.set_mode(self.window_size)
+        self.canvas = pygame.Surface(self.display.get_size())
+        self.canvas = self.canvas.convert()
+        self.canvas.fill((0, 0, 255))
+
+        self.size_map = (MapLoader.width * const.Map.TILE_SIZE, MapLoader.height * const.Map.TILE_SIZE)
+
+        self.surface_map = MapSurface(self.size_map, self, game)
+        self.surface_overlay = OverlaySurface((200, 200), self, game)
+
+    def render(self):
+
+        self.surface_map.draw()
+        self.surface_overlay.draw()
+
+        self.canvas.blit(self.surface_map, (0, 0))
+
+        self.display.blit(self.canvas, (0, 0))
+        pygame.display.flip()
+
+        pass
+
+    def process(self):
+        pass
+
+    def caption(self):
+        pass
+
+class OldGUI:
 
     def __init__(self):
         self.camera_x = 0

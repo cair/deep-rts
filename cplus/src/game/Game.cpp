@@ -9,7 +9,6 @@
 
 std::unordered_map<int, Game*> Game::games;
 Game::Game(uint8_t _nplayers, bool setup):
-
         doCaptionWindow(Config::getInstance().getCaptionWindow()),
 		doCaptionConsole(Config::getInstance().getCaptionConsole()),
         doScoreLogging(Config::getInstance().getLoggingScoring()),
@@ -19,7 +18,7 @@ Game::Game(uint8_t _nplayers, bool setup):
 
 
 {
-	players.reserve(16);
+    players.reserve(_nplayers);
 	units.reserve(1000);
 
 
@@ -30,18 +29,14 @@ Game::Game(uint8_t _nplayers, bool setup):
 	setAPM(Config::getInstance().getAPM());
 	tickReset = Config::getInstance().getTickReset();
 
-
-
 	id = static_cast<uint8_t>(games.size());
 	games[id] = this;
-
 }
 
 void Game::createPlayers(){
 
 	for (uint8_t i = 0; i < n_players; i++) {
 		addPlayer();
-
 	}
 
 }
@@ -173,12 +168,6 @@ void Game::loop() {
 
 				_apm_next += _apm_interval;
 			}
-
-			
-				
-					
-
-
 
 			// Output all scores etc to file for each game
 			if (doScoreLogging) {
@@ -415,6 +404,11 @@ void Game::load(Game *other) {
     }
 
 
+
+
+
 }
+
+
 
 

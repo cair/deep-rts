@@ -46,5 +46,4 @@ public:
     std::shared_ptr<BaseAction> getAction(int actionID, Unit *unitptr);
 };
 
-
 #endif //WARC2SIM_ALGORITHM_H

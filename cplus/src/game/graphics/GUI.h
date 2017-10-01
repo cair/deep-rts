@@ -110,6 +110,8 @@ public:
     int showGridLines = false;
 
     sf::Vector2f getCameraOffset();
+
+	void selectPlayer(int index);
 };
 
 
