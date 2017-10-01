@@ -1,10 +1,11 @@
 # https://github.com/Kitware/CMake/tree/master/Modules
-
+# CMake projects should use -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
 cmake_minimum_required(VERSION 2.8.7)
 project(DeepRTS)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}") #  -std=c++1y
 set(CMAKE_CXX_STANDARD 14)
+
 
 set(SOURCE_FILES
         cplus/src/main.cpp
@@ -107,24 +108,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 find_package(SFML 2 REQUIRED system window graphics network audio)
 find_package(PythonLibs REQUIRED)
 find_package(RapidJSON REQUIRED)
-find_package(ZLIB REQUIRED)
-find_package(OpenSSL REQUIRED)
-find_package(uWS REQUIRED)
 find_package(Threads)
 
 
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
-    include_directories(${UWS_INCLUDE_DIR})
-    include_directories(${ZLIB_INCLUDE_DIRS})
-    include_directories(${OPENSSL_INCLUDE_DIR})
     include_directories(${PYTHON_INCLUDE_DIR})
     target_link_libraries(DeepRTS ${SFML_LIBRARIES})
     target_link_libraries(DeepRTS ${UWS_LIBRARIES})
     target_link_libraries(DeepRTS ${ZLIB_LIBRARIES})
     target_link_libraries(DeepRTS ${OPENSSL_LIBRARIES})
     target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
-
     target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
 
 

@@ -4,28 +4,49 @@
 
 #include <rapidjson/istreamwrapper.h>
 #include <fstream>
+#include <iostream>
 #include "ResourceLoader.h"
 
 
 void ResourceLoader::loadMapJSON(std::string map_file) {
     if(mapLoaded) return;
+	std::string filePath = ".//data//maps//" + map_file;
 
-    mapLoaded = true;
     // Read Map data
-    std::ifstream map(".//data//maps//" + map_file);
-    rapidjson::IStreamWrapper isw(map);
-    rapidjson::Document d;
-    mapJSON.ParseStream(isw);
+    std::ifstream map(filePath);
+
+	if (map.is_open()) {
+		rapidjson::IStreamWrapper isw(map);
+		rapidjson::Document d;
+		mapJSON.ParseStream(isw);
+		mapLoaded = true;
+	}
+	else {
+		std::cout << "Could not read " << filePath.c_str() << ". Ensure that path exists!" << std::endl;
+		throw "File Error!";
+	}
+
 }
 
 void ResourceLoader::loadTileJSON() {
     std::ifstream map(".//data//tile_properties.json");
-    rapidjson::IStreamWrapper isw(map);
-    tileJSON.ParseStream(isw);
+	if (map.is_open()) {
+		rapidjson::IStreamWrapper isw(map);
+		tileJSON.ParseStream(isw);
+		return;
+	}
+
+	throw "Could not read .//data//tile_properties.json";
+
 }
 
 void ResourceLoader::loadConfigJSON() {
     std::ifstream confData(".//data//config.json");
-    rapidjson::IStreamWrapper isw(confData);
-    configJSON.ParseStream(isw);
+	if (confData.is_open()) {
+		rapidjson::IStreamWrapper isw(confData);
+		configJSON.ParseStream(isw);
+		return;
+	}
+
+	throw "Could not read .//data//config.json";
 }

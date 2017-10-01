@@ -15,7 +15,7 @@ Game::Game(uint8_t _nplayers, bool setup):
         doScoreLogging(Config::getInstance().getLoggingScoring()),
         gameLog(*this),	// Only used when doScoreLogging flag is set in config
 		doDisplay(Config::getInstance().getDisplay()),
-		map(Tilemap("contested-4v4.json", this))
+		map(Tilemap(Config::getInstance().getMapName(), this))
 
 
 {

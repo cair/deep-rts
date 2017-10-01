@@ -8,14 +8,17 @@
 GUI::GUI(Game &game) :
         game(game),
         map(game.map.tiles),
-        window(sf::VideoMode(1280, 1280), "DeepRTS v1.3", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize),
+        window(sf::VideoMode(800, 800), "DeepRTS v1.3", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize),
         player(&game.players[pIterator]){
 
     setupView();
     setupFrame();
     setupFont();
-    //setupAudio();
     setupPlot();
+
+	if (Config::getInstance().getAudioEnabled()) {
+		setupAudio();
+	}
 
 
 
@@ -61,8 +64,9 @@ void GUI::setupFont() {
 
 void GUI::setupAudio(){
     sf::Music *music = new sf::Music();
-    if (music->openFromFile("./data/audio/song_1.ogg"))
+    if (music->openFromFile(".//data//audio//song_1.ogg"))
     {
+		music->setVolume(Config::getInstance().getAudioVolume());
         music->setLoop(true);
         music->play();
     }
@@ -227,6 +231,7 @@ void GUI::handleEvents(){
             }
 
             else if (event.key.code == sf::Keyboard::K) {
+				// Next Player (Focus)
                 pIterator += 1;
                 player = &game.players[pIterator % game.players.size()];
             }
@@ -531,8 +536,13 @@ void GUI::drawTiles(){
         rectangle.setPosition(0, 0);
         window.draw(rectangle);
 
-        for(auto &u : game.units) {
+
+		
+	
+        for(auto &u_idx : player->unitIndexes) {
+			auto u = game.getUnit(u_idx);
             auto idxs = u.getVisionTileIDs();
+
 
             for(auto &idx : idxs) {
                 auto &gTile = map.gTiles[idx];
@@ -668,7 +678,7 @@ void GUI::showNoGuiMessage() {
 #else
     text.setColor(sf::Color::Yellow);
 #endif
-    text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View\nF: GameMode (10UPS/60FPS)\nH: Gridlines");
+    text.setString("Hotkeys:\nG: toggle gui\n,: Decrease FPS\n.: Increase FPS\nQ: Pov View\n W: World View\nR:Toggle Frame\nF: GameMode (10UPS/60FPS)\nH: Gridlines\nJ: Previous Player\nK Next Player");
     text.setPosition((size.x / 2), (size.y / 2) + 50);
     window.draw(text);
 

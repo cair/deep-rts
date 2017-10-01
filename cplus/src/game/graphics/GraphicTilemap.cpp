@@ -3,6 +3,8 @@
 //
 
 #include "GraphicTilemap.h"
+#include <iostream>
+#include <fstream>
 
 
 GraphicTilemap::GraphicTilemap(std::vector<Tile> &dataTiles) {
@@ -26,5 +28,8 @@ void GraphicTilemap::generateGraphicTiles(std::vector<Tile> &dataTiles) {
 
 void GraphicTilemap::loadTexture() {
     // Load textures
-    tileset.loadFromFile("data/textures/tiles.png");
+	if (!tileset.loadFromFile("data//textures//tiles.png")) {
+		std::cout << "Could not load .\\data\\textures\\tiles.png" << std::endl;
+		throw;
+	}
 }

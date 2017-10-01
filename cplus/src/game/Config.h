@@ -79,6 +79,22 @@ public:
 		return tickReset;
 	}
 
+	const std::string getMapName() {
+		return mapName;
+	}
+
+	int32_t getAudioVolume() {
+		return audioVolume;
+	}
+
+	void setAudioVolume(int32_t _audioVolume) {
+		audioVolume = _audioVolume;
+	}
+
+	bool getAudioEnabled() {
+		return audioEnabled;
+	}
+
 	bool mechanicFood;
 	bool mechanicFarm;
 	bool mechanicBarracks;
@@ -108,6 +124,9 @@ private:
 	bool mechanicHarvestForever;
 	bool loggingScoring;
 	bool display;
+	int32_t audioVolume;
+	bool audioEnabled;
+	std::string mapName;
 
 
 
@@ -119,12 +138,14 @@ private:
         auto mechanics = conf["mechanics"].GetObject();
 		auto logging = conf["logging"].GetObject();
 		auto ai = conf["ai"].GetObject();
+		auto audio = conf["audio"].GetObject();
 
 		tickReset = conf["tick_reset"].GetInt();
 		apm = ai["max_apm"].GetInt();
-        fps = conf["fps"].GetInt64();
-        ups = conf["ups"].GetInt64();
-        tickModifier = conf["ticks_per_sec"].GetInt64();
+        fps = conf["fps"].GetInt();
+        ups = conf["ups"].GetInt();
+		mapName = conf["map"].GetString();
+        tickModifier = conf["ticks_per_sec"].GetInt();
 		captionConsole = conf["caption"]["console"].GetBool();
 		captionWindow = conf["caption"]["window"].GetBool();
 		loggingScoring = logging["scorings"].GetBool();
@@ -140,6 +161,9 @@ private:
 		mechanicFood = mechanics["food"].GetBool();
 		mechanicInstantBuild = mechanics["instant_build"].GetBool();
 		mechanicFOW = mechanics["fog_of_war"].GetBool();
+
+		audioEnabled = audio["enabled"].GetBool();
+		audioVolume = audio["volume"].GetInt();
 
     }
 

@@ -30,11 +30,11 @@ class Game {
     uint64_t _update_next;
 	uint64_t _render_next;
 	uint64_t _stats_next;
-	uint64_t _apm_next;
+	double_t _apm_next;
 
     int32_t _update_interval = 0;
 	int32_t _render_interval = 0;
-	int32_t _apm_interval = 0;
+	double_t _apm_interval = 0;
 
 	uint32_t _update_delta = 0;
 	uint32_t _render_delta = 0;

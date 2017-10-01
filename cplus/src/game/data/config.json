@@ -1,6 +1,6 @@
 {
   "numPlayers": 4,
-  "map": "contested-4v4",
+  "map": "contested-4v4.json",
   "fps": 60,
   "ups": 400,
   "ticks_per_sec": 10,
@@ -16,12 +16,15 @@
     "scorings": true
   },
   "display":  true,
-
+  "audio" : {
+	"enabled": false,
+	"volume": 20
+  },
   "mechanics": {
     "town_hall_on_start": true,
-    "harvest_forever": false,
+    "harvest_forever": true,
     "instant_build": true,
-    "fog_of_war": true,
+    "fog_of_war": false,
     "food": false,
     "farm": false,
     "barracks": false,
