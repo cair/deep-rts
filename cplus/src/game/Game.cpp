@@ -111,6 +111,29 @@ void Game::reset()
 
 }
 
+void Game::update(){
+    // Iterate through all units
+    for(auto &unit : units) {
+        if (unit.removedFromGame) continue;		// Skip unit that is removed from game
+        unit.update();
+    }
+
+    // Iterate through all players
+    for (auto &p : players) {
+        p.update();
+    }
+
+    // Output all scores etc to file for each game
+    if (doScoreLogging) {
+        gameLog.record();	// Moves to "next element"
+    }
+}
+
+void Game::render(){
+    gui->update();
+    gui->render();
+}
+
 
 void Game::loop() {
 
@@ -130,63 +153,30 @@ void Game::loop() {
 		if (nowMicroSec >= _update_next) {
 
 
+            // Update Counters and statistics
+            _update_next += _update_interval;
+            _update_delta += 1;
+            ticks += 1;
+
             // If reset flag is set
 			if (ticks > tickReset || triggerReset) {
-				reset();
-				triggerReset = false;
 
-				// Update Counters and statistics
-				_update_next += _update_interval;
-				_update_delta += 1;
-				ticks += 1;
+                reset();
+                triggerReset = false;
+                continue;
 
-				continue;
-			}
+            } else {
 
+                update();
 
-
-			// Iterate through all units
-			for(auto &unit : units) {
-				if (unit.removedFromGame) continue;		// Skip unit that is removed from game
-				unit.update();
-			}
-
-			// Iterate through all players
-			for (auto &p : players) {
-				p.update();
-			}
-
-			///
-			/// Algorithm Update
-			///
-			if (nowMicroSec >= _apm_next) {
-				for (auto &p : players) {
-					if (!p.algorithm_) continue;
-
-					p.algorithm_->update();
-				}
-
-				_apm_next += _apm_interval;
-			}
-
-			// Output all scores etc to file for each game
-			if (doScoreLogging) {
-				gameLog.record();	// Moves to "next element"
-			}
-
-			// Update Counters and statistics
-			_update_next += _update_interval;
-			_update_delta += 1;
-			ticks += 1;
+            }
 
 		}
 
 		if (doDisplay && nowMicroSec >= _render_next) {
-			// Render
 
-			gui->update();
-			gui->render();
-
+            // Render
+            render();
 
 			this->_render_next += this->_render_interval;
 			this->_render_delta += 1;

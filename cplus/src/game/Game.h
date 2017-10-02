@@ -68,6 +68,9 @@ public:
 
 
     void loop();
+    void update();
+    void render();
+
 	Tilemap & getMap();
     void createPlayers();
 
