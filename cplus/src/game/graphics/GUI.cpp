@@ -546,7 +546,11 @@ void GUI::drawTiles(){
 
             for(auto &idx : idxs) {
                 auto &gTile = map.gTiles[idx];
-                window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
+                if(gTile.dataTile.depleted) {
+                    window.draw(gTile.deplete_verticles, 4, sf::Quads, &map.tileset);
+                } else {
+                    window.draw(gTile.tile_verticles, 4, sf::Quads, &map.tileset);
+                }
             }
         }
 
@@ -561,7 +565,13 @@ void GUI::drawTiles(){
 
                 window.draw(rectangle);
             }
-            window.draw(gTile.vertices, 4, sf::Quads, &map.tileset);
+
+            if(gTile.dataTile.depleted) {
+                window.draw(gTile.deplete_verticles, 4, sf::Quads, &map.tileset);
+            } else {
+                window.draw(gTile.tile_verticles, 4, sf::Quads, &map.tileset);
+            }
+
         }
     }
 

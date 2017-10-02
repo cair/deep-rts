@@ -11,14 +11,15 @@ GraphicTile::GraphicTile(Tile &dataTile, GraphicTilemap &tilemap):
         dataTile(dataTile)
 {
 
-    setupVerticles(dataTile.tileID, dataTile.width, dataTile.height, 1); // TODO firstgid always 1 ?
+    setupVerticles(tile_verticles, dataTile.tileID, dataTile.width, dataTile.height, 1); // TODO firstgid always 1 ?
+    setupVerticles(deplete_verticles, dataTile.depleteTile, dataTile.width, dataTile.height, 1); // TODO firstgid always 1 ?
+
 }
 
 
-
-
-void GraphicTile::setupVerticles(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid)
+void GraphicTile::setupVerticles(sf::Vertex* vertices, unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid)
 {
+
 
     unsigned gid = tId + 1;
     gid -= (firstgid - gid) > 0;
@@ -35,9 +36,10 @@ void GraphicTile::setupVerticles(unsigned tId, unsigned tileWidth, unsigned tile
     vertices[1].texCoords = sf::Vector2f(((mod + 1) * tileWidth) + mod, (div * tileHeight) + div);
     vertices[2].texCoords = sf::Vector2f(((mod + 1) * tileWidth) + mod, ((div + 1) * tileHeight) + div);
     vertices[3].texCoords = sf::Vector2f((mod * tileWidth) + mod, ((div + 1) * tileHeight) + div);
+
 }
 
 
 sf::Vector2f GraphicTile::getPixelPosition()const {
-    return sf::Vector2f(vertices->position.x, vertices->position.y);
+    return sf::Vector2f(tile_verticles->position.x, tile_verticles->position.y);
 }

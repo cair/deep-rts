@@ -131,9 +131,11 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         assert(current);
         queue.pop();
 
-        if (current->isWalkable() && !current->getOccupant()) {
+        if (current->isWalkable()) {
+
             return current;
         }
+
 
         const bool is_in = visited.find(current) != visited.end();
         if(!is_in) {
@@ -145,6 +147,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         }
     }
 
+    return NULL;
     assert(false); // Should not be here. this means algorithm didnt find any closest tile and there should be one
 
 

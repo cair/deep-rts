@@ -8,15 +8,16 @@ class GraphicTile {
     GraphicTilemap &tilemap;
 
 
-    void setupVerticles(unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid);
+    void setupVerticles(sf::Vertex* vertices, unsigned tId, unsigned tileWidth, unsigned tileHeight, unsigned firstgid);
 
 
-    Tile &dataTile;
 
 
 public:
+    Tile &dataTile;
     GraphicTile(Tile &dataTile, GraphicTilemap &pTilemap);
-    sf::Vertex vertices[4];
+    sf::Vertex tile_verticles[4];
+    sf::Vertex deplete_verticles[4];
 
     // Getters
     sf::Vector2f getPixelPosition()const;

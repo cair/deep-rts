@@ -2,7 +2,7 @@
   "numPlayers": 4,
   "map": "contested-4v4.json",
   "fps": 60,
-  "ups": 400,
+  "ups": 400000000,
   "ticks_per_sec": 10,
   "tick_reset": 36000,
   "ai": {

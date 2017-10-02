@@ -26,8 +26,7 @@ void Walking::update(Unit & unit)const{
             Tile * nextTile = unit.walking_path.back();
             unit.walking_path.pop_back();
 
-
-			// Check if someone is standing on goal
+            // Check if someone is standing on goal
 			if (!nextTile->isWalkable()) {
 				unit.transitionState();
 				return;
@@ -69,20 +68,12 @@ void Walking::init(Unit & unit)const{
 	Tile *goal = NULL;
 
     // Check if walking goal has a occupant
-    if (walkingGoal->getOccupantID() != Constants::None) {
-        // Retrieve the occupant
-		Unit* occupant = walkingGoal->getOccupant();
+    if (!walkingGoal->isWalkable()) {
+        goal = Pathfinder::find_first_walkable_tile(walkingGoal);
 
-        // Since there is a occupant on the walking goal, a new alternative neighbor must be found
-        goal  = Pathfinder::find_closest_walkable_tile(unit.tile, occupant->tile, occupant->width);
-
-	}
-	else if (!walkingGoal->isWalkable()) {
-        // Goal is not walkable, and we must find closest alternative
-		goal = Pathfinder::find_first_walkable_tile(walkingGoal);
-	} else {
+    } else {
         // Goal is walkable and there is no occupants there
-		goal = walkingGoal;
+        goal = walkingGoal;
 	}
 
     // No goal has been set
@@ -120,6 +111,7 @@ void Walking::init(Unit & unit)const{
     std::reverse(path.begin(), path.end());
     for(auto pathItem : path) {
         auto tile = unit.player_->game_.map.getTile(pathItem.x, pathItem.y);
+
         unit.walking_path.push_back(tile);
     }
 }
