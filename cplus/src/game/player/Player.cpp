@@ -412,12 +412,16 @@ void Player::rightClick(Position pos) {
 
 }
 
+void Player::queueAction(int actionID) {
+	auto id = static_cast<Constants::Action>(actionID);
+	queueAction(id);
+}
+
 void Player::queueAction(Constants::Action actionID) {
 	apm_counter++;
 	actionStatistics[actionID] += 1; // Increment statistics
 	actionQueue.push_back(actionID);
 }
-
 size_t Player::getQueueSize()
 {
 	return actionQueue.size();

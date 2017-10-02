@@ -75,8 +75,8 @@ public:
     void addLumber(int n);
     void addOil(int n);
     Unit &addUnit(Constants::Unit unitType);
-
 	void queueAction(Constants::Action actionID);
+	void queueAction(int actionID);
 	int actionStatistics[20];
 	size_t getQueueSize();
 
