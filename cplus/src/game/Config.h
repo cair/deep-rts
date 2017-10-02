@@ -62,11 +62,11 @@ public:
         std::cout << data << std::endl;
     }
 
-	const bool getLoggingScoring() {
+	bool getLoggingScoring() {
 		return loggingScoring;
 	}
 
-	const bool getDisplay() {
+	bool getDisplay() {
 		return display;
 	}
 
@@ -74,7 +74,7 @@ public:
 		display = val;
 	}
 
-	const int getTickReset() {
+	int getTickReset() {
 		return tickReset;
 	}
 

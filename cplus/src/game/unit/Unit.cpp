@@ -52,6 +52,7 @@ void Unit::rightClickRelative(int x, int y) {
 void Unit::move(Tile &targetTile){
     if (!canMove)
         return;
+
     this->walkingGoalID = targetTile.id;
     transitionState(stateManager->walkingState);
 }
@@ -433,6 +434,7 @@ void Unit::tryMove(int16_t x, int16_t y)
     int newY = tile->y + y;
 
     Tile *tile = player_->game_.map.getTile(newX, newY);
+
     if (tile->isWalkable()) {
         move(*tile);
     }

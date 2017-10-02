@@ -619,7 +619,7 @@ template <typename GRID> void Searcher<GRID>::identifySuccessors(const Node *n)
 #else
 	const int num = findNeighbors(n, &buf[0]);
 #endif
-	for(auto i = num-1; i >= 0; --i)
+	for(int i = num-1; i >= 0; --i)
 	{
 		// Invariant: A node is only a valid neighbor if the corresponding grid position is walkable (asserted in jumpP)
 #ifdef JPS_ASTAR_ONLY
@@ -679,7 +679,7 @@ template <typename GRID> bool Searcher<GRID>::generatePath(PathVector& path, uns
 			dx *= int(step);
 			dy *= int(step);
 			int dxa = 0, dya = 0;
-			for(auto i = 0; i < steps; i += step)
+			for(int i = 0; i < steps; i += step)
 			{
 				path.push_back(Pos(x+dxa, y+dya));
 				dxa += dx;
@@ -712,8 +712,9 @@ template <typename GRID> bool Searcher<GRID>::findPath(PathVector& path, Positio
 	Result res = findPathInit(start, end);
 
 	// If this is true, the resulting path is empty (findPathFinish() would fail, so this needs to be checked before)
-	if(res == EMPTY_PATH)
-		return true;
+	if(res == EMPTY_PATH) {
+        return true;
+    }
 
 	while(true)
 	{

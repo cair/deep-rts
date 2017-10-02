@@ -75,6 +75,7 @@ void Walking::init(Unit & unit)const{
 
         // Since there is a occupant on the walking goal, a new alternative neighbor must be found
         goal  = Pathfinder::find_closest_walkable_tile(unit.tile, occupant->tile, occupant->width);
+
 	}
 	else if (!walkingGoal->isWalkable()) {
         // Goal is not walkable, and we must find closest alternative
@@ -115,11 +116,10 @@ void Walking::init(Unit & unit)const{
                 1);
 
 
-
     // Insert found path to the walking path vector
-    for(auto i = path.size()-1; i >= 0; i--) {
-            auto &pathItem = path[i];
-            unit.walking_path.push_back(unit.player_->game_.map.getTile(pathItem.x, pathItem.y));
+    for(auto pathItem : path) {
+        auto tile = unit.player_->game_.map.getTile(pathItem.x, pathItem.y);
+        unit.walking_path.push_back(tile);
     }
 }
 

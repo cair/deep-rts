@@ -34,11 +34,26 @@ int main() {
     Game *g = new Game(4, true);
     Player &player0 = g->addPlayer();
     Player &player1 = g->addPlayer();
-    Player &player2 = g->addPlayer();
+
+    g->initGUI();
+    g->start();
+
+    while(true) {
+        g->tick();
+        g->update();
+        g->render();
+
+        if (player0.getQueueSize() < 1) {
+            int randNum = rand()%(14-0 + 1) + 0;
+            player0.queueAction(randNum);
+        }
+    }
+
+    /*Player &player2 = g->addPlayer();
     Player &player3 = g->addPlayer();
     g->initGUI();
     g->start();
-    g->loop();
+    g->loop();*/
 
 
 }
