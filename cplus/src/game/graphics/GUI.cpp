@@ -526,6 +526,14 @@ void GUI::drawSelected(){
 
 }
 
+unsigned char * GUI::capture(){
+    sf::Texture txt;
+    txt.create(window.getSize().x, window.getSize().y);
+    txt.update(window);
+    captured_image = txt.copyToImage();
+    return const_cast<unsigned char *>(captured_image.getPixelsPtr());
+}
+
 void GUI::drawTiles(){
 
     if(Config::getInstance().mechanicFOW){

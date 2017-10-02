@@ -112,6 +112,10 @@ public:
     sf::Vector2f getCameraOffset();
 
 	void selectPlayer(int index);
+
+    unsigned char * capture();
+
+    sf::Image captured_image;
 };
 
 

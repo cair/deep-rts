@@ -307,6 +307,22 @@ Unit & Game::getUnit(uint16_t idx)
 	return units[idx];
 }
 
+uint8_t Game::getWidth(){
+    return map.MAP_WIDTH;
+}
+
+uint8_t Game::getHeight(){
+    return map.MAP_HEIGHT;
+}
+
+unsigned char* Game::getPixelPointer(){
+    return gui->capture();
+}
+
+
+
+
+
 
 
 void Game::deactivateGUI() {

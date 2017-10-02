@@ -42,7 +42,7 @@ int main() {
         g->tick();
         g->update();
         g->render();
-
+        g->getPixelPointer();
         if (player0.getQueueSize() < 1) {
             int randNum = rand()%(14-0 + 1) + 0;
             player0.queueAction(randNum);

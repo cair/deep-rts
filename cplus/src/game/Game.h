@@ -118,6 +118,12 @@ public:
     void caption();
 
     void timerInit();
+
+    uint8_t getWidth();
+
+	uint8_t getHeight();
+
+	unsigned char * getPixelPointer();
 };
 
 
