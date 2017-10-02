@@ -15,7 +15,7 @@ MCAS::MCAS(Player *player) : Algorithm(player) {
     int _apm_interval = Config::getInstance().getAPM() * 60.0;
 
     nodes.reserve(100000);
-    for(int i = 0; i < nodes.capacity(); i++) {
+    for(auto i = 0; i < nodes.capacity(); i++) {
         nodes.push_back(MCASNode());
         nodes.back().id = i;
     }

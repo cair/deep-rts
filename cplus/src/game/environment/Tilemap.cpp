@@ -131,7 +131,7 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
 	pos[7].first = 1;
 	pos[7].second = 1;
 
-    //for(int i = 0; i < 1; i++){ // TODO width of neighbor
+    //for(auto i = 0; i < 1; i++){ // TODO width of neighbor
     for(auto &i : pos){
         int x = tile.x + i.first;
         int y = tile.y + i.second;
@@ -180,7 +180,7 @@ std::vector<Tile *> Tilemap::getTiles(Tile *source, int width, int height) {
     /// Get tiles based on width and height of unit
     std::vector<Tile *> tiles;
     for (int _x = 0; _x < width; _x++) {
-        for(int _y = 0; _y < height; _y++) {
+        for(auto _y = 0; _y < height; _y++) {
 
             int x = source->x + _x;
             int y = source->y + _y;

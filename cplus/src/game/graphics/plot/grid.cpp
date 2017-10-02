@@ -17,14 +17,14 @@ void Grid::setup(const Vector2f& size)
 
     vertices_.setPrimitiveType(sf::Lines);
     float offset = size_.y / kPart;
-    for(int i=1;i<kPart;i++)
+    for(auto i=1;i<kPart;i++)
     {
         vertices_.append(sf::Vertex(sf::Vector2f(0, i*offset), color_));
         vertices_.append(sf::Vertex(sf::Vector2f(size_.x, i*offset), color_));
     }
 
     offset = size_.x / kPart;
-    for(int i=1;i<kPart;i++)
+    for(auto i=1;i<kPart;i++)
     {
         vertices_.append(sf::Vertex(sf::Vector2f(i*offset, 0), color_));
         vertices_.append(sf::Vertex(sf::Vector2f(i*offset, size_.y), color_));

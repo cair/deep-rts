@@ -35,7 +35,7 @@ void Axis::prepare(const Vector2f &range)
     float decx = size_ / kPart;
 
     float offset = distance / kPart;
-    for(int i=0;i<=kPart;i++)
+    for(auto i=0;i<=kPart;i++)
     {
         sf::Text text;
         text.setFont(*font_);

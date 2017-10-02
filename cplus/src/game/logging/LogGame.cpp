@@ -11,7 +11,7 @@
 
 
 LogGame::LogGame(Game &game): game(game) {
-    for(int i = 0; i < 16; i++){
+    for(auto i = 0; i < 16; i++){
         players.push_back(LogPlayer());
     }
 
@@ -49,7 +49,7 @@ void LogGame::serialize() {
             rapidjson::Value apm(i.apm);
             rapidjson::Value score(i.score);
             rapidjson::Value aDist(rapidjson::kArrayType);
-            for(int d : i.actionDist) {
+            for(auto d : i.actionDist) {
                 aDist.PushBack(d, allocator);
             }
 

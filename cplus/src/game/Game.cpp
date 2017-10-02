@@ -322,7 +322,7 @@ void Game::load(Game *other) {
     id = other->id;
 
 	// Load tile data
-	for(int i = 0; i < other->map.tiles.size(); i++) {
+	for(auto i = 0; i < other->map.tiles.size(); i++) {
 		auto &myTile = map.tiles[i];
 		auto &otherTile = other->map.tiles[i];
 
@@ -340,7 +340,7 @@ void Game::load(Game *other) {
 
     // Load Units
     units.clear();
-    for(int i = 0; i < other->units.size(); i++) {
+    for(auto i = 0; i < other->units.size(); i++) {
         auto &otherUnit = other->units[i];
         auto &myPlayer = players[otherUnit.player_->id_];
 
@@ -387,7 +387,7 @@ void Game::load(Game *other) {
 
 
     // Load Players
-    for(int i = 0; i < other->players.size(); i++) {
+    for(auto i = 0; i < other->players.size(); i++) {
         auto &myPlayer = players[i];
         auto &otherPlayer = other->players[i];
 

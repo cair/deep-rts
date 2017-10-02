@@ -499,8 +499,8 @@ std::set<int> Unit::getVisionTileIDs() {
     int tileY = tile->y;
 
     // Calculate vision tiles
-    for(int x = -sight; x < width + sight; x++) {
-        for(int y = -sight; y < height + sight; y++){
+    for(auto x = -sight; x < width + sight; x++) {
+        for(auto y = -sight; y < height + sight; y++){
             int tX = tileX + x;
             int yY = tileY + y;
             int idx = player_->game_.getMap().MAP_HEIGHT*yY + tX;

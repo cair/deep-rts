@@ -117,7 +117,7 @@ void Walking::init(Unit & unit)const{
 
 
     // Insert found path to the walking path vector
-    for(int i = path.size()-1; i >= 0; i--) {
+    for(auto i = path.size()-1; i >= 0; i--) {
             auto &pathItem = path[i];
             unit.walking_path.push_back(unit.player_->game_.map.getTile(pathItem.x, pathItem.y));
     }
