@@ -117,6 +117,7 @@ void Walking::init(Unit & unit)const{
 
 
     // Insert found path to the walking path vector
+    std::reverse(path.begin(), path.end());
     for(auto pathItem : path) {
         auto tile = unit.player_->game_.map.getTile(pathItem.x, pathItem.y);
         unit.walking_path.push_back(tile);
