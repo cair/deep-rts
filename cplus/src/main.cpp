@@ -36,9 +36,8 @@ int main() {
     Player &player1 = g->addPlayer();
     Player &player2 = g->addPlayer();
     Player &player3 = g->addPlayer();
-    g->start();
-
     g->initGUI();
+    g->start();
     g->loop();
 
 

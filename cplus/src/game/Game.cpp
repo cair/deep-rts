@@ -31,6 +31,11 @@ Game::Game(uint8_t _nplayers, bool setup):
 
 	id = static_cast<uint8_t>(games.size());
 	games[id] = this;
+
+    // Update timings
+    tick();
+    timerInit();
+
 }
 
 void Game::createPlayers(){
@@ -71,6 +76,7 @@ void Game::triggerResetNow()
 }
 
 void Game::start(){
+    timerInit();
 	this->running = true;
 }
 
@@ -112,101 +118,114 @@ void Game::reset()
 }
 
 void Game::update(){
-    // Iterate through all units
-    for(auto &unit : units) {
-        if (unit.removedFromGame) continue;		// Skip unit that is removed from game
-        unit.update();
+
+    if (nowMicroSec >= _update_next) {
+
+        // Iterate through all units
+        for(auto &unit : units) {
+            if (unit.removedFromGame) continue;		// Skip unit that is removed from game
+            unit.update();
+        }
+
+        // Iterate through all players
+        for (auto &p : players) {
+            p.update();
+        }
+
+        // Output all scores etc to file for each game
+        if (doScoreLogging) {
+            gameLog.record();	// Moves to "next element"
+        }
+
+
+        // Update Counters and statistics
+        _update_next += _update_interval;
+        _update_delta += 1;
+        ticks += 1;
+
     }
 
-    // Iterate through all players
-    for (auto &p : players) {
-        p.update();
-    }
-
-    // Output all scores etc to file for each game
-    if (doScoreLogging) {
-        gameLog.record();	// Moves to "next element"
-    }
 }
 
 void Game::render(){
-    gui->update();
-    gui->render();
+
+    if (doDisplay && nowMicroSec >= _render_next) {
+
+        // Render
+        gui->update();
+        gui->render();
+
+        _render_next += _render_interval;
+        _render_delta += 1;
+    }
+}
+
+void Game::caption() {
+    if (nowMicroSec >= this->_stats_next) {
+
+        if (doDisplay && doCaptionWindow) {
+            //gui->caption();
+        }
+
+        if (doCaptionConsole) {
+            std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
+        }
+
+        // Calculate APM
+        if (true /*calculateAPM*/) {
+            for (auto &p : players) {
+                p.apm = (p.apm + (p.apm_counter * 60)) / 2; // Multiplies by 60 since sampling is per second
+                p.apm_counter = 0;
+            }
+        }
+
+
+        currentFPS = _render_delta;
+        currentUPS = _update_delta;
+        _render_delta = 0;
+        _update_delta = 0;
+        _stats_next += 1000000;
+    }
+
+
+}
+
+
+void Game::tick() {
+    auto now = clock.getElapsedTime();		// Update clock
+    nowMicroSec = now.asMicroseconds();
+}
+
+void Game::timerInit() {
+    tick();
+    _render_next = nowMicroSec + _render_interval;
+    _update_next = nowMicroSec + _update_interval;
+    _apm_next = nowMicroSec + _apm_interval;
+    _stats_next = nowMicroSec + 0;
 }
 
 
 void Game::loop() {
 
-
-
-	sf::Time now = clock.getElapsedTime();
-	auto nowMicroSec = now.asMicroseconds();
-    _render_next = nowMicroSec + _render_interval;
-    _update_next = nowMicroSec + _update_interval;
-	_apm_next = nowMicroSec + _apm_interval;
-    _stats_next = nowMicroSec + 0;
-
-
 	do {
-		now = clock.getElapsedTime();		// Update clock
-		nowMicroSec = now.asMicroseconds();
-		if (nowMicroSec >= _update_next) {
 
+        // Tick
+        tick();
 
-            // Update Counters and statistics
-            _update_next += _update_interval;
-            _update_delta += 1;
-            ticks += 1;
+        // Update based on current tick
+        update();
 
-            // If reset flag is set
-			if (ticks > tickReset || triggerReset) {
+        // Render based on current tick
+        render();
 
-                reset();
-                triggerReset = false;
-                continue;
+        // Update caption based on current tick
+        caption();
 
-            } else {
-
-                update();
-
-            }
-
-		}
-
-		if (doDisplay && nowMicroSec >= _render_next) {
-
-            // Render
-            render();
-
-			this->_render_next += this->_render_interval;
-			this->_render_delta += 1;
-		}
-
-		if (nowMicroSec >= this->_stats_next) {
-
-			if (doDisplay && doCaptionWindow) {
-				//gui->caption();
-			}
-
-			if (doCaptionConsole) {
-				std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
-			}
-
-			// Calculate APM
-			if (true /*calculateAPM*/) {
-				for (auto &p : players) {
-					p.apm = (p.apm + (p.apm_counter * 60)) / 2; // Multiplies by 60 since sampling is per second
-					p.apm_counter = 0;
-				}
-			}
-
-
-			currentFPS = _render_delta;
-			currentUPS = _update_delta;
-			_render_delta = 0;
-			_update_delta = 0;
-			_stats_next += 1000000;
-		}
+        // If Reset flag is set or limit is reached
+        if (ticks > tickReset || triggerReset) {
+            reset();
+            triggerReset = false;
+        }
 
 	} while(this->running);
 
@@ -398,6 +417,9 @@ void Game::load(Game *other) {
 
 
 }
+
+
+
 
 
 

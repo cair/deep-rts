@@ -111,6 +111,13 @@ public:
 
 
     uint8_t n_players;
+
+    void tick();
+    sf::Int64 nowMicroSec;
+
+    void caption();
+
+    void timerInit();
 };
 
 
