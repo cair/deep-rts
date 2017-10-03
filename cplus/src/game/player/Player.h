@@ -54,12 +54,13 @@ public:
 	int statUnitDamageTaken;
 	int statUnitBuilt;
 	int statUnitMilitary;
-	int getScore();
+
 	std::vector<uint16_t> unitIndexes; // Vector of all of player's units (Where they are located in vector)
 
 
     void update();
 	void reset();
+
 
     int getId();
     int getFoodConsumption();
@@ -67,6 +68,9 @@ public:
     int getGold();
     int getOil();
     int getLumber();
+	int getScore();
+
+
 	size_t getUnitCount();
     void subGold(int n);
     void subLumber(int n);

@@ -171,11 +171,11 @@ std::vector<int> Game::getState(){
             uPlayer = tile.getOccupant()->player_->getId();
             uHealth = tile.getOccupant()->health / tile.getOccupant()->health_max;
         }
-
-        state[i * (tLength * 0)] = tileId;
-        state[i * (tLength * 1)] = uType;
-        state[i * (tLength * 2)] = uPlayer;
-        state[i * (tLength * 3)] = uHealth;
+        
+        state[i + (tLength * 0)] = tileId;
+        state[i + (tLength * 1)] = uType;
+        state[i + (tLength * 2)] = uPlayer;
+        state[i + (tLength * 3)] = uHealth;
 
         i++;
     }
