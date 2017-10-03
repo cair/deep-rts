@@ -147,6 +147,41 @@ void Game::update(){
 
 }
 
+
+std::vector<int> Game::getState(){
+    int layers = 4;
+    std::vector<int> state(map.MAP_WIDTH * map.MAP_HEIGHT * layers);
+
+    // 0 - Environment
+    // 1 - Unit/Building Type
+    // 2 - Unit/Building Player
+    // 3 - Unit/Building Health
+    // 4 - ?
+
+    int i = 0;
+    size_t tLength = map.getTiles().size();
+    for(auto tile : map.getTiles()){
+
+        float tileId = (tile.depleted) ? tile.depleteTile : tile.tileID;
+        float uType = 0;
+        float uPlayer = 0;
+        float uHealth = 0;
+        if (tile.hasOccupant()) {
+            uType = tile.getOccupantID();
+            uPlayer = tile.getOccupant()->player_->getId();
+            uHealth = tile.getOccupant()->health / tile.getOccupant()->health_max;
+        }
+
+        state[i * (tLength * 0)] = tileId;
+        state[i * (tLength * 1)] = uType;
+        state[i * (tLength * 2)] = uPlayer;
+        state[i * (tLength * 3)] = uHealth;
+
+        i++;
+    }
+    return state;
+}
+
 void Game::render(){
 
     if (doDisplay && nowMicroSec >= _render_next) {

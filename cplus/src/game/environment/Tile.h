@@ -74,6 +74,8 @@ public:
 
 
 	bool depleted = false;
+
+    bool hasOccupant();
 };
 
 

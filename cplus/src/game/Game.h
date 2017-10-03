@@ -124,6 +124,8 @@ public:
 	uint8_t getHeight();
 
 	unsigned char * getPixelPointer();
+
+    std::vector<int> getState();
 };
 
 

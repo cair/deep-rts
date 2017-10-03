@@ -27,6 +27,10 @@ Tile::Tile(
 
 {}
 
+bool Tile::hasOccupant()
+{
+    return occupantID != -1;
+}
 
 
 Unit* Tile::getOccupant()

@@ -301,12 +301,12 @@ void GUI::render() {
 
 
     // Update plot
-    for(auto &p : game.players){
+    /*for(auto &p : game.players){
         sf::plot::Curve &curve = plot.getCurve(p.name_);
         curve.addValue(p.getScore());
     }
     plot.prepare();
-    window.draw(plot);
+    window.draw(plot);*/
 
     window.setView(this->frameView);
     // Update the window
