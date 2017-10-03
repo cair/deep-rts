@@ -148,9 +148,9 @@ void Game::update(){
 }
 
 
-std::vector<int> Game::getState(){
+std::vector<float> Game::getState(){
     int layers = 4;
-    std::vector<int> state(map.MAP_WIDTH * map.MAP_HEIGHT * layers);
+    std::vector<float> state(map.MAP_WIDTH * map.MAP_HEIGHT * layers);
 
     // 0 - Environment
     // 1 - Unit/Building Type
@@ -171,7 +171,7 @@ std::vector<int> Game::getState(){
             uPlayer = tile.getOccupant()->player_->getId();
             uHealth = tile.getOccupant()->health / tile.getOccupant()->health_max;
         }
-        
+
         state[i + (tLength * 0)] = tileId;
         state[i + (tLength * 1)] = uType;
         state[i + (tLength * 2)] = uPlayer;

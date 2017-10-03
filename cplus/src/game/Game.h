@@ -125,7 +125,7 @@ public:
 
 	unsigned char * getPixelPointer();
 
-    std::vector<int> getState();
+    std::vector<float> getState();
 };
 
 
