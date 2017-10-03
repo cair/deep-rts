@@ -32,18 +32,24 @@ int main() {
 
     // Create game instance
     Game *g = new Game(4, true);
+
     Player &player0 = g->addPlayer();
     Player &player1 = g->addPlayer();
 
+    g->setFPS(5);
+    g->setUPS(10000000);
     g->initGUI();
     g->start();
 
     while(true) {
+
         g->tick();
         g->update();
         g->render();
+        g->caption();
         g->getState();
-        if (player0.getQueueSize() < 1) {
+
+        if (player0.getQueueSize() < 10) {
             int randNum = rand()%(14-0 + 1) + 0;
             player0.queueAction(randNum);
         }

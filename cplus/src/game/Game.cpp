@@ -21,6 +21,15 @@ Game::Game(uint8_t _nplayers, bool setup):
     players.reserve(_nplayers);
 	units.reserve(1000);
 
+    // State vector
+    // 0 - Environment
+    // 1 - Unit/Building Type
+    // 2 - Unit/Building Player
+    // 3 - Unit/Building Health
+    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
 
     // Definitions
     n_players = _nplayers;
@@ -148,34 +157,25 @@ void Game::update(){
 }
 
 
-std::vector<float> Game::getState(){
-    int layers = 4;
-    std::vector<float> state(map.MAP_WIDTH * map.MAP_HEIGHT * layers);
-
-    // 0 - Environment
-    // 1 - Unit/Building Type
-    // 2 - Unit/Building Player
-    // 3 - Unit/Building Health
-    // 4 - ?
-
+std::vector<std::vector<float>> Game::getState(){
     int i = 0;
-    size_t tLength = map.getTiles().size();
-    for(auto tile : map.getTiles()){
+    for(auto tile : map.tiles){
 
         float tileId = (tile.depleted) ? tile.depleteTile : tile.tileID;
         float uType = 0;
         float uPlayer = 0;
         float uHealth = 0;
         if (tile.hasOccupant()) {
-            uType = tile.getOccupantID();
-            uPlayer = tile.getOccupant()->player_->getId();
-            uHealth = tile.getOccupant()->health / tile.getOccupant()->health_max;
+            auto occupant = tile.getOccupant();
+            uType = occupant->id;
+            uPlayer = occupant->player_->getId();
+            uHealth = occupant->health / occupant->health_max;
         }
 
-        state[i + (tLength * 0)] = tileId;
-        state[i + (tLength * 1)] = uType;
-        state[i + (tLength * 2)] = uPlayer;
-        state[i + (tLength * 3)] = uHealth;
+        state[0][i] = tileId;
+        state[1][i] = uType;
+        state[2][i] = uPlayer;
+        state[3][i] = uHealth;
 
         i++;
     }
