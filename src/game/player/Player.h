@@ -10,8 +10,6 @@
 #include <memory>
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
-#include "../algorithms/base/Algorithm.h"
-//#include "../util/SharedQueue.h"
 #include <deque>
 
 class AlgoRandom;
@@ -46,7 +44,7 @@ public:
 	int id_;
 	bool defeated;
 	std::string name_;
-	Algorithm *algorithm_ = NULL;
+
 	int statGoldGather;
 	int statLumberGather;
 	int statOilGather;
@@ -103,11 +101,6 @@ public:
 
     bool checkDefeat();
     void setName(std::string name);
-
-
-
-    void setAlgorithm(Algorithm *theAlg);
-
 
 
     void nextUnit();

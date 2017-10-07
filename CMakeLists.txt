@@ -8,98 +8,82 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 set(SOURCE_FILES
-        cplus/src/main.cpp
-        cplus/src/game/Game.cpp
-        cplus/src/game/Game.h
-        cplus/src/game/environment/Tile.cpp
-        cplus/src/game/environment/Tile.h
-        cplus/src/game/player/Player.cpp
-        cplus/src/game/player/Player.h
-        cplus/src/game/unit/Unit.cpp
-        cplus/src/game/unit/Unit.h
-        cplus/src/game/Config.h
-        cplus/src/game/state/Walking.cpp
-        cplus/src/game/state/Walking.h
-        cplus/src/game/state/Spawning.cpp
-        cplus/src/game/state/Spawning.h
-        cplus/src/game/state/StateManager.cpp
-        cplus/src/game/state/StateManager.h
-        cplus/src/game/Constants.h
-        cplus/src/game/state/BaseState.cpp
-        cplus/src/game/state/BaseState.h
-        cplus/src/game/state/Idle.cpp
-        cplus/src/game/state/Idle.h
-        cplus/src/game/environment/Tilemap.cpp
-        cplus/src/game/environment/Tilemap.h
-        cplus/src/game/state/Despawned.cpp
-        cplus/src/game/state/Despawned.h
-        cplus/src/game/graphics/Animation.cpp
-        cplus/src/game/graphics/Animation.h
-        cplus/src/game/graphics/GUI.cpp
-        cplus/src/game/graphics/GUI.h
-        cplus/src/game/state/Harvesting.cpp
-        cplus/src/game/state/Harvesting.h
-        cplus/src/game/util/Pathfinder.cpp
-        cplus/src/game/util/Pathfinder.h
-        cplus/src/game/util/PriorityQueue.hpp
-        cplus/src/game/state/Building.cpp
-        cplus/src/game/state/Building.h
-        cplus/src/game/util/ColorConverter.hpp
-        cplus/src/game/state/Combat.cpp
-        cplus/src/game/state/Combat.h
-        cplus/src/game/state/Dead.cpp
-        cplus/src/game/state/Dead.h
-        cplus/src/game/algorithms/base/Algorithm.h
-        cplus/src/game/algorithms/RANDOM/AlgoRandom.cpp
-        cplus/src/game/algorithms/RANDOM/AlgoRandom.h
-        cplus/src/game/algorithms/base/Algorithm.cpp
-        cplus/src/game/algorithms/base/AIRepository.cpp
-        cplus/src/game/algorithms/base/AIRepository.h
-        cplus/src/game/action/BaseAction.h
-        cplus/src/game/action/RightClickAction.cpp
-        cplus/src/game/action/RightClickAction.h
+        src/main.cpp
+        src/game/Game.cpp
+        src/game/Game.h
+        src/game/environment/Tile.cpp
+        src/game/environment/Tile.h
+        src/game/player/Player.cpp
+        src/game/player/Player.h
+        src/game/unit/Unit.cpp
+        src/game/unit/Unit.h
+        src/game/Config.h
+        src/game/state/Walking.cpp
+        src/game/state/Walking.h
+        src/game/state/Spawning.cpp
+        src/game/state/Spawning.h
+        src/game/state/StateManager.cpp
+        src/game/state/StateManager.h
+        src/game/Constants.h
+        src/game/state/BaseState.cpp
+        src/game/state/BaseState.h
+        src/game/state/Idle.cpp
+        src/game/state/Idle.h
+        src/game/environment/Tilemap.cpp
+        src/game/environment/Tilemap.h
+        src/game/state/Despawned.cpp
+        src/game/state/Despawned.h
+        src/game/graphics/Animation.cpp
+        src/game/graphics/Animation.h
+        src/game/graphics/GUI.cpp
+        src/game/graphics/GUI.h
+        src/game/state/Harvesting.cpp
+        src/game/state/Harvesting.h
+        src/game/util/Pathfinder.cpp
+        src/game/util/Pathfinder.h
+        src/game/util/PriorityQueue.hpp
+        src/game/state/Building.cpp
+        src/game/state/Building.h
+        src/game/util/ColorConverter.hpp
+        src/game/state/Combat.cpp
+        src/game/state/Combat.h
+        src/game/state/Dead.cpp
+        src/game/state/Dead.h
 
-        cplus/src/game/state/StateManager.h
-        cplus/src/game/state/StateManager.cpp
-        cplus/src/game/algorithms/PYAPI/PyAI.h
-        cplus/src/game/algorithms/PYAPI/PyAI.cpp
-        cplus/src/game/unit/UnitManager.h
-        cplus/src/game/unit/UnitManager.cpp
-        cplus/src/game/algorithms/MCTS/MCTS.cpp
-        cplus/src/game/algorithms/MCTS/MCTS.h
-        cplus/src/game/algorithms/MCTS/MCTSNode.cpp
-        cplus/src/game/algorithms/MCTS/MCTSNode.h
-        cplus/src/game/algorithms/MCAS/MCAS.cpp
-        cplus/src/game/algorithms/MCAS/MCAS.h
-        cplus/src/game/algorithms/MCAS/MCASNode.cpp
-        cplus/src/game/algorithms/MCAS/MCASNode.h
-        cplus/src/game/graphics/ResourceHandler.h
-        cplus/src/game/graphics/GraphicTile.cpp
-        cplus/src/game/graphics/GraphicTile.h
-        cplus/src/game/util/Position.h
-        cplus/src/game/graphics/GraphicTilemap.cpp
-        cplus/src/game/graphics/GraphicTilemap.h
+        src/game/action/BaseAction.h
+        src/game/action/RightClickAction.cpp
+        src/game/action/RightClickAction.h
 
-        cplus/src/game/graphics/plot/area.cpp
-        cplus/src/game/graphics/plot/area.h
-        cplus/src/game/graphics/plot/axis.cpp
-        cplus/src/game/graphics/plot/axis.h
-        cplus/src/game/graphics/plot/curve.cpp
-        cplus/src/game/graphics/plot/curve.h
-        cplus/src/game/graphics/plot/grid.cpp
-        cplus/src/game/graphics/plot/grid.h
-        cplus/src/game/graphics/plot/line.cpp
-        cplus/src/game/graphics/plot/line.h
-        cplus/src/game/graphics/plot/plot.cpp
-        cplus/src/game/graphics/plot/plot.h
-        cplus/src/game/algorithms/MCTSDirect/MCTSDirect.cpp
-        cplus/src/game/algorithms/MCTSDirect/MCTSDirect.h
-        cplus/src/game/loaders/ResourceLoader.cpp
-        cplus/src/game/loaders/ResourceLoader.h
-        cplus/src/game/logging/LogGame.h
-        cplus/src/game/logging/LogPlayer.h
-        cplus/src/game/logging/LogTick.h
-        cplus/src/game/logging/LogGame.cpp)
+        src/game/state/StateManager.h
+        src/game/state/StateManager.cpp
+        src/game/unit/UnitManager.h
+        src/game/unit/UnitManager.cpp
+
+        src/game/graphics/ResourceHandler.h
+        src/game/graphics/GraphicTile.cpp
+        src/game/graphics/GraphicTile.h
+        src/game/util/Position.h
+        src/game/graphics/GraphicTilemap.cpp
+        src/game/graphics/GraphicTilemap.h
+
+        src/game/graphics/plot/area.cpp
+        src/game/graphics/plot/area.h
+        src/game/graphics/plot/axis.cpp
+        src/game/graphics/plot/axis.h
+        src/game/graphics/plot/curve.cpp
+        src/game/graphics/plot/curve.h
+        src/game/graphics/plot/grid.cpp
+        src/game/graphics/plot/grid.h
+        src/game/graphics/plot/line.cpp
+        src/game/graphics/plot/line.h
+        src/game/graphics/plot/plot.cpp
+        src/game/graphics/plot/plot.h
+        src/game/loaders/ResourceLoader.cpp
+        src/game/loaders/ResourceLoader.h
+        src/game/logging/LogGame.h
+        src/game/logging/LogPlayer.h
+        src/game/logging/LogTick.h
+        src/game/logging/LogGame.cpp)
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
@@ -130,16 +114,7 @@ endif()
 add_custom_command(
         TARGET DeepRTS PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/cplus/src/game/data/
+        ${CMAKE_SOURCE_DIR}/data/
         ${CMAKE_CURRENT_BINARY_DIR}/data/)
 
-add_custom_command(
-        TARGET DeepRTS PRE_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/cplus/src/game/python/
-        ${CMAKE_CURRENT_BINARY_DIR}/)
-
-
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/games)
-
-#file(COPY c++/src/game/data DESTINATION .) # ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ??

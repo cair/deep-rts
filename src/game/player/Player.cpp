@@ -5,7 +5,6 @@
 
 #include "Player.h"
 #include "../Game.h"
-#include "../algorithms/RANDOM/AlgoRandom.h"
 #include "../unit/UnitManager.h"
 #include <algorithm>
 
@@ -179,9 +178,6 @@ void Player::reset()
 	targetedUnitID = -1;
     std::fill(actionStatistics, actionStatistics+20, 0);
 
-	if (algorithm_) {
-		algorithm_->reset();
-	}
 }
 
 
@@ -320,11 +316,6 @@ void Player::setName(std::string name) {
 	name_ = name;
 }
 
-void Player::setAlgorithm(Algorithm *theAlg) {
-	theAlg->setPlayer(this);
-	setName(theAlg->getName());
-	algorithm_ = theAlg;
-}
 
 int Player::_getNextPrevUnitIdx() {
 	
