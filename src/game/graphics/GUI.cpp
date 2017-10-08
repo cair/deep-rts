@@ -76,16 +76,16 @@ void GUI::setupAudio(){
 void GUI::setupView(){
     const Tilemap &tilemap = game.map;
     this->fullView = sf::View(sf::FloatRect(0, 0,
-                                            static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
-                                            static_cast<float_t>(tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT)));
+                                            static_cast<float_t>(800),
+                                            static_cast<float_t>(800)));
     this->fullView.setViewport(sf::FloatRect(0, 0, 1, 1));
     this->fullView.zoom(1);
 
     this->frameView = sf::View(sf::FloatRect(0, 0,
-                                             static_cast<float_t>(tilemap.MAP_WIDTH * tilemap.TILE_WIDTH),
-                                             static_cast<float_t>(tilemap.MAP_HEIGHT * tilemap.TILE_HEIGHT)));
-    this->frameView.setViewport(sf::FloatRect(0.22, 0.09, 0.77, 0.78));
-    this->frameView.zoom(1);
+                                             static_cast<float_t>(800),
+                                             static_cast<float_t>(800)));
+    this->frameView.setViewport(sf::FloatRect(0.22, 0.00, 0.77, 0.78));
+    this->frameView.zoom(1.30);
 
     this->povView = sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
     this->povView.setViewport(sf::FloatRect(0, 0, 1, 1));
@@ -97,10 +97,10 @@ void GUI::setupView(){
 
 
 void GUI::setupFrame(){
-
+    // tilemap.MAP_WIDTH*tilemap.MAP_HEIGHT
     this->gameFrameTexture.loadFromFile("data/textures/game_frame.png");
     this->gameFrame.setTexture(this->gameFrameTexture);
-    this->gameFrame.setScale(960.0 / 2560, 960.0 / 1440);
+    this->gameFrame.setScale(800.0/2560,800.0/1440);
 }
 
 void GUI::reset() {
@@ -367,11 +367,11 @@ void GUI::drawStats(){
     window.draw(text);
 
     text.setString("Frames: " + std::to_string(game.getFrames()));
-    text.setPosition(640,10);
+    text.setPosition(580,10);
     window.draw(text);
 
     text.setString("Score: " + std::to_string(player->getScore()));
-    text.setPosition(810,10);
+    text.setPosition(700,10);
     window.draw(text);
 
 }
@@ -424,7 +424,7 @@ void GUI::drawActionDistribution() {
 
     for (int i = 0; i < sizeof(Constants::actionNames) / sizeof(Constants::actionNames[0]); i++) {
         text.setString(Constants::actionNames[i] + ": " + std::to_string(player->actionStatistics[i]));
-        text.setPosition(10, 470 + (20 * i));
+        text.setPosition(10, 380 + (20 * i));
         window.draw(text);
     }
 
@@ -446,8 +446,8 @@ void GUI::drawSelected(){
 
     if(selectedTile)
     {
-        text.setString("Type: " + selectedTile->name + " - (" + std::to_string(selectedTile->x) + "," + std::to_string(selectedTile->y) + ")");
-        text.setPosition(800,960 + offsetY);
+        text.setString(selectedTile->name + " - (" + std::to_string(selectedTile->x) + "," + std::to_string(selectedTile->y) + ")");
+        text.setPosition(680, 140 + offsetY);
         window.draw(text);
 
 
@@ -467,8 +467,9 @@ void GUI::drawSelected(){
 
 
     if (player->getTargetedUnit()){
-        int tOffsetX = 80;
-        text.setCharacterSize(32);
+        int tOffsetX = 0;
+        int tOffsetY = 690;
+        text.setCharacterSize(26);
         Unit *unit = player->getTargetedUnit();
         Tile *tile = (unit->tile) ? unit->tile : game.getMap().getTile(0, 0);
         text.setString(unit->name + " (" +
@@ -479,45 +480,45 @@ void GUI::drawSelected(){
                        std::to_string(tile->y) + ") - (" +
                        std::to_string(unit->player_->id_) + ")"
         );
-        text.setPosition(270 + tOffsetX,830);
+        text.setPosition(270 + tOffsetX, 0 + tOffsetY);
         window.draw(text);
 
-        text.setCharacterSize(20);
+        text.setCharacterSize(18);
 
         text.setString("Lumber: " + std::to_string(unit->lumberCarry));
-        text.setPosition(270 + tOffsetX, 870);
+        text.setPosition(270 + tOffsetX, 30 + tOffsetY);
         window.draw(text);
 
         text.setString("Gold: " + std::to_string(unit->goldCarry));
-        text.setPosition(270 + tOffsetX,900);
+        text.setPosition(270 + tOffsetX, 50 + tOffsetY);
         window.draw(text);
 
         text.setString("Oil: " + std::to_string(unit->oilCarry));
-        text.setPosition(270 + tOffsetX,930);
+        text.setPosition(270 + tOffsetX, 70 + tOffsetY);
         window.draw(text);
 
         text.setString("Health: " + std::to_string(unit->health) + "/" + std::to_string(unit->health_max));
-        text.setPosition(385 + tOffsetX,870);
+        text.setPosition(375 + tOffsetX, 30 + tOffsetY);
         window.draw(text);
 
         text.setString("Damage: " + std::to_string(unit->damageMin) + " - " + std::to_string(unit->damageMax));
-        text.setPosition(385 + tOffsetX, 900);
+        text.setPosition(375 + tOffsetX, 50 + tOffsetY);
         window.draw(text);
 
         text.setString("Armor: " + std::to_string(unit->armor));
-        text.setPosition(385 + tOffsetX,930);
+        text.setPosition(375 + tOffsetX, 70 + tOffsetY);
         window.draw(text);
 
         text.setString((unit->groundUnit) ? "Ground: Yes" : "Ground: No");
-        text.setPosition(550 + tOffsetX,870);
+        text.setPosition(540 + tOffsetX, 30 + tOffsetY);
         window.draw(text);
 
         text.setString((unit->waterUnit) ? "Water: Yes" : "Water: No");
-        text.setPosition(550 + tOffsetX,900);
+        text.setPosition(540 + tOffsetX, 50 + tOffsetY);
         window.draw(text);
 
         text.setString("Speed: " + std::to_string(unit->speed));
-        text.setPosition(550 + tOffsetX,930);
+        text.setPosition(540 + tOffsetX, 70 + tOffsetY);
         window.draw(text);
 
 
@@ -638,7 +639,7 @@ void GUI::drawScoreBoard() {
     text.setFont(font);
 
     int offsetY = 0;
-    text.setCharacterSize(18);
+    text.setCharacterSize(14);
     for (Player & p : game.players) {
         text.setString(p.name_ + ": " + std::to_string(p.getScore()) + " | APM: " + std::to_string(p.apm) + " | AQueue: " + std::to_string(p.getQueueSize()));
         auto &color = p.playerColor;
@@ -647,8 +648,8 @@ void GUI::drawScoreBoard() {
 #else
         text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
 #endif
-        text.setPosition(10, 920 - offsetY);
-        offsetY += 25;
+        text.setPosition(10, 720 - offsetY);
+        offsetY += 15;
 
         window.draw(text);
     }
