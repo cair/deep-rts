@@ -40,14 +40,13 @@ class Game {
 	LogGame gameLog; // Only in use when scoreLog flag s set in config
     bool running;
 	bool triggerReset;
-    long ticks = 0;
 	static std::unordered_map<int, Game *> games;
 public:
 	bool doDisplay; // TODO?
 	bool loaded = false;
 	static Game * getGame(uint8_t id);
 	uint8_t id;
-
+	long ticks = 0;
     Tilemap map;
 	uint32_t fps;
 	uint32_t ups;
