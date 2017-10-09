@@ -299,12 +299,8 @@ bool Game::checkTerminal(){
 		}
 	}
 
-
 	bool isTerminal = (c == 1);
 	terminal = isTerminal;
-	if (terminal) {
-		setUPS(0);
-	}
 
 	return terminal;
 }

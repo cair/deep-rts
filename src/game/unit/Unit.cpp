@@ -326,9 +326,6 @@ void Unit::afflictDamage(int dmg_) {
 
     if (health <= 0) {
         transitionState(stateManager->deadState);
-
-        player_->checkDefeat();
-        player_->game_.checkTerminal();
     }
 
 }
