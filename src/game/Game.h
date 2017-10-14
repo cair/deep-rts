@@ -41,6 +41,12 @@ class Game {
     bool running;
 	bool triggerReset;
 	static std::unordered_map<int, Game *> games;
+
+	int state_environment_idx;
+	int state_unit_player_idx;
+	int state_unit_health_idx;
+	int state_unit_type_idx;
+
 public:
 	bool doDisplay; // TODO?
 	bool loaded = false;
@@ -128,6 +134,7 @@ public:
     std::vector<std::vector<float>> getState();
 
     int state_dimensions;
+
 };
 
 

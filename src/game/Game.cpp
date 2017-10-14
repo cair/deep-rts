@@ -26,10 +26,24 @@ Game::Game(uint8_t _nplayers, bool setup):
     // 1 - Unit/Building Type
     // 2 - Unit/Building Player
     // 3 - Unit/Building Health
-    if (Config::getInstance().state_environment) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-    if (Config::getInstance().state_unit_player) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-    if (Config::getInstance().state_unit_health) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-    if (Config::getInstance().state_unit_type) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    int c = 0;
+    if (Config::getInstance().state_environment) {
+        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+        state_environment_idx = c++;
+    }
+    if (Config::getInstance().state_unit_player) {
+        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+        state_unit_player_idx = c++;
+    }
+    if (Config::getInstance().state_unit_health) {
+        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+        state_unit_health_idx = c++;
+    }
+    if (Config::getInstance().state_unit_type){
+        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+        state_unit_type_idx = c++;
+    }
+
     state_dimensions = Config::getInstance().getStateDimensionCount();
 
     // Definitions
@@ -173,10 +187,10 @@ std::vector<std::vector<float>> Game::getState(){
             uHealth = occupant->health / occupant->health_max;
         }
 
-        if (Config::getInstance().state_environment) state[0][i] = tileId;
-        if (Config::getInstance().state_unit_type) state[1][i] = uType;
-        if (Config::getInstance().state_unit_player) state[2][i] = uPlayer;
-        if (Config::getInstance().state_unit_health) state[3][i] = uHealth;
+        if (Config::getInstance().state_environment) state[state_environment_idx][i] = tileId;
+        if (Config::getInstance().state_unit_type) state[state_unit_type_idx][i] = uType;
+        if (Config::getInstance().state_unit_player) state[state_unit_player_idx][i] = uPlayer;
+        if (Config::getInstance().state_unit_health) state[state_unit_health_idx][i] = uHealth;
 
         i++;
     }
