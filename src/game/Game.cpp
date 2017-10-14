@@ -30,6 +30,7 @@ Game::Game(uint8_t _nplayers, bool setup):
     if (Config::getInstance().state_unit_player) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
     if (Config::getInstance().state_unit_health) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
     if (Config::getInstance().state_unit_type) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    state_dimensions = Config::getInstance().getStateDimensionCount();
 
     // Definitions
     n_players = _nplayers;

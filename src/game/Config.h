@@ -94,6 +94,15 @@ public:
 		return audioEnabled;
 	}
 
+    int getStateDimensionCount() {
+        int c = 0;
+        if(state_environment) c++;
+        if(state_unit_health) c++;
+        if(state_unit_type) c++;
+        if(state_unit_player) c++;
+        return c;
+    }
+
 	bool mechanicFood;
 	bool mechanicFarm;
 	bool mechanicBarracks;

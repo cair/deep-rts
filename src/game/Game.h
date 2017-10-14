@@ -126,6 +126,8 @@ public:
 
     std::vector<std::vector<float>> state;
     std::vector<std::vector<float>> getState();
+
+    int state_dimensions;
 };
 
 
