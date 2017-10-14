@@ -26,10 +26,10 @@ Game::Game(uint8_t _nplayers, bool setup):
     // 1 - Unit/Building Type
     // 2 - Unit/Building Player
     // 3 - Unit/Building Health
-    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-    state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    if (Config::getInstance().state_environment) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    if (Config::getInstance().state_unit_player) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    if (Config::getInstance().state_unit_health) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
+    if (Config::getInstance().state_unit_type) state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
 
     // Definitions
     n_players = _nplayers;
@@ -167,15 +167,15 @@ std::vector<std::vector<float>> Game::getState(){
         float uHealth = 0;
         if (tile.hasOccupant()) {
             auto occupant = tile.getOccupant();
-            uType = occupant->id;
-            uPlayer = occupant->player_->getId();
+            uType = occupant->typeId;
+            uPlayer = occupant->player_->getId() + 1; // TODO id should be integrated maybe? player.id = id + 1
             uHealth = occupant->health / occupant->health_max;
         }
 
-        state[0][i] = tileId;
-        state[1][i] = uType;
-        state[2][i] = uPlayer;
-        state[3][i] = uHealth;
+        if (Config::getInstance().state_environment) state[0][i] = tileId;
+        if (Config::getInstance().state_unit_type) state[1][i] = uType;
+        if (Config::getInstance().state_unit_player) state[2][i] = uPlayer;
+        if (Config::getInstance().state_unit_health) state[3][i] = uHealth;
 
         i++;
     }

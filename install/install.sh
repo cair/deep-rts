@@ -17,6 +17,4 @@ if [ -f /etc/lsb-release ]; then
     sh ./debian/install_python.sh
     sh ./debian/install_sfml.sh
     sh ./debian/install_rapidjson.sh
-    sh ./debian/install_uwebsockets.sh
-    sh ./debian/install_libgpuarray.sh
 fi

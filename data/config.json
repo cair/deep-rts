@@ -15,10 +15,16 @@
   "logging": {
     "scorings": true
   },
-  "display":  true,
+  "display":  false,
   "audio" : {
 	"enabled": false,
 	"volume": 20
+  },
+  "state": {
+    "environment": false,
+    "unit_type": true,
+    "unit_player": true,
+    "unit_health": true
   },
   "mechanics": {
     "town_hall_on_start": true,

@@ -102,7 +102,10 @@ public:
     bool mechanicInstantBuild;
 	bool mechanicFOW;
 
-
+	bool state_environment;
+	bool state_unit_type;
+	bool state_unit_player;
+	bool state_unit_health;
 
 private:
     Config() {
@@ -139,6 +142,7 @@ private:
 		auto logging = conf["logging"].GetObject();
 		auto ai = conf["ai"].GetObject();
 		auto audio = conf["audio"].GetObject();
+		auto state = conf["state"].GetObject();
 
 		tickReset = conf["tick_reset"].GetInt();
 		apm = ai["max_apm"].GetInt();
@@ -161,6 +165,11 @@ private:
 		mechanicFood = mechanics["food"].GetBool();
 		mechanicInstantBuild = mechanics["instant_build"].GetBool();
 		mechanicFOW = mechanics["fog_of_war"].GetBool();
+
+		state_environment = state["environment"].GetBool();
+		state_unit_type = state["unit_type"].GetBool();
+		state_unit_health = state["unit_health"].GetBool();
+		state_unit_player = state["unit_player"].GetBool();
 
 		audioEnabled = audio["enabled"].GetBool();
 		audioVolume = audio["volume"].GetInt();
