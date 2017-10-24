@@ -63,7 +63,7 @@ void GUI::setupFont() {
 }
 
 void GUI::setupAudio(){
-    sf::Music *music = new sf::Music();
+    auto *music = new sf::Music();
     if (music->openFromFile(".//data//audio//song_1.ogg"))
     {
 		music->setVolume(Config::getInstance().getAudioVolume());

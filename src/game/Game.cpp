@@ -325,7 +325,7 @@ void Game::addAction(std::shared_ptr<BaseAction> action) {
 }
 
 Player &Game::addPlayer() {
-	players.push_back(Player(*this, players.size()));
+	players.emplace_back(*this, players.size());
 	Player &player = players.back();
 
 	spawnPlayer(player);
@@ -402,8 +402,7 @@ void Game::load(Game *other) {
 
     // Load Units
     units.clear();
-    for(size_t i = 0; i < other->units.size(); i++) {
-        auto &otherUnit = other->units[i];
+    for (auto &otherUnit : other->units) {
         auto &myPlayer = players[otherUnit.player_->id_];
 
         units.push_back(UnitManager::constructUnit(otherUnit.typeId, &myPlayer));

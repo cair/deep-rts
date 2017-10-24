@@ -15,7 +15,7 @@
   "logging": {
     "scorings": true
   },
-  "display":  false,
+  "display":  true,
   "audio" : {
 	"enabled": false,
 	"volume": 20
@@ -35,6 +35,8 @@
     "farm": false,
     "barracks": false,
     "footman": false,
-    "archer": false
+    "archer": false,
+    "move_auto_attack": true,
+    "move_auto_harvest": true
   }
 }

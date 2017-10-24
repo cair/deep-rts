@@ -20,10 +20,7 @@ class Player {
 private:
 
     std::string name = "[NO NAME]";
-	std::deque<Constants::Action> actionQueue;
-
-
-
+	std::deque<std::pair<Constants::Action, int>> actionQueue;
 
 public:
     int oil;
@@ -77,8 +74,8 @@ public:
     void addLumber(int n);
     void addOil(int n);
     Unit &addUnit(Constants::Unit unitType);
-	void queueAction(Constants::Action actionID);
-	void queueAction(int actionID);
+	void queueAction(Constants::Action actionI, int delay);
+	void queueAction(int actionID, int delay);
 	int actionStatistics[20];
 	size_t getQueueSize();
 

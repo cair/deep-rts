@@ -103,13 +103,17 @@ public:
         return c;
     }
 
-	bool mechanicFood;
-	bool mechanicFarm;
-	bool mechanicBarracks;
-	bool mechanicFootman;
-	bool mechanicArcher;
-    bool mechanicInstantBuild;
-	bool mechanicFOW;
+	bool mechanicHarvestForever; // Allow players to harvest infinitely (Unit does not cancel after successful harvest)
+	bool mechanicTownHall;	// Allow players to build town hall
+	bool mechanicFood; // Activate to ignore food cap
+	bool mechanicFarm; // Allow players to build farm
+	bool mechanicBarracks; // Allow players to build barracks
+	bool mechanicFootman; // Allow players to build footman
+	bool mechanicArcher; // Allow players to build archer
+    bool mechanicInstantBuild; // Build instantly without time
+	bool mechanicFOW; // Boolean to activate/deactivate  Fog of war
+	bool mechanicAutoAttack; // Automatically attack on move (if clicks on enemy)
+	bool mechanicAutoHarvest; // Automatically harvest on move (if clicks on harvestable tile)
 
 	bool state_environment;
 	bool state_unit_type;
@@ -128,11 +132,9 @@ private:
     int ups;
 	int apm;
 	int tickReset;
-    bool mechanicTownHall;
     int tickModifier;
 	bool captionConsole;
 	bool captionWindow;
-	bool mechanicHarvestForever;
 	bool loggingScoring;
 	bool display;
 	int32_t audioVolume;
@@ -174,6 +176,8 @@ private:
 		mechanicFood = mechanics["food"].GetBool();
 		mechanicInstantBuild = mechanics["instant_build"].GetBool();
 		mechanicFOW = mechanics["fog_of_war"].GetBool();
+		mechanicAutoAttack = mechanics["move_auto_attack"].GetBool();
+		mechanicAutoHarvest = mechanics["move_auto_harvest"].GetBool();
 
 		state_environment = state["environment"].GetBool();
 		state_unit_type = state["unit_type"].GetBool();

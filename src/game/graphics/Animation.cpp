@@ -3,10 +3,8 @@
 //
 
 #include <SFML/Graphics/Texture.hpp>
-
 #include <memory>
 #include "Animation.h"
-#include "../Constants.h"
 
 Animation::Animation() {
 	setup();
@@ -14,14 +12,14 @@ Animation::Animation() {
 
 void Animation::add(const int unit, const int state, const int direction, int x, int y, int w, int h, int wrs, int hrs, sf::Texture* texture, bool flip) {
 
-    std::shared_ptr<sf::Sprite> sprite = std::shared_ptr<sf::Sprite>(new sf::Sprite());
+    std::shared_ptr<sf::Sprite> sprite = std::make_shared<sf::Sprite>();
     sprite->setTexture(*texture);
     if(flip) {
         //wrs *= -1; // TODO this messes up placement
     }
 
     sprite->setTextureRect(sf::IntRect(x, y, w, h));
-    sprite->setScale((double)wrs/w,(double)hrs/h);
+    sprite->setScale((float)wrs/w,(float)hrs/h);
     Animation::sprites[unit][state][direction].push_back(sprite);
 
 
@@ -29,16 +27,16 @@ void Animation::add(const int unit, const int state, const int direction, int x,
 }
 
 void Animation::setup() {
-    peasant = std::shared_ptr<sf::Texture>(new sf::Texture());
+    peasant = std::make_shared<sf::Texture>();
     peasant->loadFromFile("data/textures/human/peasant.png");
 
-    archer = std::shared_ptr<sf::Texture>(new sf::Texture());
+    archer = std::make_shared<sf::Texture>();
     archer->loadFromFile("data/textures/human/archer.png");
 
-    footman = std::shared_ptr<sf::Texture>(new sf::Texture());
+    footman = std::make_shared<sf::Texture>();
     footman->loadFromFile("data/textures/human/footman.png");
 
-    buildings = std::shared_ptr<sf::Texture>(new sf::Texture());
+    buildings = std::make_shared<sf::Texture>();
     buildings->loadFromFile("data/textures/human/buildings.png");
 
 
@@ -611,14 +609,13 @@ sf::Sprite &Animation::getNext(Unit & unit) {
 
     std::vector<std::shared_ptr<sf::Sprite>> &items = Animation::sprites[unitId][state][direction];
 
-    if(items.size() == 0) {
-        std::vector<std::shared_ptr<sf::Sprite>> &items = Animation::sprites[unitId][Constants::State::Idle][Constants::Direction::Down];
-        assert(items.size() > 0);
+    if(items.empty()) {
+        items = Animation::sprites[unitId][Constants::State::Idle][Constants::Direction::Down];
+        assert(!items.empty());
         std::shared_ptr<sf::Sprite> &sprite = items[iteration % items.size()];
         return *sprite;
     }
     std::shared_ptr<sf::Sprite> &sprite = items[iteration % items.size()];
-
 
     return *sprite;
 

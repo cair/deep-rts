@@ -7,13 +7,10 @@
 #include "../Game.h"
 #include "../util/Pathfinder.h"
 #include "../graphics/GUI.h"
-#include "../action/RightClickAction.h"
 #include "./UnitManager.h"
 #include <random>
 #include <climits>
-#include "../action/BaseAction.h"
 
-int Unit::gId = 0;
 Unit::Unit(Player *player): player_(player), stateManager(&player->game_.stateManager){
     id = player->game_.units.size();
     state = stateManager->despawnedState;
@@ -160,8 +157,6 @@ bool Unit::build(int idx) {
         return false;
     }
 
-
-    return false;
 }
 
 void Unit::despawn() {
@@ -274,9 +269,8 @@ void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
     //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|x" << std::endl;
     //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
     state->end(*this);
-    state = nextState;
+    state = std::move(nextState);
     state->init(*this);
-    return;
 }
 
 int Unit::distance(Tile &target) {
@@ -303,7 +297,7 @@ Position Unit::distanceVector(Tile &target){
     int dx = tile->x - target.x;
     int dy = tile->y - target.y;
 
-    return Position(dx, dy);
+    return {dx, dy};
 }
 
 Unit* Unit::closestRecallBuilding() {
@@ -434,11 +428,23 @@ void Unit::tryMove(int16_t x, int16_t y)
 
     if (tile->isWalkable()) {
         move(*tile);
+        return;
+
     }
-    else {
-        // Fail
+
+    // Allow to automatically attack if config has enabled this
+    if(Config::getInstance().mechanicAutoAttack && tile->isAttackable(*this)) {
+        attack(*tile);
         return;
     }
+
+
+    if(Config::getInstance().mechanicAutoHarvest && tile->isHarvestable()) {
+        harvest(*tile);
+        return;
+    }
+
+    // Failed, Cannot move
 }
 
 void Unit::tryHarvest()

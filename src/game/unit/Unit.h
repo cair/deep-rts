@@ -8,6 +8,7 @@
 #include <memory>
 #include <map>
 #include <set>
+#include <deque>
 #include "../Constants.h"
 #include "../environment/Tile.h"
 #include "../state/StateManager.h"
@@ -22,7 +23,9 @@ class BaseState;
 
 class Unit{
 private:
-    static int gId;
+	std::deque<std::pair<Constants::Action, int>> actionQueue;
+
+
 public:
 	Unit(Player *player);
 	Unit() {}

@@ -41,5 +41,5 @@ void GraphicTile::setupVerticles(sf::Vertex* vertices, unsigned tId, unsigned ti
 
 
 sf::Vector2f GraphicTile::getPixelPosition()const {
-    return sf::Vector2f(tile_verticles->position.x, tile_verticles->position.y);
+    return {tile_verticles->position.x, tile_verticles->position.y};
 }

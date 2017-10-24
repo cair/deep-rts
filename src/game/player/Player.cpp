@@ -80,7 +80,8 @@ void Player::update() {
 
 
 	if (!actionQueue.empty()) {
-		Constants::Action actionID = actionQueue.front();
+		auto actionID = actionQueue.front().first;
+        auto delay = actionQueue.front().second;
 		actionQueue.pop_front();
 
 		// No units to perform action on
@@ -265,7 +266,7 @@ void Player::removeUnit(Unit & unit) {
 
 bool Player::checkDefeat() {
 	if (defeated) return defeated;
-	if (unitIndexes.size() > 0) return false;
+	if (!unitIndexes.empty()) return false;
 
 	defeated = true;
 	return defeated;
@@ -319,7 +320,7 @@ void Player::setName(std::string name) {
 
 int Player::_getNextPrevUnitIdx() {
 	
-	if (unitIndexes.size() == 0) {
+	if (unitIndexes.empty()) {
 		return -1;
 	}
 
@@ -356,8 +357,6 @@ void Player::nextUnit() {
 	//std::cout << static_cast<int>(unitIndex) << " -N- " << unitIndexes.size() << std::endl;
 	// Get unit from the game vector
 	targetedUnitID = unitIndex;
-
-	return;
 }
 
 void Player::previousUnit() {
@@ -379,8 +378,6 @@ void Player::previousUnit() {
 
 	// Get unit from the game vector
 	targetedUnitID = unitIndex;
-
-	return;
 }
 
 Unit *Player::getTargetedUnit() {
@@ -403,16 +400,19 @@ void Player::rightClick(Position pos) {
 
 }
 
-void Player::queueAction(int actionID) {
+void Player::queueAction(int actionID, int delay) {
 	auto id = static_cast<Constants::Action>(actionID);
-	queueAction(id);
+	queueAction(id, delay);
 }
 
-void Player::queueAction(Constants::Action actionID) {
+void Player::queueAction(Constants::Action actionID, int delay) {
 	apm_counter++;
 	actionStatistics[actionID] += 1; // Increment statistics
-	actionQueue.push_back(actionID);
+
+
+	actionQueue.emplace_back(actionID, delay);
 }
+
 size_t Player::getQueueSize()
 {
 	return actionQueue.size();

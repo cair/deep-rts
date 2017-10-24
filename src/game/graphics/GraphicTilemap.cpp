@@ -18,7 +18,7 @@ void GraphicTilemap::generateGraphicTiles(std::vector<Tile> &dataTiles) {
     // Iterate through all dataTiles and create a equivalent graphic tile
     for(auto &dataTile : dataTiles){
 
-        gTiles.push_back(GraphicTile(dataTile, *this));
+        gTiles.emplace_back(dataTile, *this);
 
 
     }
