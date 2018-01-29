@@ -10,7 +10,7 @@
 #include <windows.h>
 #endif
 
-#include "game/Game.h"
+#include "Game.h"
 
 #ifdef __linux__
 void ensureDisplay() {
@@ -31,35 +31,27 @@ int main() {
 #endif
 
     // Create game instance
-    Game *g = new Game(4, true);
+    Game *g = new Game();
 
     Player &player0 = g->addPlayer();
     Player &player1 = g->addPlayer();
 
-    g->setFPS(5);
-    g->setUPS(200);
-    g->initGUI();
+    g->setMaxFPS(5);
+
+    g->setMaxUPS(99999999999999999999999999);
     g->start();
 
     while(true) {
 
         g->tick();
-        g->update();
         g->render();
+        g->update();
         g->caption();
-        g->getState();
 
-        if (player0.getQueueSize() < 10) {
-            int randNum = rand()%(9-2 + 1) + 2;
-            player0.queueAction(randNum, 50);
-        }
+
     }
 
-    /*Player &player2 = g->addPlayer();
-    Player &player3 = g->addPlayer();
-    g->initGUI();
-    g->start();
-    g->loop();*/
+
 
 
 }

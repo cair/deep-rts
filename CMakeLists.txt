@@ -9,106 +9,72 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
         src/main.cpp
-        src/game/Game.cpp
-        src/game/Game.h
-        src/game/environment/Tile.cpp
-        src/game/environment/Tile.h
-        src/game/player/Player.cpp
-        src/game/player/Player.h
-        src/game/unit/Unit.cpp
-        src/game/unit/Unit.h
-        src/game/Config.h
-        src/game/state/Walking.cpp
-        src/game/state/Walking.h
-        src/game/state/Spawning.cpp
-        src/game/state/Spawning.h
-        src/game/state/StateManager.cpp
-        src/game/state/StateManager.h
-        src/game/Constants.h
-        src/game/state/BaseState.cpp
-        src/game/state/BaseState.h
-        src/game/state/Idle.cpp
-        src/game/state/Idle.h
-        src/game/environment/Tilemap.cpp
-        src/game/environment/Tilemap.h
-        src/game/state/Despawned.cpp
-        src/game/state/Despawned.h
-        src/game/graphics/Animation.cpp
-        src/game/graphics/Animation.h
-        src/game/graphics/GUI.cpp
-        src/game/graphics/GUI.h
-        src/game/state/Harvesting.cpp
-        src/game/state/Harvesting.h
-        src/game/util/Pathfinder.cpp
-        src/game/util/Pathfinder.h
-        src/game/util/PriorityQueue.hpp
-        src/game/state/Building.cpp
-        src/game/state/Building.h
-        src/game/util/ColorConverter.hpp
-        src/game/state/Combat.cpp
-        src/game/state/Combat.h
-        src/game/state/Dead.cpp
-        src/game/state/Dead.h
-
-        src/game/action/BaseAction.h
-        src/game/action/RightClickAction.cpp
-        src/game/action/RightClickAction.h
-
-        src/game/state/StateManager.h
-        src/game/state/StateManager.cpp
-        src/game/unit/UnitManager.h
-        src/game/unit/UnitManager.cpp
-
-        src/game/graphics/ResourceHandler.h
-        src/game/graphics/GraphicTile.cpp
-        src/game/graphics/GraphicTile.h
-        src/game/util/Position.h
-        src/game/graphics/GraphicTilemap.cpp
-        src/game/graphics/GraphicTilemap.h
-
-        src/game/graphics/plot/area.cpp
-        src/game/graphics/plot/area.h
-        src/game/graphics/plot/axis.cpp
-        src/game/graphics/plot/axis.h
-        src/game/graphics/plot/curve.cpp
-        src/game/graphics/plot/curve.h
-        src/game/graphics/plot/grid.cpp
-        src/game/graphics/plot/grid.h
-        src/game/graphics/plot/line.cpp
-        src/game/graphics/plot/line.h
-        src/game/graphics/plot/plot.cpp
-        src/game/graphics/plot/plot.h
-        src/game/loaders/ResourceLoader.cpp
-        src/game/loaders/ResourceLoader.h
-        src/game/logging/LogGame.h
-        src/game/logging/LogPlayer.h
-        src/game/logging/LogTick.h
-        src/game/logging/LogGame.cpp)
+        src/Game.cpp
+        src/Game.h
+        src/environment/Tile.cpp
+        src/environment/Tile.h
+        src/player/Player.cpp
+        src/player/Player.h
+        src/unit/Unit.cpp
+        src/unit/Unit.h
+        src/Config.h
+        src/state/Walking.cpp
+        src/state/Walking.h
+        src/state/Spawning.cpp
+        src/state/Spawning.h
+        src/state/StateManager.cpp
+        src/state/StateManager.h
+        src/Constants.h
+        src/state/BaseState.cpp
+        src/state/BaseState.h
+        src/state/Idle.cpp
+        src/state/Idle.h
+        src/environment/Tilemap.cpp
+        src/environment/Tilemap.h
+        src/state/Despawned.cpp
+        src/state/Despawned.h
+        src/state/Harvesting.cpp
+        src/state/Harvesting.h
+        src/util/Pathfinder.cpp
+        src/util/Pathfinder.h
+        src/util/PriorityQueue.hpp
+        src/state/Building.cpp
+        src/state/Building.h
+        src/util/ColorConverter.hpp
+        src/state/Combat.cpp
+        src/state/Combat.h
+        src/state/Dead.cpp
+        src/state/Dead.h
+        src/action/BaseAction.h
+        src/action/RightClickAction.cpp
+        src/action/RightClickAction.h
+        src/state/StateManager.h
+        src/state/StateManager.cpp
+        src/unit/UnitManager.h
+        src/unit/UnitManager.cpp
+        src/util/Position.h
+        src/loaders/ResourceLoader.cpp
+        src/loaders/ResourceLoader.h
+        src/logging/LogGame.h
+        src/logging/LogPlayer.h
+        src/logging/LogTick.h
+        src/logging/LogGame.cpp
+        )
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
-find_package(SFML 2 REQUIRED system window graphics network audio)
 find_package(PythonLibs REQUIRED)
-find_package(RapidJSON REQUIRED)
 find_package(Threads)
 
 
-if (SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
-    include_directories(${PYTHON_INCLUDE_DIR})
-    target_link_libraries(DeepRTS ${SFML_LIBRARIES})
-    target_link_libraries(DeepRTS ${UWS_LIBRARIES})
-    target_link_libraries(DeepRTS ${ZLIB_LIBRARIES})
-    target_link_libraries(DeepRTS ${OPENSSL_LIBRARIES})
-    target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
-    target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
+
+include_directories(${PYTHON_INCLUDE_DIR})
+target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
+target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
 
 
-else()
-    message( FATAL_ERROR "You can not do this at all, CMake will exit. ${SFML_FOUND}" )
-endif()
 
 
 add_custom_command(
