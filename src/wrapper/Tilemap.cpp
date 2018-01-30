@@ -16,7 +16,6 @@ void init_Tilemap(py::module &m) {
             .def_readonly("tile_height", &Tilemap::TILE_HEIGHT)
             .def_readonly("map_width", &Tilemap::MAP_WIDTH)
             .def_readonly("map_height", &Tilemap::MAP_HEIGHT)
-
-            .def("get_tiles", &Tilemap::getTiles)
+            .def_readonly("tiles", &Tilemap::tiles)
             .def("get_tile", &Tilemap::getTile);
 }

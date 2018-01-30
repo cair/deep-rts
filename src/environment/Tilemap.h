@@ -15,8 +15,6 @@ class Tilemap{
 private:
 	Game &game_;
 
-	/// List of tiles
-	std::vector<Tile> tiles;
 
 public:
 
@@ -52,6 +50,10 @@ public:
 
 	/// Get the game reference
 	Game &getGame() const;
+
+	/// List of tiles
+	std::vector<Tile> tiles;
+
 
 
 	bool operator()(unsigned x, unsigned y) const;

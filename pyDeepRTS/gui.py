@@ -156,7 +156,7 @@ class GUI:
     def __init__(self, game):
         self.game = game
         self.map = self.game.get_tilemap()
-        self.tiles = self.map.get_tiles()
+        self.tiles = self.map.tiles
 
         print(dir(self.game))
         self.units = self.game.units
