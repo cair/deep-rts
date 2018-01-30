@@ -61,6 +61,7 @@ void Walking::end(Unit & unit)const{
 
 void Walking::init(Unit & unit)const{
 
+
     // Retrieve Tile* from walkingGoalID
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 
@@ -110,8 +111,7 @@ void Walking::init(Unit & unit)const{
     // Insert found path to the walking path vector
     std::reverse(path.begin(), path.end());
     for(auto pathItem : path) {
-        auto tile = unit.player_->getGame().getMap().getTile(pathItem.x, pathItem.y);
-
+        Tile& tile = unit.player_->getGame().getMap().getTile(pathItem.x, pathItem.y);
         unit.walking_path.push_back(&tile);
     }
 }

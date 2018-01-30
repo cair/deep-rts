@@ -23,7 +23,7 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
     int mapHeight = mapData["height"].GetInt();
     int tWidth = tilesetData["tilewidth"].GetInt();
     int tHeight = tilesetData["tileheight"].GetInt();
-    int tFirstGid = tilesetData["firstgid"].GetInt();
+    //int tFirstGid = tilesetData["firstgid"].GetInt();
 
     TILE_WIDTH = tWidth;
     TILE_HEIGHT = tHeight;
@@ -41,9 +41,9 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
     {
         for(uint16_t x = 0; x < MAP_WIDTH; x++)
         {
+            int newTypeId = tileIDs[c].GetInt();
 
-            int newTypeId = tileIDs[c].GetInt() - 1;
-            auto newTileData = tilesData[std::to_string(newTypeId + 1).c_str()].GetObject();
+            auto newTileData = tilesData[std::to_string(newTypeId).c_str()].GetObject();
             int depletedTypeId = newTileData["deplete_tile"].GetInt();
             auto depletedTileData = tilesData[std::to_string(depletedTypeId).c_str()].GetObject();
 
@@ -67,7 +67,7 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
             auto oilYield = newTileData["oil_yield"].GetInt();
 
 
-            tiles.push_back(Tile(
+                      tiles.emplace_back(Tile(
                 *this,
                 c,
                 x,
@@ -91,13 +91,15 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
                 oilYield));
 
 
-            assert(!tiles.empty());
+
             Tile &tile = tiles.back();
 
             if(tile.getTypeId() == Constants::Tile::Spawn){
                 spawnTiles.push_back(c);
                 tile.setDepleted();
             }
+
+
 
             c++;
 
@@ -183,6 +185,8 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
 }
 
 Tile &Tilemap::getTile(int x, int y){
+    assert(x >= 0);
+    assert(y >= 0);
     int idx = MAP_WIDTH*y + x;
     Tile &t = tiles[idx];
     return t;

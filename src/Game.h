@@ -53,6 +53,8 @@ class Game {
 	int state_unit_type_idx;
     std::vector<std::vector<float>> state;
 
+
+
 public:
     // Retrieve game via Game ID
     static Game * getGame(uint8_t id);
@@ -159,7 +161,7 @@ public:
     ////////////////////////////////////////////////////
 
     // Add a player to the game
-    Player &addPlayer();
+    Player *addPlayer();
 
     /// Game Tick Function
     void tick();
@@ -169,6 +171,9 @@ public:
 
     /// Game Render Function
     void render();
+
+    /// Game
+    virtual void _render();
 
     /// Print the Game Statistics
     void caption();

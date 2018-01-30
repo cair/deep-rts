@@ -43,10 +43,10 @@ ext_modules = [
             'src/state/Building.cpp',
             'src/state/Combat.cpp',
             'src/state/Dead.cpp',
-            'src/action/RightClickAction.cpp',
+            #'src/action/RightClickAction.cpp',
             'src/unit/UnitManager.cpp',
             'src/loaders/ResourceLoader.cpp',
-            'src/logging/LogGame.cpp',
+            #'src/logging/LogGame.cpp',
 
 
 
@@ -147,5 +147,5 @@ import os
 file = list(glob.iglob('build/**/*.so', recursive=True))[0]
 filename = os.path.basename(file)
 
-
+shutil.copy(file, filename)
 shutil.copy(file, os.path.join("pyDeepRTS", filename))

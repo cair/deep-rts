@@ -94,6 +94,8 @@ void Game::reset()
     // Increase epsiode counter
 	episode += 1;
 
+    terminal = false;
+
 
 
 }
@@ -118,46 +120,23 @@ void Game::update(){
         _update_next += _update_interval;
         _update_delta += 1;
         ticks += 1;
-
     }
 
 }
 
-
-std::vector<std::vector<float>> Game::getState(){
-    int i = 0;
-    for(auto tile : map.getTiles()){
-
-        float tileId = tile.getTypeId();
-        float uType = 0;
-        float uPlayer = 0;
-        float uHealth = 0;
-        if (tile.hasOccupant()) {
-            auto occupant = tile.getOccupant();
-            uType = occupant->typeId;
-            uPlayer = occupant->player_->getId() + 1; // TODO id should be integrated maybe? player.id = id + 1
-            uHealth = occupant->health / occupant->health_max;
-        }
-
-        if (Config::getInstance().state_environment) state[state_environment_idx][i] = tileId;
-        if (Config::getInstance().state_unit_type) state[state_unit_type_idx][i] = uType;
-        if (Config::getInstance().state_unit_player) state[state_unit_player_idx][i] = uPlayer;
-        if (Config::getInstance().state_unit_health) state[state_unit_health_idx][i] = uHealth;
-
-        i++;
-    }
-    return state;
-}
 
 void Game::render(){
-
     if (now >= _render_next) {
-
+        _render();
 
 
         _render_next += _render_interval;
         _render_delta += 1;
-    }
+    }}
+
+void Game::_render(){
+
+
 }
 
 void Game::caption() {
@@ -198,6 +177,31 @@ Tilemap &Game::getMap() {
 
 
 
+std::vector<std::vector<float>> Game::getState(){
+    int i = 0;
+    for(auto tile : map.getTiles()){
+
+        float tileId = tile.getTypeId();
+        float uType = 0;
+        float uPlayer = 0;
+        float uHealth = 0;
+        if (tile.hasOccupant()) {
+            auto occupant = tile.getOccupant();
+            uType = occupant->typeId;
+            uPlayer = occupant->player_->getId() + 1; // TODO id should be integrated maybe? player.id = id + 1
+            uHealth = occupant->health / occupant->health_max;
+        }
+
+        if (Config::getInstance().state_environment) state[state_environment_idx][i] = tileId;
+        if (Config::getInstance().state_unit_type) state[state_unit_type_idx][i] = uType;
+        if (Config::getInstance().state_unit_player) state[state_unit_player_idx][i] = uPlayer;
+        if (Config::getInstance().state_unit_health) state[state_unit_health_idx][i] = uHealth;
+
+        i++;
+    }
+    return state;
+}
+
 
 Game * Game::getGame(uint8_t id)
 {
@@ -223,12 +227,12 @@ bool Game::isTerminal(){
 }
 
 
-Player &Game::addPlayer() {
+Player *Game::addPlayer() {
 	players.emplace_back(*this, players.size());
 	Player &player = players.back();
 
 	spawnPlayer(player);
-	return player;
+	return &player;
 }
 
 void Game::spawnPlayer(Player &player) {
@@ -240,8 +244,10 @@ void Game::spawnPlayer(Player &player) {
 
 	int spawnPointIdx = map.spawnTiles[player.getId()];
 
+    auto spawnTile = map.getTiles()[spawnPointIdx];
+
 	// Spawn Initial builder
-	Unit &builder = player.spawn(map.getTiles()[spawnPointIdx]);
+	Unit &builder = player.spawn(spawnTile);
 
 	// If auto-spawn town hall mechanic is activated
 	if (Config::getInstance().getMechanicTownHall()) {

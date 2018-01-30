@@ -9,6 +9,8 @@ void init_Unit(py::module &m) {
     py::class_<Unit>(m, "Unit")
             .def(py::init<Player*>())
 
+
+            .def_readonly("type_id", &Unit::typeId)
             .def_readonly("health", &Unit::health)
             .def_readonly("health_max", &Unit::health_max)
             .def_readonly("name", &Unit::name)

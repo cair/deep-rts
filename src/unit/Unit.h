@@ -121,7 +121,7 @@ public:
 
     // Combat
     int combatTargetID = -1;
-	Unit &getCombatTarget();
+	Unit *getCombatTarget();
     int combatTimer = 1000;
     double combatInterval = 1 * 10;
 
@@ -186,7 +186,8 @@ public:
 	void tryMove(int16_t x, int16_t y);
 	void tryAttack();
 	void tryHarvest();
-	
 
+
+    bool position_in_bounds(int x, int y);
 };
 

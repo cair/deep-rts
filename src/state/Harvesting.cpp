@@ -131,5 +131,6 @@ void Harvesting::end(Unit & unit)const{
 void Harvesting::init(Unit & unit)const{
     unit.harvestTimer = 0;
     unit.harvestIterator = 0;
+
 }
 

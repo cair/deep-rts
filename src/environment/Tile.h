@@ -52,9 +52,9 @@ private:
 
 	const bool newSwimable;
 
-	const bool newTypeId;
+	const int newTypeId;
 
-    const bool newResources;
+    const int newResources;
 
     const std::string newName;
 
@@ -69,9 +69,9 @@ private:
 
 	const bool depletedSwimable;
 
-	const bool depletedTypeId;
+	const int depletedTypeId;
 
-    const bool depletedResources;
+    const int depletedResources;
 
     const std::string depletedName;
 

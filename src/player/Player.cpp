@@ -84,14 +84,15 @@ void Player::update() {
 		actionQueue.pop_front();
 
 		// No units to perform action on
-		if(unitIndexes.empty()) {
+		if(unitIndexes.empty()) { ;
 			return;
 		}
 
 		if (!getTargetedUnit() && (actionID != Constants::Action::NextUnit && actionID != Constants::Action::PreviousUnit)) {
-			// No selected unit by the player and he attempts to right click on a targetedUnit
+			// No selected unit by the player and he attempts to right click on a targetedUnit;
 			return;
 		}
+
 
 		Unit *targetedUnit = getTargetedUnit();
 
@@ -405,8 +406,6 @@ void Player::queueActionA(int actionID, int delay) {
 
 void Player::queueAction(Constants::Action actionID, int delay) {
 	actionStatistics[actionID] += 1; // Increment statistics
-
-
 	actionQueue.emplace_back(actionID, delay);
 }
 

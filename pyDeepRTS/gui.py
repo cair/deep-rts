@@ -4,46 +4,14 @@ import sys
 import pygame
 from pygame.locals import *
 
+from pyDeepRTS.Sprites import Sprites
+from .util import get_sprite, image_at
+
+
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-def image_at(sheet, tile_n, tile_size=32):
-    size = sheet.get_size()
-    n_cols = math.floor(size[0] / tile_size)
-    n_rows = math.floor(tile_n / n_cols)
-    mod_id = tile_n % n_cols
-
-    x_start = (mod_id * tile_size) + mod_id
-    y_start = (n_rows * tile_size) + n_rows
-
-    rect = pygame.Rect((x_start, y_start, tile_size, tile_size))
-    image = pygame.Surface(rect.size).convert()
-    image.blit(sheet, (0, 0), rect)
-
-    return image
-
-
-def get_sprite(
-        sheet,
-        x,
-        y,
-        width,
-        height,
-        w_to,
-        h_to,
-        flip=False
-):
-    w_to = w_to * 32 # TODO
-    h_to = h_to * 32 # TODO
-
-    rect = pygame.Rect((x, y, width, height))
-    image = pygame.Surface(rect.size, pygame.SRCALPHA, 32).convert_alpha()
-
-    image.blit(sheet, (0, 0), rect)
-    image = pygame.transform.flip(image, flip, False)
-    image = pygame.transform.scale(image, (int(w_to), int(h_to)))
-
-    return image
 
 
 
@@ -187,33 +155,51 @@ class GUI:
 
     def __init__(self, game):
         self.game = game
+        self.map = self.game.get_tilemap()
+        self.tiles = self.map.get_tiles()
+
+        print(dir(self.game))
+        self.units = self.game.units
+
 
         pygame.init()
-        pygame.display.set_caption('WarC2Sim')
+        pygame.display.set_caption('DeepRTS v1.4.0')
 
         # Camera Variables
         self.camera_x = 0
         self.camera_y = 0
 
-        # Load Resources
-        self.unit_sprite = self.unit_sprites()
-
         # Window / Canvas Variables
         self.window_size = (800, 800)
-        self.map_size = (game.get_tilemap().map_width, game.get_tilemap().map_height)
+        self.map_size = (self.map.map_width, self.map.map_height)
+        self.map_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
 
-
-        #self.canvas_size = (MapLoader.width * Map.TILE_SIZE, MapLoader.height * Map.TILE_SIZE)
-        #self.window_size = (800, 600)
         self.display = pygame.display.set_mode(self.window_size)
-        self.surface_map = pygame.Surface(self.map_size)
+        self.surface_map = pygame.Surface(self.map_render_size)  # Tiles that may change during game
 
 
-        #self.tiles_sprite = self.tile_sprites()
+        # Load Resources
+        self.unit_sprites, self.tile_sprites = Sprites(self).load()
+
+        # Setup
+        self.static_tiles = self.setup_static_map()
+        self.dynamic_tiles = set(self.tiles) - set(self.static_tiles)
 
 
+    def setup_static_map(self):
+        static_tiles = []
+        for tile in self.tiles:
+            # Harvestable tiles can be transformed when depleted
+            if tile.is_harvestable():
+                continue
 
-        #self.set_camera()
+            tile_sprite = self.tile_sprites[tile.get_type_id()]
+            self.surface_map.blit(tile_sprite, (tile.x * self.map.tile_width, tile.y * self.map.tile_height))
+            static_tiles.append(tile)
+
+        return static_tiles
+
+
 
     def set_camera(self):
         try:
@@ -227,340 +213,83 @@ class GUI:
         except:
             pass
 
-    def tile_sprites(self):
-        tileset_path = os.path.abspath(os.path.join(dir_path, '../data/textures', MapLoader.TILES_THEME, "tiles.png"))
-        sheet = pygame.image.load(tileset_path).convert()
-
-        result = [[None for x in range(MapLoader.width)] for y in range(MapLoader.height)]
-
-        # Predefine sprites for each tile
-        for x in range(MapLoader.height):
-            for y in range(MapLoader.width):
-                tile_type = MapLoader.tiles[x][y]
-                tile_info = Map.TILE_DATA[tile_type]
-                tile_choice = random.choice(tile_info['id'])
-                sprite = SpriteUtil.image_at(sheet, tile_choice, Map.TILE_SIZE).convert()
-                result[x][y] = sprite
-
-        return result
-
-    def unit_sprites(self):
-        """
-        {
-            Unit.LEFT: [],
-            Unit.UP: [],
-            Unit.RIGHT: [],
-            Unit.DOWN: [],
-            Unit.UP_LEFT: [],
-            Unit.UP_RIGHT: [],
-            Unit.DOWN_LEFT: [],
-            Unit.DOWN_RIGHT: []
-        }
-        :return:
-        """
-
-        Unit.PEASANT_SPRITE = Unit.PEASANT_SPRITE.convert_alpha()
-
-        sprites = {
-            Unit.PEASANT:  {
-                Unit.LEFT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 4, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 42, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 82, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 118, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 155, 32, 32, Peasant.width, Peasant.height, True)
-                ],
-                Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 15, 155, 32, 32, Peasant.width, Peasant.height)
-                ],
-                Unit.RIGHT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 85, 155, 32, 32, Peasant.width, Peasant.height)
-                ],
-                Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 164, 155, 32, 32, Peasant.width, Peasant.height)
-                ],
-                Unit.UP_LEFT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 4, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 42, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 82, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 118, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 155, 32, 32, Peasant.width, Peasant.height, True)
-                ],
-                Unit.UP_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 50, 155, 32, 32, Peasant.width, Peasant.height)
-                ],
-                Unit.DOWN_LEFT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 4, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 42, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 82, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 118, 32, 32, Peasant.width, Peasant.height, True),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 155, 32, 32, Peasant.width, Peasant.height, True)
-                ],
-                Unit.DOWN_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 4, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 42, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 82, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 118, 32, 32, Peasant.width, Peasant.height),
-                    SpriteUtil.get_sprite(Unit.PEASANT_SPRITE, 120, 155, 32, 32, Peasant.width, Peasant.height)
-                ]
-            },
-            Unit.FOOTMAN:  {
-                Unit.LEFT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 7, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 56, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 99, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 138, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 176, 32, 32, Footman.width, Footman.height, True)
-                ],
-                Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 21, 176, 32, 32, Footman.width, Footman.height)
-                ],
-                Unit.RIGHT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 170, 176, 32, 32, Footman.width, Footman.height)
-                ],
-                Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 56, 32, 36, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 138, 32, 36, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 315, 176, 32, 32, Footman.width, Footman.height)
-                ],
-                Unit.UP_LEFT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 7, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 56, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 99, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 138, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 176, 32, 32, Footman.width, Footman.height, True)
-                ],
-                Unit.UP_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 96, 176, 32, 32, Footman.width, Footman.height)
-                ],
-                Unit.DOWN_LEFT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 7, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 56, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height, True),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height, True)
-                ],
-                Unit.DOWN_RIGHT: [
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 7, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 56, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 99, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 138, 32, 32, Footman.width, Footman.height),
-                    SpriteUtil.get_sprite(Unit.FOOTMAN_SPRITE, 241, 176, 32, 32, Footman.width, Footman.height)
-                ],
-
-            },
-            Unit.TOWN_HALL:  {
-                Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 270, 156, 111, 93, TownHall.width, TownHall.height),
-                ],
-                Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 270, 20, 111, 93, TownHall.width, TownHall.height)
-                ]
-            },
-            Unit.FARM:  {
-                Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 398, 70, 66, 66, Farm.width, Farm.height)
-                ],
-                Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 398, 1, 66, 66, Farm.width, Farm.height),
-                ]
-            },
-            Unit.BARRACKS:  {
-                Unit.DOWN: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 304, 560, 102, 102, Barracks.width, Barracks.height)
-                ],
-                Unit.UP: [
-                    SpriteUtil.get_sprite(Unit.BUILDING_SPRITESHEET, 304, 457, 102, 102, Barracks.width, Barracks.height),
-                ]
-            }
-        }
-
-        return sprites
-
     def render_tiles(self):
 
-        pygame.draw.rect(self.canvas, (0, 0, 0), (0, 0, MapLoader.height * Map.TILE_SIZE, MapLoader.width * Map.TILE_SIZE))
+        for tile in self.tiles:
+            x = tile.x
+            y = tile.y
+            type_id = tile.get_type_id()
+            tile_sprite = self.tile_sprites[type_id]
 
-        for x, y in self.player.vision:
-            self.canvas.blit(self.tiles_sprite[x][y], (x * Map.TILE_SIZE, y * Map.TILE_SIZE))
 
-            # Render State List
-            if Config.DEBUG:
-                self.canvas.blit(
-                    Overlay.small.render("(%s,%s)" % (x,y), 1, (255, 255, 0)),
-                    (x * Map.TILE_SIZE, y * Map.TILE_SIZE)
-                )
+            print(tile.get_name(), tile.is_depleted(), tile.get_type_id(), tile.get_resources())
 
-    def render_units(self, dt):
+            self.surface_map.blit(tile_sprite, (x * self.map.tile_width, y * self.map.tile_height))
 
-        for unit in self.game.units.values():
+    def render_units(self):
 
-            coordinates = (unit.state.x, unit.state.y)
-
-            if not unit.state.x or coordinates not in self.player.vision:
+        for unit in self.game.units:
+            if not unit.tile:
                 continue
 
-            sprite_arr = self.unit_sprite[unit.id][unit.state.direction] # Selection
-            sprite = sprite_arr[unit.animation_iterator % len(sprite_arr)] # Selection based on frame
-            pos = (unit.state.x * Map.TILE_SIZE, unit.state.y * Map.TILE_SIZE)
+            x = unit.tile.x
+            y = unit.tile.y
+            # List of available sprites
+            unit_sprite = self.unit_sprites[unit.type_id][unit.direction][0]  # TODO Fix animation
 
-            # Render Sprite
-            self.canvas.blit(sprite, pos)
-
-            # Render healthbar
-            health_percent = (unit.state.health / unit.health_max)
-            pygame.draw.rect(self.canvas, (255, 0, 0),
-                             (pos[0] - 10,
-                              pos[1] - 5,
-                              50,
-                              5
-                              ))
-            pygame.draw.rect(self.canvas, (0, 255, 0),
-                             (pos[0] - 10,
-                              pos[1] - 5,
-                              50 * health_percent,
-                              5
-                              ))
-
-            # Render State List
-            if Config.DEBUG:
-                self.canvas.blit(
-                    Overlay.font.render('->'.join([x.id for x in unit.state.next_states]) + str(unit.spawned), 1, (255, 255, 0)),
-                    (unit.state.x * Map.TILE_SIZE, unit.state.y * Map.TILE_SIZE)
-                )
-
-            unit.animation_timer += dt
-            if unit.animation_timer > unit.animation_interval and unit.state.id == ID_Walking:
-                unit.animation_iterator += 1
-                unit.animation_timer = 0
-
-    def scroll_process(self):
-        if self.gstate.SCROLL_UP:
-            self.camera_y = min(0, self.camera_y + 20)
-        if self.gstate.SCROLL_DOWN:
-            self.camera_y = max(self.window_size[1] - self.canvas_size[1], self.camera_y - 20)
-        if self.gstate.SCROLL_LEFT:
-            self.camera_x = min(0, self.camera_x + 20)
-        if self.gstate.SCROLL_RIGHT:
-            self.camera_x = max(self.window_size[0] - self.canvas_size[0], self.camera_x - 20)
-
-    def left_click(self, x, y):
-
-        x = max(0, min(MapLoader.width - 1, x))
-        y = max(0, min(MapLoader.height - 1, y))
-
-        # Propagate first to Units
-        unit_id = self.game.data['unit'][x, y]
-
-        if unit_id != 0:
-            # Unit selection
-            unit = self.game.units[unit_id]
-            self.gstate.selected_unit = unit
-            self.player.left_click(x, y, unit_id)
-            return
-        else:
-            # Click on tile
-            self.gstate.selected_unit = None
-
-            pass
-
-    def right_click(self, x, y):
-
-        x = max(0, min(MapLoader.width - 1, x))
-        y = max(0, min(MapLoader.height - 1, y))
-
-        # Right click and hav a selected unit, move it!
-        if self.gstate.selected_unit and type(self.gstate.selected_unit.state) != State.Dead:
-            self.player.right_click(x, y, self.gstate.selected_unit.unit_id)
-
-
-
-    def process(self):
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == Input.LEFT:
-                x, y = event.pos
-                x += self.camera_x * -1
-                y += self.camera_y * -1
-                tile_x = int(x / Map.TILE_SIZE)
-                tile_y = int(y / Map.TILE_SIZE)
-                self.left_click(tile_x, tile_y)
-
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == Input.RIGHT:
-                x, y = event.pos
-                x += self.camera_x * -1
-                y += self.camera_y * -1
-                tile_x = int(x / Map.TILE_SIZE)
-                tile_y = int(y / Map.TILE_SIZE)
-                self.right_click(tile_x, tile_y)
-            elif (event.type == KEYDOWN):
-                if (event.key == K_w):
-                    self.gstate.SCROLL_UP = True
-                elif (event.key == K_a):
-                    self.gstate.SCROLL_LEFT = True
-                elif (event.key == K_s):
-                    self.gstate.SCROLL_DOWN = True
-                elif (event.key == K_d):
-                    self.gstate.SCROLL_RIGHT = True
-            elif event.type == KEYUP:
-                if event.key == K_w:
-                    self.gstate.SCROLL_UP = False
-                elif event.key == K_a:
-                    self.gstate.SCROLL_LEFT = False
-                elif event.key == K_s:
-                    self.gstate.SCROLL_DOWN = False
-                elif event.key == K_d:
-                    self.gstate.SCROLL_RIGHT = False
-
-                # Hotkeys for building
-                if self.gstate.selected_unit:
-                    num_options = len(self.gstate.selected_unit.buildable)
-                    keys = [K_1, K_2, K_3, K_4, K_5, K_6]
-                    for idx, key in enumerate(keys[:num_options]):
-                        if event.key == key:
-                            if self.gstate.selected_unit.build(idx):
-                                pass #self.gstate.selected_unit = None
+            self.surface_map.blit(unit_sprite, (x * self.map.tile_width, y * self.map.tile_height))
 
 
 
 
-        # Processes
-        self.scroll_process()
 
-    def render(self, dt):
+        """
+     
+
+
+        # Render Sprite
+        self.canvas.blit(sprite, pos)
+
+        # Render healthbar
+        health_percent = (unit.state.health / unit.health_max)
+        pygame.draw.rect(self.canvas, (255, 0, 0),
+                         (pos[0] - 10,
+                          pos[1] - 5,
+                          50,
+                          5
+                          ))
+        pygame.draw.rect(self.canvas, (0, 255, 0),
+                         (pos[0] - 10,
+                          pos[1] - 5,
+                          50 * health_percent,
+                          5
+                          ))
+
+        # Render State List
+        if Config.DEBUG:
+            self.canvas.blit(
+                Overlay.font.render('->'.join([x.id for x in unit.state.next_states]) + str(unit.spawned), 1, (255, 255, 0)),
+                (unit.state.x * Map.TILE_SIZE, unit.state.y * Map.TILE_SIZE)
+            )
+
+        unit.animation_timer += dt
+        if unit.animation_timer > unit.animation_interval and unit.state.id == ID_Walking:
+            unit.animation_iterator += 1
+            unit.animation_timer = 0
+        """
+
+    def render(self):
+
+        self.render_tiles()
+        self.render_units()
+
+        self.display.blit(self.surface_map, (0, 0))
+
+
+
+        pygame.display.flip()
+        pygame.display.update()
+        """
         self.process()
 
         # Draw Tile map
@@ -573,8 +302,8 @@ class GUI:
         Overlay.render_top_panel(self)
         Overlay.render_bottom_panel(self)
 
-        #pygame.display.flip()
-        pygame.display.update()
+        #
+        """
 
     def caption(self, dt):
         pygame.display.set_caption(

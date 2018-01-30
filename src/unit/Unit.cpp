@@ -74,7 +74,6 @@ void Unit::setPosition(Tile &newTile) {
 
 void Unit::update() {
     state->update(*this);
-
 }
 
 Tile *Unit::centerTile() {
@@ -108,8 +107,15 @@ bool Unit::build(int idx) {
 
     // PlacementTile is based on dimension of the new unit. For example; town hall has
     // 3x Width && 3x Height. We then want to place  the building by the middle tile;
-    Tile &placementTile = player_->getGame().getMap().getTile(tile->x - floor(newUnit.width/2), tile->y - floor(newUnit.height/2));
-    assert(&placementTile && "PlacementTile was null in build()");
+
+    int x = tile->x - floor(newUnit.width/2);
+    int y = tile->y - floor(newUnit.height/2);
+
+    if(!position_in_bounds(x, y)) {
+        return false;
+    }
+
+    Tile &placementTile = player_->getGame().getMap().getTile(x, y);
     if(!player_->canAfford(newUnit)) {
         //std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
@@ -245,19 +251,20 @@ void Unit::transitionState() {
     if(stateList.empty()) {
         // No states to transition to, enter idle state
         std::shared_ptr<BaseState> nextState = stateManager->idleState;
-        //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|" << std::endl;
-        //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|" << std::endl;
+        //std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
         state->end(*this);
         state = nextState;
         state->init(*this);
         return;
     }
 
-    auto nextState = stateList.back();
-    //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|y" << std::endl;
-    //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|y"  << std::endl;
+    auto nextStateId = stateList.back();
+
+
     state->end(*this);
-    state = stateManager->getByID(nextState);
+    auto nextState = stateManager->getByID(nextStateId);
+    //std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
+    state = nextState;
     stateList.pop_back();
     //state->init(*this);
 
@@ -265,8 +272,9 @@ void Unit::transitionState() {
 }
 
 void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
-    //std::cout << "State Transition: " << state->name << " ==> " << nextState->name << "|x" << std::endl;
-    //std::cout << "State Transition: " << state->id << " ==> " << nextState->id << "|x" << std::endl;
+    //std::cout << id << " State Transition: " << state->name << " ==> " << nextState->name  << std::endl;
+
+
     state->end(*this);
     state = std::move(nextState);
     state->init(*this);
@@ -423,6 +431,10 @@ void Unit::tryMove(int16_t x, int16_t y)
     int newX = tile->x + x;
     int newY = tile->y + y;
 
+    if(!position_in_bounds(newX, newY)) {
+        return;
+    }
+
     Tile &tile = player_->getGame().getMap().getTile(newX, newY);
 
     if (tile.isWalkable()) {
@@ -486,9 +498,12 @@ Unit &Unit::getBuildEntity() {
     return player_->getGame().units[buildEntityID];
 }
 
-Unit &Unit::getCombatTarget() {
-    assert(combatTargetID != -1);
-    return player_->getGame().units[combatTargetID];
+Unit *Unit::getCombatTarget() {
+    //assert(combatTargetID != -1);
+    if (combatTargetID == -1) {
+        return NULL;
+    }
+    return &player_->getGame().units[combatTargetID];
 }
 
 std::set<int> Unit::getVisionTileIDs() {
@@ -512,6 +527,16 @@ std::set<int> Unit::getVisionTileIDs() {
         }
     }
     return tileIDs;
+}
+
+bool Unit::position_in_bounds(int x, int y) {
+    if(
+            x < 0 || x > this->player_->getGame().getMap().MAP_WIDTH ||
+            y < 0 || y > this->player_->getGame().getMap().MAP_HEIGHT
+            ){
+        return false;
+    }
+    return true;
 }
 
 
