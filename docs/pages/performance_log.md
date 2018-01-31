@@ -1,4 +1,8 @@
-# Performance Log
+# Performance v1.3 vs v2.0
+
+
+
+# Performance Prior v2.0
 
 So, i've had a few issues with python not processing fast enough. I did some considerations on switching to C++ for better performance.
 
