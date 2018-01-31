@@ -35,9 +35,6 @@ class Game {
     uint32_t _update_delta = 0;
     uint32_t _render_delta = 0;
 
-    /// Game Tilemap
-    Tilemap map;
-
     /// Spawn a player
     void spawnPlayer(Player & player);
 
@@ -67,6 +64,9 @@ public:
     /// Properties
     ///
     ////////////////////////////////////////////////////
+
+    /// Game Tilemap
+    Tilemap map;
 
     /// Game State Manager
     StateManager stateManager;
@@ -141,6 +141,8 @@ public:
 
     uint8_t getId() const;
 
+    uint8_t getTicksModifier() const;
+
     ////////////////////////////////////////////////////
     ///
     /// Setters
@@ -168,15 +170,18 @@ public:
 
     /// Game Update Function
     void update();
+    virtual void _update();
 
     /// Game Render Function
     void render();
 
-    /// Game
+    /// Game Render implementation
     virtual void _render();
 
     /// Print the Game Statistics
     void caption();
+
+    virtual void _caption();
 
     // Enables the running flag and updates the clock
     void start();
@@ -186,6 +191,7 @@ public:
 
     // Resets the game
     void reset();
+    virtual void _reset();
 
     // Returns true if the game is in an terminal state
     bool isTerminal();

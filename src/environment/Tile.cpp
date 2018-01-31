@@ -59,7 +59,9 @@ lumberYield(lumberYield),
 goldYield(goldYield),
 oilYield(oilYield)
 {
-	depleted = resources <= 0;
+	if(resources <= 0) {
+		setDepleted();
+	}
 }
 
 
@@ -137,6 +139,10 @@ void Tile::reset()
     name = newName;
     typeId = newTypeId;
     depleted = false;
+
+    if(resources <= 0) {
+        setDepleted();
+    }
 
 }
 

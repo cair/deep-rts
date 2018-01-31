@@ -14,9 +14,12 @@ void init_Game(py::module &m) {
             // Functions
             .def("tick", &Game::tick)
             .def("update", &Game::update)
+            .def("_update", &Game::update)
             .def("render", &Game::render)
             .def("_render", &Game::render)
+
             .def("caption", &Game::caption)
+            .def("_caption", &Game::caption)
             .def("start", &Game::start)
             .def("stop", &Game::stop)
             .def("reset", &Game::reset)
@@ -37,11 +40,13 @@ void init_Game(py::module &m) {
             .def("get_max_fps", &Game::getMaxFPS)
             .def("get_max_ups", &Game::getMaxUPS)
             .def("get_state", &Game::getState)
-            .def("get_tilemap",  &Game::getMap)
+            .def("get_ticks_modifier", &Game::getTicksModifier)
+
+
 
             .def_readonly("units", &Game::units)
             .def_readonly("players", &Game::players)
-
+            .def_readonly("map", &Game::map)
             /// Setters
             .def("set_max_fps", &Game::setMaxFPS)
             .def("set_max_ups", &Game::setMaxUPS);

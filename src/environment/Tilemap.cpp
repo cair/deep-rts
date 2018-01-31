@@ -94,9 +94,8 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
 
             Tile &tile = tiles.back();
 
-            if(tile.getTypeId() == Constants::Tile::Spawn){
+            if(newTypeId == Constants::Tile::Spawn){
                 spawnTiles.push_back(c);
-                tile.setDepleted();
             }
 
 

@@ -16,4 +16,16 @@ class PyGame: public Game {
         PYBIND11_OVERLOAD(void, Game, _render, );
     }
 
+    virtual void _caption() override {
+        PYBIND11_OVERLOAD(void, Game, _caption, );
+    }
+
+    virtual void _update() override {
+        PYBIND11_OVERLOAD(void, Game, _update, );
+    }
+
+    virtual void _reset() override {
+        PYBIND11_OVERLOAD(void, Game, _reset, );
+    }
+
 };

@@ -29,14 +29,17 @@ private:
 public:
 
 	/// Constructor
-	explicit Unit(Player *player);
-	Unit() {}
+    Unit(Player *player);
+
 
 	//////////////////////////////////////////////////////////////
 	///
 	/// Properties
 	///
 	//////////////////////////////////////////////////////////////
+
+	/// Store Sprite pointer
+	char *sprite;
 
 	/// Unit ID
 	int id;

@@ -33,10 +33,10 @@ def get_sprite(
     h_to = h_to * 32 # TODO
 
     rect = pygame.Rect((x, y, width, height))
-    image = pygame.Surface(rect.size, pygame.SRCALPHA, 32).convert_alpha()
+    image = pygame.Surface(rect.size)
 
     image.blit(sheet, (0, 0), rect)
     image = pygame.transform.flip(image, flip, False)
     image = pygame.transform.scale(image, (int(w_to), int(h_to)))
 
-    return image
+    return image.convert_alpha()

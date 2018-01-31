@@ -11,8 +11,9 @@ if __name__ == "__main__":
     player2 = g.add_player()
 
 
-    g.set_max_fps(10)
-    g.set_max_ups(1000)
+    g.set_max_fps(100000)
+    g.set_max_ups(100000)
+    g.render_every(10)
 
     g.start()
 
@@ -22,6 +23,7 @@ if __name__ == "__main__":
         g.render()
         g.get_state()
         g.caption()
+
 
         if g.is_terminal():
             g.reset()

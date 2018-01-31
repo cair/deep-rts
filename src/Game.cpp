@@ -96,6 +96,8 @@ void Game::reset()
 
     terminal = false;
 
+    _reset();
+
 
 
 }
@@ -115,6 +117,7 @@ void Game::update(){
             p.update();
         }
 
+        _update();
 
         // Update Counters and statistics
         _update_next += _update_interval;
@@ -134,17 +137,19 @@ void Game::render(){
         _render_delta += 1;
     }}
 
-void Game::_render(){
+void Game::_render(){}
+void Game::_caption(){}
+void Game::_update(){}
+void Game::_reset() {}
 
-
-}
 
 void Game::caption() {
     if (now >= this->_stats_next) {
-
+        _caption();
         if (consoleCaptionEnabled) {
             std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
         }
+
 
 
         currentFPS = _render_delta;
@@ -297,12 +302,19 @@ uint64_t Game::getTicks() const{
 }
 
 uint64_t Game::getGameDuration() const{
-    return this->ticks / Config::getInstance().getTickModifier();
+    return this->ticks / getTicksModifier();
+}
+
+uint8_t Game::getTicksModifier() const {
+    return Config::getInstance().getTickModifier();
 }
 
 uint8_t Game::getId() const {
     return id;
 }
+
+
+
 
 
 

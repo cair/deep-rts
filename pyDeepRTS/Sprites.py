@@ -23,11 +23,12 @@ class Sprites:
 
     def _load_sprite(self, path):
         sheet = pygame.image.load(path).convert_alpha()
+
         return sheet
 
     def tiles(self):
         tileset_path = os.path.join(dir_path, "..", "data", "textures", "tiles.png")
-        sheet = pygame.image.load(tileset_path).convert()
+        sheet = pygame.image.load(tileset_path).convert_alpha()
 
         tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__")]
 
@@ -40,57 +41,57 @@ class Sprites:
 
     def sprites(self):
         sprites = {
-            int(Unit.Peasant):  {
-                int(Direction.Left): [
+            Unit.Peasant:  {
+                Direction.Left: [
                     get_sprite(self.peasant, 85, 4, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 85, 42, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 85, 82, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 85, 118, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 85, 155, 32, 32, 1, 1, True)
                 ],
-                int(Direction.Up): [
+                Direction.Up: [
                     get_sprite(self.peasant, 15, 4, 32, 32, 1, 1),
                     get_sprite(self.peasant, 15, 42, 32, 32, 1, 1),
                     get_sprite(self.peasant, 15, 82, 32, 32, 1, 1),
                     get_sprite(self.peasant, 15, 118, 32, 32, 1, 1),
                     get_sprite(self.peasant, 15, 155, 32, 32, 1, 1)
                 ],
-                int(Direction.Right): [
+                Direction.Right: [
                     get_sprite(self.peasant, 85, 4, 32, 32, 1, 1),
                     get_sprite(self.peasant, 85, 42, 32, 32, 1, 1),
                     get_sprite(self.peasant, 85, 82, 32, 32, 1, 1),
                     get_sprite(self.peasant, 85, 118, 32, 32, 1, 1),
                     get_sprite(self.peasant, 85, 155, 32, 32, 1, 1)
                 ],
-                int(Direction.Down): [
+                Direction.Down: [
                     get_sprite(self.peasant, 164, 4, 32, 32, 1, 1),
                     get_sprite(self.peasant, 164, 42, 32, 32, 1, 1),
                     get_sprite(self.peasant, 164, 82, 32, 32, 1, 1),
                     get_sprite(self.peasant, 164, 118, 32, 32, 1, 1),
                     get_sprite(self.peasant, 164, 155, 32, 32, 1, 1)
                 ],
-                int(Direction.UpLeft): [
+                Direction.UpLeft: [
                     get_sprite(self.peasant, 50, 4, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 50, 42, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 50, 82, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 50, 118, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 50, 155, 32, 32, 1, 1, True)
                 ],
-                int(Direction.UpRight): [
+                Direction.UpRight: [
                     get_sprite(self.peasant, 50, 4, 32, 32, 1, 1),
                     get_sprite(self.peasant, 50, 42, 32, 32, 1, 1),
                     get_sprite(self.peasant, 50, 82, 32, 32, 1, 1),
                     get_sprite(self.peasant, 50, 118, 32, 32, 1, 1),
                     get_sprite(self.peasant, 50, 155, 32, 32, 1, 1)
                 ],
-                int(Direction.DownLeft): [
+                Direction.DownLeft: [
                     get_sprite(self.peasant, 120, 4, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 120, 42, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 120, 82, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 120, 118, 32, 32, 1, 1, True),
                     get_sprite(self.peasant, 120, 155, 32, 32, 1, 1, True)
                 ],
-                int(Direction.DownRight): [
+                Direction.DownRight: [
                     get_sprite(self.peasant, 120, 4, 32, 32, 1, 1),
                     get_sprite(self.peasant, 120, 42, 32, 32, 1, 1),
                     get_sprite(self.peasant, 120, 82, 32, 32, 1, 1),
@@ -98,57 +99,57 @@ class Sprites:
                     get_sprite(self.peasant, 120, 155, 32, 32, 1, 1)
                 ]
             },
-            int(Unit.Footman):  {
-                int(Direction.Left): [
+            Unit.Footman:  {
+                Direction.Left: [
                     get_sprite(self.footman, 170, 7, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 170, 56, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 170, 99, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 170, 138, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 170, 176, 32, 32, 1, 1, True)
                 ],
-                int(Direction.Up): [
+                Direction.Up: [
                     get_sprite(self.footman, 21, 7, 32, 32, 1, 1),
                     get_sprite(self.footman, 21, 56, 32, 32, 1, 1),
                     get_sprite(self.footman, 21, 99, 32, 32, 1, 1),
                     get_sprite(self.footman, 21, 138, 32, 32, 1, 1),
                     get_sprite(self.footman, 21, 176, 32, 32, 1, 1)
                 ],
-                int(Direction.Right): [
+                Direction.Right: [
                     get_sprite(self.footman, 170, 7, 32, 32, 1, 1),
                     get_sprite(self.footman, 170, 56, 32, 32, 1, 1),
                     get_sprite(self.footman, 170, 99, 32, 32, 1, 1),
                     get_sprite(self.footman, 170, 138, 32, 32, 1, 1),
                     get_sprite(self.footman, 170, 176, 32, 32, 1, 1)
                 ],
-                int(Direction.Down): [
+                Direction.Down: [
                     get_sprite(self.footman, 315, 7, 32, 32, 1, 1),
                     get_sprite(self.footman, 315, 56, 32, 36, 1, 1),
                     get_sprite(self.footman, 315, 99, 32, 32, 1, 1),
                     get_sprite(self.footman, 315, 138, 32, 36, 1, 1),
                     get_sprite(self.footman, 315, 176, 32, 32, 1, 1)
                 ],
-                int(Direction.UpLeft): [
+                Direction.UpLeft: [
                     get_sprite(self.footman, 96, 7, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 96, 56, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 96, 99, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 96, 138, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 96, 176, 32, 32, 1, 1, True)
                 ],
-                int(Direction.UpRight): [
+                Direction.UpRight: [
                     get_sprite(self.footman, 96, 7, 32, 32, 1, 1),
                     get_sprite(self.footman, 96, 56, 32, 32, 1, 1),
                     get_sprite(self.footman, 96, 99, 32, 32, 1, 1),
                     get_sprite(self.footman, 96, 138, 32, 32, 1, 1),
                     get_sprite(self.footman, 96, 176, 32, 32, 1, 1)
                 ],
-                int(Direction.DownLeft): [
+                Direction.DownLeft: [
                     get_sprite(self.footman, 241, 7, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 241, 56, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 241, 99, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 241, 138, 32, 32, 1, 1, True),
                     get_sprite(self.footman, 241, 176, 32, 32, 1, 1, True)
                 ],
-                int(Direction.DownRight): [
+                Direction.DownRight: [
                     get_sprite(self.footman, 241, 7, 32, 32, 1, 1),
                     get_sprite(self.footman, 241, 56, 32, 32, 1, 1),
                     get_sprite(self.footman, 241, 99, 32, 32, 1, 1),
@@ -157,27 +158,30 @@ class Sprites:
                 ],
 
             },
-            int(Unit.TownHall):  {
-                int(Direction.UpLeft): [
+            Unit.TownHall:  {
+                Direction.UpLeft: [
                     get_sprite(self.town_hall, 270, 156, 111, 93, 3, 3),
                 ],
-                int(Direction.Up): [
+                Direction.UpRight: [
+                    get_sprite(self.town_hall, 270, 156, 111, 93, 3, 3),
+                ],
+                Direction.Up: [
                     get_sprite(self.town_hall, 270, 20, 111, 93, 3, 3)
                 ]
             },
-            int(Unit.Farm):  {
-                int(Direction.UpLeft): [
+            Unit.Farm:  {
+                Direction.UpLeft: [
                     get_sprite(self.farm, 398, 70, 66, 66, 2, 2)
                 ],
-                int(Direction.Up): [
+                Direction.Up: [
                     get_sprite(self.farm, 398, 1, 66, 66, 2, 2),
                 ]
             },
-            int(Unit.Barracks):  {
-                int(Direction.UpLeft): [
+            Unit.Barracks:  {
+                Direction.UpLeft: [
                     get_sprite(self.barracks, 304, 560, 102, 102, 3, 3)
                 ],
-                int(Direction.Up): [
+                Direction.Up: [
                     get_sprite(self.barracks, 304, 457, 102, 102, 3, 3),
                 ]
             }
