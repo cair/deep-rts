@@ -3,9 +3,21 @@
 
 A Real-Time Strategy Simulator for (Deep) Reinforment Learning in C++ and Python!
 
+
+## Dependencies
+* Python >= 3.x
+* Scipy >= 1.0
+* pyglet
+
+
+# Installation
+```
+sudo pip3 git+https://github.com/UIA-CAIR/DeepRTS
+```
+
+# Example
+```
+
+```
+
 ![./docs/DeepRTS.png](./docs/DeepRTS.png)
-
-## External Dependencies
-* SFML - Graphical Library for demonstration and debugging
-* (optional) Python 3.x - API for Scientific artificial intelligence development
-
