@@ -7,7 +7,7 @@
 #include "../Constants.h"
 #include "Tile.h"
 #include <vector>
-#include "../../include/rapidjson/document.h"
+#include "../../include/rapidjson/include/rapidjson/document.h"
 
 class Game;
 

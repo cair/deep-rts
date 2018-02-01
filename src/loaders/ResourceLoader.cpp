@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include "ResourceLoader.h"
-#include "../../include/rapidjson/istreamwrapper.h"
+#include "../../include/rapidjson/include/rapidjson/istreamwrapper.h"
 #include <stdio.h>
 
 

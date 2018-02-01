@@ -5,8 +5,8 @@
 #include <chrono>
 #include "../Game.h"
 #include "LogGame.h"
-#include "../../include/rapidjson/ostreamwrapper.h"
-#include "../../include/rapidjson/writer.h"
+#include "../../include/rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../../include/rapidjson/include/rapidjson/writer.h"
 #include <fstream>
 
 
