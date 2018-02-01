@@ -76,5 +76,3 @@ class PyDeepRTS(DeepRTSEngine.Game):
 
 
 
-
-
