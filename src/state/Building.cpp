@@ -21,8 +21,8 @@ void Building::update(Unit & unit)const{
             assert(firstWalkable);
             unit.setPosition(*firstWalkable);
             unit.transitionState();
-            unit.player_->food += unit.foodProduction;
-            unit.player_->foodConsumption += unit.foodConsumption;
+            unit.player_.food += unit.foodProduction;
+            unit.player_.foodConsumption += unit.foodConsumption;
         } else {
 			
 			// Unit has tile, needs to transition

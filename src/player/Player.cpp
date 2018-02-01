@@ -258,8 +258,10 @@ void Player::removeUnit(Unit & unit) {
 	if (unitIndexes.empty()) {
 		actionQueue.clear();
 	}
-	//units.erase(std::remove(units.begin(), units.end(), unit), units.end());
-	//std::cout << "Implement removeUnit" << std::endl;
+
+	// Callback
+	getGame()._onUnitDestroy(unit);
+
 
 }
 
@@ -293,10 +295,14 @@ bool Player::canAfford(Unit & unit) {
 
 Unit& Player::addUnit(Constants::Unit unitType) {
 
+	// Create new unit
+	game_.units.push_back(UnitManager::constructUnit(unitType, *this));
+	Unit& newUnit = game_.units.back();
+	unitIndexes.push_back(newUnit.id);
 
-	game_.units.push_back(UnitManager::constructUnit(unitType, this));
-	uint16_t id = game_.units.back().id;
-	unitIndexes.push_back(id);
+	// Callback
+	getGame()._onUnitCreate(newUnit);
+
 	return game_.units.back();
 }
 

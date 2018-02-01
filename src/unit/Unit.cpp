@@ -10,16 +10,16 @@
 #include <random>
 #include <climits>
 
-Unit::Unit(Player *player): player_(player), stateManager(&player->getGame().stateManager){
-    id = player->getGame().units.size();
+Unit::Unit(Player &player): player_(player), stateManager(&player.getGame().stateManager){
+    id = player.getGame().units.size();
     state = stateManager->despawnedState;
     stateList.reserve(50);
 }
 void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
     spawnTileID = _toSpawnOn.id;
-    player_->food += foodProduction;
-    player_->foodConsumption += foodConsumption;
+    player_.food += foodProduction;
+    player_.foodConsumption += foodConsumption;
     transitionState(stateManager->spawnState);
     enqueueState(stateManager->idleState);
 }
@@ -30,7 +30,7 @@ void Unit::moveRelative(int x, int y) {
     int newX = tile->x + x;
     int newY = tile->y + y;
 
-    Tile &moveTile = player_->getGame().getMap().getTile(newX, newY);
+    Tile &moveTile = player_.getGame().getMap().getTile(newX, newY);
 
     move(moveTile);
 }
@@ -41,7 +41,7 @@ void Unit::rightClickRelative(int x, int y) {
     int newX = tile->x + x;
     int newY = tile->y + y;
 
-    Tile &clickTile = player_->getGame().getMap().getTile(newX, newY);
+    Tile &clickTile = player_.getGame().getMap().getTile(newX, newY);
     rightClick(clickTile);
 }
 
@@ -60,7 +60,7 @@ void Unit::setPosition(Tile &newTile) {
         clearTiles();
     }
 
-    for(auto &t : player_->getGame().getMap().getTileArea(newTile, width, height)) {
+    for(auto &t : player_.getGame().getMap().getTileArea(newTile, width, height)) {
         t->setOccupant(this);
     }
 
@@ -85,7 +85,7 @@ Tile *Unit::centerTile() {
         return tile;
     }
 
-    return &player_->getGame().getMap().getTile(tile->x + addX, tile->y + addY);
+    return &player_.getGame().getMap().getTile(tile->x + addX, tile->y + addY);
 }
 
 bool Unit::build(int idx) {
@@ -100,7 +100,7 @@ bool Unit::build(int idx) {
 
 
     // Check food restriction
-    if(Config::getInstance().mechanicFood && newUnit.foodConsumption + player_->foodConsumption > player_->food) {
+    if(Config::getInstance().mechanicFood && newUnit.foodConsumption + player_.foodConsumption > player_.food) {
         return false;
     }
 
@@ -115,18 +115,18 @@ bool Unit::build(int idx) {
         return false;
     }
 
-    Tile &placementTile = player_->getGame().getMap().getTile(x, y);
-    if(!player_->canAfford(newUnit)) {
+    Tile &placementTile = player_.getGame().getMap().getTile(x, y);
+    if(!player_.canAfford(newUnit)) {
         //std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
     }
 
 
 
-    if(player_->canPlace(*this, newUnit, placementTile)) {
+    if(player_.canPlace(*this, newUnit, placementTile)) {
 
-        Unit &unit = player_->addUnit(newUnit.typeId);
-        unit.player_ = player_;
+        Unit &unit = player_.addUnit(newUnit.typeId);
+        //unit.player_ = player_;
         unit.builtByID = this->id;
 
         if(!structure && unit.structure) {
@@ -151,10 +151,10 @@ bool Unit::build(int idx) {
         }
 
 
-        player_->removeGold(unit.goldCost);
-        player_->removeLumber(unit.lumberCost);
-        player_->removeOil(unit.oilCost);
-        player_->sUnitsCreated += 1;
+        player_.removeGold(unit.goldCost);
+        player_.removeLumber(unit.lumberCost);
+        player_.removeOil(unit.oilCost);
+        player_.sUnitsCreated += 1;
 
         return true;
 
@@ -166,19 +166,19 @@ bool Unit::build(int idx) {
 
 void Unit::despawn() {
 
-    for(auto &p: player_->getGame().players) {
+    for(auto &p: player_.getGame().players) {
         if(p.getTargetedUnitID() == this->id)
             p.setTargetedUnitID(-1);
     }
 
-    player_->food -= foodProduction;
-    player_->foodConsumption -= foodConsumption;
+    player_.food -= foodProduction;
+    player_.foodConsumption -= foodConsumption;
     clearTiles();
     transitionState(stateManager->despawnedState);
 }
 
 void Unit::clearTiles(){
-    for(auto &t : player_->getGame().getMap().getTileArea(*tile, width, height)) {
+    for(auto &t : player_.getGame().getMap().getTileArea(*tile, width, height)) {
         t->setOccupant(NULL);
     }
     tile->setOccupant(NULL);
@@ -310,8 +310,8 @@ Position Unit::distanceVector(Tile &target){
 Unit* Unit::closestRecallBuilding() {
     Unit* closest = NULL;
     int dist = INT_MAX;
-    for(auto &unit : player_->getGame().units) {
-        if(unit.recallable && unit.player_ == player_ && unit.tile) {
+    for(auto &unit : player_.getGame().units) {
+        if(unit.recallable && unit.player_.getId() == player_.getId() && unit.tile) {
             int d = distance(*unit.tile);
             if(d < dist) {
                 dist = d;
@@ -410,7 +410,7 @@ void Unit::tryAttack()
         return;
     }
 
-    std::vector<Tile *> availableAttackable = player_->getGame().getMap().neighbors(*tile, Constants::Pathfinding::Attackable);
+    std::vector<Tile *> availableAttackable = player_.getGame().getMap().neighbors(*tile, Constants::Pathfinding::Attackable);
     if (availableAttackable.empty()) {
         // Fail
         return;
@@ -435,7 +435,7 @@ void Unit::tryMove(int16_t x, int16_t y)
         return;
     }
 
-    Tile &tile = player_->getGame().getMap().getTile(newX, newY);
+    Tile &tile = player_.getGame().getMap().getTile(newX, newY);
 
     if (tile.isWalkable()) {
         move(tile);
@@ -465,7 +465,7 @@ void Unit::tryHarvest()
         return;
     }
 
-    std::vector<Tile *> availableHarvestable = player_->getGame().getMap().neighbors(*tile, Constants::Pathfinding::Harvestable);
+    std::vector<Tile *> availableHarvestable = player_.getGame().getMap().neighbors(*tile, Constants::Pathfinding::Harvestable);
     if (availableHarvestable.empty()) {
         // Fail
         return;
@@ -478,24 +478,24 @@ void Unit::tryHarvest()
 
 Tile &Unit::getSpawnTile() {
     assert(spawnTileID != -1);
-    return player_->getGame().getMap().getTiles()[spawnTileID];
+    return player_.getGame().getMap().getTiles()[spawnTileID];
 }
 
 Tile *Unit::getTile(int tileID) {
     if(tileID == -1) {
         return NULL;
     }
-    return &player_->getGame().getMap().getTiles()[tileID];
+    return &player_.getGame().getMap().getTiles()[tileID];
 }
 
 Unit &Unit::getBuiltBy() {
     assert(builtByID != -1);
-    return player_->getGame().units[builtByID];
+    return player_.getGame().units[builtByID];
 }
 
 Unit &Unit::getBuildEntity() {
     assert(buildEntityID != -1);
-    return player_->getGame().units[buildEntityID];
+    return player_.getGame().units[buildEntityID];
 }
 
 Unit *Unit::getCombatTarget() {
@@ -503,7 +503,7 @@ Unit *Unit::getCombatTarget() {
     if (combatTargetID == -1) {
         return NULL;
     }
-    return &player_->getGame().units[combatTargetID];
+    return &player_.getGame().units[combatTargetID];
 }
 
 std::set<int> Unit::getVisionTileIDs() {
@@ -522,7 +522,7 @@ std::set<int> Unit::getVisionTileIDs() {
         for(auto y = -sight; y < height + sight; y++){
             int tX = tileX + x;
             int yY = tileY + y;
-            int idx = player_->getGame().getMap().MAP_HEIGHT*yY + tX;
+            int idx = player_.getGame().getMap().MAP_HEIGHT*yY + tX;
             tileIDs.insert(idx);
         }
     }
@@ -531,12 +531,16 @@ std::set<int> Unit::getVisionTileIDs() {
 
 bool Unit::position_in_bounds(int x, int y) {
     if(
-            x < 0 || x > this->player_->getGame().getMap().MAP_WIDTH ||
-            y < 0 || y > this->player_->getGame().getMap().MAP_HEIGHT
+            x < 0 || x > this->player_.getGame().getMap().MAP_WIDTH ||
+            y < 0 || y > this->player_.getGame().getMap().MAP_HEIGHT
             ){
         return false;
     }
     return true;
+}
+
+Player &Unit::getPlayer() {
+    return player_;
 }
 
 

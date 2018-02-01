@@ -27,6 +27,12 @@ void init_Game(py::module &m) {
             .def("add_player", &Game::addPlayer)
             .def_static("get_game", &Game::getGame)
 
+            // Callbacks
+            .def("_on_unit_create", &Game::_onUnitCreate)
+            .def("_on_unit_destroy", &Game::_onUnitDestroy)
+            .def("_on_episode_start", &Game::_onEpisodeStart)
+            .def("_on_episode_end", &Game::_onEpisodeEnd)
+            .def("_on_tile_deplete", &Game::_onTileDeplete)
 
             /// Getters
             .def("get_id", &Game::getId)

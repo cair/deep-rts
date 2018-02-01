@@ -1,10 +1,22 @@
 import os
+
+import numpy
 import pygame
-from pygame.locals import *
-from pyDeepRTS.Sprites import Sprites
+import scipy
+from scipy.misc import imsave
+
+from pyDeepRTS.pygame.Sprites import Sprites
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+class Tiles:
+
+    def __init__(self):
+        pass
+
+    def set_tile(self, x, y, type):
+        pass
+
 
 
 class GUI:
@@ -12,6 +24,9 @@ class GUI:
     def __init__(self, game):
         self.game = game
         self.map = self.game.map
+
+        self.gui_tiles = Tiles()
+
         self.tiles = self.map.tiles
         self.units = self.game.units
 
@@ -24,12 +39,11 @@ class GUI:
         self.camera_y = 0
 
         # Window / Canvas Variables
-        self.window_size = (800, 800)
         self.map_size = (self.map.map_width, self.map.map_height)
         self.map_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
-
-        self.display = pygame.display.set_mode(self.window_size, pygame.DOUBLEBUF)
-        self.surface_map = pygame.Surface(self.map_render_size, pygame.SWSURFACE)  # Tiles that may change during game
+        self.window_size = self.map_render_size # (800, 800)
+        self.display = pygame.display.set_mode(self.window_size)
+        self.surface_map = pygame.Surface(self.map_render_size)  # Tiles that may change during game
 
 
         # Load Resources
@@ -86,11 +100,8 @@ class GUI:
             x = unit.tile.x
             y = unit.tile.y
             # List of available sprites
-            try:
-                unit_sprite = self.unit_sprites[unit.type_id][unit.direction][0]  # TODO Fix animation
-            except:
-                print(unit.type_id, unit.direction)
 
+            unit_sprite = self.unit_sprites[unit.type_id][unit.direction][0]  # TODO Fix animation
             self.surface_map.blit(unit_sprite, (x * self.map.tile_width, y * self.map.tile_height))
 
 
@@ -139,8 +150,18 @@ class GUI:
 
         self.display.blit(self.surface_map, (0, 0))
 
-
+    def view(self):
         pygame.display.flip()
+
+    def capture(self, save=False, filename="./capture.png"):
+        if save:
+            imsave(filename, numpy.array(pygame.surfarray.pixels3d(self.surface_map)))
+
+        return numpy.array(pygame.surfarray.pixels3d(self.surface_map))
+
+
+    def set_caption(self, param):
+        pygame.display.set_caption(param)
 
 
 

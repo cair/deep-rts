@@ -59,9 +59,9 @@ void Harvesting::update(Unit & unit)const{
             unit.lumberCarry += harvestTarget->lumberYield;
             unit.goldCarry += harvestTarget->goldYield;
             unit.oilCarry += harvestTarget->oilYield;
-            unit.player_->sGatheredGold += harvestTarget->goldYield;
-            unit.player_->sGatheredLumber += harvestTarget->lumberYield;
-            unit.player_->sGatheredOil += harvestTarget->oilYield;
+            unit.player_.sGatheredGold += harvestTarget->goldYield;
+            unit.player_.sGatheredLumber += harvestTarget->lumberYield;
+            unit.player_.sGatheredOil += harvestTarget->oilYield;
 			harvestTarget->takeResource(harvestTarget->lumberYield + harvestTarget->goldYield + harvestTarget->oilYield);
 
             // No more resources // TODO constant parameter Config
@@ -105,9 +105,9 @@ void Harvesting::update(Unit & unit)const{
             return;
         } else {
             // Can deliver
-            unit.player_->addGold(unit.goldCarry);
-            unit.player_->addLumber(unit.lumberCarry);
-            unit.player_->addOil(unit.oilCarry);
+            unit.player_.addGold(unit.goldCarry);
+            unit.player_.addLumber(unit.lumberCarry);
+            unit.player_.addOil(unit.oilCarry);
 
             unit.goldCarry = 0;
             unit.lumberCarry = 0;

@@ -103,7 +103,7 @@ public:
 
 
     /// Game terminal flag
-    bool terminal;
+    bool terminal = false;
 
 
     ////////////////////////////////////////////////////
@@ -196,6 +196,17 @@ public:
     // Returns true if the game is in an terminal state
     bool isTerminal();
 
+    ////////////////////////////////////////////////////
+    ///
+    /// Engine Functions
+    ///
+    ////////////////////////////////////////////////////
+    virtual void _onUnitCreate(Unit& unit);
+    virtual void _onUnitDestroy(Unit& unit);
+    virtual void _onEpisodeStart();
+    virtual void _onEpisodeEnd();
+
+    virtual void _onTileDeplete(Tile &);
 };
 
 

@@ -5,6 +5,7 @@
 #ifndef WARC2SIM_CONSTANTS_H
 #define WARC2SIM_CONSTANTS_H
 #include <string>
+#define DEBUG(x) do { std::cerr << x; } while (0)
 
 namespace Constants{
 

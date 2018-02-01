@@ -9,9 +9,9 @@
 void Dead::update(Unit & unit)const{
 
     unit.despawn();
-    unit.player_->removeUnit(unit);
-    unit.player_->isDefeated();
-    unit.player_->getGame().isTerminal();
+    unit.player_.removeUnit(unit);
+    unit.player_.isDefeated();
+    unit.player_.getGame().isTerminal();
 }
 
 void Dead::end(Unit & unit)const{

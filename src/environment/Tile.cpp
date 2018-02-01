@@ -59,11 +59,11 @@ lumberYield(lumberYield),
 goldYield(goldYield),
 oilYield(oilYield)
 {
+
 	if(resources <= 0) {
 		setDepleted();
 	}
 }
-
 
 
 bool Tile::hasOccupant()
@@ -92,7 +92,7 @@ bool Tile::isAttackable(Unit &unit) {
     if (!occupant)
         return false;
 
-    return occupant->player_->getId() != unit.player_->getId();
+    return occupant->player_.getId() != unit.player_.getId();
 
 }
 
@@ -154,6 +154,8 @@ void Tile::setDepleted() {
     resources = depletedResources;
     name = depletedName;
     typeId = depletedTypeId;
+
+    tilemap.getGame()._onTileDeplete(*this);
 }
 
 void Tile::setResources(uint16_t resource_count)

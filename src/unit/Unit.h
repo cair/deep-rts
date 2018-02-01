@@ -29,7 +29,7 @@ private:
 public:
 
 	/// Constructor
-    Unit(Player *player);
+    Unit(Player &player);
 
 
 	//////////////////////////////////////////////////////////////
@@ -37,9 +37,6 @@ public:
 	/// Properties
 	///
 	//////////////////////////////////////////////////////////////
-
-	/// Store Sprite pointer
-	char *sprite;
 
 	/// Unit ID
 	int id;
@@ -95,7 +92,7 @@ public:
     std::string name;
 
 
-    Player *player_;
+    Player &player_;
 
 
     // State attributes
@@ -189,6 +186,8 @@ public:
 	void tryMove(int16_t x, int16_t y);
 	void tryAttack();
 	void tryHarvest();
+
+	Player &getPlayer();
 
 
     bool position_in_bounds(int x, int y);

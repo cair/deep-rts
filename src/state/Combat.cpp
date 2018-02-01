@@ -40,8 +40,8 @@ void Combat::update(Unit & unit)const{
             // Can attack
             int myDamage = unit.getDamage(*combatTarget);
             combatTarget->afflictDamage(myDamage);
-            unit.player_->sDamageDone += myDamage;
-            combatTarget->player_->sDamageTaken += myDamage;
+            unit.player_.sDamageDone += myDamage;
+            combatTarget->player_.sDamageTaken += myDamage;
             unit.combatTimer = 0;
 
 

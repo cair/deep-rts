@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 void init_Unit(py::module &m) {
     py::class_<Unit>(m, "Unit")
-            .def(py::init<Player*>())
+            .def(py::init<Player&>())
 
 
             .def_readonly("type_id", &Unit::typeId)
@@ -39,6 +39,8 @@ void init_Unit(py::module &m) {
             .def_readonly("build_timer", &Unit::buildTimer)
             .def_readonly("tile", &Unit::tile)
             .def_readonly("state", &Unit::state)
+
+            .def("get_player", &Unit::getPlayer)
 
 
 

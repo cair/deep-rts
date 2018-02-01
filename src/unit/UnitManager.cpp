@@ -4,7 +4,7 @@
 
 #include "UnitManager.h"
 
-Unit UnitManager::constructUnit(Constants::Unit unitType, Player * player)
+Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
 {
     switch (unitType) {
         case Constants::Unit::TownHall:
@@ -29,7 +29,7 @@ Unit UnitManager::constructUnit(Constants::Unit unitType, Player * player)
     }
 }
 
-Unit UnitManager::constructFarm(Player *player) {
+Unit UnitManager::constructFarm(Player &player) {
     Unit u = Unit(player);
     u.typeId = Constants::Unit::Farm;
     u.health = 400;
@@ -84,7 +84,7 @@ Unit UnitManager::constructFarm(Player *player) {
     return u;
 }
 
-Unit UnitManager::constructBarracks(Player *player) {
+Unit UnitManager::constructBarracks(Player &player) {
     Unit u = Unit(player);
     u.typeId = Constants::Unit::Barracks;
     u.health = 800;
@@ -147,7 +147,7 @@ Unit UnitManager::constructBarracks(Player *player) {
     return u;
 }
 
-Unit UnitManager::constructTownHall(Player *player) {
+Unit UnitManager::constructTownHall(Player &player) {
     Unit u = Unit(player);
     u.typeId = Constants::Unit::TownHall;
     u.health = 1200;
@@ -202,7 +202,7 @@ Unit UnitManager::constructTownHall(Player *player) {
     return u;
 }
 
-Unit UnitManager::constructPeasant(Player *player)
+Unit UnitManager::constructPeasant(Player &player)
 {
     Unit u = Unit(player);
 
@@ -267,7 +267,7 @@ Unit UnitManager::constructPeasant(Player *player)
     return u;
 }
 
-Unit UnitManager::constructFootman(Player *player) {
+Unit UnitManager::constructFootman(Player &player) {
     Unit u = Unit(player);
 
     u.typeId = Constants::Unit::Footman;
@@ -322,7 +322,7 @@ Unit UnitManager::constructFootman(Player *player) {
     return u;
 }
 
-Unit UnitManager::constructArcher(Player *player) {
+Unit UnitManager::constructArcher(Player &player) {
     Unit u = Unit(player);
 
     u.typeId = Constants::Unit::Archer;

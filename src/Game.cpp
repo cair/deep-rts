@@ -97,6 +97,7 @@ void Game::reset()
     terminal = false;
 
     _reset();
+    _onEpisodeStart();
 
 
 
@@ -193,7 +194,7 @@ std::vector<std::vector<float>> Game::getState(){
         if (tile.hasOccupant()) {
             auto occupant = tile.getOccupant();
             uType = occupant->typeId;
-            uPlayer = occupant->player_->getId() + 1; // TODO id should be integrated maybe? player.id = id + 1
+            uPlayer = occupant->player_.getId() + 1; // TODO id should be integrated maybe? player.id = id + 1
             uHealth = occupant->health / occupant->health_max;
         }
 
@@ -218,6 +219,11 @@ Game * Game::getGame(uint8_t id)
 
 bool Game::isTerminal(){
 
+    // Skip check if terminal is already set
+    if(terminal){
+        return terminal;
+    }
+
 	int c = 0;
 	for(auto &p : players) {
 		if(p.isDefeated()){
@@ -228,6 +234,7 @@ bool Game::isTerminal(){
 	bool isTerminal = (c == 1);
 	terminal = isTerminal;
 
+    _onEpisodeEnd();
 	return terminal;
 }
 
@@ -313,6 +320,26 @@ uint8_t Game::getId() const {
     return id;
 }
 
+void Game::_onUnitCreate(Unit& unit) {
+    //DEBUG("Unit Created: " + unit.name + " | " + unit.player_.getName() + "\n");
+}
+
+
+void Game::_onEpisodeStart() {
+    //DEBUG("Episode " + std::to_string(episode) + " started.\n");
+}
+
+void Game::_onEpisodeEnd() {
+    //DEBUG("Episode " + std::to_string(episode) + " ended.\n");
+}
+
+void Game::_onUnitDestroy(Unit& unit) {
+    //DEBUG("Unit Destroyed: " + unit.name + " | " + unit.player_.getName() + "\n");
+}
+
+
+
+void Game::_onTileDeplete(Tile &){}
 
 
 
