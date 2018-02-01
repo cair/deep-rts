@@ -23,9 +23,11 @@ import os
 import shutil
 import stat
 def copytree(src, dst, symlinks = False, ignore = None):
+
     if not os.path.exists(dst):
         os.makedirs(dst)
         shutil.copystat(src, dst)
+        ignore = None
     lst = os.listdir(src)
     if ignore:
         excl = ignore(src, lst)
@@ -42,11 +44,12 @@ def copytree(src, dst, symlinks = False, ignore = None):
                 mode = stat.S_IMODE(st.st_mode)
                 os.lchmod(d, mode)
             except:
-                pass # lchmod not available
+                pass  # lchmod not available
         elif os.path.isdir(s):
             copytree(s, d, symlinks, ignore)
         else:
             shutil.copy2(s, d)
+
 def get_sprite(
         sheet,
         x,

@@ -9,8 +9,8 @@ if __name__ == "__main__":
     player1 = g.add_player()
     player2 = g.add_player()
 
-    g.set_max_fps(100000000)
-    g.set_max_ups(100000000)
+    g.set_max_fps(10000000)
+    g.set_max_ups(10000000)
 
 
     g.render_every(50)
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         if g.is_terminal():
             g.reset()
 
-        player1.queue_action(numpy.random.randint(0, 15), 1)
-
+        player1.queue_action(numpy.random.randint(0, 16), 1)
+        player2.queue_action(numpy.random.randint(0, 16), 1)
 
 

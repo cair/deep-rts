@@ -1,0 +1,3 @@
+include pyDeepRTS/data/*.*
+include pyDeepRTS/data/**/*.*
+include pyDeepRTS/data/**/**/*.*

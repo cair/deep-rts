@@ -2,13 +2,13 @@ import os
 
 import numpy
 import pygame
-import scipy
 from scipy.misc import imsave
 
 from pyDeepRTS.pygame.Sprites import Sprites
 
-
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
+
 class Tiles:
 
     def __init__(self):
@@ -16,7 +16,6 @@ class Tiles:
 
     def set_tile(self, x, y, type):
         pass
-
 
 
 class GUI:
@@ -40,11 +39,11 @@ class GUI:
 
         # Window / Canvas Variables
         self.map_size = (self.map.map_width, self.map.map_height)
+        self.tile_width, self.tile_height = self.map.tile_width, self.map.tile_height
         self.map_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
-        self.window_size = self.map_render_size # (800, 800)
+        self.window_size = self.map_render_size  # (800, 800)
         self.display = pygame.display.set_mode(self.window_size)
         self.surface_map = pygame.Surface(self.map_render_size)  # Tiles that may change during game
-
 
         # Load Resources
         self.unit_sprites, self.tile_sprites = Sprites(self).load()
@@ -52,7 +51,6 @@ class GUI:
         # Setup
         self.static_tiles = self.setup_static_map()
         self.dynamic_tiles = set(self.tiles) - set(self.static_tiles)
-
 
     def setup_static_map(self):
         static_tiles = []
@@ -67,8 +65,6 @@ class GUI:
 
         return static_tiles
 
-
-
     def set_camera(self):
         try:
             player_unit = self.player.units[0]
@@ -80,6 +76,8 @@ class GUI:
 
         except:
             pass
+
+
 
     def render_tiles(self):
 
@@ -99,10 +97,23 @@ class GUI:
 
             x = unit.tile.x
             y = unit.tile.y
-            # List of available sprites
+            width = unit.width
+            height = unit.height
+            health = unit.health
+            health_max = unit.health_max
+            health_p = health / health_max
 
-            unit_sprite = self.unit_sprites[unit.type_id][unit.direction][0]  # TODO Fix animation
-            self.surface_map.blit(unit_sprite, (x * self.map.tile_width, y * self.map.tile_height))
+
+            owner_id = unit.get_player().get_id()
+            x_pos, y_pos = (x * self.map.tile_width, y * self.map.tile_height)
+
+            # Draw unit
+            unit_sprite = self.unit_sprites[owner_id][unit.type_id][unit.direction][0]  # TODO Fix animation
+            self.surface_map.blit(unit_sprite, (x_pos, y_pos, width * self.tile_width, height * self.tile_height))
+
+            # Draw Healthbar
+            pygame.draw.rect(self.surface_map, (0, 255, 0), (x_pos, y_pos - 6, (width * self.tile_width) * health_p, 5))
+            pygame.draw.rect(self.surface_map, (255, 255, 255), (x_pos + (width * self.tile_width), y_pos - 6, -(width * self.tile_width) * (1 - health_p), 5))
 
 
 
@@ -159,9 +170,5 @@ class GUI:
 
         return numpy.array(pygame.surfarray.pixels3d(self.surface_map))
 
-
     def set_caption(self, param):
         pygame.display.set_caption(param)
-
-
-

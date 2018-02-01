@@ -1,6 +1,6 @@
 import pygame
 from pyDeepRTS.util import get_sprite, image_at
-from pyDeepRTS.DeepRTSEngine.Constants import Unit, Direction, Tile
+from DeepRTSEngine.Constants import Unit, Direction, Tile
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -8,6 +8,15 @@ class Sprites:
 
     def __init__(self, gui):
         self.gui = gui
+
+        self.mask = {
+            0: (255, 0, 0),  # Player 1
+            1: (0, 0, 255),
+            2: (0, 255, 0),
+            3: (255, 255, 0),
+            4: (0, 255, 255),
+            5: (255, 0, 255)  # Player 6
+        }
 
         self.peasant = self._load_sprite("data/textures/human/peasant.png")
         self.archer = self._load_sprite("data/textures/human/archer.png")
@@ -22,13 +31,23 @@ class Sprites:
         return self.sprites(), self.tiles()
 
     def _load_sprite(self, path):
-        sheet = pygame.image.load(path).convert_alpha()
+        try:
+            full_path = os.path.join(dir_path, "..", path)
+            sheet = pygame.image.load(full_path).convert_alpha()
+        except pygame.error:
+            full_path = os.path.join(dir_path, "..", "..", path)
+            sheet = pygame.image.load(full_path).convert_alpha()
+
 
         return sheet
 
     def tiles(self):
-        tileset_path = os.path.join(dir_path, "..", "..", "data", "textures", "tiles.png")
-        sheet = pygame.image.load(tileset_path)
+        try:
+            tileset_path = os.path.join(dir_path, "..", "data", "textures", "tiles.png")
+            sheet = pygame.image.load(tileset_path)
+        except pygame.error:
+            tileset_path = os.path.join(dir_path, "..", "..", "data", "textures", "tiles.png")
+            sheet = pygame.image.load(tileset_path)
 
         tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__")]
 
@@ -186,4 +205,28 @@ class Sprites:
                 ]
             }
         }
-        return sprites
+
+        p_sprites = {}
+        for player_id, mask in self.mask.items():
+            p_sprites[player_id] = {}
+            for unit_type, directions in sprites.items():
+                p_sprites[player_id][unit_type] = {}
+                for direction, surfaces in directions.items():
+                    p_sprites[player_id][unit_type][direction] = []
+                    for surface in surfaces:
+                        c_surface = surface.copy()
+                        self.color_surface(c_surface, (170, 170, 170), mask)
+
+                        # Draw outline
+                        pygame.draw.rect(c_surface, mask, (0, 0, c_surface.get_width(), c_surface.get_height()), 5)
+                        p_sprites[player_id][unit_type][direction].append(c_surface)
+        return p_sprites
+
+    def color_surface(self, surface, original, newcolor):
+        arr = pygame.surfarray.pixels3d(surface)
+
+        r1, g1, b1 = original
+        r2, g2, b2 = newcolor
+        red, green, blue = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
+        mask = (red >= r1) & (green >= g1) & (blue >= b1)
+        arr[:, :, :3][mask] = [r2, g2, b2]

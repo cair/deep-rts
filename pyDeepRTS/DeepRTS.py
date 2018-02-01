@@ -1,5 +1,5 @@
-from pyDeepRTS import DeepRTSEngine, util
-from pyDeepRTS.pyglet.gui import GUI as PygletGUI
+import DeepRTSEngine
+from pyDeepRTS import util
 from pyDeepRTS.pygame.gui import GUI as PygameGUI
 import os
 import shutil
@@ -13,7 +13,6 @@ class PyDeepRTS(DeepRTSEngine.Game):
         template_data = os.path.join(dir_path, "data")
         target_data = os.path.join(os.getcwd(), "data")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
-
 
     def __init__(self):
         PyDeepRTS.setup_data_files()

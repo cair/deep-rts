@@ -1,4 +1,4 @@
-from setuptools import setup, Extension
+from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 import sys
 import setuptools
@@ -25,8 +25,6 @@ ext_modules = [
     Extension(
         'DeepRTSEngine',
         [
-
-
             'src/Game.cpp',
             'src/environment/Tile.cpp',
             'src/player/Player.cpp',
@@ -62,13 +60,13 @@ ext_modules = [
 
          ],
         include_dirs=[
-
-
             # Path to pybind11 headers
             get_pybind_include(),
             get_pybind_include(user=True)
+
         ],
         language='c++',
+        debug=False
 
     ),
 ]
@@ -136,12 +134,15 @@ setup(
     url='https://github.com/UIA-CAIR/DeepRTS',
     description='A Real-Time-Strategy game for Deep Learning research ',
     long_description='',
+    include_package_data=True,
+    packages=find_packages(exclude=["examples", "*.tests", "*.tests.*", "tests.*", "tests"]),
     ext_modules=ext_modules,
-    install_requires=['pybind11>=2.2', 'pygame', 'numpy'],
+    install_requires=['pybind11>=2.2', 'pygame', 'pillow', 'scipy'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
 )
 
+"""
 import shutil
 import glob
 import os
@@ -150,3 +151,4 @@ filename = os.path.basename(file)
 
 shutil.copy(file, filename)
 shutil.copy(file, os.path.join("pyDeepRTS", filename))
+"""
