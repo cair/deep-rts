@@ -1,12 +1,11 @@
 
 import numpy
-
-from pyDeepRTS.pyDeepRTS import pyDeepRTS
+from pyDeepRTS import PyDeepRTS
 
 
 if __name__ == "__main__":
 
-    g = pyDeepRTS()
+    g = PyDeepRTS()
     player1 = g.add_player()
     player2 = g.add_player()
 
@@ -29,7 +28,6 @@ if __name__ == "__main__":
         g.caption()
 
         g.view()
-
 
         cap = g.gui.capture(save=False, filename="test.png")
 

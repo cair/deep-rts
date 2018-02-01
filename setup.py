@@ -3,7 +3,7 @@ from setuptools.command.build_ext import build_ext
 import sys
 import setuptools
 
-__version__ = '0.0.1'
+__version__ = '2.0.1'
 
 
 class get_pybind_include(object):
@@ -23,7 +23,7 @@ class get_pybind_include(object):
 
 ext_modules = [
     Extension(
-        'DeepRTS',
+        'DeepRTSEngine',
         [
 
 
@@ -68,7 +68,8 @@ ext_modules = [
             get_pybind_include(),
             get_pybind_include(user=True)
         ],
-        language='c++'
+        language='c++',
+
     ),
 ]
 
@@ -136,7 +137,7 @@ setup(
     description='A Real-Time-Strategy game for Deep Learning research ',
     long_description='',
     ext_modules=ext_modules,
-    install_requires=['pybind11>=2.2', 'pygame'],
+    install_requires=['pybind11>=2.2', 'pygame', 'numpy'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
 )

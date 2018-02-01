@@ -23,7 +23,7 @@ void init_version(py::module &m) {
 }
 
 
-PYBIND11_MODULE(DeepRTS, m) {
+PYBIND11_MODULE(DeepRTSEngine, m) {
     init_Constants(m);
     init_Unit(m);
     init_Tile(m);

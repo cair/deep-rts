@@ -3,7 +3,7 @@ import pyglet
 import numpy
 from PIL import Image
 from pyDeepRTS.util import get_sprite, image_at
-from DeepRTS.Constants import Unit, Direction, Tile
+from pyDeepRTS.DeepRTSEngine.Constants import Unit, Direction, Tile
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 

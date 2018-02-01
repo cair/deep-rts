@@ -1,0 +1,70 @@
+{
+  "52": {
+    "name": "Wall",
+    "harvestable": false,
+    "walkable": false,
+    "swimable": false,
+    "oil_yield": 0,
+    "lumber_yield": 0,
+    "gold_yield": 0,
+    "resources": 0,
+    "deplete_tile": 52
+  },
+  "142": {
+    "name": "Lumber",
+    "harvestable": true,
+    "walkable": false,
+    "swimable": false,
+    "oil_yield": 0,
+    "lumber_yield": 1,
+    "gold_yield": 0,
+    "resources": 1000,
+    "deplete_tile": 270
+  },
+  "334": {
+    "name": "Water",
+    "harvestable": false,
+    "walkable": false,
+    "swimable": true,
+    "oil_yield": 0,
+    "lumber_yield": 0,
+    "gold_yield": 0,
+    "resources": 0,
+    "deplete_tile": 334
+  },
+  "270": {
+    "name": "Grass",
+    "harvestable": false,
+    "walkable": true,
+    "swimable": false,
+    "oil_yield": 0,
+    "lumber_yield": 0,
+    "gold_yield": 0,
+    "resources": 0,
+    "deplete_tile": 270
+  },
+  "102": {
+    "name": "Gold",
+    "harvestable": true,
+    "walkable": false,
+    "swimable": false,
+    "oil_yield": 0,
+    "lumber_yield": 0,
+    "gold_yield": 1,
+    "resources": 1000,
+    "deplete_tile": 270
+  },
+  "17": {
+    "name": "Spawn",
+    "harvestable": false,
+    "walkable": false,
+    "swimable": false,
+    "oil_yield": 0,
+    "lumber_yield": 0,
+    "gold_yield": 0,
+    "resources": 0,
+    "deplete_tile": 270
+  }
+
+
+}
