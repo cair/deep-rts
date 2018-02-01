@@ -3,14 +3,11 @@
 <div style="text-align:center"><img src ="./docs/Logo.png" /></div>
 
 
-A Real-Time Strategy Simulator for (Deep) Reinforment Learning in C++ and Python!
+A Real-Time Strategy Simulator for (Deep) Reinforment Learning in Python and C++!
 
 
 ## Dependencies
 * Python >= 3.x
-* Scipy >= 1.0
-* pyglet
-
 
 # Installation
 ```
