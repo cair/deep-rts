@@ -7,4 +7,6 @@ RUN pip3 install git+https://github.com/UIA-CAIR/DeepRTS.git
 
 RUN Xvfb :99 -ac &
 
+ENV SDL_VIDEODRIVER dummy
+
 RUN python3 -m pyDeepRTS
