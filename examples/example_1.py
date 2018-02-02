@@ -21,7 +21,7 @@ if __name__ == "__main__":
         g.tick()
         g.update()
         g.render()
-        g.capture()
+        #g.capture()
         g.caption()
 
         g.view()
