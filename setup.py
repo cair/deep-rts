@@ -137,7 +137,7 @@ setup(
     include_package_data=True,
     packages=find_packages(exclude=["examples", "*.tests", "*.tests.*", "tests.*", "tests"]),
     ext_modules=ext_modules,
-    install_requires=['pybind11>=2.2', 'pygame', 'pillow', 'scipy'],
+    install_requires=['pybind11>=2.2.1', 'pygame', 'pillow', 'scipy'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
 )

@@ -239,12 +239,12 @@ bool Game::isTerminal(){
 }
 
 
-Player *Game::addPlayer() {
+Player &Game::addPlayer() {
 	players.emplace_back(*this, players.size());
 	Player &player = players.back();
 
 	spawnPlayer(player);
-	return &player;
+	return player;
 }
 
 void Game::spawnPlayer(Player &player) {
@@ -340,6 +340,7 @@ void Game::_onUnitDestroy(Unit& unit) {
 
 
 void Game::_onTileDeplete(Tile &){}
+
 
 
 

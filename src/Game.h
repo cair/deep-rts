@@ -163,7 +163,7 @@ public:
     ////////////////////////////////////////////////////
 
     // Add a player to the game
-    Player *addPlayer();
+    Player &addPlayer();
 
     /// Game Tick Function
     void tick();
@@ -207,6 +207,7 @@ public:
     virtual void _onEpisodeEnd();
 
     virtual void _onTileDeplete(Tile &);
+
 };
 
 

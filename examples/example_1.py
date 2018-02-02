@@ -1,8 +1,7 @@
 
 import numpy
+
 from pyDeepRTS import PyDeepRTS
-
-
 if __name__ == "__main__":
 
     g = PyDeepRTS()
@@ -12,15 +11,13 @@ if __name__ == "__main__":
     g.set_max_fps(10000000)
     g.set_max_ups(10000000)
 
-
     g.render_every(50)
     g.capture_every(50)
     g.view_every(50)
 
-
     g.start()
 
-    while True:
+    for i in range(1000):
         g.tick()
         g.update()
         g.render()
@@ -30,8 +27,6 @@ if __name__ == "__main__":
         g.view()
 
         cap = g.gui.capture(save=False, filename="test.png")
-
-
 
         if g.is_terminal():
             g.reset()

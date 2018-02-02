@@ -40,7 +40,7 @@ void init_Unit(py::module &m) {
             .def_readonly("tile", &Unit::tile)
             .def_readonly("state", &Unit::state)
 
-            .def("get_player", &Unit::getPlayer)
+            .def("get_player", &Unit::getPlayer, py::return_value_policy::reference)
 
 
 
