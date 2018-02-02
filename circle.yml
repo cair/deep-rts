@@ -3,6 +3,9 @@
 machine:
   services:
     - docker
+  python:
+    version: 3.6.3
+
 
 
 ## Customize dependencies
