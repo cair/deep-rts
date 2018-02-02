@@ -2,6 +2,7 @@
 
 if __name__ == "__main__":
     from pyDeepRTS import PyDeepRTS
+    import time
     g = PyDeepRTS()
     player1 = g.add_player()
     player2 = g.add_player()
@@ -15,15 +16,17 @@ if __name__ == "__main__":
 
     g.start()
 
-    for i in range(100):
+    end = time.time() + 5
+    while time.time() < end:
         g.tick()
         g.update()
         g.render()
         g.capture()
         g.caption()
         g.view()
-        cap = g.gui.capture(save=False, filename="test.png")
         if g.is_terminal():
             g.reset()
+
+    print("Done!")
 
 

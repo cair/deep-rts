@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     g.start()
 
-    for i in range(1000):
+    while True:
         g.tick()
         g.update()
         g.render()
@@ -32,7 +32,7 @@ if __name__ == "__main__":
         if g.is_terminal():
             g.reset()
 
-        player1.queue_action(numpy.random.randint(0, 16), 1)
-        player2.queue_action(numpy.random.randint(0, 16), 1)
+        #player1.queue_action(numpy.random.randint(0, 16), 1)
+        #player2.queue_action(numpy.random.randint(0, 16), 1)
 
 

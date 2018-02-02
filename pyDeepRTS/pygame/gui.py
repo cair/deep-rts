@@ -113,7 +113,15 @@ class GUI:
 
             # Draw Healthbar
             pygame.draw.rect(self.surface_map, (0, 255, 0), (x_pos, y_pos - 6, (width * self.tile_width) * health_p, 5))
-            pygame.draw.rect(self.surface_map, (255, 255, 255), (x_pos + (width * self.tile_width), y_pos - 6, -(width * self.tile_width) * (1 - health_p), 5))
+            if health_p != 1.0:
+                pygame.draw.rect(
+                    self.surface_map,
+                    (255, 255, 255),
+                    (x_pos + (width * self.tile_width),
+                     y_pos - 6,
+                     -(width * self.tile_width) * (1 - health_p),
+                     5)
+                )
 
 
 
