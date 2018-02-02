@@ -26,7 +26,8 @@ if __name__ == "__main__":
 
         g.view()
 
-        cap = g.gui.capture(save=False, filename="test.png")
+        # Capture current state
+        #cap = g.gui.capture(save=False, filename="test.png")
 
         if g.is_terminal():
             g.reset()
