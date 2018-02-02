@@ -20,4 +20,21 @@ sudo pip3 git+https://github.com/UIA-CAIR/DeepRTS
 
 ```
 
-![./docs/DeepRTS.png](./docs/DeepRTS.png)
+# Available maps
+```
+10x10-2-FFA
+15x15-2-FFA
+21x21-2-FFA
+31x31-2-FFA
+31x31-4-FFA
+31x31-6-FFA
+```
+
+# In-Game Footage
+
+![./docs/10x10-2-FFA.png](./docs/10x10-2-FFA.png)
+![./docs/15x15-2-FFA.png](./docs/15x15-2-FFA.png)
+![./docs/21x21-2-FFA.png](./docs/21x21-2-FFA.png)
+![./docs/31x31-2-FFA.png](./docs/31x31-2-FFA.png)
+![./docs/31x31-4-FFA.png](./docs/31x31-4-FFA.png)
+![./docs/31x31-6-FFA.png](./docs/31x31-6-FFA.png)

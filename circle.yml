@@ -6,7 +6,10 @@ machine:
   python:
     version: 3.6.3
 
-
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
 
 ## Customize dependencies
 dependencies:
