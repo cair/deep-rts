@@ -11,6 +11,8 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
+    - pip3 install scipy, pybind11, pygame, pillow
+
     - docker build -t cair/deeprts .
     - docker run -d -p 2222:22 cair/deeprts
     - docker ps -a
