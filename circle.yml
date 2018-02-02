@@ -5,6 +5,8 @@ machine:
     - docker
   python:
     version: 3.6.3
+  gcc:
+    version: 5.3
 
 checkout:
   post:
