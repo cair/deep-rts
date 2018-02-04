@@ -22,11 +22,12 @@ class GUI:
 
     def __init__(self, game):
         self.game = game
+        self.tilemap = self.game.tilemap
         self.map = self.game.map
 
         self.gui_tiles = Tiles()
 
-        self.tiles = self.map.tiles
+        self.tiles = self.tilemap.tiles
         self.units = self.game.units
 
 
@@ -38,12 +39,12 @@ class GUI:
         self.camera_y = 0
 
         # Window / Canvas Variables
-        self.map_size = (self.map.map_width, self.map.map_height)
+        self.tilemap_size = (self.map.map_width, self.map.map_height)
         self.tile_width, self.tile_height = self.map.tile_width, self.map.tile_height
-        self.map_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
-        self.window_size = self.map_render_size  # (800, 800)
+        self.tilemap_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
+        self.window_size = self.tilemap_render_size  # (800, 800)
         self.display = pygame.display.set_mode(self.window_size)
-        self.surface_map = pygame.Surface(self.map_render_size)  # Tiles that may change during game
+        self.surface_map = pygame.Surface(self.tilemap_render_size)  # Tiles that may change during game
 
         # Load Resources
         self.unit_sprites, self.tile_sprites = Sprites(self).load()

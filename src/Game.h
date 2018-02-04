@@ -4,6 +4,7 @@
 
 #ifndef WARC2SIM_GAME_H
 #define WARC2SIM_GAME_H
+#include "../include/cppmat/src/cppmat/cppmat.h"
 
 #include <memory>
 #include <map>
@@ -12,6 +13,7 @@
 
 
 #include "player/Player.h"
+#include "environment/Map.h"
 #include "environment/Tilemap.h"
 #include "action/BaseAction.h"
 #include "logging/LogGame.h"
@@ -48,13 +50,13 @@ class Game {
 	int state_unit_player_idx;
 	int state_unit_health_idx;
 	int state_unit_type_idx;
-    std::vector<std::vector<float>> state;
 
 
 
 public:
     // Retrieve game via Game ID
     static Game * getGame(uint8_t id);
+
 
     /// Game Constructor
     Game();
@@ -64,9 +66,15 @@ public:
     /// Properties
     ///
     ////////////////////////////////////////////////////
+    /// Const Map (Order 0)
+    Map map;
 
-    /// Game Tilemap
-    Tilemap map;
+    /// Game state (Order 1)
+    cppmat::matrix<float> state;
+
+    /// Game Tilemap (Order 2)
+    Tilemap tilemap;
+
 
     /// Game State Manager
     StateManager stateManager;
@@ -111,12 +119,6 @@ public:
     /// Getters
     ///
     ////////////////////////////////////////////////////
-
-    /// Get the Game Tilemap
-    Tilemap & getMap();
-
-    // Get the Game state matrix
-    std::vector<std::vector<float>> getState();
 
     /// Get a Unit via index
     Unit &getUnit(uint16_t idx);

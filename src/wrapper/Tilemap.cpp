@@ -2,20 +2,13 @@
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
-#include <iostream>
+#include "../environment/Map.h"
 #include "../environment/Tilemap.h"
 #include "../Game.h"
 
 void init_Tilemap(py::module &m) {
     py::class_<Tilemap>(m, "Tilemap")
-            .def(py::init<std::string&, Game&>())
-
-
-
-            .def_readonly("tile_width", &Tilemap::TILE_WIDTH)
-            .def_readonly("tile_height", &Tilemap::TILE_HEIGHT)
-            .def_readonly("map_width", &Tilemap::MAP_WIDTH)
-            .def_readonly("map_height", &Tilemap::MAP_HEIGHT)
+            .def(py::init<Map&, Game&>())
             .def_readonly("tiles", &Tilemap::tiles)
             .def("get_tile", &Tilemap::getTile, py::return_value_policy::reference);
 }

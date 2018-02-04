@@ -60,6 +60,10 @@ goldYield(goldYield),
 oilYield(oilYield)
 {
 
+	// Update state map
+	tilemap.game.state(x, y, 0) = typeId;
+
+	// Update state matrix
 	if(resources <= 0) {
 		setDepleted();
 	}
@@ -78,7 +82,7 @@ Unit* Tile::getOccupant()
 		return NULL;
 	}
 
-	Unit &occupant = tilemap.getGame().units[occupantID];
+	Unit &occupant = tilemap.game.units[occupantID];
 	return &occupant;
 }
 
@@ -140,6 +144,7 @@ void Tile::reset()
     typeId = newTypeId;
     depleted = false;
 
+	tilemap.game.state(x, y, 0) = typeId;
     if(resources <= 0) {
         setDepleted();
     }
@@ -155,7 +160,8 @@ void Tile::setDepleted() {
     name = depletedName;
     typeId = depletedTypeId;
 
-    tilemap.getGame()._onTileDeplete(*this);
+	tilemap.game.state(x, y, 0) = typeId;
+    tilemap.game._onTileDeplete(*this);
 }
 
 void Tile::setResources(uint16_t resource_count)

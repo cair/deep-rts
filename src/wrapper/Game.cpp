@@ -1,6 +1,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include "../../include/cppmat/src/cppmat/pybind11.h"
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
 #include "../Game.h"
@@ -9,7 +10,6 @@ namespace py = pybind11;
 void init_Game(py::module &m) {
     py::class_<Game, PyGame>(m, "Game")
             .def(py::init<>())
-
 
                     // Functions
             .def("tick", &Game::tick)
@@ -45,14 +45,18 @@ void init_Game(py::module &m) {
             .def("get_ups", &Game::getUPS)
             .def("get_max_fps", &Game::getMaxFPS)
             .def("get_max_ups", &Game::getMaxUPS)
-            .def("get_state", &Game::getState, py::return_value_policy::reference)
             .def("get_ticks_modifier", &Game::getTicksModifier)
 
+            .def_readonly("state", &Game::state)
 
             .def_readonly("units", &Game::units)
             .def_readonly("players", &Game::players)
+            .def_readonly("tilemap", &Game::tilemap)
             .def_readonly("map", &Game::map)
+
                     /// Setters
             .def("set_max_fps", &Game::setMaxFPS)
             .def("set_max_ups", &Game::setMaxUPS);
+
+
 }

@@ -101,7 +101,7 @@ void Walking::init(Unit & unit)const{
     // Attempt to find a viable path
     JPS::findPath(
                 path,
-                unit.getPlayer().getGame().getMap(),
+                unit.getPlayer().getGame().tilemap,
                 unit.tile->x, unit.tile->y,
                 goal->x,
                 goal->y,
@@ -111,7 +111,7 @@ void Walking::init(Unit & unit)const{
     // Insert found path to the walking path vector
     std::reverse(path.begin(), path.end());
     for(auto pathItem : path) {
-        Tile& tile = unit.getPlayer().getGame().getMap().getTile(pathItem.x, pathItem.y);
+        Tile& tile = unit.getPlayer().getGame().tilemap.getTile(pathItem.x, pathItem.y);
         unit.walking_path.push_back(&tile);
     }
 }

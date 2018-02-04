@@ -7,73 +7,50 @@
 #include "../Game.h"
 #include "../loaders/ResourceLoader.h"
 
-Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
-    ResourceLoader::getInstance().loadMapJSON(mapName);
-
-	auto mapData = ResourceLoader::getInstance().mapJSON.GetObject();
-	auto tilesData = ResourceLoader::getInstance().tileJSON.GetObject();
-
-
-
-    auto tilesetData = mapData["tilesets"].GetArray()[0].GetObject();
-    auto mapLayer = mapData["layers"].GetArray()[0].GetObject();
-    auto tileIDs = mapLayer["data"].GetArray();
-
-    int mapWidth = mapData["width"].GetInt();
-    int mapHeight = mapData["height"].GetInt();
-    int tWidth = tilesetData["tilewidth"].GetInt();
-    int tHeight = tilesetData["tileheight"].GetInt();
-    //int tFirstGid = tilesetData["firstgid"].GetInt();
-
-    TILE_WIDTH = tWidth;
-    TILE_HEIGHT = tHeight;
-    MAP_WIDTH = mapWidth;
-    MAP_HEIGHT = mapHeight;
+Tilemap::Tilemap(Map& map, Game &game): game(game){
 
 
 	// Preallocate
-	tiles.reserve(TILE_WIDTH * TILE_HEIGHT * 2);
-
+	tiles.reserve(map.MAP_HEIGHT * map.MAP_WIDTH * 2);
 
 
     uint16_t c = 0;
-    for(uint16_t y = 0; y < MAP_HEIGHT; y++)
+    for(uint16_t y = 0; y < map.MAP_HEIGHT; y++)
     {
-        for(uint16_t x = 0; x < MAP_WIDTH; x++)
+        for(uint16_t x = 0; x < map.MAP_WIDTH; x++)
         {
-            int newTypeId = tileIDs[c].GetInt();
+            int newTypeId = map.tileIDs[c];
 
-            auto newTileData = tilesData[std::to_string(newTypeId).c_str()].GetObject();
-            int depletedTypeId = newTileData["deplete_tile"].GetInt();
-            auto depletedTileData = tilesData[std::to_string(depletedTypeId).c_str()].GetObject();
+            auto newTileData = map.tilesData[newTypeId];
+            int depletedTypeId = newTileData.depleteTile;
+            auto depletedTileData = map.tilesData[depletedTypeId];
 
-            auto newName = std::string(newTileData["name"].GetString());
-            auto depletedName = std::string(depletedTileData["name"].GetString());
+            auto newName = newTileData.name;
+            auto depletedName = depletedTileData.name;
 
-            auto newWalkable = newTileData["walkable"].GetBool();
-            auto depletedWalkable = depletedTileData["walkable"].GetBool();
+            auto newWalkable = newTileData.walkable;
+            auto depletedWalkable = depletedTileData.walkable;
 
-            auto newHarvestable = newTileData["harvestable"].GetBool();
-            auto depletedHarvestable = depletedTileData["harvestable"].GetBool();
+            auto newHarvestable = newTileData.harvestable;
+            auto depletedHarvestable = depletedTileData.harvestable;
 
-            auto newSwimable = newTileData["swimable"].GetBool();
-            auto depletedSwimable = depletedTileData["swimable"].GetBool();
+            auto newSwimable = newTileData.swimable;
+            auto depletedSwimable = depletedTileData.swimable;
 
-            auto newResources = newTileData["resources"].GetUint();
-            auto depletedResources = depletedTileData["resources"].GetUint();
+            auto newResources = newTileData.resources;
+            auto depletedResources = depletedTileData.resources;
 
-            auto lumberYield = newTileData["lumber_yield"].GetInt();
-            auto goldYield = newTileData["gold_yield"].GetInt();
-            auto oilYield = newTileData["oil_yield"].GetInt();
-
+            auto lumberYield = newTileData.lumber_yield;
+            auto goldYield = newTileData.gold_yield;
+            auto oilYield = newTileData.oil_yield;
 
                       tiles.emplace_back(Tile(
                 *this,
                 c,
                 x,
                 y,
-                TILE_WIDTH,
-                TILE_HEIGHT,
+                map.TILE_WIDTH,
+                map.TILE_HEIGHT,
                 newName,
                 newTypeId,
                 newHarvestable,
@@ -93,7 +70,6 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
 
 
             Tile &tile = tiles.back();
-
             if(newTypeId == Constants::Tile::Spawn){
                 spawnTiles.push_back(c);
             }
@@ -104,6 +80,7 @@ Tilemap::Tilemap(std::string mapName, Game &game): game_(game){
 
         }
     }
+
 
 }
 
@@ -148,10 +125,10 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
         int x = tile.x + i.first;
         int y = tile.y + i.second;
 
-        if(x < 0 || y < 0 || x > MAP_WIDTH-1 || y > MAP_WIDTH-1)
+        if(x < 0 || y < 0 || x > game.map.MAP_WIDTH-1 || y > game.map.MAP_WIDTH-1)
             continue;
 
-        int idx = MAP_WIDTH*y + x;
+        int idx = game.map.MAP_WIDTH*y + x;
 
         Tile &neigh = tiles[idx];
         assert(&neigh);
@@ -186,7 +163,7 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
 Tile &Tilemap::getTile(int x, int y){
     assert(x >= 0);
     assert(y >= 0);
-    int idx = MAP_WIDTH*y + x;
+    int idx = game.map.MAP_WIDTH*y + x;
     Tile &t = tiles[idx];
     return t;
 }
@@ -211,9 +188,9 @@ std::vector<Tile *> Tilemap::getTileArea(Tile &source, int width, int height) {
 
 bool Tilemap::operator()(unsigned x, unsigned y) const
 {
-	if (x < MAP_WIDTH && y < MAP_HEIGHT) // Unsigned will wrap if < 0
+	if (x < game.map.MAP_WIDTH && y < game.map.MAP_HEIGHT) // Unsigned will wrap if < 0
 	{
-		int idx = MAP_WIDTH*y + x;
+		int idx = game.map.MAP_WIDTH*y + x;
 		const Tile &t = tiles[idx];
 		const bool isWalk = t.isWalkable();
 		return isWalk;
@@ -222,6 +199,4 @@ bool Tilemap::operator()(unsigned x, unsigned y) const
     return false;
 }
 
-Game &Tilemap::getGame() const {
-    return game_;
-}
+

@@ -3,6 +3,7 @@ from pyDeepRTS import util
 from pyDeepRTS.pygame.gui import GUI as PygameGUI
 import os
 import shutil
+import numpy as np
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -42,6 +43,10 @@ class PyDeepRTS(DeepRTSEngine.Game):
             return self.gui.capture()
         return None
 
+    def get_state(self, copy=False, image=False):
+        return self.gui.capture() if image else np.array(self.state, copy=copy)
+
+
     def view_every(self, n):
         self._view_every = n
 
@@ -65,7 +70,7 @@ class PyDeepRTS(DeepRTSEngine.Game):
         pass
 
     def _on_episode_start(self):
-        for tile in self.map.tiles:
+        for tile in self.tilemap.tiles:
             self.gui.gui_tiles.set_tile(tile.x, tile.y, tile.get_type_id())
 
     def _on_episode_end(self):

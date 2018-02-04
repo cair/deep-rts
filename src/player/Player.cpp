@@ -279,7 +279,7 @@ bool Player::isDefeated() {
 
 bool Player::canPlace(Unit & builder, Unit & unit, Tile &_tile) {
 
-	for (auto &tile : game_.getMap().getTileArea(_tile, unit.width, unit.height)) {
+	for (auto &tile : game_.tilemap.getTileArea(_tile, unit.width, unit.height)) {
 		if (tile == builder.tile) // Ignore tile of the builder, this is handled in Unit::Build when builder despawns
 			continue;
 
@@ -397,10 +397,10 @@ Unit *Player::getTargetedUnit() {
 }
 
 void Player::rightClick(Position pos) {
-    if(pos.x < 0 || pos.y < 0 || pos.x > game_.getMap().MAP_WIDTH || pos.y > game_.getMap().MAP_HEIGHT) {
+    if(pos.x < 0 || pos.y < 0 || pos.x > game_.map.MAP_WIDTH || pos.y > game_.map.MAP_HEIGHT) {
         return;
     }
-    Tile &t = game_.getMap().getTile(pos.x, pos.y);
+    Tile &t = game_.tilemap.getTile(pos.x, pos.y);
     Unit* targetedUnit = getTargetedUnit();
     if(!targetedUnit) {
         return;

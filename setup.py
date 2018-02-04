@@ -25,31 +25,44 @@ ext_modules = [
     Extension(
         'DeepRTSEngine',
         [
+            # Engine
             'src/Game.cpp',
-            'src/environment/Tile.cpp',
+
+            # Player
             'src/player/Player.cpp',
+
+            # Environment
+            'src/environment/Map.cpp',
+            'src/environment/Tile.cpp',
+            'src/environment/Tilemap.cpp',
+
+            # Unit
             'src/unit/Unit.cpp',
-            'src/state/Walking.cpp',
-            'src/state/Spawning.cpp',
+            'src/unit/UnitManager.cpp',
+
+            # State
             'src/state/StateManager.cpp',
             'src/state/BaseState.cpp',
+            'src/state/Walking.cpp',
+            'src/state/Spawning.cpp',
             'src/state/Idle.cpp',
-            'src/environment/Tilemap.cpp',
             'src/state/Despawned.cpp',
             'src/state/Harvesting.cpp',
-            'src/util/Pathfinder.cpp',
             'src/state/Building.cpp',
             'src/state/Combat.cpp',
             'src/state/Dead.cpp',
-            #'src/action/RightClickAction.cpp',
-            'src/unit/UnitManager.cpp',
+
+            # Util
+            'src/util/Pathfinder.cpp',
+
+            # Loaders
             'src/loaders/ResourceLoader.cpp',
-            #'src/logging/LogGame.cpp',
 
 
 
             'src/wrapper/Constants.cpp',
             'src/wrapper/Unit.cpp',
+            'src/wrapper/Map.cpp',
             'src/wrapper/Tile.cpp',
             'src/wrapper/Tilemap.cpp',
             'src/wrapper/Game.cpp',

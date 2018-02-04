@@ -6,35 +6,22 @@
 
 #include "../Constants.h"
 #include "Tile.h"
+#include "Map.h"
 #include <vector>
 #include "../../include/rapidjson/include/rapidjson/document.h"
 
 class Game;
 
 class Tilemap{
-private:
-	Game &game_;
-
 
 public:
+	Game &game;
 
 	/// Constructor
-	Tilemap(std::string mapName, Game &game);
+	Tilemap(Map& map, Game &game);
 
 	/// List of spawn tiles (Tiles that players can spawn on)
 	std::vector<int> spawnTiles;
-
-	/// A tile's Width
-	int TILE_WIDTH;
-
-	/// A tile's Height
-	int TILE_HEIGHT;
-
-	/// The Map Width (Num of tiles in width)
-	int MAP_WIDTH;
-
-	/// The Map Height (Num of tiles in height)
-	int MAP_HEIGHT;
 
 	/// Get all tiles
 	std::vector<Tile>& getTiles();

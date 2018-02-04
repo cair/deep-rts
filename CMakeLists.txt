@@ -31,6 +31,8 @@ set(SOURCE_FILES
         src/state/Idle.h
         src/environment/Tilemap.cpp
         src/environment/Tilemap.h
+        src/environment/Map.cpp
+        src/environment/Map.h
         src/state/Despawned.cpp
         src/state/Despawned.h
         src/state/Harvesting.cpp

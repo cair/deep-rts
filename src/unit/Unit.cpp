@@ -30,7 +30,7 @@ void Unit::moveRelative(int x, int y) {
     int newX = tile->x + x;
     int newY = tile->y + y;
 
-    Tile &moveTile = player_.getGame().getMap().getTile(newX, newY);
+    Tile &moveTile = player_.getGame().tilemap.getTile(newX, newY);
 
     move(moveTile);
 }
@@ -41,7 +41,7 @@ void Unit::rightClickRelative(int x, int y) {
     int newX = tile->x + x;
     int newY = tile->y + y;
 
-    Tile &clickTile = player_.getGame().getMap().getTile(newX, newY);
+    Tile &clickTile = player_.getGame().tilemap.getTile(newX, newY);
     rightClick(clickTile);
 }
 
@@ -60,7 +60,7 @@ void Unit::setPosition(Tile &newTile) {
         clearTiles();
     }
 
-    for(auto &t : player_.getGame().getMap().getTileArea(newTile, width, height)) {
+    for(auto &t : player_.getGame().tilemap.getTileArea(newTile, width, height)) {
         t->setOccupant(this);
     }
 
@@ -85,7 +85,7 @@ Tile *Unit::centerTile() {
         return tile;
     }
 
-    return &player_.getGame().getMap().getTile(tile->x + addX, tile->y + addY);
+    return &player_.getGame().tilemap.getTile(tile->x + addX, tile->y + addY);
 }
 
 bool Unit::build(int idx) {
@@ -115,7 +115,7 @@ bool Unit::build(int idx) {
         return false;
     }
 
-    Tile &placementTile = player_.getGame().getMap().getTile(x, y);
+    Tile &placementTile = player_.getGame().tilemap.getTile(x, y);
     if(!player_.canAfford(newUnit)) {
         //std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
@@ -178,7 +178,7 @@ void Unit::despawn() {
 }
 
 void Unit::clearTiles(){
-    for(auto &t : player_.getGame().getMap().getTileArea(*tile, width, height)) {
+    for(auto &t : player_.getGame().tilemap.getTileArea(*tile, width, height)) {
         t->setOccupant(NULL);
     }
     tile->setOccupant(NULL);
@@ -410,7 +410,7 @@ void Unit::tryAttack()
         return;
     }
 
-    std::vector<Tile *> availableAttackable = player_.getGame().getMap().neighbors(*tile, Constants::Pathfinding::Attackable);
+    std::vector<Tile *> availableAttackable = player_.getGame().tilemap.neighbors(*tile, Constants::Pathfinding::Attackable);
     if (availableAttackable.empty()) {
         // Fail
         return;
@@ -435,7 +435,7 @@ void Unit::tryMove(int16_t x, int16_t y)
         return;
     }
 
-    Tile &tile = player_.getGame().getMap().getTile(newX, newY);
+    Tile &tile = player_.getGame().tilemap.getTile(newX, newY);
 
     if (tile.isWalkable()) {
         move(tile);
@@ -465,7 +465,7 @@ void Unit::tryHarvest()
         return;
     }
 
-    std::vector<Tile *> availableHarvestable = player_.getGame().getMap().neighbors(*tile, Constants::Pathfinding::Harvestable);
+    std::vector<Tile *> availableHarvestable = player_.getGame().tilemap.neighbors(*tile, Constants::Pathfinding::Harvestable);
     if (availableHarvestable.empty()) {
         // Fail
         return;
@@ -478,14 +478,14 @@ void Unit::tryHarvest()
 
 Tile &Unit::getSpawnTile() {
     assert(spawnTileID != -1);
-    return player_.getGame().getMap().getTiles()[spawnTileID];
+    return player_.getGame().tilemap.getTiles()[spawnTileID];
 }
 
 Tile *Unit::getTile(int tileID) {
     if(tileID == -1) {
         return NULL;
     }
-    return &player_.getGame().getMap().getTiles()[tileID];
+    return &player_.getGame().tilemap.getTiles()[tileID];
 }
 
 Unit &Unit::getBuiltBy() {
@@ -522,7 +522,7 @@ std::set<int> Unit::getVisionTileIDs() {
         for(auto y = -sight; y < height + sight; y++){
             int tX = tileX + x;
             int yY = tileY + y;
-            int idx = player_.getGame().getMap().MAP_HEIGHT*yY + tX;
+            int idx = player_.getGame().map.MAP_HEIGHT*yY + tX;
             tileIDs.insert(idx);
         }
     }
@@ -531,8 +531,8 @@ std::set<int> Unit::getVisionTileIDs() {
 
 bool Unit::position_in_bounds(int x, int y) {
     if(
-            x < 0 || x > this->player_.getGame().getMap().MAP_WIDTH ||
-            y < 0 || y > this->player_.getGame().getMap().MAP_HEIGHT
+            x < 0 || x > this->player_.getGame().map.MAP_WIDTH ||
+            y < 0 || y > this->player_.getGame().map.MAP_HEIGHT
             ){
         return false;
     }

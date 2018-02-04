@@ -8,33 +8,21 @@
 
 std::unordered_map<int, Game*> Game::games;
 Game::Game():
-		map(Tilemap(Config::getInstance().getMapName(), *this))
-{
-    players.reserve(Constants::MAX_PLAYERS);
-	units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
+        map(Config::getInstance().getMapName()),
+        state({map.TILE_HEIGHT, map.MAP_WIDTH, 6}), // Wait until map is loaded
+		tilemap(map, *this)
 
+{
     // State vector
     // 0 - Environment
     // 1 - Unit/Building Type
     // 2 - Unit/Building Player
     // 3 - Unit/Building Health
-    int c = 0;
-    if (Config::getInstance().state_environment) {
-        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-        state_environment_idx = c++;
-    }
-    if (Config::getInstance().state_unit_player) {
-        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-        state_unit_player_idx = c++;
-    }
-    if (Config::getInstance().state_unit_health) {
-        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-        state_unit_health_idx = c++;
-    }
-    if (Config::getInstance().state_unit_type){
-        state.emplace_back(std::vector<float>(map.MAP_WIDTH * map.MAP_HEIGHT));
-        state_unit_type_idx = c++;
-    }
+    // Init environment
+
+    players.reserve(Constants::MAX_PLAYERS);
+	units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
+
 
     setMaxFPS(Config::getInstance().getFPS());
     setMaxUPS(Config::getInstance().getUPS());
@@ -78,7 +66,7 @@ void Game::reset()
 	units.clear();
 
 	// Reset all tiles
-	for (auto &tile : map.getTiles()) {
+	for (auto &tile : tilemap.getTiles()) {
 		tile.reset();
 	}
 
@@ -177,36 +165,8 @@ void Game::timerInit() {
 
 
 
-Tilemap &Game::getMap() {
-	return map;
-}
 
 
-
-std::vector<std::vector<float>> Game::getState(){
-    int i = 0;
-    for(auto tile : map.getTiles()){
-
-        float tileId = tile.getTypeId();
-        float uType = 0;
-        float uPlayer = 0;
-        float uHealth = 0;
-        if (tile.hasOccupant()) {
-            auto occupant = tile.getOccupant();
-            uType = occupant->typeId;
-            uPlayer = occupant->player_.getId() + 1; // TODO id should be integrated maybe? player.id = id + 1
-            uHealth = occupant->health / occupant->health_max;
-        }
-
-        if (Config::getInstance().state_environment) state[state_environment_idx][i] = tileId;
-        if (Config::getInstance().state_unit_type) state[state_unit_type_idx][i] = uType;
-        if (Config::getInstance().state_unit_player) state[state_unit_player_idx][i] = uPlayer;
-        if (Config::getInstance().state_unit_health) state[state_unit_health_idx][i] = uHealth;
-
-        i++;
-    }
-    return state;
-}
 
 
 Game * Game::getGame(uint8_t id)
@@ -250,13 +210,13 @@ Player &Game::addPlayer() {
 void Game::spawnPlayer(Player &player) {
 	// Retrieve spawn_point
 
-    if(map.spawnTiles.size() < players.size()){
+    if(tilemap.spawnTiles.size() < players.size()){
         throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
     }
 
-	int spawnPointIdx = map.spawnTiles[player.getId()];
+	int spawnPointIdx = tilemap.spawnTiles[player.getId()];
 
-    auto spawnTile = map.getTiles()[spawnPointIdx];
+    auto spawnTile = tilemap.tiles[spawnPointIdx];
 
 	// Spawn Initial builder
 	Unit &builder = player.spawn(spawnTile);

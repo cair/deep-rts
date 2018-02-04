@@ -5,3 +5,6 @@
 [submodule "include/rapidjson"]
 	path = include/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
+[submodule "include/cppmat"]
+	path = include/cppmat
+	url = https://github.com/tdegeus/cppmat.git
