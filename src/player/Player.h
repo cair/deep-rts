@@ -30,9 +30,6 @@ private:
 	/// Action queue
 	std::deque<std::pair<Constants::Action, int>> actionQueue;
 
-	/// Unit color definition
-	std::tuple<uint8_t , uint8_t, uint8_t> playerColor;
-
 	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
 	std::vector<uint16_t> unitIndexes;
 

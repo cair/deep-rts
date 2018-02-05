@@ -14,18 +14,9 @@
 Player::Player(Game &game, int id) : game_(game)
 {
 	id_ = id;
+
 	setName("Player: " + std::to_string(id_));
-    std::fill(actionStatistics, actionStatistics+20, 0);
-
-	std::tuple<uint8_t , uint8_t, uint8_t> colors[4] = { // TODO use Color generator
-			std::tuple<uint8_t , uint8_t, uint8_t>(255, 0, 0),
-			std::tuple<uint8_t , uint8_t, uint8_t>(0, 0, 255),
-			std::tuple<uint8_t , uint8_t, uint8_t>(0, 255, 0),
-			std::tuple<uint8_t , uint8_t, uint8_t>(0, 255, 255),
-	};
-	playerColor = colors[id_];
-	
-
+    std::fill(actionStatistics, actionStatistics + 20, 0);
 
 
 	unitIndexes.reserve(1000);
@@ -303,6 +294,7 @@ Unit& Player::addUnit(Constants::Unit unitType) {
 	game_.units.push_back(UnitManager::constructUnit(unitType, *this));
 	Unit& newUnit = game_.units.back();
 	unitIndexes.push_back(newUnit.id);
+
 
 	// Callback
 	getGame()._onUnitCreate(newUnit);

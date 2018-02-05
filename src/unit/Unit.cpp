@@ -61,6 +61,7 @@ void Unit::setPosition(Tile &newTile) {
     }
 
     for(auto &t : player_.getGame().tilemap.getTileArea(newTile, width, height)) {
+        setStateForTile(t);
         t->setOccupant(this);
     }
 
@@ -179,6 +180,7 @@ void Unit::despawn() {
 
 void Unit::clearTiles(){
     for(auto &t : player_.getGame().tilemap.getTileArea(*tile, width, height)) {
+        clearStateForTile(t);
         t->setOccupant(NULL);
     }
     tile->setOccupant(NULL);
@@ -543,4 +545,25 @@ Player &Unit::getPlayer() {
     return player_;
 }
 
-
+void Unit::clearStateForTile(Tile *t){
+    player_.getGame().state(t->x, t->y, 1) = 0; // Player ID
+    player_.getGame().state(t->x, t->y, 2) = 0; // 1 if its a building
+    player_.getGame().state(t->x, t->y, 3) = 0; // 1 if its a unit
+    player_.getGame().state(t->x, t->y, 4) = 0; // Unit Type
+    player_.getGame().state(t->x, t->y, 5) = 0; // Unit Health percent
+    player_.getGame().state(t->x, t->y, 6) = 0; // Unit Unit State
+    player_.getGame().state(t->x, t->y, 7) = 0; // Unit Total Carry
+    player_.getGame().state(t->x, t->y, 8) = 0; // Unit Attack Score
+    player_.getGame().state(t->x, t->y, 9) = 0; // Unit Defense Score
+}
+void Unit::setStateForTile(Tile *t){
+    player_.getGame().state(t->x, t->y, 1) = player_.getId(); // Player ID
+    player_.getGame().state(t->x, t->y, 2) = (canMove) ? 0 : 1; // 1 if its a building
+    player_.getGame().state(t->x, t->y, 3) = (canMove) ? 1 : 0; // 1 if its a unit
+    player_.getGame().state(t->x, t->y, 4) = int(typeId); // Unit Type
+    player_.getGame().state(t->x, t->y, 5) = health / health_max; // Unit Health percent
+    player_.getGame().state(t->x, t->y, 6) = (int)state->id; // Unit Unit State
+    player_.getGame().state(t->x, t->y, 7) = oilCarry + goldCarry + lumberCarry; // Unit Total Carry
+    player_.getGame().state(t->x, t->y, 8) = damageMin + damageMax + damagePiercing; // Unit Attack Score
+    player_.getGame().state(t->x, t->y, 9) = armor; // Unit Defense Score
+}

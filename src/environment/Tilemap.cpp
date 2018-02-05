@@ -92,6 +92,7 @@ std::vector<Tile> &Tilemap::getTiles() {
 
 
 std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) {
+    // TODO slow as fuck
     std::vector<Tile *> neighbors;
 
     std::pair<int,int> pos[8];

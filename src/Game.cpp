@@ -9,12 +9,15 @@
 std::unordered_map<int, Game*> Game::games;
 Game::Game():
         map(Config::getInstance().getMapName()),
-        state({map.TILE_HEIGHT, map.MAP_WIDTH, 6}), // Wait until map is loaded
+        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
 		tilemap(map, *this)
 
 {
+
     // State vector
     // 0 - Environment
+    // 1 - Player ID
+
     // 1 - Unit/Building Type
     // 2 - Unit/Building Player
     // 3 - Unit/Building Health
@@ -200,7 +203,7 @@ bool Game::isTerminal(){
 
 
 Player &Game::addPlayer() {
-	players.emplace_back(*this, players.size());
+	players.emplace_back(*this, players.size() + 1);
 	Player &player = players.back();
 
 	spawnPlayer(player);
@@ -214,7 +217,7 @@ void Game::spawnPlayer(Player &player) {
         throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
     }
 
-	int spawnPointIdx = tilemap.spawnTiles[player.getId()];
+	int spawnPointIdx = tilemap.spawnTiles[player.getId() - 1];
 
     auto spawnTile = tilemap.tiles[spawnPointIdx];
 

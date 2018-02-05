@@ -135,6 +135,9 @@ int Tile::distance(Tile &target) {
 
 void Tile::reset()
 {
+	if(hasOccupant()) {
+		getOccupant()->clearStateForTile(this);
+	}
     occupantID = -1;
     harvestable = newHarvestable;
     walkable = newWalkable;

@@ -191,5 +191,10 @@ public:
 
 
     bool position_in_bounds(int x, int y);
+
+
+	/// State alterations
+	void setStateForTile(Tile * t);
+	void clearStateForTile(Tile *t);
 };
 
