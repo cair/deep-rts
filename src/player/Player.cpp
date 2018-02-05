@@ -258,7 +258,14 @@ void Player::removeUnit(Unit & unit) {
 
 bool Player::isDefeated() {
 	if (defeated) return true;
-     else if (getUnitCount() == 1 && game_.units[unitIndexes[0]].typeId == Constants::Unit::TownHall && gold < 400){
+     else if (
+			getUnitCount() == 1 &&
+					(
+							(game_.units[unitIndexes[0]].typeId == Constants::Unit::TownHall && gold < 400) ||
+							(game_.units[unitIndexes[0]].typeId == Constants::Unit::Barracks && gold < 400) ||
+							game_.units[unitIndexes[0]].typeId == Constants::Unit::Farm
+					)
+			){
             defeated = true;
             return defeated;
         }  // Dead state, cannot do anything
