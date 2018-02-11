@@ -7,8 +7,8 @@
 
 
 std::unordered_map<int, Game*> Game::games;
-Game::Game():
-        map(Config::getInstance().getMapName()),
+Game::Game(std::string map_file):
+        map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
 		tilemap(map, *this)
 
@@ -27,8 +27,8 @@ Game::Game():
 	units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
 
 
-    setMaxFPS(Config::getInstance().getFPS());
-    setMaxUPS(Config::getInstance().getUPS());
+    setMaxFPS(60);
+    setMaxUPS(10);
 
 	id = static_cast<uint8_t>(games.size());
 	games[id] = this;
@@ -225,7 +225,7 @@ void Game::spawnPlayer(Player &player) {
 	Unit &builder = player.spawn(spawnTile);
 
 	// If auto-spawn town hall mechanic is activated
-	if (Config::getInstance().getMechanicTownHall()) {
+	if (instantTownHall) {
 		// build Town-Hall
 		builder.build(0);
 	}
@@ -276,7 +276,7 @@ uint64_t Game::getGameDuration() const{
 }
 
 uint8_t Game::getTicksModifier() const {
-    return Config::getInstance().getTickModifier();
+    return tickModifier;
 }
 
 uint8_t Game::getId() const {

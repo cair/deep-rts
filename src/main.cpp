@@ -1,9 +1,15 @@
 #include "graphics/GUIGame.h"
-
+#include <string>
 int main() {
 
     // Create game instance
-    GUIGame *g = new GUIGame();
+    GUIGame *g = new GUIGame("small-2v2.json");
+    g->tickModifier = 1;
+    g->setMaxFPS(60);
+    g->setMaxUPS(10);
+    g->start();
+
+
 
     Player& player0 = g->addPlayer();
     Player& player1 = g->addPlayer();
@@ -13,10 +19,9 @@ int main() {
 
 
 
-    //g->setMaxFPS(5);
 
-    g->setMaxUPS(99999999999999999999999999);
-    g->start();
+
+
     srand (time(NULL));
     while(true){
         while(!g->terminal){

@@ -7,6 +7,7 @@
 #include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
 #include "../player/Player.h"
+#include "../Game.h"
 
 void Harvesting::update(Unit & unit)const{
 
@@ -113,7 +114,7 @@ void Harvesting::update(Unit & unit)const{
             unit.lumberCarry = 0;
             unit.oilCarry = 0;
 
-            if(Config::getInstance().getMechanicHarvestReplay())
+            if(unit.player_.getGame().harvestForever)
             {
                 unit.transitionState(unit.stateManager->harvestingState);
             }else{

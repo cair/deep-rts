@@ -4,7 +4,7 @@
 
 #include "GUIGame.h"
 
-GUIGame::GUIGame(): gui(*this){
+GUIGame::GUIGame(std::string map_file) : Game(map_file), gui(*this) {
 
 }
 

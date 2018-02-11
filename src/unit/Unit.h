@@ -12,10 +12,11 @@
 #include "../Constants.h"
 #include "../environment/Tile.h"
 #include "../state/StateManager.h"
-#include "../Config.h"
 #include "../util/Position.h"
 
 
+
+class Game;
 class Player;
 class BaseState;
 
@@ -27,6 +28,7 @@ private:
 
 
 public:
+	Game *game;
 
 	/// Constructor
     Unit(Player &player);
@@ -106,7 +108,7 @@ public:
 
 
     // Harvesting
-    double harvestInterval = .5 * 10;
+    double harvestInterval = .5; // Must be set in constructor
     int harvestTimer;
     int harvestIterator;
     int harvestTargetID = -1;
@@ -123,14 +125,14 @@ public:
     int combatTargetID = -1;
 	Unit *getCombatTarget();
     int combatTimer = 1000;
-    double combatInterval = 1 * 10;
+    double combatInterval = 1; // Must be set in constructor
 
     // Walking
     int walking_timer = 0;
     std::vector<Tile *> walking_path;
     int walkingGoalID = -1;
 	int stepsLeft = 0; // If value is 0 it is ignored. However, Walking is transitioned when stepsLeft = 1 (Which decrements it to 0)
-    double walking_interval = 1 * 5;
+    double walking_interval = 1; // Must be set in constructor
 
 
     Tile *tile = NULL;

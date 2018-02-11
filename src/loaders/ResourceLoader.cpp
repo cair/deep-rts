@@ -41,6 +41,9 @@ void ResourceLoader::loadMapJSON(std::string map_file) {
 		rapidjson::Document d;
 		mapJSON.ParseStream(isw);
 		mapLoaded = true;
+		if(mapJSON.IsNull()){
+			throw std::runtime_error("File Error: Could not find: " + map_file + " (" + filePath + ").\nEnsure that the data directory exists!");
+		}
 	}
 	else {
 		throw std::runtime_error("File Error: Could not find: " + map_file + " (" + filePath + ").\nEnsure that the data directory exists!");

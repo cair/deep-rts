@@ -54,7 +54,7 @@ void Animation::setup() {
 
 void Animation::setupPeasant(){
     int P = Constants::Unit::Peasant;
-    assert(peasant);
+    //assert(peasant);
 
 
     ///
@@ -238,7 +238,7 @@ void Animation::setupTownHall(){
 
 void Animation::setupBarracks(){
     int P = Constants::Unit::Barracks;
-    assert(buildings);
+    //assert(buildings);
 
     Animation::add(P, Constants::State::Idle, Constants::Direction::Down,306, 568,  96, 81, 96, 96, &*buildings, false);
     Animation::add(P, Constants::State::Idle, Constants::Direction::Up,306, 457,  96, 95, 96, 96, &*buildings, false);
@@ -255,7 +255,7 @@ void Animation::setupBarracks(){
 
 void Animation::setupFarm() {
     int P = Constants::Unit::Farm;
-    assert(buildings);
+    //assert(buildings);
 
     Animation::add(P, Constants::State::Idle, Constants::Direction::Down, 397, 72,  63, 59, 64, 64, &*buildings, false);
     Animation::add(P, Constants::State::Idle, Constants::Direction::Up, 397, 3,  63, 59, 64, 64, &*buildings, false);
@@ -272,7 +272,7 @@ void Animation::setupFarm() {
 
 void Animation::setupFootman(){
     int P = Constants::Unit::Footman;
-    assert(footman);
+    //assert(footman);
 
     ///
     /// Walking
@@ -438,7 +438,7 @@ void Animation::setupFootman(){
 
 void Animation::setupArcher() {
     int P = Constants::Unit::Archer;
-    assert(archer);
+    //assert(archer);
 
     ///
     /// Walking
@@ -613,7 +613,7 @@ sf::Sprite &Animation::getNext(Unit & unit) {
 
     if(items.size() == 0) {
         std::vector<std::shared_ptr<sf::Sprite>> &items = Animation::sprites[unitId][Constants::State::Idle][Constants::Direction::Down];
-        assert(items.size() > 0);
+        //assert(items.size() > 0);
         std::shared_ptr<sf::Sprite> &sprite = items[iteration % items.size()];
         return *sprite;
     }

@@ -18,7 +18,7 @@ void Building::update(Unit & unit)const{
         if(!unit.tile){
             // Unit has no tile, means unit is despawned
             Tile *firstWalkable = Pathfinder::find_first_walkable_tile(buildEntity.tile);
-            assert(firstWalkable);
+            //assert(firstWalkable);
             unit.setPosition(*firstWalkable);
             unit.transitionState();
             unit.player_.food += unit.foodProduction;

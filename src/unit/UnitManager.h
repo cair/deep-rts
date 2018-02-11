@@ -5,7 +5,6 @@
 
 #include "Unit.h"
 #include "../Constants.h"
-#include "../Config.h"
 class Player;
 class UnitManager {
 public:

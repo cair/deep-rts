@@ -18,7 +18,7 @@ GUI::GUI(Game &game) :
     setupFrame();
     setupFont();
 
-	if (Config::getInstance().getAudioEnabled()) {
+	if (game.enableAudio) {
 		setupAudio();
 	}
 
@@ -45,7 +45,7 @@ void GUI::setupAudio(){
     sf::Music *music = new sf::Music();
     if (music->openFromFile(".//data//audio//song_1.ogg"))
     {
-		music->setVolume(Config::getInstance().getAudioVolume());
+		music->setVolume(game.audioVolume);
         music->setLoop(true);
         music->play();
     }
@@ -508,7 +508,8 @@ unsigned char * GUI::capture(){
 
 void GUI::drawTiles(){
 
-    if(Config::getInstance().mechanicFOW){
+
+    /*if(Config::getInstance().mechanicFOW){
         auto &gMap = game.map;
         sf::RectangleShape rectangle;
         rectangle.setSize(sf::Vector2f(gMap.MAP_WIDTH * gMap.TILE_WIDTH, gMap.TILE_HEIGHT * gMap.MAP_HEIGHT));
@@ -534,7 +535,7 @@ void GUI::drawTiles(){
             }
         }
 
-    } else {
+    } else { */
         for(GraphicTile& gTile : map.gTiles){
 
             if (showGridLines) {
@@ -553,7 +554,7 @@ void GUI::drawTiles(){
             }
 
         }
-    }
+    //}
 
 
 

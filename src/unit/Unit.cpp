@@ -10,7 +10,12 @@
 #include <random>
 #include <climits>
 
-Unit::Unit(Player &player): player_(player), stateManager(&player.getGame().stateManager){
+Unit::Unit(Player &player): player_(player), game(&player.getGame()), stateManager(&player.getGame().stateManager){
+
+    // Harvesting
+    harvestInterval = .5 * game->tickModifier;
+    combatInterval = 1 * game->tickModifier;
+    walking_interval = 1 * game->tickModifier;
     id = player.getGame().units.size();
     state = stateManager->despawnedState;
     stateList.reserve(50);
@@ -101,7 +106,7 @@ bool Unit::build(int idx) {
 
 
     // Check food restriction
-    if(Config::getInstance().mechanicFood && newUnit.foodConsumption + player_.foodConsumption > player_.food) {
+    if(player_.getGame().foodLimit && newUnit.foodConsumption + player_.foodConsumption > player_.food) {
         return false;
     }
 
@@ -446,13 +451,13 @@ void Unit::tryMove(int16_t x, int16_t y)
     }
 
     // Allow to automatically attack if config has enabled this
-    if(Config::getInstance().mechanicAutoAttack && tile.isAttackable(*this)) {
+    if(game->autoAttack && tile.isAttackable(*this)) {
         attack(tile);
         return;
     }
 
 
-    if(Config::getInstance().mechanicAutoHarvest && tile.isHarvestable()) {
+    if(game->harvestForever && tile.isHarvestable()) {
         harvest(tile);
         return;
     }

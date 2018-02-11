@@ -7,7 +7,7 @@
 
 #include "../Game.h"
 #include "GUI.h"
-
+#include <iostream>
 
 class GUIGame: public Game{
     GUI gui;
@@ -15,7 +15,7 @@ class GUIGame: public Game{
 public:
 
 
-    GUIGame();
+    GUIGame(std::string map_file);
 
     virtual void _render();
 
