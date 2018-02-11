@@ -5,76 +5,111 @@ project(DeepRTS)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake)
+
+find_package(SFML 2 COMPONENTS system window graphics network audio)
 
 
 set(SOURCE_FILES
+        # Engine
         src/main.cpp
         src/Game.cpp
         src/Game.h
-        src/environment/Tile.cpp
-        src/environment/Tile.h
+        src/Constants.h
+        src/Config.h
+
+        # Player
         src/player/Player.cpp
         src/player/Player.h
+
+        # Unit
         src/unit/Unit.cpp
         src/unit/Unit.h
-        src/Config.h
+        src/unit/UnitManager.h
+        src/unit/UnitManager.cpp
+
+        # Environment/Map
+        src/environment/Tile.cpp
+        src/environment/Tile.h
+        src/environment/Tilemap.cpp
+        src/environment/Tilemap.h
+        src/environment/Map.cpp
+        src/environment/Map.h
+
+
+        # State
+        src/state/BaseState.cpp
+        src/state/BaseState.h
+        src/state/Idle.cpp
+        src/state/Idle.h
         src/state/Walking.cpp
         src/state/Walking.h
         src/state/Spawning.cpp
         src/state/Spawning.h
         src/state/StateManager.cpp
         src/state/StateManager.h
-        src/Constants.h
-        src/state/BaseState.cpp
-        src/state/BaseState.h
-        src/state/Idle.cpp
-        src/state/Idle.h
-        src/environment/Tilemap.cpp
-        src/environment/Tilemap.h
-        src/environment/Map.cpp
-        src/environment/Map.h
         src/state/Despawned.cpp
         src/state/Despawned.h
         src/state/Harvesting.cpp
         src/state/Harvesting.h
-        src/util/Pathfinder.cpp
-        src/util/Pathfinder.h
-        src/util/PriorityQueue.hpp
         src/state/Building.cpp
         src/state/Building.h
-        src/util/ColorConverter.hpp
         src/state/Combat.cpp
         src/state/Combat.h
         src/state/Dead.cpp
         src/state/Dead.h
-        src/action/BaseAction.h
-        src/action/RightClickAction.cpp
-        src/action/RightClickAction.h
         src/state/StateManager.h
         src/state/StateManager.cpp
-        src/unit/UnitManager.h
-        src/unit/UnitManager.cpp
+
+
+        src/util/ColorConverter.hpp
         src/util/Position.h
+        src/util/Pathfinder.cpp
+        src/util/Pathfinder.h
+        src/util/PriorityQueue.hpp
+
+
+        # Loaders
         src/loaders/ResourceLoader.cpp
         src/loaders/ResourceLoader.h
-        src/logging/LogGame.h
-        src/logging/LogPlayer.h
-        src/logging/LogTick.h
-        src/logging/LogGame.cpp
         )
+
+if(SFML_FOUND)
+    set(SOURCE_FILES
+            # Graphical Interface (C++)
+            ${SOURCE_FILES}
+            src/graphics/GUIGame.cpp
+            src/graphics/GUIGame.h
+            src/graphics/Animation.cpp
+            src/graphics/Animation.h
+            src/graphics/GraphicTile.cpp
+            src/graphics/GraphicTile.h
+            src/graphics/GraphicTilemap.cpp
+            src/graphics/GraphicTilemap.h
+            src/graphics/GUI.cpp
+            src/graphics/GUI.h
+            src/graphics/ResourceHandler.h
+            )
+endif()
 
 add_executable(DeepRTS ${SOURCE_FILES})
 
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
-find_package(PythonLibs REQUIRED)
-find_package(Threads)
 
 
 
-include_directories(${PYTHON_INCLUDE_DIR})
-target_link_libraries(DeepRTS ${PYTHON_LIBRARIES})
-target_link_libraries(DeepRTS ${CMAKE_THREAD_LIBS_INIT})
+
+
+
+if(SFML_FOUND)
+    include_directories(${SFML_INCLUDE_DIR})
+    target_link_libraries(DeepRTS ${SFML_LIBRARIES})
+elseif()
+    message( FATAL_ERROR "You can not do this at all, CMake will exit. ${SFML_FOUND}" )
+endif()
+
+
+
 
 
 

@@ -167,6 +167,8 @@ public:
 
     const std::string &getName() const;
 
+	int getDepleteTile() const;
+
     //////////////////////////////////////////////////////////////////////////////////
     ///
     /// Setters

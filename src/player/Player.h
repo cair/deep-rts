@@ -30,9 +30,6 @@ private:
 	/// Action queue
 	std::deque<std::pair<Constants::Action, int>> actionQueue;
 
-	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
-	std::vector<uint16_t> unitIndexes;
-
 	/// Get index of next or previous unit
 	int _getNextPrevUnitIdx();
 
@@ -60,6 +57,9 @@ private:
 
 
 public:
+
+	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
+	std::vector<uint16_t> unitIndexes;
 
 	/// Constructor
 	Player(Game &game, int id);

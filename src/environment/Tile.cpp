@@ -196,6 +196,10 @@ const std::string &Tile::getName() const {
 	return name;
 }
 
+int Tile::getDepleteTile() const {
+	return depletedTypeId;
+}
+
 
 
 

@@ -10,14 +10,12 @@
 #include <map>
 #include <unordered_map>
 #include <iostream>
+#include <chrono>
 
 
 #include "player/Player.h"
 #include "environment/Map.h"
 #include "environment/Tilemap.h"
-#include "action/BaseAction.h"
-#include "logging/LogGame.h"
-#include <chrono>
 
 
 class Game {
