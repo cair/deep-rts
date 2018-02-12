@@ -72,7 +72,7 @@ set(SOURCE_FILES
         # Loaders
         src/loaders/ResourceLoader.cpp
         src/loaders/ResourceLoader.h
-        )
+        src/Config.h)
 
 if(SFML_FOUND)
     set(SOURCE_FILES

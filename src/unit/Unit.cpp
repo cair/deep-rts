@@ -10,12 +10,17 @@
 #include <random>
 #include <climits>
 
-Unit::Unit(Player &player): player_(player), game(&player.getGame()), stateManager(&player.getGame().stateManager){
+Unit::Unit(Player &player):
+        config(player.config),
+        player_(player),
+        game(&player.getGame()),
+        stateManager(&player.getGame().stateManager)
+{
 
     // Harvesting
-    harvestInterval = .5 * game->tickModifier;
-    combatInterval = 1 * game->tickModifier;
-    walking_interval = 1 * game->tickModifier;
+    harvestInterval = .5 * config.tickModifier;
+    combatInterval = 1 * config.tickModifier;
+    walking_interval = 1 * config.tickModifier;
     id = player.getGame().units.size();
     state = stateManager->despawnedState;
     stateList.reserve(50);
@@ -106,7 +111,7 @@ bool Unit::build(int idx) {
 
 
     // Check food restriction
-    if(player_.getGame().foodLimit && newUnit.foodConsumption + player_.foodConsumption > player_.food) {
+    if(config.foodLimit && newUnit.foodConsumption + player_.foodConsumption > player_.food) {
         return false;
     }
 
@@ -451,13 +456,13 @@ void Unit::tryMove(int16_t x, int16_t y)
     }
 
     // Allow to automatically attack if config has enabled this
-    if(game->autoAttack && tile.isAttackable(*this)) {
+    if(config.autoAttack && tile.isAttackable(*this)) {
         attack(tile);
         return;
     }
 
 
-    if(game->harvestForever && tile.isHarvestable()) {
+    if(config.harvestForever && tile.isHarvestable()) {
         harvest(tile);
         return;
     }

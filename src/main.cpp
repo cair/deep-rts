@@ -1,15 +1,15 @@
+
+#include "Config.h"
+#include "Game.h"
 #include "graphics/GUIGame.h"
-#include <string>
+
 int main() {
 
+
+    Config config = Config::defaults();
+
     // Create game instance
-    GUIGame *g = new GUIGame("small-2v2.json");
-    g->tickModifier = 1;
-    g->setMaxFPS(60);
-    g->setMaxUPS(10);
-    g->start();
-
-
+    GUIGame *g = new GUIGame("31x31-2v2.json", config);
 
     Player& player0 = g->addPlayer();
     Player& player1 = g->addPlayer();
@@ -19,18 +19,20 @@ int main() {
 
 
 
+    //g->setMaxFPS(5);
 
-
-
+    g->setMaxUPS(99999999999999999999999999);
+    g->start();
     srand (time(NULL));
-    while(true){
+    while (true){
         while(!g->terminal){
             g->tick();
-            g->render();
             g->update();
+            g->render();
             g->caption();
-            //player0.queueActionA(rand() % 16 + 1, 1);
-            //player1.queueActionA(rand() % 16 + 1, 1);
+
+            player0.do_action(rand() % 16 + 1);
+            player1.do_action(rand() % 16 + 1);
         }
         g->reset();
 

@@ -66,10 +66,10 @@ Unit UnitManager::constructFarm(Player &player) {
     u.goldCost = 500;
     u.oilCost = 0;
 
-    if(u.game->instantBuilding) {
+    if(u.config.instantBuilding) {
         u.spawnDuration = 0;
     } else {
-        u.spawnDuration = 100 * u.game->tickModifier;
+        u.spawnDuration = 100 * u.config.tickModifier;
     }
 
     u.foodProduction = 4;
@@ -121,10 +121,10 @@ Unit UnitManager::constructBarracks(Player &player) {
     u.goldCost = 700;
     u.oilCost = 0;
 
-    if(u.game->instantBuilding) {
+    if(u.config.instantBuilding) {
         u.spawnDuration = 0;
     } else {
-        u.spawnDuration = 100 * u.game->tickModifier;
+        u.spawnDuration = 100 * u.config.tickModifier;
     }
 
 
@@ -138,10 +138,10 @@ Unit UnitManager::constructBarracks(Player &player) {
 
     u.buildInventory = {};
 
-    if(u.game->enableFootman) {
+    if(u.config.enableFootman) {
         u.buildInventory.push_back(Constants::Unit::Footman);
     }
-    if(u.game->enableArcher) {
+    if(u.config.enableArcher) {
         u.buildInventory.push_back(Constants::Unit::Archer);
     }
 
@@ -184,10 +184,10 @@ Unit UnitManager::constructTownHall(Player &player) {
     u.goldCost = 500;
     u.oilCost = 0;
 
-    if(u.game->instantBuilding) {
+    if(u.config.instantBuilding) {
         u.spawnDuration = 0;
     } else {
-        u.spawnDuration = 60 * u.game->tickModifier;
+        u.spawnDuration = 60 * u.config.tickModifier;
     }
 
     u.foodProduction = 1;
@@ -240,10 +240,10 @@ Unit UnitManager::constructPeasant(Player &player)
     u.goldCost = 400;
     u.oilCost = 0;
 
-    if(u.game->instantBuilding) {
+    if(u.config.instantBuilding) {
         u.spawnDuration = 0;
     } else {
-        u.spawnDuration = 45 * u.game->tickModifier;
+        u.spawnDuration = 45 * u.config.tickModifier;
     }
 
 
@@ -257,10 +257,10 @@ Unit UnitManager::constructPeasant(Player &player)
 
     u.buildInventory = { Constants::Unit::TownHall};
 
-    if(u.game->enableFarm) {
+    if(u.config.enableFarm) {
         u.buildInventory.push_back(Constants::Unit::Farm);
     }
-    if(u.game->enableBarracks) {
+    if(u.config.enableBarracks) {
         u.buildInventory.push_back(Constants::Unit::Barracks);
     }
 
@@ -304,10 +304,10 @@ Unit UnitManager::constructFootman(Player &player) {
     u.goldCost = 600;
     u.oilCost = 0;
 
-    if(u.game->instantBuilding) {
+    if(u.config.instantBuilding) {
         u.spawnDuration = 0;
     } else {
-        u.spawnDuration = 60 * u.game->tickModifier;
+        u.spawnDuration = 60 * u.config.tickModifier;
     }
 
     u.foodProduction = 0;
@@ -359,10 +359,10 @@ Unit UnitManager::constructArcher(Player &player) {
     u.goldCost = 500;
     u.oilCost = 0;
 
-    if(u.game->instantBuilding) {
+    if(u.config.instantBuilding) {
         u.spawnDuration = 0;
     } else {
-        u.spawnDuration = 75 * u.game->tickModifier;
+        u.spawnDuration = 75 * u.config.tickModifier;
     }
 
 

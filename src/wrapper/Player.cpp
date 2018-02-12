@@ -29,5 +29,5 @@ void init_Player(py::module &m) {
 
 
             .def("get_id", &Player::getId)
-            .def("queue_action", &Player::queueActionA);
+            .def("do_action", &Player::do_action);
 }

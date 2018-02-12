@@ -1,7 +1,7 @@
 #include <thread>
 #include "GUI.h"
 #include "../Game.h"
-
+#include <tuple>
 
 
 
@@ -14,21 +14,22 @@ GUI::GUI(Game &game) :
     width = window.getSize().x;
     height = window.getSize().y;
 
+    colors = {
+            sf::Color(255, 0, 0), // Player 1
+            sf::Color(0, 0, 255),
+            sf::Color(0, 255, 0),
+            sf::Color(255, 255, 0),
+            sf::Color(0, 255, 255),
+            sf::Color(255, 0, 255) // Player 6
+    };
+
     setupView();
     setupFrame();
     setupFont();
 
-	if (game.enableAudio) {
-		setupAudio();
-	}
-
-
-
-
-
-
-
-
+    if (game.config.autoAttack) {
+        setupAudio();
+    }
 }
 
 
@@ -45,7 +46,7 @@ void GUI::setupAudio(){
     sf::Music *music = new sf::Music();
     if (music->openFromFile(".//data//audio//song_1.ogg"))
     {
-		music->setVolume(game.audioVolume);
+        music->setVolume(game.config.audioVolume);
         music->setLoop(true);
         music->play();
     }
@@ -86,7 +87,7 @@ void GUI::setupFrame(){
 }
 
 void GUI::reset() {
-    
+
 }
 
 sf::Vector2f GUI::getCameraOffset() {
@@ -209,7 +210,7 @@ void GUI::handleEvents(){
             }
 
             else if (event.key.code == sf::Keyboard::K) {
-				// Next Player (Focus)
+                // Next Player (Focus)
                 pIterator += 1;
                 player = &game.players[pIterator % game.players.size()];
             }
@@ -536,24 +537,24 @@ void GUI::drawTiles(){
         }
 
     } else { */
-        for(GraphicTile& gTile : map.gTiles){
+    for(GraphicTile& gTile : map.gTiles){
 
-            if (showGridLines) {
-                sf::RectangleShape rectangle;
-                rectangle.setSize(sf::Vector2f(32, 32));
-                rectangle.setOutlineThickness(1);
-                rectangle.setPosition(gTile.getPixelPosition());
+        if (showGridLines) {
+            sf::RectangleShape rectangle;
+            rectangle.setSize(sf::Vector2f(32, 32));
+            rectangle.setOutlineThickness(1);
+            rectangle.setPosition(gTile.getPixelPosition());
 
-                window.draw(rectangle);
-            }
-
-            if(gTile.dataTile.isDepleted()) {
-                window.draw(gTile.deplete_verticles, 4, sf::Quads, &map.tileset);
-            } else {
-                window.draw(gTile.tile_verticles, 4, sf::Quads, &map.tileset);
-            }
-
+            window.draw(rectangle);
         }
+
+        if(gTile.dataTile.isDepleted()) {
+            window.draw(gTile.deplete_verticles, 4, sf::Quads, &map.tileset);
+        } else {
+            window.draw(gTile.tile_verticles, 4, sf::Quads, &map.tileset);
+        }
+
+    }
     //}
 
 
@@ -579,14 +580,10 @@ void GUI::drawUnits() {
 
             }*/
 
-            //u.testSprite->setColor(u.player_->playerColor);
+
             sf::Sprite &sprite = animation.getNext(u);
             sprite.setPosition(map.gTiles[u.tile->id].getPixelPosition());
-
-            // TODO
-            //auto &colorData = u.getPlayer()->playerColor;
-            //auto color = sf::Color(std::get<0>(colorData), std::get<1>(colorData), std::get<2>(colorData));
-            //sprite.setColor(color);
+            sprite.setColor(colors[u.player_.getId() - 1]);
             window.draw(sprite);
         }
     }
@@ -619,13 +616,12 @@ void GUI::drawScoreBoard() {
         text.setString(p.getName() + ": " + std::to_string(p.getScore()) + " | AQueue: " + std::to_string(p.getQueueSize()));
 
 
-        /* TODOauto &color = p.playerColor;
 #if SFML_VERSION_MAJOR == 2 and SFML_VERSION_MINOR >= 4
-        text.setFillColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+        text.setFillColor(colors[p.getId() - 1]);
 #else
-        text.setColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+        text.setColor(colors[p.getId() - 1]));
 #endif
-         */
+
         text.setPosition(10, 920 - offsetY);
         offsetY += 25;
 
@@ -641,12 +637,10 @@ void GUI::drawPlayerSelectedUnit() {
             sf::RectangleShape rectangle(sf::Vector2f((targetedUnit->width * 32) + 6, (targetedUnit->height * 32) + 6));
             rectangle.setFillColor(sf::Color::Transparent);
 
-            /* TODO
-            auto &color = p.playerColor;
-            rectangle.setOutlineColor(sf::Color(std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+
+            rectangle.setOutlineColor(colors[p.getId() - 1]);
             rectangle.setOutlineThickness(2);
             rectangle.setPosition(sf::Vector2f((targetedUnit->worldPosition.x * 32) - 2, (targetedUnit->worldPosition.y * 32) - 2));
-            */
             window.draw(rectangle);
         }
     }

@@ -114,7 +114,7 @@ void Harvesting::update(Unit & unit)const{
             unit.lumberCarry = 0;
             unit.oilCarry = 0;
 
-            if(unit.player_.getGame().harvestForever)
+            if(unit.config.harvestForever)
             {
                 unit.transitionState(unit.stateManager->harvestingState);
             }else{

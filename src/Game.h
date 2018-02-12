@@ -16,6 +16,7 @@
 #include "player/Player.h"
 #include "environment/Map.h"
 #include "environment/Tilemap.h"
+#include "Config.h"
 
 
 class Game {
@@ -41,178 +42,37 @@ class Game {
     /// Initialize the game clock timers
     void timerInit();
 
+    /// Init the constructor
+    void init();
 
+    ///
     bool running;
-
-protected:
-    /// Game Constructor
-    Game(std::string map_file);
-
 
 public:
     // Retrieve game via Game ID
     static Game * getGame(uint8_t id);
 
-    static Game create(std::string map_file){
-        auto g = Game(map_file);
+    /// Game Constructor
+    explicit Game(std::string map_file);
 
-    }
+    Game(std::string map_file, Config config);
 
-    int tickModifier = 10;
-    bool instantTownHall = true;
-    bool instantBuilding = true;
-    bool harvestForever = false;
-    bool autoAttack = true;
-    int foodLimit = 100;
-    bool enableFarm = true;
-    bool enableBarracks = true;
-    bool enableFootman = true;
-    bool enableArcher = false;
-    bool enableAudio = false;
-    bool audioVolume = 0;
 
-    void setTickModifier(int tickmodifier){
-        tickModifier = tickmodifier;
-    }
-
-    void setInstantTownHall(bool b){
-        instantTownHall = b;
-    }
-
-    void setInstantBuilding(bool b){
-        instantBuilding = b;
-    }
-
-    void setHarvestForever(bool b){
-        harvestForever = b;
-    }
-
-    void setAutoAttack(bool b){
-        autoAttack = b;
-    }
-
-    void setFoodLimit(bool b){
-        foodLimit = b;
-    }
-
-    void setFarm(bool b){
-        enableFarm = b;
-    }
-
-    void setBarracks(bool b){
-        enableBarracks = b;
-    }
-
-    void setFootman(bool b){
-        enableFootman = b;
-    }
-
-    void setArcher(bool b){
-        enableArcher = b;
-    }
-
-    void setAudio(bool b, int volume){
-        enableAudio = b;
-        audioVolume = volume;
-    }
-    static Game create(std::string map_file, int tick_modifier){
-        auto g = Game(std::move(map_file));
-        g.setTickModifier(tick_modifier);
-        g.setInstantTownHall(true);
-        g.setInstantBuilding(true);
-        g.setHarvestForever(false);
-        g.setAutoAttack(true);
-        g.setFoodLimit(100);
-        g.setFarm(true);
-        g.setBarracks(true);
-        g.setFootman(true);
-        g.setArcher(false);
-        return g;
-
-    }
-    static Game create(std::string map_file, int tick_modifier, bool instant_town_hall){
-        auto g = Game(std::move(map_file));
-        g.setTickModifier(tick_modifier);
-        g.setInstantTownHall(instant_town_hall);
-        g.setInstantBuilding(true);
-        g.setHarvestForever(false);
-        g.setAutoAttack(true);
-        g.setFoodLimit(100);
-        g.setFarm(true);
-        g.setBarracks(true);
-        g.setFootman(true);
-        g.setArcher(false);
-        return g;
-    }
-    static Game create(std::string map_file, int tick_modifier, bool instant_town_hall, bool instant_building){
-        auto g = Game(std::move(map_file));
-        g.setTickModifier(tick_modifier);
-        g.setInstantTownHall(instant_town_hall);
-        g.setInstantBuilding(instant_building);
-        g.setHarvestForever(false);
-        g.setAutoAttack(true);
-        g.setFoodLimit(100);
-        g.setFarm(true);
-        g.setBarracks(true);
-        g.setFootman(true);
-        g.setArcher(false);
-        return g;
-    }
-    static Game create(std::string map_file, int tick_modifier, bool instant_town_hall, bool instant_building, bool harvest_forever){
-        auto g = Game(std::move(map_file));
-        g.setTickModifier(tick_modifier);
-        g.setInstantTownHall(instant_town_hall);
-        g.setInstantBuilding(instant_building);
-        g.setHarvestForever(harvest_forever);
-        g.setAutoAttack(true);
-        g.setFoodLimit(100);
-        g.setFarm(true);
-        g.setBarracks(true);
-        g.setFootman(true);
-        g.setArcher(false);
-        return g;
-    }
-    static Game create(std::string map_file, int tick_modifier, bool instant_town_hall, bool instant_building, bool harvest_forever, bool food_limit){
-        auto g = Game(std::move(map_file));
-        g.setTickModifier(tick_modifier);
-        g.setInstantTownHall(instant_town_hall);
-        g.setInstantBuilding(instant_building);
-        g.setHarvestForever(harvest_forever);
-        g.setAutoAttack(true);
-        g.setFoodLimit(food_limit);
-        g.setFarm(true);
-        g.setBarracks(true);
-        g.setFootman(true);
-        g.setArcher(false);
-        return g;
-    }
-    static Game create(std::string map_file, int tick_modifier, bool instant_town_hall, bool instant_building, bool harvest_forever, bool auto_attack, bool food_limit, bool farm, bool barracks, bool footman, bool archer){
-        auto g = Game(std::move(map_file));
-        g.setTickModifier(tick_modifier);
-        g.setInstantTownHall(instant_town_hall);
-        g.setInstantBuilding(instant_building);
-        g.setHarvestForever(harvest_forever);
-        g.setAutoAttack(auto_attack);
-        g.setFoodLimit(food_limit);
-        g.setFarm(farm);
-        g.setBarracks(barracks);
-        g.setFootman(footman);
-        g.setArcher(archer);
-        return g;
-    }
-
-    ////////////////////////////////////////////////////
+    ////////////////////////////////////////////
     ///
     /// Properties
     ///
     ////////////////////////////////////////////////////
-    /// Const Map (Order 0)
+    /// Const Config (Order 0)
+    const Config config;
+
+    /// Const Map (Order 1)
     Map map;
 
-    /// Game state (Order 1)
+    /// Game state (Order 2)
     cppmat::matrix<float> state;
 
-    /// Game Tilemap (Order 2)
+    /// Game Tilemap (Order 3)
     Tilemap tilemap;
 
 
@@ -283,7 +143,7 @@ public:
 
     uint8_t getId() const;
 
-    uint8_t getTicksModifier() const;
+    int getTicksModifier() const;
 
     ////////////////////////////////////////////////////
     ///
@@ -347,9 +207,7 @@ public:
     virtual void _onUnitDestroy(Unit& unit);
     virtual void _onEpisodeStart();
     virtual void _onEpisodeEnd();
-
     virtual void _onTileDeplete(Tile &);
-
 };
 
 

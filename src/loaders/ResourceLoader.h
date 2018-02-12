@@ -11,17 +11,13 @@ class ResourceLoader {
 public:
     rapidjson::Document mapJSON;
     rapidjson::Document tileJSON;
-    rapidjson::Document configJSON;
 
 
 private:
     bool mapLoaded = false;
     void loadTileJSON();
-    void loadConfigJSON();
     ResourceLoader(){
-        loadConfigJSON();
         loadTileJSON();
-
     }
 
 public:

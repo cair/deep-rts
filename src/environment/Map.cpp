@@ -25,7 +25,6 @@ Map::Map(const std::string& map_file) {
         tileIDs.emplace_back(tileId);
     }
 
-    int c = 0;
     for(auto tileId : tileIDs) {
         auto tileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
 

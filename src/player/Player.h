@@ -10,6 +10,7 @@
 #include <memory>
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
+#include "../Config.h"
 #include <deque>
 
 class Game;
@@ -28,7 +29,7 @@ private:
     std::string name = "[NO NAME]";
 
 	/// Action queue
-	std::deque<std::pair<Constants::Action, int>> actionQueue;
+	std::deque<int> actionQueue;
 
 	/// Get index of next or previous unit
 	int _getNextPrevUnitIdx();
@@ -57,6 +58,7 @@ private:
 
 
 public:
+	const Config &config;
 
 	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
 	std::vector<uint16_t> unitIndexes;
@@ -186,11 +188,7 @@ public:
 	int sUnitsCreated;
 
 
-
-
-
-	void queueAction(Constants::Action actionI, int delay);
-	void queueActionA(int actionID, int delay);
+	void do_action(int actionID);
 	int actionStatistics[20];
 	size_t getQueueSize();
 

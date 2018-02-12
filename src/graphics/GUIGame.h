@@ -14,7 +14,7 @@ class GUIGame: public Game{
 
 public:
 
-
+    GUIGame(std::string map_file, Config config);
     GUIGame(std::string map_file);
 
     virtual void _render();

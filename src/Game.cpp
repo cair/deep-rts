@@ -7,13 +7,24 @@
 
 
 std::unordered_map<int, Game*> Game::games;
+
 Game::Game(std::string map_file):
+        config(Config::defaults()),
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
-		tilemap(map, *this)
+        tilemap(map, *this) {
+    init();
+}
 
-{
+Game::Game(std::string map_file, Config config):
+        config(config),
+        map(map_file),
+        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
+        tilemap(map, *this){
+    init();
+}
 
+void Game::init(){
     // State vector
     // 0 - Environment
     // 1 - Player ID
@@ -24,66 +35,71 @@ Game::Game(std::string map_file):
     // Init environment
 
     players.reserve(Constants::MAX_PLAYERS);
-	units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
+    units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
 
 
     setMaxFPS(60);
     setMaxUPS(10);
 
-	id = static_cast<uint8_t>(games.size());
-	games[id] = this;
+    id = static_cast<uint8_t>(games.size());
+    games[id] = this;
 
     // Update timings
     tick();
     timerInit();
 
+    reset();
+
 }
 
 
+
+
+
 void Game::setMaxFPS(uint32_t fps_){
-	max_fps = fps_;
-	_render_interval = std::chrono::nanoseconds(1000000000 /  max_fps);
+    max_fps = fps_;
+    _render_interval = std::chrono::nanoseconds(1000000000 /  max_fps);
 
 
 }
 
 void Game::setMaxUPS(uint32_t ups_){
-	max_ups = ups_;
-	_update_interval = std::chrono::nanoseconds(1000000000 /  max_ups);
+    max_ups = ups_;
+    _update_interval = std::chrono::nanoseconds(1000000000 /  max_ups);
 
 
 }
 
 void Game::start(){
     timerInit();
-	this->running = true;
+    this->running = true;
 }
 
 void Game::stop(){
-	this->running = false;
+    this->running = false;
 }
 
 void Game::reset()
 {
-	// Remove all units
-	units.clear();
+    // Remove all units
+    units.clear();
 
-	// Reset all tiles
-	for (auto &tile : tilemap.getTiles()) {
-		tile.reset();
-	}
+    // Reset all tiles
+    for (auto &tile : tilemap.getTiles()) {
+        tile.reset();
+    }
 
-	// Reset all players
-	for (auto &player : players) {
-		player.reset();
-		spawnPlayer(player);
-	}
+    // Reset all players
+    for (auto &player : players) {
+        player.reset();
+        spawnPlayer(player);
+    }
 
-	// Reset tick counter
-	ticks = 0;
+    // Reset tick counter
+    ticks = 0;
 
     // Increase epsiode counter
-	episode += 1;
+    episode += 1;
 
     terminal = false;
 
@@ -174,9 +190,9 @@ void Game::timerInit() {
 
 Game * Game::getGame(uint8_t id)
 {
-	Game *g = games.at(id);
-	assert(g);
-	return g;
+    Game *g = games.at(id);
+    assert(g);
+    return g;
 }
 
 
@@ -187,55 +203,55 @@ bool Game::isTerminal(){
         return terminal;
     }
 
-	int c = 0;
-	for(auto &p : players) {
-		if(p.isDefeated()){
-			c++;
-		}
-	}
+    int c = 0;
+    for(auto &p : players) {
+        if(p.isDefeated()){
+            c++;
+        }
+    }
 
-	bool isTerminal = (c == 1);
-	terminal = isTerminal;
+    bool isTerminal = (c == 1);
+    terminal = isTerminal;
 
     _onEpisodeEnd();
-	return terminal;
+    return terminal;
 }
 
 
 Player &Game::addPlayer() {
-	players.emplace_back(*this, players.size() + 1);
-	Player &player = players.back();
+    players.emplace_back(*this, players.size() + 1);
+    Player &player = players.back();
 
-	spawnPlayer(player);
-	return player;
+    spawnPlayer(player);
+    return player;
 }
 
 void Game::spawnPlayer(Player &player) {
-	// Retrieve spawn_point
+    // Retrieve spawn_point
 
     if(tilemap.spawnTiles.size() < players.size()){
         throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
     }
 
-	int spawnPointIdx = tilemap.spawnTiles[player.getId() - 1];
+    int spawnPointIdx = tilemap.spawnTiles[player.getId() - 1];
 
     auto spawnTile = tilemap.tiles[spawnPointIdx];
 
-	// Spawn Initial builder
-	Unit &builder = player.spawn(spawnTile);
+    // Spawn Initial builder
+    Unit &builder = player.spawn(spawnTile);
 
-	// If auto-spawn town hall mechanic is activated
-	if (instantTownHall) {
-		// build Town-Hall
-		builder.build(0);
-	}
+    // If auto-spawn town hall mechanic is activated
+    if (config.instantTownHall) {
+        // build Town-Hall
+        builder.build(0);
+    }
 
 }
 
 Unit & Game::getUnit(uint16_t idx)
 {
-	assert((idx >= 0 && idx < (units.size())) && "getUnit(idx) failed. Index not in range!");
-	return units[idx];
+    assert((idx >= 0 && idx < (units.size())) && "getUnit(idx) failed. Index not in range!");
+    return units[idx];
 }
 
 size_t Game::getWidth() const{
@@ -275,8 +291,8 @@ uint64_t Game::getGameDuration() const{
     return this->ticks / getTicksModifier();
 }
 
-uint8_t Game::getTicksModifier() const {
-    return tickModifier;
+int Game::getTicksModifier() const {
+    return config.tickModifier;
 }
 
 uint8_t Game::getId() const {
@@ -303,7 +319,6 @@ void Game::_onUnitDestroy(Unit& unit) {
 
 
 void Game::_onTileDeplete(Tile &){}
-
 
 
 

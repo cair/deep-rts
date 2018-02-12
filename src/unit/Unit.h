@@ -13,7 +13,7 @@
 #include "../environment/Tile.h"
 #include "../state/StateManager.h"
 #include "../util/Position.h"
-
+#include "../Config.h"
 
 
 class Game;
@@ -30,8 +30,10 @@ private:
 public:
 	Game *game;
 
+	const Config & config;
+
 	/// Constructor
-    Unit(Player &player);
+	explicit Unit(Player &player);
 
 
 	//////////////////////////////////////////////////////////////

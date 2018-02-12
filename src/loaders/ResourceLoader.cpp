@@ -66,26 +66,3 @@ void ResourceLoader::loadTileJSON() {
 
 }
 
-void ResourceLoader::loadConfigJSON() {
-	std::string fileName = "config.json";
-	std::string backupFilePath = GetCurrentWorkingDir() + "/data/" + fileName;
-	std::string filePath = "./" + fileName;
-
-	// Attempt to read config file in current working directory (from python for example)
-	std::ifstream confData(filePath);
-	if (confData.is_open()) {
-		rapidjson::IStreamWrapper isw(confData);
-		configJSON.ParseStream(isw);
-		return;
-	}
-
-	// Attempt to read the default config file
-	std::ifstream confData2(backupFilePath);
-	if (confData2.is_open()) {
-		rapidjson::IStreamWrapper isw(confData2);
-		configJSON.ParseStream(isw);
-		return;
-	}
-
-	throw std::runtime_error("File Error: Could not find: " + fileName + " (" + filePath + ", or " + backupFilePath + ").\nEnsure that the data directory exists!");
-}

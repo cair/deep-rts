@@ -60,6 +60,7 @@ public:
     void update();
 	void reset();
 
+	std::vector<sf::Color> colors;
 
 
 
