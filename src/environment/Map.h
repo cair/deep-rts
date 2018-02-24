@@ -55,10 +55,10 @@ public:
     int TILE_HEIGHT;
 
     /// The Map Width (Num of tiles in width)
-    int MAP_WIDTH;
+    size_t MAP_WIDTH;
 
     /// The Map Height (Num of tiles in height)
-    int MAP_HEIGHT;
+    size_t MAP_HEIGHT;
 
     std::vector<int> tileIDs;
 

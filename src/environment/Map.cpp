@@ -3,6 +3,7 @@
 //
 
 #include "Map.h"
+#include <string>
 #include "../loaders/ResourceLoader.h"
 
 

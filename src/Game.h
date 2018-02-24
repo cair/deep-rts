@@ -4,7 +4,6 @@
 
 #ifndef WARC2SIM_GAME_H
 #define WARC2SIM_GAME_H
-#include "../include/cppmat/src/cppmat/cppmat.h"
 
 #include <memory>
 #include <map>
@@ -12,7 +11,7 @@
 #include <iostream>
 #include <chrono>
 
-
+#include "util/matrix.cpp"
 #include "player/Player.h"
 #include "environment/Map.h"
 #include "environment/Tilemap.h"
