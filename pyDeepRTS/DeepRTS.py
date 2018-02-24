@@ -17,7 +17,7 @@ class PyDeepRTS(DeepRTSEngine.Game):
 
     def __init__(self, map_name):
         PyDeepRTS.setup_data_files()
-        super(PyDeepRTS, self).__init__()
+        super(PyDeepRTS, self).__init__(map_name)
 
         self.gui = PygameGUI(self)
         self._render_every = 1

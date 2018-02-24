@@ -21,7 +21,7 @@ int main() {
 
     //g->setMaxFPS(5);
 
-    g->setMaxUPS(10000000);
+    g->setMaxUPS(10);
     g->start();
     srand (time(NULL));
     while (true){
@@ -31,7 +31,7 @@ int main() {
             g->render();
             g->caption();
 
-            player0.do_action(rand() % 16 + 1);
+            //player0.do_action(rand() % 16 + 1);
             player1.do_action(rand() % 16 + 1);
         }
         g->reset();
