@@ -7,7 +7,10 @@
 #ifndef CPPMAT_MATRIX_PYBIND11_H
 #define CPPMAT_MATRIX_PYBIND11_H
 
-#include "pybind11.h"
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+#include "matrix.h"
 
 namespace py = pybind11;
 

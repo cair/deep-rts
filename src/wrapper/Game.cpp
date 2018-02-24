@@ -1,7 +1,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "../../include/cppmat/src/cppmat/pybind11.h"
+#include "../util/pybind11_matrix.h"
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
 #include "../Game.h"
