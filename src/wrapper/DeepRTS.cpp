@@ -11,6 +11,7 @@ void init_Tile(py::module &);
 void init_Player(py::module &);
 void init_Game(py::module &);
 void init_Map(py::module &);
+void init_Config(py::module &);
 
 void init_version(py::module &m) {
 #ifdef VERSION_INFO
@@ -30,6 +31,7 @@ PYBIND11_MODULE(DeepRTSEngine, m) {
     init_Game(m);
     init_Player(m);
     init_version(m);
+    init_Config(m);
 
 
 

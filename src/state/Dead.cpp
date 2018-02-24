@@ -7,7 +7,6 @@
 #include "../Game.h"
 
 void Dead::update(Unit & unit)const{
-
     unit.despawn();
     unit.player_.removeUnit(unit);
     unit.player_.isDefeated();

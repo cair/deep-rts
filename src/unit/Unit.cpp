@@ -11,9 +11,9 @@
 #include <climits>
 
 Unit::Unit(Player &player):
+        game(&player.getGame()),
         config(player.config),
         player_(player),
-        game(&player.getGame()),
         stateManager(&player.getGame().stateManager)
 {
 

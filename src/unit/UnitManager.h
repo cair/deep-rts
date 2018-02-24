@@ -10,6 +10,7 @@ class UnitManager {
 public:
 
 	static Unit constructUnit(Constants::Unit unitType, Player &player);
+	static void updateUnitCount(Player &p, Constants::Unit unitType, n);
 	static Unit constructTownHall(Player &player);
 	static Unit constructPeasant(Player &player);
 	static Unit constructFarm(Player &player);

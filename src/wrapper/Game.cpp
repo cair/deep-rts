@@ -5,11 +5,13 @@
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
 #include "../Game.h"
+#include "../Config.h"
 
 
 void init_Game(py::module &m) {
     py::class_<Game, PyGame>(m, "Game")
-            .def(py::init<>())
+            .def(py::init<std::string>())
+            .def(py::init<std::string, Config>())
 
                     // Functions
             .def("tick", &Game::tick)

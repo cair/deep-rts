@@ -169,23 +169,31 @@ public:
 	/// Player Resources
 	///
 	///////////////////////////////////////////////////////////
-	int oil;
-	int gold;
-	int lumber;
-	int foodConsumption;
-	int food;
+	int oil = 0;
+	int gold = 0;
+	int lumber = 0;
+	int foodConsumption = 0;
+	int food = 0;
+
+	/// Counters for buildings
+	int num_archer = 0;
+	int num_peasant = 0;
+	int num_footman = 0;
+	int num_town_hall = 0;
+	int num_farm = 0;
+	int num_barrack = 0;
 
 	///////////////////////////////////////////////////////////
 	///
 	/// Player Statistics
 	///
 	///////////////////////////////////////////////////////////
-	int sGatheredGold;
-	int sGatheredLumber;
-	int sGatheredOil;
-	int sDamageDone;
-	int sDamageTaken;
-	int sUnitsCreated;
+	int sGatheredGold = 0;
+	int sGatheredLumber = 0;
+	int sGatheredOil = 0;
+	int sDamageDone = 0;
+	int sDamageTaken = 0;
+	int sUnitsCreated = 0;
 
 
 	void do_action(int actionID);

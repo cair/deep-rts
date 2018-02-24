@@ -166,6 +166,15 @@ void Player::reset()
     sDamageDone = 0;
     sDamageTaken = 0;
     sUnitsCreated = 0;
+
+    num_footman = 0;
+    num_peasant = 0;
+    num_archer = 0;
+
+    num_farm = 0;
+    num_barrack = 0;
+    num_town_hall = 0;
+
     unitIndexes.clear();
     actionQueue.clear();
     targetedUnitID = -1;
@@ -242,6 +251,10 @@ void Player::removeUnit(Unit & unit) {
         }
     }
 
+    // Update player counters
+    UnitManager::updateUnitCount(unit.typeId, -1);
+
+    // Set removed flag
     unit.removedFromGame = true;
 
     auto pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
@@ -259,19 +272,22 @@ void Player::removeUnit(Unit & unit) {
 }
 
 bool Player::isDefeated() {
-    if (defeated) return true;
+
+    std::cout << num_peasant << " - " << num_footman << " - " << num_archer << std::endl;
+
+    if (defeated){
+        return true;
+    }      // Defeated flag = True
+    else if (num_peasant + num_footman + num_archer > 0){
+        return false;
+    }    // Have remaining units
     else if (
-            getUnitCount() == 1 &&
-            (
-                    (game_.units[unitIndexes[0]].typeId == Constants::Unit::TownHall && gold < 400) ||
-                    (game_.units[unitIndexes[0]].typeId == Constants::Unit::Barracks && gold < 400) ||
-                    game_.units[unitIndexes[0]].typeId == Constants::Unit::Farm
-            )
-            ){
-        defeated = true;
-        return defeated;
-    }  // Dead state, cannot do anything
-    else if (!unitIndexes.empty()) return false;
+        (num_town_hall > 0 && gold >= 400) ||
+        (num_barrack > 0 && gold >= 600)
+    ){
+        return false; // No units, but can purchase footman or peasant
+    }
+
 
     defeated = true;
     return defeated;
@@ -304,6 +320,7 @@ Unit& Player::addUnit(Constants::Unit unitType) {
     Unit& newUnit = game_.units.back();
     unitIndexes.push_back(newUnit.id);
 
+    UnitManager::updateUnitCount(newUnit.typeId, 1);
 
     // Callback
     getGame()._onUnitCreate(newUnit);

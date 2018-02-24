@@ -15,7 +15,7 @@ class PyDeepRTS(DeepRTSEngine.Game):
         target_data = os.path.join(os.getcwd(), "data")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
-    def __init__(self):
+    def __init__(self, map_name):
         PyDeepRTS.setup_data_files()
         super(PyDeepRTS, self).__init__()
 

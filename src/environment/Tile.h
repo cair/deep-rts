@@ -81,6 +81,25 @@ private:
 
 public:
 
+	const int id;
+
+	const int x;
+
+	const int y;
+
+	const int width;
+
+	const int height;
+
+	const int lumberYield;
+
+	const int goldYield;
+
+	const int oilYield;
+
+
+
+
 	/// Constructor
     Tile(
 			Tilemap &tilemap,
@@ -106,21 +125,6 @@ public:
             int oilYield
 	);
 
-    const int id;
-
-    const int oilYield;
-
-    const int lumberYield;
-
-    const int goldYield;
-
-    const int x;
-
-    const int y;
-
-    const int height;
-
-    const int width;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	///

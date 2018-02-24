@@ -67,7 +67,8 @@ ext_modules = [
             'src/wrapper/Tilemap.cpp',
             'src/wrapper/Game.cpp',
             'src/wrapper/Player.cpp',
-            'src/wrapper/DeepRTS.cpp'
+            'src/wrapper/DeepRTS.cpp',
+            'src/wrapper/Config.cpp'
 
 
 

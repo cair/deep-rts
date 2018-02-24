@@ -11,9 +11,9 @@
 class PyGame: public Game {
     using Game::Game;
 
-    PyGame(std::string map_name): Game(map_name){
+    /*PyGame(std::string map_name): Game(map_name){
 
-    }
+    }*/
 
 
     virtual void _render() override {

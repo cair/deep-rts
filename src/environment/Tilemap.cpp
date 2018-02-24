@@ -69,7 +69,7 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
 
 
 
-            Tile &tile = tiles.back();
+            //Tile &tile = tiles.back();
             if(newTypeId == Constants::Tile::Spawn){
                 spawnTiles.push_back(c);
             }

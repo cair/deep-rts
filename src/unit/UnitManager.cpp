@@ -26,9 +26,49 @@ Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
         case Constants::Unit::None:
             assert("Should never happen");
             return constructPeasant(player);
+        default:
+            assert("Should never happen");
+            return constructPeasant(player);
 
     }
 }
+
+
+
+void UnitManager::updateUnitCount(Player &p, Constants::Unit unitType, n)
+{
+    switch (unitType) {
+        case Constants::Unit::TownHall:
+            p.num_town_hall += n;
+            break;
+        case Constants::Unit::Peasant:
+            p.num_peasant += n;
+            break;
+        case Constants::Unit::Farm:
+            p.num_farm += n;
+            break;
+        case Constants::Unit::Barracks:
+            p.num_barrack += n;
+            break;
+        case Constants::Unit::Footman:
+            p.num_footman += n;
+            break;
+        case Constants::Unit::Archer:
+            p.num_archer += n;
+            break;
+        case Constants::Unit::Peon:
+            assert("Not implemented");
+            break;
+        case Constants::Unit::None:
+            assert("Should never happen");
+            break;
+        default:
+            assert("Should never happen");
+            break;
+
+    }
+}
+
 
 Unit UnitManager::constructFarm(Player &player) {
     Unit u = Unit(player);

@@ -4,9 +4,7 @@ import numpy
 from pyDeepRTS import PyDeepRTS
 if __name__ == "__main__":
 
-
-
-    g = PyDeepRTS()
+    g = PyDeepRTS("15x15-2v2.json")
     player1 = g.add_player()
     player2 = g.add_player()
 
@@ -34,7 +32,8 @@ if __name__ == "__main__":
         if g.is_terminal():
             g.reset()
 
-        player1.queue_action(numpy.random.randint(0, 16), 1)
-        player2.queue_action(numpy.random.randint(0, 16), 1)
+
+        player1.do_action(numpy.random.randint(0, 16))
+        player2.do_action(numpy.random.randint(0, 16))
 
 

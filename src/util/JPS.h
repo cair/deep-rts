@@ -288,7 +288,7 @@ private:
 #ifndef JPS_DISABLE_GREEDY
 	bool findPathGreedy(Node *start);
 #endif
-	
+
 #ifdef JPS_ASTAR_ONLY
 	unsigned findNeighborsAStar(const Node *n, Position *wptr);
 #else
@@ -305,7 +305,7 @@ private:
 
 template <typename GRID> inline Node *Searcher<GRID>::getNode(const Position& pos)
 {
-	
+
 	return &nodegrid.insert(std::make_pair(pos, Node(pos))).first->second;
 }
 

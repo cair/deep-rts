@@ -21,7 +21,7 @@ int main() {
 
     //g->setMaxFPS(5);
 
-    g->setMaxUPS(99999999999999999999999999);
+    g->setMaxUPS(10000000);
     g->start();
     srand (time(NULL));
     while (true){
