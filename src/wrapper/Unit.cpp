@@ -33,6 +33,9 @@ void init_Unit(py::module &m) {
             .def_readonly("damage_piercing", &Unit::damagePiercing)
             .def_readonly("direction", &Unit::direction)
 
+            .def_readonly("walking_timer", &Unit::walking_timer)
+            .def_readonly("walking_interval", &Unit::walking_timer)
+
 
             .def_readonly("spawn_duration", &Unit::spawnDuration)
             .def_readonly("spawn_timer", &Unit::spawnTimer)

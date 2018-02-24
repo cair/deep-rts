@@ -252,7 +252,7 @@ void Player::removeUnit(Unit & unit) {
     }
 
     // Update player counters
-    UnitManager::updateUnitCount(unit.typeId, -1);
+    UnitManager::updateUnitCount(*this, unit.typeId, -1);
 
     // Set removed flag
     unit.removedFromGame = true;
@@ -272,8 +272,6 @@ void Player::removeUnit(Unit & unit) {
 }
 
 bool Player::isDefeated() {
-
-    std::cout << num_peasant << " - " << num_footman << " - " << num_archer << std::endl;
 
     if (defeated){
         return true;
@@ -320,12 +318,13 @@ Unit& Player::addUnit(Constants::Unit unitType) {
     Unit& newUnit = game_.units.back();
     unitIndexes.push_back(newUnit.id);
 
-    UnitManager::updateUnitCount(newUnit.typeId, 1);
+    // Update the unit count
+    UnitManager::updateUnitCount(*this, newUnit.typeId, 1);
 
     // Callback
     getGame()._onUnitCreate(newUnit);
 
-    return game_.units.back();
+    return newUnit;
 }
 
 void Player::removeOil(int n) {

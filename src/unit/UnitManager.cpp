@@ -35,7 +35,7 @@ Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
 
 
 
-void UnitManager::updateUnitCount(Player &p, Constants::Unit unitType, n)
+void UnitManager::updateUnitCount(Player &p, Constants::Unit unitType, int n)
 {
     switch (unitType) {
         case Constants::Unit::TownHall:

@@ -56,8 +56,15 @@ void Unit::rightClickRelative(int x, int y) {
 }
 
 void Unit::move(Tile &targetTile){
-    if (!canMove)
+    // If unit cannot move at all (Building for example)
+    if (!canMove){
         return;
+    }
+
+    // If unit is trying to move to the same tile
+    if (targetTile.id == tile->id){
+        return;
+    }
 
     this->walkingGoalID = targetTile.id;
     transitionState(stateManager->walkingState);
