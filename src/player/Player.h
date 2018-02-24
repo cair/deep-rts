@@ -8,10 +8,12 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <deque>
+#include <cmath>
+
 #include "../unit/Unit.h"
 #include "../environment/Tile.h"
 #include "../Config.h"
-#include <deque>
 
 class Game;
 class Player {

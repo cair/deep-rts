@@ -7,6 +7,11 @@
 #ifndef CPPMAT_MATRIX_H
 #define CPPMAT_MATRIX_H
 
+#include <vector>
+#include <cassert>
+#include <algorithm>
+#include <iomanip>
+
 namespace cppmat {
 
 #define MAX_DIM 6
