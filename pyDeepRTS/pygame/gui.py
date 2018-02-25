@@ -1,6 +1,6 @@
 import os
 
-import numpy
+import numpy as np
 import pygame
 from scipy.misc import imsave
 
@@ -18,6 +18,53 @@ class Tiles:
         pass
 
 
+class FogTile(pygame.sprite.DirtySprite):
+
+    def __init__(self, group, x, y):
+        pygame.sprite.DirtySprite.__init__(self, group)
+        self.image = pygame.Surface([32, 32])
+        self.image.fill(0)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = x * 32
+        self.rect.y = y * 32
+
+
+class Fog:
+
+    def __init__(self, width, height):
+        self.group = pygame.sprite.LayeredDirty()
+        self.hidden = list()
+        self.width = width
+        self.height = height
+
+        for y in range(height):
+            for x in range(width):
+                FogTile(self.group, x, y)
+
+    def draw(self, surface, game):
+
+        if game.agent_player:
+            for unit in game.units:
+                if unit.tile and game.agent_player.get_id() == unit.get_player().get_id():
+
+                    for h in range(-unit.sight, unit.height + unit.sight):
+                        for w in range(-unit.sight, unit.width + unit.sight):
+                            idx = max(0, (unit.tile.x + w)) + max(0, (unit.tile.y + h) * self.width)
+                            sprite = self.group.get_sprite(idx)
+                            sprite.visible = 0
+                            sprite.dirty = 1
+                            self.hidden.append(idx)
+
+            return self.group.draw(surface)
+
+    def reset(self):
+        for idx in self.hidden:
+            sprite = self.group.get_sprite(idx)
+            sprite.visible = 1
+            sprite.dirty = 1
+
+
 class GUI:
 
     def __init__(self, game):
@@ -29,7 +76,7 @@ class GUI:
 
         self.tiles = self.tilemap.tiles
         self.units = self.game.units
-
+        self.fog = Fog(self.map.map_width, self.map.map_height)
 
         pygame.init()
         pygame.display.set_caption('DeepRTS v1.4.0')
@@ -66,20 +113,6 @@ class GUI:
 
         return static_tiles
 
-    def set_camera(self):
-        try:
-            player_unit = self.player.units[0]
-
-            pix_x, pix_y = player_unit.x * Map.TILE_SIZE * -1, player_unit.y * Map.TILE_SIZE * -1
-
-            self.camera_x = pix_x + (self.window_size[0] / 3)
-            self.camera_y = pix_y + (self.window_size[1] / 4)
-
-        except:
-            pass
-
-
-
     def render_tiles(self):
 
         for tile in self.tiles:
@@ -104,7 +137,6 @@ class GUI:
             health_max = unit.health_max
             health_p = health / health_max
 
-
             owner_id = unit.get_player().get_id()
             x_pos, y_pos = (x * self.map.tile_width, y * self.map.tile_height)
 
@@ -124,60 +156,28 @@ class GUI:
                      5)
                 )
 
-
-
-
-
-        """
-     
-
-
-        # Render Sprite
-        self.canvas.blit(sprite, pos)
-
-        # Render healthbar
-        health_percent = (unit.state.health / unit.health_max)
-        pygame.draw.rect(self.canvas, (255, 0, 0),
-                         (pos[0] - 10,
-                          pos[1] - 5,
-                          50,
-                          5
-                          ))
-        pygame.draw.rect(self.canvas, (0, 255, 0),
-                         (pos[0] - 10,
-                          pos[1] - 5,
-                          50 * health_percent,
-                          5
-                          ))
-
-        # Render State List
-        if Config.DEBUG:
-            self.canvas.blit(
-                Overlay.font.render('->'.join([x.id for x in unit.state.next_states]) + str(unit.spawned), 1, (255, 255, 0)),
-                (unit.state.x * Map.TILE_SIZE, unit.state.y * Map.TILE_SIZE)
-            )
-
-        unit.animation_timer += dt
-        if unit.animation_timer > unit.animation_interval and unit.state.id == ID_Walking:
-            unit.animation_iterator += 1
-            unit.animation_timer = 0
-        """
-
     def render(self):
+        self.fog.reset()
 
         self.render_tiles()
         self.render_units()
 
+        if self.game.pomdp:
+            self.fog.draw(self.surface_map, self.game)
+
         self.display.blit(self.surface_map, (0, 0))
 
     def view(self):
-        pygame.display.flip()
+        if self.game.pomdp:
+            pygame.display.update(self.fog.draw(self.surface_map, self.game))
+        else:
+            pygame.display.flip()
 
     def capture(self, save=False, filename="./capture.png"):
         if save:
-            imsave(filename, numpy.array(pygame.surfarray.pixels3d(self.surface_map)))
+            imsave(filename, np.array(pygame.surfarray.pixels3d(self.surface_map)))
 
-        return numpy.array(pygame.surfarray.pixels3d(self.surface_map))
+        return np.array(pygame.surfarray.pixels3d(self.surface_map))
 
     def set_caption(self, param):
         pygame.display.set_caption(param)

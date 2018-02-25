@@ -1,6 +1,7 @@
 
 #include "Config.h"
 #include "Game.h"
+#include "graphics/GUIGame.h"
 
 int main() {
 
@@ -8,7 +9,7 @@ int main() {
     Config config = Config::defaults();
 
     // Create game instance
-    Game *g = new Game("31x31-2v2.json", config);
+    GUIGame *g = new GUIGame("31x31-2v2.json", config);
 
     Player& player0 = g->addPlayer();
     Player& player1 = g->addPlayer();

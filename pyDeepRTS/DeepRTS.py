@@ -15,9 +15,13 @@ class PyDeepRTS(DeepRTSEngine.Game):
         target_data = os.path.join(os.getcwd(), "data")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
-    def __init__(self, map_name):
+    def __init__(self, map_name, pomdp=True, simple=True):
         PyDeepRTS.setup_data_files()
         super(PyDeepRTS, self).__init__(map_name)
+
+        self.simple = simple
+        self.pomdp = pomdp
+        self.agent_player = None
 
         self.gui = PygameGUI(self)
         self._render_every = 1
@@ -42,6 +46,9 @@ class PyDeepRTS(DeepRTSEngine.Game):
         if self.get_ticks() % self._capture_every == 0:
             return self.gui.capture()
         return None
+
+    def set_agent_player(self, player):
+        self.agent_player = player
 
     def get_state(self, copy=False, image=False):
         return self.gui.capture() if image else np.array(self.state, copy=copy)

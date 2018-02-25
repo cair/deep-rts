@@ -372,6 +372,13 @@ void Unit::setDirection(Position &dir){
     setDirection(dir.x, dir.y);
 }
 
+Tile *Unit::getNextTile(){
+    if(walking_path.empty()) {
+        return NULL;
+    }
+    return walking_path.back();
+}
+
 void Unit::setDirection(int newX, int newY){
     int oldX = worldPosition.x;
     int oldY = worldPosition.y;

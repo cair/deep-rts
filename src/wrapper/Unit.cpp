@@ -34,7 +34,7 @@ void init_Unit(py::module &m) {
             .def_readonly("direction", &Unit::direction)
 
             .def_readonly("walking_timer", &Unit::walking_timer)
-            .def_readonly("walking_interval", &Unit::walking_timer)
+            .def_readonly("walking_interval", &Unit::walking_interval)
 
 
             .def_readonly("spawn_duration", &Unit::spawnDuration)
@@ -42,6 +42,7 @@ void init_Unit(py::module &m) {
             .def_readonly("build_timer", &Unit::buildTimer)
             .def_readonly("tile", &Unit::tile)
             .def_readonly("state", &Unit::state)
+            .def("get_next_tile", &Unit::getNextTile)
 
             .def("get_player", &Unit::getPlayer, py::return_value_policy::reference)
 

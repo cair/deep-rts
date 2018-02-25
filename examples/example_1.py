@@ -4,16 +4,18 @@ import numpy
 from pyDeepRTS import PyDeepRTS
 if __name__ == "__main__":
 
-    g = PyDeepRTS("15x15-2v2.json")
+    g = PyDeepRTS("15x15-2v2.json", pomdp=False, simple=True)
     player1 = g.add_player()
     player2 = g.add_player()
 
-    g.set_max_fps(10000000)
-    g.set_max_ups(10000000)
+    g.set_agent_player(player1)
 
-    g.render_every(50)
-    g.capture_every(50)
-    g.view_every(50)
+    g.set_max_fps(60)
+    g.set_max_ups(10)
+
+    #g.render_every(1)
+    #g.capture_every(50)
+    #g.view_every(1)
 
     g.start()
 
@@ -34,6 +36,6 @@ if __name__ == "__main__":
 
 
         player1.do_action(numpy.random.randint(0, 16))
-        player2.do_action(numpy.random.randint(0, 16))
+        #player2.do_action(numpy.random.randint(0, 16))
 
 

@@ -144,7 +144,7 @@ public:
     std::vector<Constants::State> stateList;
 
 
-
+	Tile *getNextTile();
     bool build(int idx);
     void spawn(Tile &x, int initValue);
     void despawn();

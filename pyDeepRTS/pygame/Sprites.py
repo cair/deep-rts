@@ -8,6 +8,7 @@ class Sprites:
 
     def __init__(self, gui):
         self.gui = gui
+        self.simple = self.gui.game.simple
 
         self.mask = {
             0: (255, 0, 0),  # Player 1
@@ -21,11 +22,27 @@ class Sprites:
         self.peasant = self._load_sprite("data/textures/human/peasant.png")
         self.archer = self._load_sprite("data/textures/human/archer.png")
         self.footman = self._load_sprite("data/textures/human/footman.png")
-
         buildings = self._load_sprite("data/textures/human/buildings.png")
         self.town_hall = buildings
         self.barracks = buildings
         self.farm = buildings
+
+        if self.simple:
+            self.peasant = pygame.Surface((self.peasant.get_width(), self.peasant.get_height()))
+            self.archer = pygame.Surface((self.archer.get_width(), self.archer.get_height()))
+            self.footman = pygame.Surface((self.footman.get_width(), self.footman.get_height()))
+            self.town_hall = pygame.Surface((buildings.get_width(), buildings.get_height()))
+            self.barracks = pygame.Surface((buildings.get_width(), buildings.get_height()))
+            self.farm = pygame.Surface((buildings.get_width(), buildings.get_height()))
+
+            self.peasant.fill((255, 0, 0))
+            self.archer.fill((255, 255, 0))
+            self.footman.fill((0, 255, 255))
+
+            self.town_hall.fill((0, 255, 255))
+            self.barracks.fill((255, 0, 255))
+            self.farm.fill((0, 255, 0))
+
 
     def load(self):
         return self.sprites(), self.tiles()
@@ -192,12 +209,18 @@ class Sprites:
                 Direction.UpLeft: [
                     get_sprite(self.farm, 398, 70, 66, 66, 2, 2)
                 ],
+                Direction.UpRight: [
+                    get_sprite(self.farm, 398, 70, 66, 66, 2, 2)
+                ],
                 Direction.Up: [
                     get_sprite(self.farm, 398, 1, 66, 66, 2, 2),
                 ]
             },
             Unit.Barracks:  {
                 Direction.UpLeft: [
+                    get_sprite(self.barracks, 304, 560, 102, 102, 3, 3)
+                ],
+                Direction.UpRight: [
                     get_sprite(self.barracks, 304, 560, 102, 102, 3, 3)
                 ],
                 Direction.Up: [

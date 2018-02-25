@@ -63,7 +63,7 @@ public:
 	const Config &config;
 
 	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
-	std::vector<uint16_t> unitIndexes;
+	std::vector<int> unitIndexes;
 
 	/// Constructor
 	Player(Game &game, int id);

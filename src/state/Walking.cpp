@@ -11,7 +11,6 @@
 void Walking::update(Unit & unit)const{
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 
-
     if(!walkingGoal){
         assert(false); //No goal were set!
     }
@@ -19,6 +18,7 @@ void Walking::update(Unit & unit)const{
 
     if (!unit.walking_path.empty()) {
         unit.walking_timer += 1;
+
 
         if (unit.walking_timer > unit.walking_interval) {
 
@@ -31,7 +31,6 @@ void Walking::update(Unit & unit)const{
 				unit.transitionState();
 				return;
 			}
-
 
             unit.setPosition(*nextTile);
             unit.walking_timer = 0;
