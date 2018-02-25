@@ -1,6 +1,9 @@
 <p align="center">
   <img src ="./docs/logo.png" />
 </p>
+[![Build Status](https://travis-ci.org/UIA-CAIR/DeepRTS.svg)](https://travis-ci.org/UIA-CAIR/DeepRTS) 
+
+
 
 
 ## Dependencies
