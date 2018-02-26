@@ -1,4 +1,5 @@
 pybind11
 pygame
 pillow
-scipy
+scikit-image
+

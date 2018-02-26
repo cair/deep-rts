@@ -109,6 +109,9 @@ int GUI::mouseClick(int mX, int mY)
 
 }
 
+
+
+
 void GUI::handleEvents(){
     // Process events
     sf::Event event;
@@ -128,7 +131,7 @@ void GUI::handleEvents(){
                 int idx = this->mouseClick(worldPos.x, worldPos.y);
                 if (idx > game.tilemap.tiles.size()) return;
                 Tile &t = this->game.tilemap.tiles[idx];
-                this->leftClick(t);
+                leftClick(t);
 
             } else  if (event.mouseButton.button == sf::Mouse::Right)
             {
@@ -138,7 +141,7 @@ void GUI::handleEvents(){
                 int idx = this->mouseClick(worldPos.x, worldPos.y);
                 if (idx > game.tilemap.tiles.size()) return;
                 Tile &t = this->game.tilemap.tiles[idx];
-                this->rightClick(t);
+                rightClick(t);
 
             }
         }

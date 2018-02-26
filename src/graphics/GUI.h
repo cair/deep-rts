@@ -82,11 +82,12 @@ public:
 
     int mouseClick(int mX, int mY);
 
-    void leftClick(Tile &tile);
+
 
     void drawSelected();
 	void drawPlayerSelectedUnit();
     void rightClick(Tile &tile);
+    void leftClick(Tile &tile);
 
 
     Player *player;

@@ -30,5 +30,6 @@ void init_Player(py::module &m) {
 
 
             .def("get_id", &Player::getId)
-            .def("do_action", &Player::do_action);
+            .def("do_action", &Player::do_action)
+            .def("do_manual_action", &Player::do_manual_action);
 }

@@ -8,6 +8,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 class PyDeepRTS(DeepRTSEngine.Game):
+    DeepRTS = DeepRTSEngine
 
     @staticmethod
     def setup_data_files():
@@ -15,9 +16,12 @@ class PyDeepRTS(DeepRTSEngine.Game):
         target_data = os.path.join(os.getcwd(), "data")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
-    def __init__(self, map_name, pomdp=True, simple=True):
+    def __init__(self, map_name, config=None, pomdp=True, simple=True):
         PyDeepRTS.setup_data_files()
-        super(PyDeepRTS, self).__init__(map_name)
+        if not config:
+            super(PyDeepRTS, self).__init__(map_name)
+        else:
+            super(PyDeepRTS, self).__init__(map_name, config)
 
         self.simple = simple
         self.pomdp = pomdp
@@ -50,7 +54,7 @@ class PyDeepRTS(DeepRTSEngine.Game):
     def set_agent_player(self, player):
         self.agent_player = player
 
-    def get_state(self, copy=False, image=False):
+    def get_state(self, image=False, copy=False):
         return self.gui.capture() if image else np.array(self.state, copy=copy)
 
 
@@ -62,11 +66,11 @@ class PyDeepRTS(DeepRTSEngine.Game):
 
     def _caption(self):
         self.gui.set_caption("DeepRTS v2.0 - [FPS=%d UPS=%d MUL=x%d]" %
-        (
-        self.get_fps(),
-        self.get_ups(),
-        self.get_ups() / self.get_ticks_modifier()
-        ))
+                             (
+                                 self.get_fps(),
+                                 self.get_ups(),
+                                 self.get_ups() / self.get_ticks_modifier()
+                             ))
 
         pass
 

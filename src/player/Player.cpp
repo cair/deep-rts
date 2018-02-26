@@ -413,16 +413,40 @@ Unit *Player::getTargetedUnit() {
     return &game_.units[targetedUnitID];
 }
 
-void Player::rightClick(Position pos) {
-    if(pos.x < 0 || pos.y < 0 || pos.x > game_.map.MAP_WIDTH || pos.y > game_.map.MAP_HEIGHT) {
+void Player::leftClick(int x, int y) {
+    Tile& tile = getGame().tilemap.getTile(x, y);
+
+    if(tile.getOccupant()) {
+        setTargetedUnitID(tile.getOccupant()->id);
+    }else {
+        setTargetedUnitID(-1);
+    }
+}
+
+
+void Player::rightClick(int x, int y) {
+    if(x < 0 || y < 0 || x > game_.map.MAP_WIDTH || y > game_.map.MAP_HEIGHT) {
         return;
     }
-    Tile &t = game_.tilemap.getTile(pos.x, pos.y);
+    Tile &t = game_.tilemap.getTile(x, y);
     Unit* targetedUnit = getTargetedUnit();
     if(!targetedUnit) {
         return;
     }
     targetedUnit->rightClick(t);
+
+}
+
+void Player::do_manual_action(int manual_action_id, int x, int y){
+    if(manual_action_id == 0){
+        // NOOP
+    }else if(manual_action_id == 1){
+        // Left click
+        leftClick(x, y);
+    }else if(manual_action_id == 2){
+        // Right click
+        rightClick(x, y);
+    }
 
 }
 
