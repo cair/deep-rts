@@ -1,7 +1,7 @@
 
 #include "Config.h"
 #include "Game.h"
-#include "graphics/GUIGame.h"
+//#include "graphics/GUIGame.h"
 
 int main() {
 

@@ -1,3 +1,6 @@
 [submodule "include/rapidjson"]
 	path = include/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
+[submodule "examples"]
+	path = examples
+	url = https://github.com/cair/DeepRTS-examples.git
