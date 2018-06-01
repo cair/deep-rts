@@ -203,8 +203,6 @@ public:
 	void rightClick(int x, int y);
 	void leftClick(int x, int y);
 
-
-	int actionStatistics[20];
 	size_t getQueueSize();
 
 

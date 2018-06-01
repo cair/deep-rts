@@ -81,13 +81,15 @@ void Game::stop(){
 
 void Game::reset()
 {
-    // Remove all units
-    units.clear();
+
 
     // Reset all tiles
     for (auto &tile : tilemap.getTiles()) {
         tile.reset();
     }
+
+	// Remove all units
+	units.clear();
 
     // Reset all players
     for (auto &player : players) {

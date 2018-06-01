@@ -16,8 +16,6 @@ Player::Player(Game &game, int id) : game_(game), config(game.config)
     id_ = id;
 
     setName("Player: " + std::to_string(id_));
-    std::fill(actionStatistics, actionStatistics + 20, 0);
-
 
     unitIndexes.reserve(1000);
     faction = 0;
@@ -178,7 +176,6 @@ void Player::reset()
     unitIndexes.clear();
     actionQueue.clear();
     targetedUnitID = -1;
-    std::fill(actionStatistics, actionStatistics+20, 0);
 
 }
 
@@ -451,7 +448,6 @@ void Player::do_manual_action(int manual_action_id, int x, int y){
 }
 
 void Player::do_action(int actionID) {
-    actionStatistics[actionID] += 1; // Increment statistics
     actionQueue.emplace_back(actionID);
 }
 
