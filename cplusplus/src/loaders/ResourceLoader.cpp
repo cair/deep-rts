@@ -6,10 +6,7 @@
 #include <iostream>
 #include "ResourceLoader.h"
 #include "../../../include/rapidjson/include/rapidjson/istreamwrapper.h"
-#include <stdio.h>
-
-
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #ifdef _WIN32
 #include <direct.h>

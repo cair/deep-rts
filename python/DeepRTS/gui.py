@@ -163,13 +163,13 @@ class GUI:
         self.render_tiles()
         self.render_units()
 
-        if self.game.pomdp:
+        if self.game.config.pomdp:
             self.fog.draw(self.surface_map, self.game)
 
         self.display.blit(self.surface_map, (0, 0))
 
     def view(self):
-        if self.game.pomdp:
+        if self.game.config.pomdp:
             pygame.display.update(self.fog.draw(self.surface_map, self.game))
         else:
             pygame.display.flip()

@@ -271,18 +271,15 @@ void Player::removeUnit(Unit & unit) {
 bool Player::isDefeated() {
 
     if (defeated){
-        std::cout << "defeated!" << std::endl;
         return true;
     }      // Defeated flag = True
     else if (num_peasant + num_footman + num_archer > 0){
-        std::cout << "no units" << std::endl;
         return false;
     }    // Have remaining units
     else if (
         (num_town_hall > 0 && gold >= 400) ||
         (num_barrack > 0 && gold >= 600)
     ){
-        std::cout << "no units, no buildings, but can purchase" << std::endl;
         return false; // No units, but can purchase footman or peasant
     }
 

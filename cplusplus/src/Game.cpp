@@ -213,8 +213,7 @@ bool Game::isTerminal(){
     }
 
     bool isTerminal = (c == 1);
-    std::cout << isTerminal << std::endl;
-    std::cout << terminal << std::endl;
+
     terminal = isTerminal;
 
     _onEpisodeEnd();

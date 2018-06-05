@@ -1,6 +1,6 @@
 import pygame
 from util import get_sprite, image_at
-from DeepRTSEngine.Constants import Unit, Direction, Tile
+from pyDeepRTS.Constants import Unit, Direction, Tile
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -8,7 +8,7 @@ class Sprites:
 
     def __init__(self, gui):
         self.gui = gui
-        self.simple = self.gui.game.simple
+        self.simple = False#self.gui.game.simple
 
         self.mask = {
             0: (255, 0, 0),  # Player 1
@@ -19,10 +19,10 @@ class Sprites:
             5: (255, 0, 255)  # Player 6
         }
 
-        self.peasant = self._load_sprite("data/textures/human/peasant.png")
-        self.archer = self._load_sprite("data/textures/human/archer.png")
-        self.footman = self._load_sprite("data/textures/human/footman.png")
-        buildings = self._load_sprite("data/textures/human/buildings.png")
+        self.peasant = self._load_sprite("assets/textures/human/peasant.png")
+        self.archer = self._load_sprite("assets/textures/human/archer.png")
+        self.footman = self._load_sprite("assets/textures/human/footman.png")
+        buildings = self._load_sprite("assets/textures/human/buildings.png")
         self.town_hall = buildings
         self.barracks = buildings
         self.farm = buildings
@@ -60,13 +60,13 @@ class Sprites:
 
     def tiles(self):
         try:
-            tileset_path = os.path.join(dir_path, "data", "textures", "tiles.png")
+            tileset_path = os.path.join(dir_path, "assets", "textures", "tiles.png")
             sheet = pygame.image.load(tileset_path)
         except pygame.error:
-            tileset_path = os.path.join(dir_path,  "data", "textures", "tiles.png")
+            tileset_path = os.path.join(dir_path,  "assets", "textures", "tiles.png")
             sheet = pygame.image.load(tileset_path)
 
-        tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__")]
+        tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__") and not x == 'name']
 
         tiles = {}
         for tile_type in tile_types:

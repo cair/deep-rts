@@ -22,6 +22,11 @@ public:
     bool enableArcher = false;
     bool enableAudio = false;
     int audioVolume = 0;
+    bool pompd = false;
+
+    void setPOMDP(bool b){
+        pompd = b;
+    }
 
     void setTickModifier(int tickmodifier){
         tickModifier = tickmodifier;

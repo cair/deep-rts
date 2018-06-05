@@ -78,7 +78,10 @@ set(SOURCE_FILES
         # Loaders
         src/loaders/ResourceLoader.cpp
         src/loaders/ResourceLoader.h
-        src/Config.h)
+        src/Config.h
+        src/graphics/PyGUI.cpp
+        src/graphics/PyGUI.h
+        )
 
 
 add_executable(DeepRTS ${SOURCE_FILES})
@@ -86,3 +89,4 @@ add_executable(DeepRTS ${SOURCE_FILES})
 target_link_libraries(DeepRTS PRIVATE pybind11::embed)
 
 file(COPY ../assets DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ../python/DeepRTS/ DESTINATION ${CMAKE_BINARY_DIR})

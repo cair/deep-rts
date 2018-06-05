@@ -1,4 +1,4 @@
-import DeepRTSEngine
+import pyDeepRTS
 import util
 from gui import GUI as PygameGUI
 import os
@@ -7,24 +7,21 @@ import numpy as np
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-class PyDeepRTS(DeepRTSEngine.Game):
-    DeepRTS = DeepRTSEngine
+class PyDeepRTS(pyDeepRTS.Game):
+    DeepRTS = pyDeepRTS
 
     @staticmethod
     def setup_data_files():
-        template_data = os.path.join(dir_path, "data")
-        target_data = os.path.join(os.getcwd(), "data")
+        template_data = os.path.join(dir_path, "..", "..", "assets")
+        target_data = os.path.join(os.getcwd(), "assets")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
-    def __init__(self, map_name, n_players=2, config=None, pomdp=True, simple=True):
+    def __init__(self, map_name, n_players=2, config=None):
         PyDeepRTS.setup_data_files()
         if not config:
             super(PyDeepRTS, self).__init__(map_name)
         else:
             super(PyDeepRTS, self).__init__(map_name, config)
-
-        self.simple = simple
-        self.pomdp = pomdp
 
         # Create players
         for i in range(n_players):
@@ -63,7 +60,6 @@ class PyDeepRTS(DeepRTSEngine.Game):
 
     def get_state(self, image=False, copy=False):
         return self.gui.capture() if image else np.array(self.state, copy=copy)
-
 
     def view_every(self, n):
         self._view_every = n

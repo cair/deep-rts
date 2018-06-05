@@ -19,5 +19,8 @@ void init_Config(py::module &m) {
             .def("set_footman", &Config::setFootman)
             .def("set_archer", &Config::setArcher)
             .def("set_audio", &Config::setAudio)
+            .def("set_pomdp", &Config::setPOMDP)
+
+            .def_readonly("pomdp", &Config::pompd)
             .def_static("defaults", &Config::defaults);
 }
