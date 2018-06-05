@@ -4,3 +4,6 @@
 [submodule "examples"]
 	path = examples
 	url = https://github.com/cair/DeepRTS-examples.git
+[submodule "include/pybind11"]
+	path = include/pybind11
+	url = https://github.com/pybind/pybind11.git
