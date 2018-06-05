@@ -223,5 +223,5 @@ project/msvc15/__init__.py
 WarC2Sim.iml
 docs/docs.iml
 project/msvc14/.vs/WarC2Sim++/v14/.suo
-
+python/DeepRTS/assets
 *.iml
