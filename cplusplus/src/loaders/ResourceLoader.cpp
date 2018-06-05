@@ -31,7 +31,7 @@ void ResourceLoader::loadMapJSON(std::string map_file) {
 
 
     if(mapLoaded) return;
-	std::string filePath = GetCurrentWorkingDir() + "/data/maps/" + map_file;
+	std::string filePath = GetCurrentWorkingDir() + "/assets/maps/" + map_file;
 
     // Read Map data
     std::ifstream map(filePath);
@@ -53,7 +53,7 @@ void ResourceLoader::loadMapJSON(std::string map_file) {
 
 void ResourceLoader::loadTileJSON() {
 	std::string fileName = "tile_properties.json";
-	std::string filePath = GetCurrentWorkingDir() + "/data/" + fileName;
+	std::string filePath = GetCurrentWorkingDir() + "/assets/" + fileName;
 
     std::ifstream map(filePath);
 	if (map.is_open()) {
