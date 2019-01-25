@@ -222,7 +222,7 @@ bool Game::isTerminal(){
 
 
 Player &Game::addPlayer() {
-    players.emplace_back(*this, players.size() + 1);
+    players.emplace_back(*this, players.size());
     Player &player = players.back();
 
     spawnPlayer(player);
@@ -236,7 +236,7 @@ void Game::spawnPlayer(Player &player) {
         throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
     }
 
-    int spawnPointIdx = tilemap.spawnTiles[player.getId() - 1];
+    int spawnPointIdx = tilemap.spawnTiles[player.getId()];
 
     auto spawnTile = tilemap.tiles[spawnPointIdx];
 
@@ -322,9 +322,6 @@ void Game::_onUnitDestroy(Unit& unit) {
 
 
 void Game::_onTileDeplete(Tile &){}
-
-
-
 
 
 

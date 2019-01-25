@@ -58,6 +58,12 @@ class PyDeepRTS(pyDeepRTS.Game):
     def set_player(self, player):
         self.selected_player = player
 
+    def next_player(self):
+
+        next_player = (self.selected_player.get_id() + 1) % len(self.players)
+        print(next_player)
+        self.selected_player = self.players[next_player]
+
     def get_state(self, image=False, copy=False):
         return self.gui.capture() if image else np.array(self.state, copy=copy)
 

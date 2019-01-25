@@ -162,7 +162,6 @@ public:
     /// Engine Functions
     ///
     ////////////////////////////////////////////////////
-
     // Add a player to the game
     Player &addPlayer();
 
@@ -199,7 +198,7 @@ public:
 
     ////////////////////////////////////////////////////
     ///
-    /// Engine Functions
+    /// Callback Functions
     ///
     ////////////////////////////////////////////////////
     virtual void _onUnitCreate(Unit& unit);

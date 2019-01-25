@@ -8,15 +8,16 @@ class Sprites:
 
     def __init__(self, gui):
         self.gui = gui
-        self.simple = False#self.gui.game.simple
+        self.simple = True#self.gui.game.simple
 
         self.mask = {
-            0: (255, 0, 0),  # Player 1
-            1: (0, 0, 255),
+            0: (0, 0, 255),  # Player 1
+            1: (255, 0, 0),
             2: (0, 255, 0),
             3: (255, 255, 0),
             4: (0, 255, 255),
-            5: (255, 0, 255)  # Player 6
+            5: (255, 0, 255),  # Player 6,
+            100: (255, 255, 255)
         }
 
         self.peasant = self._load_sprite("assets/textures/human/peasant.png")
@@ -41,7 +42,7 @@ class Sprites:
 
             self.town_hall.fill((0, 255, 255))
             self.barracks.fill((255, 0, 255))
-            self.farm.fill((0, 255, 0))
+            self.farm.fill((100, 155, 155))
 
 
     def load(self):

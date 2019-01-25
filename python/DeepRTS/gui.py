@@ -4,7 +4,7 @@ import numpy as np
 import pygame
 
 
-from Sprites import Sprites
+from sprites import Sprites
 from pygame.constants import HWSURFACE
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -161,8 +161,11 @@ class GUI:
             health = unit.health
             health_max = unit.health_max
             health_p = health / health_max
+            player = unit.get_player()
 
-            owner_id = unit.get_player().get_id()
+            owner_id = player.get_id() if player == self.game.selected_player else 100
+
+
             x_pos, y_pos = (x * self.map.tile_width, y * self.map.tile_height)
 
             # Draw unit
@@ -182,17 +185,19 @@ class GUI:
                 )
 
     def render(self):
-        self.fog.reset()
+        #self.fog.reset()
 
         self.render_tiles()
         self.render_units()
 
-        if self.game.config.pomdp:
-            self.fog.draw(self.surface_map, self.game)
+        #if self.game.config.pomdp:
+        #    self.fog.draw(self.surface_map, self.game)
 
-        self.display.blit(self.surface_map, (0, 0))
+
 
     def view(self):
+        self.display.blit(self.surface_map, (0, 0))
+
         if self.game.config.pomdp:
             pygame.display.update(self.fog.draw(self.surface_map, self.game))
         else:
