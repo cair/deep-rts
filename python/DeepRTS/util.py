@@ -14,7 +14,7 @@ def image_at(sheet, tile_n, tile_size=32):
     y_start = (n_rows * tile_size) + n_rows
 
     rect = pygame.Rect((x_start, y_start, tile_size, tile_size))
-    image = pygame.Surface(rect.size).convert()
+    image = pygame.Surface(rect.size, flags=pygame.HWSURFACE).convert()
     image.blit(sheet, (0, 0), rect)
 
     return image

@@ -28,12 +28,12 @@ class Sprites:
         self.farm = buildings
 
         if self.simple:
-            self.peasant = pygame.Surface((self.peasant.get_width(), self.peasant.get_height()))
-            self.archer = pygame.Surface((self.archer.get_width(), self.archer.get_height()))
-            self.footman = pygame.Surface((self.footman.get_width(), self.footman.get_height()))
-            self.town_hall = pygame.Surface((buildings.get_width(), buildings.get_height()))
-            self.barracks = pygame.Surface((buildings.get_width(), buildings.get_height()))
-            self.farm = pygame.Surface((buildings.get_width(), buildings.get_height()))
+            self.peasant = pygame.Surface((self.peasant.get_width(), self.peasant.get_height()), flags=pygame.HWSURFACE)
+            self.archer = pygame.Surface((self.archer.get_width(), self.archer.get_height()), flags=pygame.HWSURFACE)
+            self.footman = pygame.Surface((self.footman.get_width(), self.footman.get_height()), flags=pygame.HWSURFACE)
+            self.town_hall = pygame.Surface((buildings.get_width(), buildings.get_height()), flags=pygame.HWSURFACE)
+            self.barracks = pygame.Surface((buildings.get_width(), buildings.get_height()), flags=pygame.HWSURFACE)
+            self.farm = pygame.Surface((buildings.get_width(), buildings.get_height()), flags=pygame.HWSURFACE)
 
             self.peasant.fill((255, 0, 0))
             self.archer.fill((255, 255, 0))

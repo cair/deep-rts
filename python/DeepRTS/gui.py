@@ -5,6 +5,7 @@ import pygame
 
 
 from Sprites import Sprites
+from pygame.constants import HWSURFACE
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -22,7 +23,7 @@ class FogTile(pygame.sprite.DirtySprite):
 
     def __init__(self, group, x, y):
         pygame.sprite.DirtySprite.__init__(self, group)
-        self.image = pygame.Surface([32, 32])
+        self.image = pygame.Surface([32, 32], flags=pygame.HWSURFACE)
         self.image.fill(0)
 
         self.rect = self.image.get_rect()
@@ -67,6 +68,28 @@ class Fog:
 
 
 class GUI:
+    """cdef public game;
+    cdef public tilemap;
+    cdef public map;
+    cdef public gui_tiles;
+    cdef public tiles;
+    cdef public units
+    cdef public fog;
+    cdef public camera_x;
+    cdef public camera_y;
+    cdef public tilemap_size;
+    cdef public tile_width;
+    cdef public tile_height;
+    cdef public tilemap_render_size;
+    cdef public window_size;
+    cdef public display;
+    cdef public surface_map;
+    cdef public unit_sprites;
+    cdef public tile_sprites;
+    cdef public ground_surface;
+    cdef public resource_tiles;"""
+
+
 
     def __init__(self, game):
         self.game = game
@@ -92,37 +115,38 @@ class GUI:
         self.tilemap_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
         self.window_size = self.tilemap_render_size  # (800, 800)
         self.display = pygame.display.set_mode(self.window_size)
-        self.surface_map = pygame.Surface(self.tilemap_render_size)  # Tiles that may change during game
+        self.surface_map = pygame.Surface(self.tilemap_render_size, flags=pygame.HWSURFACE)  # Tiles that may change during game
 
         # Load Resources
         self.unit_sprites, self.tile_sprites = Sprites(self).load()
 
-        # Setup
-        self.static_tiles = self.setup_static_map()
-        self.dynamic_tiles = set(self.tiles) - set(self.static_tiles)
+        """ Background surface. Always static, self."""
+        self.ground_surface, self.resource_tiles = self.setup_static_map()
 
     def setup_static_map(self):
-        static_tiles = []
+        static_surface = pygame.Surface(self.window_size, flags=pygame.constants.HWSURFACE)
+        resource_tiles = []
         for tile in self.tiles:
             # Harvestable tiles can be transformed when depleted
             if tile.is_harvestable():
+                resource_tiles.append(tile)
                 continue
-
             tile_sprite = self.tile_sprites[tile.get_type_id()]
-            self.surface_map.blit(tile_sprite, (tile.x * self.map.tile_width, tile.y * self.map.tile_height))
-            static_tiles.append(tile)
+            static_surface.blit(tile_sprite, (tile.x * self.map.tile_width, tile.y * self.map.tile_height))
 
-        return static_tiles
+        return static_surface, resource_tiles
 
     def render_tiles(self):
-
-        for tile in self.tiles:
+        self.surface_map.blit(self.ground_surface, (0, 0))
+        for tile in self.resource_tiles:
             x = tile.x
             y = tile.y
             type_id = tile.get_type_id()
             tile_sprite = self.tile_sprites[type_id]
 
             self.surface_map.blit(tile_sprite, (x * self.map.tile_width, y * self.map.tile_height))
+
+
 
     def render_units(self):
 
@@ -175,8 +199,8 @@ class GUI:
             pygame.display.flip()
 
     def capture(self, save=False, filename="./capture.png"):
-        if save:
-            imsave(filename, np.array(pygame.surfarray.pixels3d(self.surface_map)))
+        #if save:
+            #imsave(filename, np.array(pygame.surfarray.pixels3d(self.surface_map)))
 
         return np.array(pygame.surfarray.pixels3d(self.surface_map))
 
