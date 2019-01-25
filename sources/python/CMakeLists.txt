@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(pyDeepRTS)
 
-add_subdirectory(../include/pybind11 pybind11)
+add_subdirectory(../cplusplus/include/pybind11 pybind11)
 
 pybind11_add_module(pyDeepRTS
         # Engine

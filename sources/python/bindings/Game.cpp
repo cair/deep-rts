@@ -56,10 +56,13 @@ void init_Game(py::module &m) {
             .def_readonly("players", &Game::players)
             .def_readonly("tilemap", &Game::tilemap)
             .def_readonly("map", &Game::map)
+            .def_readonly("selected_player", &Game::selectedPlayer)
+
 
                     /// Setters
             .def("set_max_fps", &Game::setMaxFPS)
-            .def("set_max_ups", &Game::setMaxUPS);
+            .def("set_max_ups", &Game::setMaxUPS)
+            .def("set_selected_player", &Game::setSelectedPlayer);
 
 
 }

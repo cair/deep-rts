@@ -112,6 +112,9 @@ public:
     /// Game terminal flag
     bool terminal = false;
 
+    /// Selected player
+    Player* selectedPlayer;
+
 
     ////////////////////////////////////////////////////
     ///
@@ -155,6 +158,9 @@ public:
 
     /// Set the Game UPS
     void setMaxUPS(uint32_t ups_);
+
+    /// Set selected player
+    void setSelectedPlayer(Player &player);
 
 
     ////////////////////////////////////////////////////

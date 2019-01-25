@@ -12,11 +12,11 @@ class PyDeepRTS(pyDeepRTS.Game):
 
     @staticmethod
     def setup_data_files():
-        template_data = os.path.join(dir_path, "..", "..", "assets")
+        template_data = os.path.join(dir_path, "..", "..", "..", "assets")
         target_data = os.path.join(os.getcwd(), "assets")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
-    def __init__(self, map_name, n_players=2, config=None):
+    def __init__(self, map_name, n_players=2, config=None, gui=True):
         PyDeepRTS.setup_data_files()
         if not config:
             super(PyDeepRTS, self).__init__(map_name)
@@ -28,10 +28,9 @@ class PyDeepRTS(pyDeepRTS.Game):
             self.add_player()
 
         # Select first player as default
-        self.selected_player = None
         self.set_player(self.players[0])
 
-        self.gui = PygameGUI(self)
+        self.gui = PygameGUI(self) if gui else None
         self._render_every = 1
         self._view_every = 1
         self._capture_every = 1
@@ -43,29 +42,30 @@ class PyDeepRTS(pyDeepRTS.Game):
         super().tick()
 
     def _render(self):
-        if self.get_ticks() % self._render_every == 0:
+        if self.gui and self.get_ticks() % self._render_every == 0:
             self.gui.render()
 
     def view(self):
-        if self.get_ticks() % self._view_every == 0:
+        if self.gui and self.get_ticks() % self._view_every == 0:
             self.gui.view()
 
     def capture(self):
-        if self.get_ticks() % self._capture_every == 0:
+        if self.gui and self.get_ticks() % self._capture_every == 0:
             return self.gui.capture()
         return None
 
     def set_player(self, player):
-        self.selected_player = player
+        self.set_selected_player(player)
 
     def next_player(self):
 
         next_player = (self.selected_player.get_id() + 1) % len(self.players)
-        print(next_player)
-        self.selected_player = self.players[next_player]
+        self.set_selected_player(self.players[next_player])
 
     def get_state(self, image=False, copy=False):
-        return self.gui.capture() if image else np.array(self.state, copy=copy)
+        if self.gui:
+            return self.gui.capture() if image else np.array(self.state, copy=copy)
+        return None
 
     def view_every(self, n):
         self._view_every = n
@@ -74,14 +74,18 @@ class PyDeepRTS(pyDeepRTS.Game):
         self._capture_every = n
 
     def _caption(self):
-        self.gui.set_caption("DeepRTS v2.0 - [FPS=%d UPS=%d MUL=x%d]" %
-                             (
-                                 self.get_fps(),
-                                 self.get_ups(),
-                                 self.get_ups() / self.get_ticks_modifier()
-                             ))
-
-        pass
+        if self.gui:
+            self.gui.set_caption("DeepRTS v2.0 - [FPS=%d UPS=%d MUL=x%d]" %
+                                 (
+                                     self.get_fps(),
+                                     self.get_ups(),
+                                     self.get_ups() / self.get_ticks_modifier()
+                                 ))
+        return "DeepRTS v2.0 - [FPS=%d UPS=%d MUL=x%d]" % (
+            self.get_fps(),
+            self.get_ups(),
+            self.get_ups() / self.get_ticks_modifier()
+        )
 
     def _on_unit_create(self, unit):
         pass

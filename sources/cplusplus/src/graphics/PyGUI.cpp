@@ -31,7 +31,7 @@ PyGUI::PyGUI(Game& game): game(game) {
 
     this->init_dependencies();
     this->init_argv();
-    this->init_cython();
+    //this->init_cython();
     this->init_gui();
 }
 

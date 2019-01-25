@@ -225,6 +225,11 @@ Player &Game::addPlayer() {
     players.emplace_back(*this, players.size());
     Player &player = players.back();
 
+    // Set initial
+    if(this->selectedPlayer == nullptr){
+        this->setSelectedPlayer(player);
+    }
+
     spawnPlayer(player);
     return player;
 }
@@ -322,6 +327,11 @@ void Game::_onUnitDestroy(Unit& unit) {
 
 
 void Game::_onTileDeplete(Tile &){}
+
+void Game::setSelectedPlayer(Player &player) {
+    this->selectedPlayer = &player;
+
+}
 
 
 

@@ -13,7 +13,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 set(CMAKE_CXX_STANDARD 14)
 
 
-add_subdirectory(../include/pybind11 pybind11)
+add_subdirectory(include/pybind11 pybind11)
 
 
 set(SOURCE_FILES
@@ -88,5 +88,5 @@ add_executable(DeepRTS ${SOURCE_FILES})
 
 target_link_libraries(DeepRTS PRIVATE pybind11::embed)
 
-file(COPY ../assets DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ../../assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ../python/DeepRTS/ DESTINATION ${CMAKE_BINARY_DIR})
