@@ -48,10 +48,8 @@ void PyGUI::init_dependencies(){
     args.append("-m");
     args.append("pip");
     args.append("install");
-    args.append("numpy");
-    args.append("pygame");
-    args.append("cython");
-    args.append("opencv-python");
+    args.append("-r");
+    args.append("requirements.txt");
     args.append("--user");
     subprocess.attr("check_call")(args);
 }

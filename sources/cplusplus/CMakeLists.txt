@@ -10,7 +10,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 
 add_subdirectory(../../include/pybind11 pybind11)
@@ -84,9 +84,14 @@ set(SOURCE_FILES
         )
 
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    target_compile_options(pybind11 INTERFACE -fsized-deallocation)
+endif()
+
 add_executable(DeepRTS ${SOURCE_FILES})
 
 target_link_libraries(DeepRTS PRIVATE pybind11::embed)
 
 file(COPY ../../assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ../python/DeepRTS/ DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ../python/requirements.txt DESTINATION ${CMAKE_BINARY_DIR})
