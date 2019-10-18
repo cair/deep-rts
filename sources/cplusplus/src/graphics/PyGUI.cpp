@@ -31,7 +31,7 @@ PyGUI::PyGUI(Game& game): game(game) {
 
     this->init_dependencies();
     this->init_argv();
-    //this->init_cython();
+    this->init_cython();
     this->init_gui();
 }
 
@@ -69,7 +69,9 @@ void PyGUI::init_cython(){
 }
 
 void PyGUI::init_gui(){
-    pybind11::module GUI_MODULE = pybind11::module::import("gui");
+    auto guiType = (this->game.config.fastgui) ? "fastgui" : "gui";
+
+    pybind11::module GUI_MODULE = pybind11::module::import(guiType);
     gui = GUI_MODULE.attr("GUI")(&this->game);
     this->gui_attr_render = gui.attr("render");
     this->gui_attr_view = gui.attr("view");

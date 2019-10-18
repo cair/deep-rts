@@ -1,0 +1,32 @@
+
+<div class="col-md-12">
+    <h3>Master Generation: <b>{{vm.generation}}</b></h3>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Agent ID</th>
+            <th>Generation</th>
+            <th>Model Checksum</th>
+            <th>Loss</th>
+            <th>Score</th>
+            <th>Victory</th>
+        </tr>
+        </thead>
+        <tr ng-repeat="result in vm.gresults | reverse">
+            <td>{{result.game_id}}</td>
+            <td>{{result.generation}}</td>
+            <td>{{result.checksum}}</td>
+            <td>{{result.loss}}</td>
+            <td>{{result.score}}</td>
+            <td ng-class="{'success': result.victory, 'danger': !result.victory}">{{result.victory}}</td>
+        </tr>
+    </table>
+
+    <!--<form>
+        <input type="text" ng-model="inputText"></input>
+        <button type="submit" ng-click="buttonClicked()">Click</button>
+    </form>
+    <hr>
+    {{modText}}-->
+</div>

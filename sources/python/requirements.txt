@@ -1,4 +1,5 @@
 pybind11
 pygame
 opencv-python
-
+cython
+blend_modes

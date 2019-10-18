@@ -23,6 +23,11 @@ public:
     bool enableAudio = false;
     int audioVolume = 0;
     bool pompd = false;
+    bool fastgui = false;
+
+    void setFastGUI(bool b){
+        fastgui = b;
+    }
 
     void setPOMDP(bool b){
         pompd = b;

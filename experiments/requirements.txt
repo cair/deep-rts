@@ -1,0 +1,3 @@
+numpy
+tqdm
+h5py

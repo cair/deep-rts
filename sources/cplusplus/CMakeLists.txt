@@ -13,7 +13,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 set(CMAKE_CXX_STANDARD 14)
 
 
-add_subdirectory(include/pybind11 pybind11)
+add_subdirectory(../../include/pybind11 pybind11)
 
 
 set(SOURCE_FILES
