@@ -35,7 +35,7 @@ Map::Map(const std::string& map_file) {
                 tileData["walkable"].GetBool(),
                 tileData["harvestable"].GetBool(),
                 tileData["swimable"].GetBool(),
-                tileData["resources"].GetUint(),
+                tileData["resources"].GetInt(),
                 tileData["lumber_yield"].GetInt(),
                 tileData["gold_yield"].GetInt(),
                 tileData["oil_yield"].GetInt())

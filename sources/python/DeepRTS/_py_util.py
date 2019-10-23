@@ -1,8 +1,9 @@
 import pygame
 import math
-
 import os
 import shutil
+import stat
+
 
 def image_at(sheet, tile_n, tile_size=32):
     size = sheet.get_size()
@@ -19,9 +20,7 @@ def image_at(sheet, tile_n, tile_size=32):
 
     return image
 
-import os
-import shutil
-import stat
+
 def copytree(src, dst, symlinks = False, ignore = None):
 
     if not os.path.exists(dst):
@@ -52,6 +51,7 @@ def copytree(src, dst, symlinks = False, ignore = None):
                 shutil.copy2(s, d)
             except:
                 pass
+
 
 def get_sprite(
         sheet,

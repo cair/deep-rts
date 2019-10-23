@@ -5,6 +5,7 @@
 #ifndef DEEPRTS_MAP_H
 #define DEEPRTS_MAP_H
 
+#include <utility>
 #include <vector>
 #include <iostream>
 #include <map>
@@ -21,7 +22,7 @@ struct TileData {
     int gold_yield;
     int oil_yield;
 
-    TileData(){}
+    TileData()= default;
 
     TileData(
             int depleteTile,
@@ -32,7 +33,7 @@ struct TileData {
             int resources,
             int lumber_yield,
             int gold_yield,
-            int oil_yield): depleteTile(depleteTile), name(name), walkable(walkable), harvestable(harvestable),
+            int oil_yield): depleteTile(depleteTile), name(std::move(name)), walkable(walkable), harvestable(harvestable),
                             swimable(swimable), resources(resources), lumber_yield(lumber_yield), gold_yield(gold_yield),
                             oil_yield(oil_yield){
 
@@ -46,7 +47,7 @@ class Map {
 
 public:
 
-    Map(const std::string& map_file);
+    explicit Map(const std::string& map_file);
 
     /// A tile's Width
     int TILE_WIDTH;

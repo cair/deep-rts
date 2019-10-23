@@ -1,11 +1,12 @@
 import os
-
 import numpy as np
+
 import pygame
-
-
-from sprites import Sprites
 from pygame.constants import HWSURFACE
+
+from DeepRTS import Sprites
+
+
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 

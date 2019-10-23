@@ -4,3 +4,4 @@ opencv-python
 cython
 blend_modes
 numpy
+pillow

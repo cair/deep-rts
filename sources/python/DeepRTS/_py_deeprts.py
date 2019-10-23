@@ -1,37 +1,33 @@
-import pyDeepRTS
-import util
+from DeepRTS import Engine
+from DeepRTS import util
+from DeepRTS import GUI
 import os
-import shutil
-
 import numpy as np
-
-from fastgui import GUI
+import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-class PyDeepRTS(pyDeepRTS.Game):
-    DeepRTS = pyDeepRTS
+class DeepRTSGame(Engine.Game):
 
     @staticmethod
     def setup_data_files():
-        template_data = os.path.join(os.getcwd(), "..", "..", "assets")  # TODO getcwd
+        template_data = os.path.join(os.getcwd(), "..", "assets")  # TODO getcwd
         target_data = os.path.join(os.getcwd(), "assets")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
     def __init__(self, map_name, n_players=2, config=None):
-        PyDeepRTS.setup_data_files()
+        DeepRTSGame.setup_data_files()
         if not config:
-            super(PyDeepRTS, self).__init__(map_name)
+            super(DeepRTSGame, self).__init__(map_name)
         else:
-            super(PyDeepRTS, self).__init__(map_name, config)
+            super(DeepRTSGame, self).__init__(map_name, config)
 
         # Create players
         for i in range(n_players):
             self.add_player()
 
         # Select first player as default
-        self.selected_player = None
         self.set_player(self.players[0])
 
         self.gui = GUI(self)
@@ -59,7 +55,7 @@ class PyDeepRTS(pyDeepRTS.Game):
         return None
 
     def set_player(self, player):
-        self.selected_player = player
+        self.set_selected_player(player)
 
     def get_state(self, image=False, copy=False):
         return self.gui.capture() if image else np.array(self.state, copy=copy)

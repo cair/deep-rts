@@ -405,7 +405,7 @@ void Player::previousUnit() {
 
 Unit *Player::getTargetedUnit() {
     if(targetedUnitID == -1) {
-        return NULL;
+        return nullptr;
     }
     return &game_.units[targetedUnitID];
 }
@@ -468,6 +468,6 @@ int Player::getTargetedUnitID() const {
     return targetedUnitID;
 }
 
-void Player::setTargetedUnitID(int targetedUnitID) {
-    Player::targetedUnitID = targetedUnitID;
+void Player::setTargetedUnitID(int _targetedUnitID) {
+    Player::targetedUnitID = _targetedUnitID;
 }

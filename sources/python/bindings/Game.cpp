@@ -9,7 +9,7 @@ namespace py = pybind11;
 
 
 void init_Game(py::module &m) {
-    py::class_<Game, PyGame>(m, "Game")
+    py::class_<Game, PyGame>(m, "Game", "Game")
             .def(py::init<std::string>())
             .def(py::init<std::string, Config>())
 
@@ -50,19 +50,21 @@ void init_Game(py::module &m) {
             .def("get_max_ups", &Game::getMaxUPS)
             .def("get_ticks_modifier", &Game::getTicksModifier)
 
+                    /// Setters
+            .def("set_max_fps", &Game::setMaxFPS)
+            .def("set_max_ups", &Game::setMaxUPS)
+            .def("set_selected_player", &Game::setSelectedPlayer)
+
+
             .def_readonly("state", &Game::state)
 
             .def_readonly("units", &Game::units)
             .def_readonly("players", &Game::players)
             .def_readonly("tilemap", &Game::tilemap)
             .def_readonly("map", &Game::map)
-            .def_readonly("selected_player", &Game::selectedPlayer)
+            .def_readonly("selected_player", &Game::selectedPlayer);
 
 
-                    /// Setters
-            .def("set_max_fps", &Game::setMaxFPS)
-            .def("set_max_ups", &Game::setMaxUPS)
-            .def("set_selected_player", &Game::setSelectedPlayer);
 
 
 }

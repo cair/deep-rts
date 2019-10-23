@@ -13,11 +13,9 @@ int main() {
     Player &player0 = g->addPlayer();
     Player &player1 = g->addPlayer();
 
-    Player &player2 = g->players[0];
 
-
-    g->setMaxFPS(10000000000000);
-    g->setMaxUPS(10000000000000);
+    g->setMaxFPS(1000000000);
+    g->setMaxUPS(1000000000);
     g->start();
 
     while(true){
@@ -27,6 +25,16 @@ int main() {
         g->caption();
         gui.render();
         gui.view();
+
+        auto v1 = rand() % 42;
+        player0.do_action(v1);
+
+        auto v2 = rand() % 42;
+        player1.do_action(v2);
+
+        if(g->isTerminal()){
+            g->reset();
+        }
     }
 }
 

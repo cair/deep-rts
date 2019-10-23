@@ -15,7 +15,7 @@
 #include "../../../python/bindings/Constants.cpp"
 #include "../Game.h"
 
-PYBIND11_EMBEDDED_MODULE(pyDeepRTS, m) {
+PYBIND11_EMBEDDED_MODULE(DeepRTS, m) {
     init_Config(m);
     init_Player(m);
     init_Unit(m);

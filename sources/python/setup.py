@@ -5,15 +5,36 @@ import sys
 import platform
 import subprocess
 
-from setuptools import setup, Extension, find_packages, glob
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+assets_root = os.path.join(dir_path, "../../assets")
+assets_py = os.path.join(dir_path, "DeepRTS", "assets")
+
+from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 from distutils.version import LooseVersion
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
         Extension.__init__(self, name, sources=[])
         self.sourcedir = os.path.abspath(sourcedir)
+
+
+class PostDevelopCommand(develop):
+    """Post-installation for development mode."""
+    def run(self):
+        # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
+        develop.run(self)
+
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+    def run(self):
+        # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
+        install.run(self)
 
 
 class CMakeBuild(build_ext):
@@ -33,7 +54,13 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
-        extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
+
+        try:
+            shutil.copytree(assets_root, assets_py)
+        except:
+            pass
+
+        extdir = os.path.join(os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name))), "DeepRTS")
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                       '-DPYTHON_EXECUTABLE=' + sys.executable]
 
@@ -52,13 +79,17 @@ class CMakeBuild(build_ext):
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),
                                                               self.distribution.get_version())
+
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
-        subprocess.check_call(['cmake', os.path.join(ext.sourcedir, 'sources', 'python')] + cmake_args, cwd=self.build_temp, env=env)
+
+        subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp, env=env)
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
 
+
+
 setup(
-    name='pyDeepRTS',
+    name='DeepRTS',
     version_format='{tag}.dev{commitcount}+{gitsha}',
     setup_requires=['setuptools-git-version'],
     author='Per-Arne Andersen',
@@ -67,9 +98,17 @@ setup(
     description='A Real-Time-Strategy game for Deep Learning research ',
     long_description='',
     include_package_data=True,
-    packages=find_packages(exclude=["examples", "*.tests", "*.tests.*", "tests.*", "tests"]),
-    ext_modules=[CMakeExtension('pyDeepRTS')],
-    cmdclass=dict(build_ext=CMakeBuild),
-    install_requires=['pygame', 'numpy'],
+    packages=find_packages(
+        exclude=["examples", "*.tests", "*.tests.*", "tests.*", "tests"]
+    ),
+    ext_modules=[
+        CMakeExtension('Engine')
+    ],
+    cmdclass=dict(
+        build_ext=CMakeBuild,
+        develop=PostDevelopCommand,
+        install=PostInstallCommand,
+    ),
+    install_requires=['pygame', 'numpy', 'pillow'],
     zip_safe=False,
 )
