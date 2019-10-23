@@ -1,6 +1,7 @@
 
 # Run setup.py install in sources/python to build source files.
 import random
+
 from DeepRTS import DeepRTSGame
 if __name__ == "__main__":
 
@@ -21,7 +22,7 @@ if __name__ == "__main__":
             #game.view()
 
             for player in game.players:
-                player.do_action(random.randint(0, 25))
+                player.do_action(game.sample_action())
 
 
         game.reset()

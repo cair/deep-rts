@@ -93,8 +93,11 @@ namespace Constants{
 		Build0 = 13,
 		Build1 = 14,
 		Build2 = 15,
-		NoAction = 16
+		NoAction = 16,
 	};
+
+	const int action_min = 1;
+	const int action_max = 16;
 
 	const std::string actionNames[16] = {
 		"PrevUnit",

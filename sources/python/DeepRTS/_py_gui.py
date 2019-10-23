@@ -2,29 +2,16 @@ import os
 import numpy as np
 
 import pygame
-from pygame.constants import HWSURFACE
-
 from DeepRTS import Sprites
 
-
-
 dir_path = os.path.dirname(os.path.realpath(__file__))
-
-
-class Tiles:
-
-    def __init__(self):
-        pass
-
-    def set_tile(self, x, y, type):
-        pass
 
 
 class FogTile(pygame.sprite.DirtySprite):
 
     def __init__(self, group, x, y):
         pygame.sprite.DirtySprite.__init__(self, group)
-        self.image = pygame.Surface([32, 32], flags=pygame.HWSURFACE)
+        self.image = pygame.Surface([32, 32], flags=pygame.constants.HWSURFACE)
         self.image.fill(0)
 
         self.rect = self.image.get_rect()
@@ -69,38 +56,19 @@ class Fog:
 
 
 class GUI:
-    """cdef public game;
-    cdef public tilemap;
-    cdef public map;
-    cdef public gui_tiles;
-    cdef public tiles;
-    cdef public units
-    cdef public fog;
-    cdef public camera_x;
-    cdef public camera_y;
-    cdef public tilemap_size;
-    cdef public tile_width;
-    cdef public tile_height;
-    cdef public tilemap_render_size;
-    cdef public window_size;
-    cdef public display;
-    cdef public surface_map;
-    cdef public unit_sprites;
-    cdef public tile_sprites;
-    cdef public ground_surface;
-    cdef public resource_tiles;"""
 
-
-
-    def __init__(self, game):
+    def __init__(self, game, tile_size):
+        # Shortcut variables
         self.game = game
         self.tilemap = self.game.tilemap
         self.map = self.game.map
-
-        self.gui_tiles = Tiles()
-
         self.tiles = self.tilemap.tiles
         self.units = self.game.units
+
+        # Tile size
+        self.tile_size = tile_size
+
+        # POMDP Fog
         self.fog = Fog(self.map.map_width, self.map.map_height)
 
         pygame.init()
@@ -116,7 +84,7 @@ class GUI:
         self.tilemap_render_size = (self.map.map_width * self.map.tile_width, self.map.map_height * self.map.tile_height)
         self.window_size = self.tilemap_render_size  # (800, 800)
         self.display = pygame.display.set_mode(self.window_size)
-        self.surface_map = pygame.Surface(self.tilemap_render_size, flags=pygame.HWSURFACE)  # Tiles that may change during game
+        self.surface_map = pygame.Surface(self.tilemap_render_size, flags=pygame.constants.HWSURFACE)  # Tiles that may change during game
 
         # Load Resources
         self.unit_sprites, self.tile_sprites = Sprites(self).load()

@@ -5,6 +5,7 @@ from DeepRTS.Engine.Constants import Unit, Direction, Tile
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+
 class Sprites:
 
     def __init__(self, gui):

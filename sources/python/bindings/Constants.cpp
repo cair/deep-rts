@@ -7,10 +7,10 @@ void init_Constants(py::module &m) {
 
     auto constants = m.def_submodule("Constants");
 
-    //constants.def_property_readonly_static("MAX_PLAYERS", &Constants::MAX_PLAYERS);
-    //constants.def("MAX_UNITS", Constants::MAX_UNITS);
-
-
+    constants.attr("MAX_PLAYERS") = py::int_(Constants::MAX_PLAYERS);
+    constants.attr("MAX_UNITS") = py::int_(Constants::MAX_UNITS);
+    constants.attr("action_min") = py::int_(Constants::action_min);
+    constants.attr("action_max") = py::int_(Constants::action_max);
 
 
     py::enum_<Constants::Unit>(constants, "Unit", py::arithmetic(), "Unit Constants")

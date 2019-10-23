@@ -4,6 +4,7 @@ from DeepRTS import GUI
 import os
 import numpy as np
 import shutil
+import random
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -16,7 +17,7 @@ class DeepRTSGame(Engine.Game):
         target_data = os.path.join(os.getcwd(), "assets")
         util.copytree(template_data, target_data, ignore=shutil.ignore_patterns('config.json'))
 
-    def __init__(self, map_name, n_players=2, config=None):
+    def __init__(self, map_name, n_players=2, config=None, tile_size=32):
         DeepRTSGame.setup_data_files()
         if not config:
             super(DeepRTSGame, self).__init__(map_name)
@@ -30,10 +31,13 @@ class DeepRTSGame(Engine.Game):
         # Select first player as default
         self.set_player(self.players[0])
 
-        self.gui = GUI(self)
+        self.gui = GUI(self, tile_size=tile_size)
         self._render_every = 1
         self._view_every = 1
         self._capture_every = 1
+
+    def sample_action(self):
+        return random.randint(Engine.Constants.action_min, Engine.Constants.action_max)
 
     def render_every(self, interval):
         self._render_every = interval
@@ -90,6 +94,7 @@ class DeepRTSGame(Engine.Game):
 
     def _on_tile_deplete(self, tile):
         self.gui.gui_tiles.set_tile(tile.x, tile.y, tile.get_type_id())
+
 
 
 
