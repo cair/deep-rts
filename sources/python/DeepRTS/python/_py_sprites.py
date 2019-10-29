@@ -1,8 +1,13 @@
-import pygame
-from DeepRTS import util
+import os
+import contextlib
+with contextlib.redirect_stdout(None):
+    import pygame
+
 
 from DeepRTS.Engine.Constants import Unit, Direction, Tile
-import os
+from DeepRTS.python import util
+
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 

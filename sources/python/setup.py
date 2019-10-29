@@ -8,7 +8,7 @@ import subprocess
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 assets_root = os.path.join(dir_path, "../../assets")
-assets_py = os.path.join(dir_path, "DeepRTS", "assets")
+assets_py = os.path.join(dir_path, "DeepRTS", "python", "assets")
 
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
@@ -21,20 +21,6 @@ class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
         Extension.__init__(self, name, sources=[])
         self.sourcedir = os.path.abspath(sourcedir)
-
-
-class PostDevelopCommand(develop):
-    """Post-installation for development mode."""
-    def run(self):
-        # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
-        develop.run(self)
-
-
-class PostInstallCommand(install):
-    """Post-installation for installation mode."""
-    def run(self):
-        # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
-        install.run(self)
 
 
 class CMakeBuild(build_ext):
@@ -54,11 +40,6 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
-
-        try:
-            shutil.copytree(assets_root, assets_py)
-        except:
-            pass
 
         extdir = os.path.join(os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name))), "DeepRTS")
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
@@ -86,11 +67,14 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp, env=env)
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
 
-
+try:
+    shutil.copytree(assets_root, assets_py)
+except:
+    pass
 
 setup(
     name='DeepRTS',
-    version_format='{tag}.dev{commitcount}+{gitsha}',
+    version_format='{tag}.dev{commitcount}', # +{gitsha}
     setup_requires=['setuptools-git-version'],
     author='Per-Arne Andersen',
     author_email='per@sysx.no',
@@ -106,8 +90,6 @@ setup(
     ],
     cmdclass=dict(
         build_ext=CMakeBuild,
-        develop=PostDevelopCommand,
-        install=PostInstallCommand,
     ),
     install_requires=['pygame', 'numpy', 'pillow'],
     zip_safe=False,

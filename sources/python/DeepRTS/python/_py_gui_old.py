@@ -1,8 +1,10 @@
 import os
 import numpy as np
+import contextlib
+with contextlib.redirect_stdout(None):
+    import pygame
 
-import pygame
-from DeepRTS import Sprites
+from DeepRTS.python import Sprites
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 

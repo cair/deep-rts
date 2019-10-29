@@ -93,6 +93,7 @@ oilYield(oilYield)
 	if(resources <= 0) {
 		setDepleted();
 	}
+
 }
 
 
@@ -105,7 +106,7 @@ bool Tile::hasOccupant()
 Unit* Tile::getOccupant()
 {
 	if(occupantID == -1) {
-		return NULL;
+		return nullptr;
 	}
 
 	Unit &occupant = tilemap.game.units[occupantID];
@@ -137,17 +138,23 @@ bool Tile::isHarvestable() const {
 void Tile::setOccupant(Unit* unit) {
 	if(!unit) {
 		occupantID = -1;
-		return;
+	}else{
+	    occupantID = unit->id;
 	}
-    occupantID = unit->id;
+
+	setOccupantID(occupantID);
+}
+
+void Tile::setOccupantID(int unitID) {
+	occupantID = unitID;
+	//std::cout << unitID << " - Change  - " << x << "," << y << std::endl;
+	tilemap.game._onTileChange(*this);
 }
 
 int Tile::getOccupantID() {
 	return occupantID;
 }
-void Tile::setOccupantID(int unitID) {
-	occupantID = unitID;
-}
+
 
 
 bool Tile::isBuildable() const {
@@ -178,6 +185,7 @@ void Tile::reset()
         setDepleted();
     }
 
+    triggerOnTileChange();
 }
 
 void Tile::setDepleted() {
@@ -191,6 +199,12 @@ void Tile::setDepleted() {
 
 	tilemap.game.state(x, y, 0) = typeId;
     tilemap.game._onTileDeplete(*this);
+    triggerOnTileChange();
+}
+
+
+void Tile::triggerOnTileChange(){
+    tilemap.game._onTileChange(*this);
 }
 
 void Tile::setResources(uint16_t resource_count)

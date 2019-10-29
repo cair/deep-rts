@@ -23,7 +23,8 @@ void init_Tile(py::module &m) {
             .def("is_harvestable", &Tile::isHarvestable)
             .def("is_buildable", &Tile::isBuildable)
             .def("is_attackable", &Tile::isAttackable)
-            .def("get_occupant", &Tile::getOccupant)
+            .def("get_occupant", &Tile::getOccupant) // TODO - does not work
+            .def("get_occupant_id", &Tile::getOccupantID)
             .def("has_occupant", &Tile::hasOccupant)
             .def("get_resources", &Tile::getResources)
             .def("get_type_id", &Tile::getTypeId)

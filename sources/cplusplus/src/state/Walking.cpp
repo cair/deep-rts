@@ -15,41 +15,37 @@ void Walking::update(Unit & unit)const{
         assert(false); //No goal were set!
     }
 
-
-    if (!unit.walking_path.empty()) {
-        unit.walking_timer += 1;
-
-
-        if (unit.walking_timer > unit.walking_interval) {
-
-            // Pop next
-            Tile * nextTile = unit.walking_path.back();
-            unit.walking_path.pop_back();
-
-            // Check if someone is standing on goal
-			if (!nextTile->isWalkable()) {
-				unit.transitionState();
-				return;
-			}
-
-            unit.setPosition(*nextTile);
-            unit.walking_timer = 0;
-
-            if(unit.stepsLeft == 1) {
-                unit.transitionState();
-            }
-            if(unit.stepsLeft >= 1) {
-                unit.stepsLeft --;
-            }
-
-
-        }
-    } else {
+    // No tiles in the walking path
+    if (unit.walking_path.empty()) {
         unit.transitionState();
         return;
     }
 
 
+    if (unit.walking_timer < unit.walking_interval) {
+        unit.walking_timer += 1;
+        return;
+    }
+
+    // Pop next
+    Tile * nextTile = unit.walking_path.back();
+    unit.walking_path.pop_back();
+
+    // Check if someone is standing on goal
+    if (!nextTile->isWalkable()) {
+        unit.transitionState();
+        return;
+    }
+
+    unit.setPosition(*nextTile);
+    unit.walking_timer = 0;
+
+    if(unit.stepsLeft == 1) {
+        unit.transitionState();
+    }
+    if(unit.stepsLeft >= 1) {
+        unit.stepsLeft --;
+    }
 
 
 }
@@ -90,28 +86,34 @@ void Walking::init(Unit & unit)const{
     // If the distance is only 1 n length, there is no need to calculate path
     if(unit.tile->distance(*goal) == 1) {
         unit.walking_path.push_back(goal);
-        return;
+    }else{
+
+        // The resulting path will go here.
+        JPS::PathVector path;
+
+        // Attempt to find a viable path
+        JPS::findPath(
+                    path,
+                    unit.getPlayer().getGame().tilemap,
+                    unit.tile->x, unit.tile->y,
+                    goal->x,
+                    goal->y,
+                    1);
+
+
+        // Insert found path to the walking path vector
+        std::reverse(path.begin(), path.end());
+        for(auto pathItem : path) {
+            Tile& tile = unit.getPlayer().getGame().tilemap.getTile(pathItem.x, pathItem.y);
+            unit.walking_path.push_back(&tile);
+        }
     }
 
-
-    // The resulting path will go here.
-    JPS::PathVector path;
-
-    // Attempt to find a viable path
-    JPS::findPath(
-                path,
-                unit.getPlayer().getGame().tilemap,
-                unit.tile->x, unit.tile->y,
-                goal->x,
-                goal->y,
-                1);
-
-
-    // Insert found path to the walking path vector
-    std::reverse(path.begin(), path.end());
-    for(auto pathItem : path) {
-        Tile& tile = unit.getPlayer().getGame().tilemap.getTile(pathItem.x, pathItem.y);
-        unit.walking_path.push_back(&tile);
+    // Set the initial direction of which the unit will move.
+    if(unit.walking_path.size() > 0){
+        Tile * nextTile = unit.walking_path.back();
+        unit.setDirection(nextTile->x, nextTile->y);
     }
+
 }
 

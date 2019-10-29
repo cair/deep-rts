@@ -20,6 +20,7 @@ Unit::Unit(Player &player):
     // Harvesting
     harvestInterval = .5 * config.tickModifier;
     combatInterval = 1 * config.tickModifier;
+    combatTimer = combatInterval;
     walking_interval = 1 * config.tickModifier;
     id = player.getGame().units.size();
     state = stateManager->despawnedState;
@@ -73,9 +74,22 @@ void Unit::move(Tile &targetTile){
 
 void Unit::setPosition(Tile &newTile) {
 
+    bool hasNoPriorTile = (tile == nullptr);
+    if(hasNoPriorTile) {
+        worldPosition.x = newTile.x;
+        worldPosition.y = newTile.y;
+    }
+
     if(tile){                       // If unit already stands on a tile
         clearTiles();
     }
+
+    tile = &newTile;                     // Set this units tile to new tile
+
+    Position newPos = tile->getPosition();
+    setDirection(newPos.x, newPos.y);
+    //std::cout << "(" << worldPosition.x << "," << worldPosition.y << ") - (" << newPos.x << "," << newPos.y << ")" << std::endl;
+    worldPosition = newPos;
 
     for(auto &t : player_.getGame().tilemap.getTileArea(newTile, width, height)) {
         setStateForTile(t);
@@ -83,11 +97,6 @@ void Unit::setPosition(Tile &newTile) {
     }
 
 
-    newTile.setOccupant(this);         // Set occupant of new tile to this
-    tile = &newTile;                     // Set this units tile to new tile
-    Position newPos = tile->getPosition();
-    setDirection(newPos.x, newPos.y);
-    worldPosition = newPos;
 }
 
 void Unit::update() {
@@ -109,13 +118,18 @@ Tile *Unit::centerTile() {
 bool Unit::build(int idx) {
     //if(state->id != Constants::State::Idle)
     if(state->id != Constants::State::Idle)
-        return false;
+    {
+         return false;
+    }
+
 
     if((idx < 0 || idx >= buildInventory.size()))
-        return false;
+    {
+         return false;
+    }
+
 
     Unit newUnit = UnitManager::constructUnit(buildInventory[idx], player_);
-
 
     // Check food restriction
     if(config.foodLimit && newUnit.foodConsumption + player_.foodConsumption > player_.food) {
@@ -135,7 +149,7 @@ bool Unit::build(int idx) {
 
     Tile &placementTile = player_.getGame().tilemap.getTile(x, y);
     if(!player_.canAfford(newUnit)) {
-        //std::cout << "Cannot afford " << newUnit->name << std::endl;
+        ////std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
     }
 
@@ -200,7 +214,6 @@ void Unit::clearTiles(){
         clearStateForTile(t);
         t->setOccupant(NULL);
     }
-    tile->setOccupant(NULL);
     tile = NULL;
 }
 
@@ -210,10 +223,7 @@ void Unit::rightClick(Tile &targetTile) {
         return;
     }
 
-
     stateList.clear();
-    transitionState();
-
 
     if(targetTile.isHarvestable()){
         //  Harvest
@@ -418,6 +428,9 @@ void Unit::setDirection(int newX, int newY){
         // Down
         direction = Constants::Direction::Down;
         //std::cout << "Down" << std::endl;
+    } else if(dx == 0 && dy == 0) {
+       // No change (aka same position) force down
+       direction = Constants::Direction::Down;
     }
 
 

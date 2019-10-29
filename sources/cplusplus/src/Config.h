@@ -24,9 +24,19 @@ public:
     int audioVolume = 0;
     bool pompd = false;
     bool fastgui = false;
+    int startGold = 0;
+    int startOil = 0;
+    int startWood = 0;
+
+    /// Bool that determine print of FPS and UPS in console
+    bool consoleCaptionEnabled = true;
 
     void setFastGUI(bool b){
         fastgui = b;
+    }
+
+    void setConsoleCaptionEnabled(bool b) {
+        consoleCaptionEnabled = b;
     }
 
     void setPOMDP(bool b){
@@ -73,25 +83,34 @@ public:
         enableArcher = b;
     }
 
-    void setAudio(bool b, int volume){
-        enableAudio = b;
-        audioVolume = volume;
+    void setStartGold(int v) {
+        startGold = v;
     }
 
+    void setStartOil(int v){
+        startOil = v;
+    }
+
+    void setStartWood(int v){
+        startWood = v;
+    }
 
     static Config defaults(){
         Config config;
         config.setTickModifier(10);
-        config.setInstantTownHall(true);
+        config.setInstantTownHall(false);
         config.setInstantBuilding(true);
-        config.setHarvestForever(false);
+        config.setHarvestForever(true);
         config.setAutoAttack(true);
         config.setFoodLimit(100);
         config.setFarm(true);
-        config.setBarracks(true);
+        config.setBarracks(false);
         config.setFootman(true);
         config.setArcher(false);
-        config.setAudio(false, 0);
+        config.setConsoleCaptionEnabled(false);
+        config.setStartGold(1500);
+        config.setStartWood(750);
+        config.setStartOil(0);
         return config;
     }
 

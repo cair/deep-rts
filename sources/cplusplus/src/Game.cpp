@@ -13,7 +13,7 @@ Game::Game(std::string map_file):
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this) {
-    init();
+    //init();
 }
 
 Game::Game(std::string map_file, Config config):
@@ -21,7 +21,7 @@ Game::Game(std::string map_file, Config config):
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this){
-    init();
+    //init();
 }
 
 void Game::init(){
@@ -33,7 +33,6 @@ void Game::init(){
     // 2 - Unit/Building Player
     // 3 - Unit/Building Health
     // Init environment
-
     players.reserve(Constants::MAX_PLAYERS);
     units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
 
@@ -52,22 +51,14 @@ void Game::init(){
 
 }
 
-
-
-
-
 void Game::setMaxFPS(uint32_t fps_){
     max_fps = fps_;
     _render_interval = std::chrono::nanoseconds(1000000000 /  max_fps);
-
-
 }
 
 void Game::setMaxUPS(uint32_t ups_){
     max_ups = ups_;
     _update_interval = std::chrono::nanoseconds(1000000000 /  max_ups);
-
-
 }
 
 void Game::start(){
@@ -81,7 +72,6 @@ void Game::stop(){
 
 void Game::reset()
 {
-
 
     // Reset all tiles
     for (auto &tile : tilemap.getTiles()) {
@@ -156,7 +146,8 @@ void Game::_reset() {}
 void Game::caption() {
     if (now >= this->_stats_next) {
         _caption();
-        if (consoleCaptionEnabled) {
+
+        if (config.consoleCaptionEnabled) {
             std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
         }
 
@@ -230,7 +221,6 @@ Player &Game::addPlayer() {
         this->setSelectedPlayer(player);
     }
 
-    spawnPlayer(player);
     return player;
 }
 
@@ -324,9 +314,10 @@ void Game::_onUnitDestroy(Unit& unit) {
     //DEBUG("Unit Destroyed: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
-
-
 void Game::_onTileDeplete(Tile &){}
+
+void Game::_onTileChange(Tile &){}
+
 
 void Game::setSelectedPlayer(Player &player) {
     this->selectedPlayer = &player;

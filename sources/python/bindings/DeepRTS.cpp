@@ -5,6 +5,8 @@
 namespace py = pybind11;
 
 void init_Constants(py::module &);
+void init_BaseState(py::module &);
+void init_UnitManager(py::module &);
 void init_Unit(py::module &);
 void init_Tilemap(py::module &);
 void init_Tile(py::module &);
@@ -23,6 +25,7 @@ void init_version(py::module &m) {
 
 PYBIND11_MODULE(Engine, m) {
     init_Constants(m);
+    init_BaseState(m);
     init_Unit(m);
     init_Map(m);
     init_Tile(m);
@@ -31,5 +34,6 @@ PYBIND11_MODULE(Engine, m) {
     init_Player(m);
     init_version(m);
     init_Config(m);
+    init_UnitManager(m);
 
 }

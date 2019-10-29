@@ -4,13 +4,8 @@
 
 #include "BaseState.h"
 
-void BaseState::update(Unit & unit)const{
-}
+void BaseState::update(Unit & unit)const{}
 
-void BaseState::init(Unit & unit)const {
+void BaseState::init(Unit & unit)const {}
 
-}
-
-void BaseState::end(Unit & unit)const{
-
-}
+void BaseState::end(Unit & unit)const{}

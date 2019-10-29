@@ -67,29 +67,20 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 goldYield,
                 oilYield));
 
-
-
             //Tile &tile = tiles.back();
             if(newTypeId == Constants::Tile::Spawn){
                 spawnTiles.push_back(c);
             }
 
-
-
             c++;
 
         }
     }
-
-
 }
-
-
 
 std::vector<Tile> &Tilemap::getTiles() {
 	return tiles;
 }
-
 
 std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) {
     // TODO slow as fuck

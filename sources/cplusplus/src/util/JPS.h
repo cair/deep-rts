@@ -1,6 +1,6 @@
 #ifndef JUMP_POINT_SEARCH_H
 #define JUMP_POINT_SEARCH_H
-
+// https://github.com/fgenesis/tinypile
 // Public domain Jump Point Search implementation by False.Genesis
 // Very fast pathfinding for uniform cost grids.
 // Supports incremental pathfinding.
@@ -23,7 +23,7 @@
 
 // If this is defined, disable the greedy direct-short-path check that avoids the large area scanning that JPS does.
 // Does not change optimality of results when left enabled
-//#define JPS_DISABLE_GREEDY
+#define JPS_DISABLE_GREEDY
 
 // ============================
 

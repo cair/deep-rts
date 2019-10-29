@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 3.0)
-project(DeepRTS)
+project(Engine)
 
 add_subdirectory(../../include/pybind11 pybind11)
 
@@ -39,15 +39,17 @@ pybind11_add_module(Engine
         ../cplusplus/src/loaders/ResourceLoader.cpp
 
 
-        bindings/DeepRTS.cpp
+
         bindings/Constants.cpp
+        bindings/BaseState.cpp
+        bindings/UnitManager.cpp
         bindings/Unit.cpp
         bindings/Map.cpp
         bindings/Tile.cpp
         bindings/Tilemap.cpp
         bindings/Game.cpp
         bindings/Player.cpp
-        bindings/DeepRTS.cpp
         bindings/Config.cpp
-
+        bindings/DeepRTS.cpp
         )
+

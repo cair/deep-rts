@@ -200,9 +200,10 @@ public:
 
 	void do_action(int actionID);
 	void do_manual_action(int manual_action_id, int x, int y);
-	void rightClick(int x, int y);
-	void leftClick(int x, int y);
 
+	void leftClick(int x, int y);
+	void rightClick(int x, int y);
+	void rightClick(Position pos);
 	size_t getQueueSize();
 
 
@@ -232,7 +233,7 @@ public:
 
 
 
-    void rightClick(Position pos);
+
 };
 
 

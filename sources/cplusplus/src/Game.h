@@ -41,13 +41,15 @@ class Game {
     /// Initialize the game clock timers
     void timerInit();
 
-    /// Init the constructor
-    void init();
-
     ///
     bool running;
 
+
+
 public:
+    /// Init the constructor
+    void init();
+
     // Retrieve game via Game ID
     static Game * getGame(uint8_t id);
 
@@ -74,7 +76,6 @@ public:
     /// Game Tilemap (Order 3)
     Tilemap tilemap;
 
-
     /// Game State Manager
     StateManager stateManager;
 
@@ -93,9 +94,6 @@ public:
     /// Game Episode
     uint16_t episode = 1;
 
-    /// Bool that determine print of FPS and UPS in console
-    bool consoleCaptionEnabled = true;
-
     /// Game Max FPS
 	uint32_t max_fps;
 
@@ -107,7 +105,6 @@ public:
 
     /// Game Current UPS
     uint32_t currentUPS = 0;
-
 
     /// Game terminal flag
     bool terminal = false;
@@ -212,6 +209,7 @@ public:
     virtual void _onEpisodeStart();
     virtual void _onEpisodeEnd();
     virtual void _onTileDeplete(Tile &);
+    virtual void _onTileChange(Tile &);
 };
 
 

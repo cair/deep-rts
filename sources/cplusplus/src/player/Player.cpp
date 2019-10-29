@@ -18,20 +18,8 @@ Player::Player(Game &game, int id) : game_(game), config(game.config)
     setName("Player: " + std::to_string(id_));
 
     unitIndexes.reserve(1000);
-    faction = 0;
-    gold = 1500;
-    lumber = 750;
-    oil = 0;
-    foodConsumption = 0;
-    food = 1;
-    defeated = false;
 
-    sGatheredGold = 0;
-    sGatheredLumber = 0;
-    sGatheredOil = 0;
-    sDamageDone = 0;
-    sDamageTaken = 0;
-    sUnitsCreated = 0;
+    reset();
 
 }
 
@@ -56,6 +44,7 @@ Unit& Player::spawn(Tile &spawnPoint) {
 
     assert(unit && "Unit was null for some reason");
     unit->spawn(spawnPoint, unit->spawnDuration);
+    unit->update();
 
     // Set targeted unit to newly spawned unit
     targetedUnitID = unit->id;
@@ -157,9 +146,9 @@ void Player::update() {
 void Player::reset()
 {
     faction = 0;
-    gold = 1500;
-    lumber = 750;
-    oil = 0;
+    gold = game_.config.startGold;
+    lumber = game_.config.startWood;
+    oil = game_.config.startOil;
     foodConsumption = 0;
     food = 1;
     defeated = false;
@@ -413,6 +402,7 @@ Unit *Player::getTargetedUnit() {
     if(targetedUnitID == -1) {
         return nullptr;
     }
+
     return &game_.units[targetedUnitID];
 }
 

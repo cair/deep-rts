@@ -9,31 +9,36 @@
 #include "../player/Player.h"
 
 void Spawning::update(Unit& unit)const{
-    unit.spawnTimer += 1;
 
-   
-    if(unit.spawnTimer >= unit.spawnDuration) {
-
-		// Check if tile is occupied, if it is. We attempt to find a new one
-		if (!unit.tile && unit.getSpawnTile().getOccupant()) {
-			if (unit.builtByID != Constants::None) {
-				Tile *newSpawnTile = Pathfinder::find_first_walkable_tile(unit.getBuiltBy().centerTile());
-				unit.spawnTileID = newSpawnTile->id;
-			}
-			else {
-				// Unit must simply wait for tile to be available
-				return;
-			}
-		}
-
-        // Unit can spawn
-        unit.setPosition(unit.getSpawnTile());
-        unit.transitionState();
-		if (unit.structure) {
-			unit.direction = Constants::Direction::Up;
-		}
-
+    if(unit.spawnTimer < unit.spawnDuration) {
+        unit.spawnTimer += 1;
+        return;
     }
+
+    // Check if tile is occupied, if it is. We attempt to find a new one
+    if (!unit.tile && unit.getSpawnTile().getOccupant()) {
+        if (unit.builtByID != Constants::None) {
+            Tile *newSpawnTile = Pathfinder::find_first_walkable_tile(unit.getBuiltBy().centerTile());
+            unit.spawnTileID = newSpawnTile->id;
+        }
+        else {
+            // Unit must simply wait for tile to be available
+            std::cout << "whaht" << std::endl;
+            return;
+        }
+    }
+
+    // Unit can spawn
+
+    unit.transitionState();
+    if (unit.structure) {
+        unit.direction = Constants::Direction::Up;
+    }
+    else{
+        unit.direction = Constants::Direction::Down;
+    }
+    unit.setPosition(unit.getSpawnTile());
+
 
 }
 

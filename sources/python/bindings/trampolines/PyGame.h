@@ -41,9 +41,12 @@ class PyGame: public Game {
     }
 
 
-
     virtual void _onTileDeplete(Tile & tile) override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_tile_deplete", _onTileDeplete, tile);
+    }
+
+    virtual void _onTileChange(Tile & tile) override {
+        PYBIND11_OVERLOAD_NAME(void, Game, "_on_tile_change", _onTileChange, tile);
     }
 
     virtual void _onEpisodeStart() override {

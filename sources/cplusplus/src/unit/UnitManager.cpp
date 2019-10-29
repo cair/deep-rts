@@ -115,8 +115,8 @@ Unit UnitManager::constructFarm(Player &player) {
     u.foodProduction = 4;
     u.foodConsumption = 0;
 
-    u.width = 2;
-    u.height = 2;
+    u.width = 1;
+    u.height = 1;
 
     u.name = "Farm";
 

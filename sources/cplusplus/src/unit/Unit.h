@@ -14,7 +14,7 @@
 #include "../state/StateManager.h"
 #include "../util/Position.h"
 #include "../Config.h"
-
+#include "../Constants.h"
 
 class Game;
 class Player;
@@ -126,7 +126,7 @@ public:
     // Combat
     int combatTargetID = -1;
 	Unit *getCombatTarget();
-    int combatTimer = 1000;
+    int combatTimer;
     double combatInterval = 1; // Must be set in constructor
 
     // Walking
@@ -136,10 +136,13 @@ public:
 	int stepsLeft = 0; // If value is 0 it is ignored. However, Walking is transitioned when stepsLeft = 1 (Which decrements it to 0)
     double walking_interval = 1; // Must be set in constructor
 
+    // Animation
+    int animationCounter = 0;
 
-    Tile *tile = NULL;
+
+    Tile *tile = nullptr;
     StateManager* stateManager;
-	std::shared_ptr<BaseState> state = NULL;
+	std::shared_ptr<BaseState> state = nullptr;
 
     std::vector<Constants::State> stateList;
 

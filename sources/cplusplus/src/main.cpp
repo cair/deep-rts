@@ -7,7 +7,7 @@ int main() {
     Config config = Config::defaults();
 
     Game *g = new Game("15x15-2v2.json", config);
-    auto gui = PyGUI(*g);
+    //auto gui = PyGUI(*g);
 
 
     Player &player0 = g->addPlayer();
@@ -23,8 +23,8 @@ int main() {
         g->update();
         g->render();
         g->caption();
-        gui.render();
-        gui.view();
+        //gui.render();
+        //gui.view();
 
         auto v1 = rand() % 42;
         player0.do_action(v1);

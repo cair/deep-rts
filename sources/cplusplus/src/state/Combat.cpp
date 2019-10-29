@@ -6,11 +6,11 @@
 #include "../unit/Unit.h"
 #include "../player/Player.h"
 #include "../util/Pathfinder.h"
-
+#include <algorithm>    // std::max
 
 void Combat::update(Unit & unit)const{
 
-    unit.combatTimer += 1;
+    unit.combatTimer = std::min(unit.combatInterval, unit.combatTimer + 1.0);
     if(unit.combatTimer >= unit.combatInterval) {
         Unit *combatTarget = unit.getCombatTarget();
 
@@ -19,7 +19,7 @@ void Combat::update(Unit & unit)const{
 		if (!combatTarget || !combatTarget->tile) {
 
 			unit.combatTargetID = -1;
-			unit.combatTimer = 1000;
+			unit.combatTimer = unit.combatInterval;
 			unit.transitionState();
 			return;
 		}
@@ -47,7 +47,7 @@ void Combat::update(Unit & unit)const{
 
             if(combatTarget->isDead()){
                 unit.combatTargetID = Constants::None;
-                unit.combatTimer = 1000;
+                unit.combatTimer = unit.combatInterval;
                 unit.transitionState();
                 return;
             }
