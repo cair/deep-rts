@@ -68,9 +68,15 @@ void Harvesting::update(Unit & unit)const{
         unit.player_.sGatheredOil += harvestTarget->oilYield;
         harvestTarget->takeResource(harvestTarget->lumberYield + harvestTarget->goldYield + harvestTarget->oilYield);
 
+        // Callback
+        unit.game->_onResourceGather(*harvestTarget, unit);
+
         // No more resources // TODO constant parameter Config
-        if(harvestTarget->getResources() < 1) {
+        if(harvestTarget->getResources() <= 0) {
+
             harvestTarget->setDepleted();
+            // Callback
+            unit.game->_onResourceDepleted(*harvestTarget, unit);
 
             // Find new harvestable
             Tile *closestHarvestable = Pathfinder::find_first_harvestable_tile(harvestTarget);

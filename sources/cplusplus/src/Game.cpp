@@ -297,6 +297,11 @@ uint8_t Game::getId() const {
     return id;
 }
 
+void Game::setSelectedPlayer(Player &player) {
+    this->selectedPlayer = &player;
+
+}
+
 void Game::_onUnitCreate(Unit& unit) {
     //DEBUG("Unit Created: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
@@ -314,17 +319,11 @@ void Game::_onUnitDestroy(Unit& unit) {
     //DEBUG("Unit Destroyed: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
-void Game::_onTileDeplete(Tile &){}
-
 void Game::_onTileChange(Tile &){}
 
 
-void Game::setSelectedPlayer(Player &player) {
-    this->selectedPlayer = &player;
-
-}
-
-
+void Game::_onResourceGather(Tile& tile, Unit& unit) {}
+void Game::_onResourceDepleted(Tile& tile, Unit& unit) {}
 
 
 

@@ -41,9 +41,6 @@ class PyGame: public Game {
     }
 
 
-    virtual void _onTileDeplete(Tile & tile) override {
-        PYBIND11_OVERLOAD_NAME(void, Game, "_on_tile_deplete", _onTileDeplete, tile);
-    }
 
     virtual void _onTileChange(Tile & tile) override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_tile_change", _onTileChange, tile);
@@ -56,6 +53,15 @@ class PyGame: public Game {
     virtual void _onEpisodeEnd() override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_episode_end", _onEpisodeEnd, );
     }
+
+    virtual void _onResourceGather(Tile& tile, Unit& unit) override {
+        PYBIND11_OVERLOAD_NAME(void, Game, "_on_resource_gather", _onResourceGather, tile, unit);
+    }
+
+    virtual void _onResourceDepleted(Tile& tile, Unit& unit) override {
+        PYBIND11_OVERLOAD_NAME(void, Game, "_on_resource_depleted", _onResourceDepleted, tile, unit);
+    }
+
 
 
 };
