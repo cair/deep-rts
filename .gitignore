@@ -227,3 +227,4 @@ python/DeepRTS/assets
 *.iml
 /test/experiments/
 test/assets
+code/assets
