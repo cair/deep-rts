@@ -204,11 +204,18 @@ public:
     /// Callback Functions
     ///
     ////////////////////////////////////////////////////
+    // Unit Events
     virtual void _onUnitCreate(Unit& unit);
     virtual void _onUnitDestroy(Unit& unit);
+
+    // Resource Events
+    virtual void _onResourceGather(Tile& tile, Unit& unit);
+    virtual void _onResourceDepleted(Tile& tile, Unit& unit);
+
+
     virtual void _onEpisodeStart();
     virtual void _onEpisodeEnd();
-    virtual void _onTileDeplete(Tile &);
+
     virtual void _onTileChange(Tile &);
 };
 

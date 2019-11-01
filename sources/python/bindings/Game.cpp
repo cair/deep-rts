@@ -36,8 +36,10 @@ void init_Game(py::module &m) {
             .def("_on_unit_destroy", &Game::_onUnitDestroy)
             .def("_on_episode_start", &Game::_onEpisodeStart)
             .def("_on_episode_end", &Game::_onEpisodeEnd)
-            .def("_on_tile_deplete", &Game::_onTileDeplete)
             .def("_on_tile_change", &Game::_onTileChange)
+            .def("_on_tile_change", &Game::_onTileChange)
+            .def("_on_resource_gather", &Game::_onResourceGather)
+            .def("_on_resource_depleted", &Game::_onResourceDepleted)
 
                     /// Getters
             .def("get_id", &Game::getId)

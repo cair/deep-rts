@@ -198,7 +198,6 @@ void Tile::setDepleted() {
     typeId = depletedTypeId;
 
 	tilemap.game.state(x, y, 0) = typeId;
-    tilemap.game._onTileDeplete(*this);
     triggerOnTileChange();
 }
 
