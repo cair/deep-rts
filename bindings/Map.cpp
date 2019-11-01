@@ -7,7 +7,7 @@
 namespace py = pybind11;
 
 #include <string>
-#include "../../cplusplus/src/environment/Map.h"
+#include "../src/environment/Map.h"
 
 
 void init_Map(py::module &m) {

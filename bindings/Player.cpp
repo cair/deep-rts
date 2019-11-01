@@ -2,9 +2,9 @@
 
 namespace py = pybind11;
 
-#include "../../cplusplus/src/player/Player.h"
-#include "../../cplusplus/src/unit/Unit.h"
-#include "../../cplusplus/src/Game.h"
+#include "../src/player/Player.h"
+#include "../src/unit/Unit.h"
+#include "../src/Game.h"
 
 
 void init_Player(py::module &m) {

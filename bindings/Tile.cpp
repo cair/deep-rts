@@ -2,9 +2,9 @@
 namespace py = pybind11;
 
 #include <iostream>
-#include "../../cplusplus/src/environment/Tile.h"
-#include "../../cplusplus/src/environment/Tilemap.h"
-#include "../../cplusplus/src/unit/Unit.h"
+#include "../src/environment/Tile.h"
+#include "../src/environment/Tilemap.h"
+#include "../src/unit/Unit.h"
 
 void init_Tile(py::module &m) {
     py::class_<Tile>(m, "Tile")

@@ -7,14 +7,14 @@ import subprocess
 
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
-assets_root = os.path.join(dir_path, "../../assets")
+assets_root = os.path.join(dir_path, "assets")
 assets_py = os.path.join(dir_path, "DeepRTS", "python", "assets")
+
+print(assets_root, assets_py)
 
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 from distutils.version import LooseVersion
-from setuptools.command.develop import develop
-from setuptools.command.install import install
 
 
 class CMakeExtension(Extension):
@@ -75,8 +75,8 @@ except:
 
 setup(
     name='DeepRTS',
-    version_format='{tag}.dev{commitcount}', # +{gitsha}
-    setup_requires=['setuptools-git-version'],
+    version_format='{tag}.dev{commitcount}',  # +{gitsha}
+    setup_requires=['setuptools-git-version', 'pybind11'],
     author='Per-Arne Andersen',
     author_email='per@sysx.no',
     url='https://github.com/cair/deep-rts',
@@ -84,7 +84,7 @@ setup(
     long_description='',
     include_package_data=True,
     packages=find_packages(
-        exclude=["examples"]
+        exclude=["experiments", "docs", "include", "test"]
     ),
     ext_modules=[
         CMakeExtension('Engine')

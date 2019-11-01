@@ -3,9 +3,9 @@
 namespace py = pybind11;
 
 
-#include "../../cplusplus/src/unit/Unit.h"
-#include "../../cplusplus/src/player/Player.h"
-#include "../../cplusplus/src/environment/Tile.h"
+#include "../src/unit/Unit.h"
+#include "../src/player/Player.h"
+#include "../src/environment/Tile.h"
 
 void init_Unit(py::module &m) {
     py::class_<Unit>(m, "Unit")

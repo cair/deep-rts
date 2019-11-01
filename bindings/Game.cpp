@@ -1,11 +1,11 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "../../cplusplus/src/util/pybind11_matrix.h"
+#include "../src/util/pybind11_matrix.h"
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
-#include "../../cplusplus/src/Game.h"
-#include "../../cplusplus/src/Config.h"
+#include "../src/Game.h"
+#include "../src/Config.h"
 
 
 void init_Game(py::module &m) {

@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "../../../cplusplus/src/Game.h"
-#include "../../../cplusplus/src/unit/Unit.h"
+#include "../../src/Game.h"
+#include "../../src/unit/Unit.h"
 
 
 class PyGame: public Game {

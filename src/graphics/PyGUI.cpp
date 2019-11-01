@@ -5,14 +5,14 @@
 #include "PyGUI.h"
 
 #include <pybind11/embed.h> // everything needed for embedding
-#include "../../../python/bindings/Config.cpp"
-#include "../../../python/bindings/Player.cpp"
-#include "../../../python/bindings/Unit.cpp"
-#include "../../../python/bindings/Tile.cpp"
-#include "../../../python/bindings/Map.cpp"
-#include "../../../python/bindings/Tilemap.cpp"
-#include "../../../python/bindings/Game.cpp"
-#include "../../../python/bindings/Constants.cpp"
+#include "../../bindings/Config.cpp"
+#include "../../bindings/Player.cpp"
+#include "../../bindings/Unit.cpp"
+#include "../../bindings/Tile.cpp"
+#include "../../bindings/Map.cpp"
+#include "../../bindings/Tilemap.cpp"
+#include "../../bindings/Game.cpp"
+#include "../../bindings/Constants.cpp"
 #include "../Game.h"
 
 PYBIND11_EMBEDDED_MODULE(DeepRTS, m) {

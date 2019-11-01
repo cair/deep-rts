@@ -2,9 +2,9 @@
 
 namespace py = pybind11;
 
-#include "../../cplusplus/src/state/BaseState.h"
-#include "../../cplusplus/src/state/Walking.h"
-#include "../../cplusplus/src/Constants.h"
+#include "../src/state/BaseState.h"
+#include "../src/state/Walking.h"
+#include "../src/Constants.h"
 
 void init_BaseState(py::module &m) {
 

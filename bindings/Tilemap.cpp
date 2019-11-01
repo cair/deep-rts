@@ -2,9 +2,9 @@
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
-#include "../../cplusplus/src/environment/Map.h"
-#include "../../cplusplus/src/environment/Tilemap.h"
-#include "../../cplusplus/src/Game.h"
+#include "../src/environment/Map.h"
+#include "../src/environment/Tilemap.h"
+#include "../src/Game.h"
 
 void init_Tilemap(py::module &m) {
     py::class_<Tilemap>(m, "Tilemap")

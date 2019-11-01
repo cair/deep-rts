@@ -1,11 +1,9 @@
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 from DeepRTS.Engine import Map, UnitManager, Constants
 from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
 from DeepRTS.python import util
-if TYPE_CHECKING:
-    from DeepRTS.python import Game
+
 
 import contextlib
 with contextlib.redirect_stdout(None):
@@ -55,7 +53,7 @@ class RectangleManager:
 
 class AbstractGUI:
 
-    def __init__(self, game: Game, tile_size, units, window=True):
+    def __init__(self, game, tile_size, units, window=True):
         self.game = game
 
         self.tile_size = tile_size
@@ -355,7 +353,7 @@ class AbstractGUI:
 
 class GUI(AbstractGUI):
 
-    def __init__(self, game: Game, tile_size):
+    def __init__(self, game, tile_size):
         possible_unit_types = [
             getattr(Unit, x) for x in Unit.__dict__.keys() if not x.startswith("__") and not x == 'name'
         ]
