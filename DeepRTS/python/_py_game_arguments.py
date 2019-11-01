@@ -6,10 +6,10 @@ class GameArguments:
 
     def __init__(
             self,
-            game_map: python.Config.Map,
-            n_players: int,
-            engine_config: Engine.Config,
-            gui_config: python.Config
+            game_map,
+            n_players,
+            engine_config,
+            gui_config
     ):
         self.game_map = game_map
         self.n_player = n_players

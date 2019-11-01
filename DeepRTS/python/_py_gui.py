@@ -58,7 +58,7 @@ class AbstractGUI:
 
         self.tile_size = tile_size
 
-        self.map: Map = self.game.map
+        self.map = self.game.map
         self.has_window = window
         self.game_height = self.map.map_height * tile_size
         self.game_width = self.map.map_width * tile_size

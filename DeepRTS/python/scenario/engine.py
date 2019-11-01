@@ -5,7 +5,7 @@ from DeepRTS.Engine import Player
 
 class Scenario:
 
-    def __init__(self, game: python.Game, *scenarios):
+    def __init__(self, game, *scenarios):
         self.game = game
 
         self.scenarios = [partial(scenario, self) for scenario in scenarios]
@@ -15,113 +15,113 @@ class Scenario:
         return all(values), values
 
     @staticmethod
-    def _gold_collect(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _gold_collect(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.statistic_gathered_gold >= amount
 
         return wrap
 
     @staticmethod
-    def _lumber_collect(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _lumber_collect(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.statistic_gathered_lumber >= amount
 
         return wrap
 
     @staticmethod
-    def _oil_collect(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _oil_collect(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.statistic_gathered_oil >= amount
 
         return wrap
 
     @staticmethod
-    def _food_consumption(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _food_consumption(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.food_consumption >= amount
 
         return wrap
 
     @staticmethod
-    def _food_count(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _food_count(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.food >= amount
 
         return wrap
 
     @staticmethod
-    def _damage_done(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _damage_done(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.statistic_damage_done >= amount
 
         return wrap
 
     @staticmethod
-    def _damage_taken(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _damage_taken(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.statistic_damage_taken >= amount
 
         return wrap
 
     @staticmethod
-    def _units_created(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _units_created(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.statistic_units_created >= amount
 
         return wrap
 
     @staticmethod
-    def _num_footman(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _num_footman(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.num_footman >= amount
 
         return wrap
 
     @staticmethod
-    def _num_peasant(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _num_peasant(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.num_peasant >= amount
 
         return wrap
 
     @staticmethod
-    def _num_archer(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _num_archer(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.num_archer >= amount
 
         return wrap
 
     @staticmethod
-    def _num_farm(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _num_farm(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.num_farm >= amount
 
         return wrap
 
     @staticmethod
-    def _num_barracks(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _num_barracks(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.num_barrack >= amount
 
         return wrap
 
     @staticmethod
-    def _num_town_hall(amount: int, player=0):
-        def wrap(self: Scenario):
-            p: Player = self.game.players[player]
+    def _num_town_hall(amount, player=0):
+        def wrap(self):
+            p = self.game.players[player]
             return p.num_town_hall >= amount
 
         return wrap
@@ -133,7 +133,7 @@ class Scenario:
         return self.game.get_state()
 
     def step(self, action, render="ai"):
-        player: Player = self.game.selected_player # py::return_value_policy::reference
+        player = self.game.selected_player # py::return_value_policy::reference
         player.do_action(action)
 
         self.game.update()
