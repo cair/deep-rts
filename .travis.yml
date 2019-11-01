@@ -3,7 +3,7 @@ os: linux
 dist: bionic
 git:
   depth: false
-  
+
 matrix:
   include:
     - language: python
