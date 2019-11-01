@@ -1,6 +1,5 @@
-<p align="center">
-  <img src ="./docs/logo.png" />
-</p>
+<img src ="./docs/logo.png" width="50%" height="50%"/>
+
 
 ## Description [![Build Status](https://travis-ci.org/cair/deep-rts.svg?branch=master)](https://travis-ci.org/cair/deep-rts) [![Documentation](https://img.shields.io/badge/docs-readme-blue.svg)](https://github.com/cair/DeepRTS/blob/c%2B%2B/docs/README.md) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cair/DeepRTS/c%2B%2B/LICENCE.MIT)
 A Real-Time Strategy Simulator for (Deep) Reinforment Learning in Python and C++!
