@@ -84,7 +84,7 @@ setup(
     long_description='',
     include_package_data=True,
     packages=find_packages(
-        exclude=["examples", "*.tests", "*.tests.*", "tests.*", "tests"]
+        exclude=["examples"]
     ),
     ext_modules=[
         CMakeExtension('Engine')

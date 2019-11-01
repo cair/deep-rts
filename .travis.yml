@@ -12,6 +12,8 @@ matrix:
         - python -m pip install -r sources/python/requirements.txt
       script:
         - python sources/python/setup.py build install
+        - ls -la /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages
+        - ls -la /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/DeepRTS==2.0.3.dev60
         - python -m unittest discover DeepRTS.python.test
 
 
