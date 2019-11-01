@@ -17,7 +17,7 @@ matrix:
       install:
         - python -m pip install .
       script:
-        - xvfb-run --server-args="-screen 0 1024x768x24" pytest --pyargs DeepRTS
+        - pytest --pyargs DeepRTS
 
 
 
