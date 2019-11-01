@@ -7,7 +7,6 @@ matrix:
     - language: python
       python: 3.5
       before_script:
-        - cd deep-rts/
       script:
         - python -m pip install -r sources/python/requirements.txt
 
