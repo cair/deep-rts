@@ -42,6 +42,7 @@ class CMakeBuild(build_ext):
     def build_extension(self, ext):
 
         extdir = os.path.join(os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name))), "DeepRTS")
+
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                       '-DPYTHON_EXECUTABLE=' + sys.executable]
 
@@ -64,7 +65,8 @@ class CMakeBuild(build_ext):
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
-        subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp, env=env)
+
+        subprocess.check_call(['cmake', dir_path] + cmake_args, cwd=self.build_temp, env=env) # ext.sourcedir
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
 
 try:
