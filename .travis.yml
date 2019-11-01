@@ -8,12 +8,10 @@ services:
 
 matrix:
   include:
-    - python: 3.3
-    - python: 3.4
     - python: 3.5
     - python: 3.6
     - python: 3.7
-    - python: 3.8
+    # - python: 3.8  # Not yet supported.
 
 before_script:
   - python -m pip install -U pip
