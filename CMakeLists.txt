@@ -6,37 +6,37 @@ add_subdirectory(./include/pybind11 pybind11)
 
 pybind11_add_module(Engine
         # Engine
-        src/cplusplus/src/Game.cpp
+        src/Game.cpp
 
         # Player
-        src/cplusplus/src/player/Player.cpp
+        src/player/Player.cpp
 
         # Environment
-        src/cplusplus/src/environment/Map.cpp
-        src/cplusplus/src/environment/Tile.cpp
-        src/cplusplus/src/environment/Tilemap.cpp
+        src/environment/Map.cpp
+        src/environment/Tile.cpp
+        src/environment/Tilemap.cpp
 
         # Unit
-        src/cplusplus/src/unit/Unit.cpp
-        src/cplusplus/src/unit/UnitManager.cpp
+        src/unit/Unit.cpp
+        src/unit/UnitManager.cpp
 
         # State
-        src/cplusplus/src/state/StateManager.cpp
-        src/cplusplus/src/state/BaseState.cpp
-        src/cplusplus/src/state/Walking.cpp
-        src/cplusplus/src/state/Spawning.cpp
-        src/cplusplus/src/state/Idle.cpp
-        src/cplusplus/src/state/Despawned.cpp
-        src/cplusplus/src/state/Harvesting.cpp
-        src/cplusplus/src/state/Building.cpp
-        src/cplusplus/src/state/Combat.cpp
-        src/cplusplus/src/state/Dead.cpp
+        src/state/StateManager.cpp
+        src/state/BaseState.cpp
+        src/state/Walking.cpp
+        src/state/Spawning.cpp
+        src/state/Idle.cpp
+        src/state/Despawned.cpp
+        src/state/Harvesting.cpp
+        src/state/Building.cpp
+        src/state/Combat.cpp
+        src/state/Dead.cpp
 
         # Util
-        src/cplusplus/src/util/Pathfinder.cpp
+        src/util/Pathfinder.cpp
 
         # Loaders
-        src/cplusplus/src/loaders/ResourceLoader.cpp
+        src/loaders/ResourceLoader.cpp
 
 
 
