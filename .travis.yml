@@ -10,8 +10,8 @@ matrix:
       python: 3.6
       before_script:
         - python -m pip install -r requirements.txt
-      script:
         - python -m pip install .
+      script:
         - python -m unittest discover DeepRTS.python.test
 
 
