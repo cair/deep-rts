@@ -12,6 +12,7 @@ matrix:
         - python -m pip install -r sources/python/requirements.txt
       script:
         - python sources/python/setup.py build install
+        - python -m unittest discover DeepRTS.python.test
 
 
 

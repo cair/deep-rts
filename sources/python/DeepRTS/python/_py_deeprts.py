@@ -3,17 +3,31 @@ from DeepRTS.python import GUI
 from DeepRTS.python import Config
 import numpy as np
 import random
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 class Game(Engine.Game):
 
     def __init__(self, map_name, n_players=2, engine_config=None, gui_config=None, tile_size=32, terminal_signal=False):
-        super_args = (map_name, engine_config) if engine_config else (map_name, )
-        engine_config.set_terminal_signal(terminal_signal)
+        # This sets working directory, so that the C++ can load files correctly (dir_path not directly accessible in
+        # c++)
+        os.chdir(dir_path)
 
+        # Create arguments for the c++ side
+        super_args = (map_name, engine_config) if engine_config else (map_name, )
+
+        # TODO
+        if engine_config:
+            engine_config.set_terminal_signal(terminal_signal)
+
+        # Call C++ constructor
         super(Game, self).__init__(*super_args)
+
+        # Create gui config
         self.gui_config = gui_config if isinstance(gui_config, Config) else Config()
 
+        # Event listeners
         self._listeners = {
             "on_tile_change": []
         }

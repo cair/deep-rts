@@ -24,7 +24,9 @@ std::string GetCurrentWorkingDir()
     return current_working_dir;
 }
 
+
 void ResourceLoader::loadMapJSON(std::string map_file) {
+
 
 
     if(mapLoaded) return;

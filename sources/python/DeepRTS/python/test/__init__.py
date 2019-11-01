@@ -1,0 +1,1 @@
+from DeepRTS.python.test import *
