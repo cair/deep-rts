@@ -7,7 +7,7 @@ git:
 matrix:
   include:
     - language: python
-      python: 3.5
+      python: 3.6
       before_script:
         - python -m pip install -r sources/python/requirements.txt
       script:
