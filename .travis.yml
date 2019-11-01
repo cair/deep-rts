@@ -1,4 +1,4 @@
-language: cpp
+language: python
 os: linux
 dist: bionic
 git:
@@ -14,7 +14,7 @@ matrix:
     - python: 3.6
     - python: 3.7
     - python: 3.8
-      
+
 before_script:
   - python -m pip install -U pip
   - python -m pip install -U pytest
