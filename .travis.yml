@@ -9,7 +9,7 @@ matrix:
     - language: python
       python: 3.6
       before_script:
-        - python -m pip install -r sources/python/requirements.txt
+        - python -m pip install -r requirements.txt
       script:
         - python -m pip install .
         - python -m unittest discover DeepRTS.python.test
