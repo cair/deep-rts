@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
 
     for episode in range(episodes):
-        print(f"Episode: {episode}, FPS: {game.get_fps()}, UPS: {game.get_ups()}")
+        print("Episode: %s, FPS: %s, UPS: %s" % (episode, game.get_fps(), game.get_ups()))
 
         terminal = False
         state = env.reset()

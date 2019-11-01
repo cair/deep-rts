@@ -214,7 +214,7 @@ class AbstractGUI:
         try:
             v = self.sprite_units[player_id][unit_type][direction][state_id]
         except KeyError:
-            err = f"Could not find appropriate sprite for {unit_type}:{self.directions[direction]}:{state_id}"
+            err = "Could not find appropriate sprite for %s:%s:%s" % (unit_type, self.directions[direction], state_id)
             raise RuntimeError(err)
 
         #print(unit_type, self.directions[direction], state_id)
