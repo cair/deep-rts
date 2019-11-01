@@ -1,10 +1,7 @@
-from __future__ import annotations
-
-import time
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
-from DeepRTS.Engine import Tilemap, Map, UnitManager, Constants
+from DeepRTS.Engine import Map, UnitManager, Constants
 from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
 from DeepRTS.python import util
 if TYPE_CHECKING:
