@@ -3,6 +3,8 @@ os: linux
 dist: bionic
 git:
   depth: false
+services:
+  - xvfb
 
 matrix:
   include:
@@ -15,7 +17,7 @@ matrix:
       install:
         - python -m pip install .
       script:
-        - pytest --pyargs DeepRTS
+        - xvfb-run --server-args="-screen 0 1024x768x24" pytest --pyargs DeepRTS
 
 
 
