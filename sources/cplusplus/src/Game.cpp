@@ -190,6 +190,9 @@ Game * Game::getGame(uint8_t id)
 
 
 bool Game::isTerminal(){
+    if(!config.terminalSignal) {
+        return false;
+    }
 
     // Skip check if terminal is already set
     if(terminal){

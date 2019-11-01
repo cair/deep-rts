@@ -7,10 +7,11 @@ import random
 
 class Game(Engine.Game):
 
-    def __init__(self, map_name, n_players=2, engine_config=None, gui_config=None, tile_size=32):
+    def __init__(self, map_name, n_players=2, engine_config=None, gui_config=None, tile_size=32, terminal_signal=False):
         super_args = (map_name, engine_config) if engine_config else (map_name, )
-        super(Game, self).__init__(*super_args)
+        engine_config.set_terminal_signal(terminal_signal)
 
+        super(Game, self).__init__(*super_args)
         self.gui_config = gui_config if isinstance(gui_config, Config) else Config()
 
         self._listeners = {

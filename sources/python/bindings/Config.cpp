@@ -23,7 +23,7 @@ void init_Config(py::module &m) {
             .def("set_start_gold", &Config::setStartGold)
             .def("set_start_wood", &Config::setStartWood)
             .def("set_start_oil", &Config::setStartOil)
-
+            .def("set_terminal_signal", &Config::setTerminalSignal)
 
             .def_readonly("pomdp", &Config::pompd)
             .def_static("defaults", &Config::defaults);

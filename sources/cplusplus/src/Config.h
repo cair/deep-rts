@@ -27,7 +27,7 @@ public:
     int startGold = 0;
     int startOil = 0;
     int startWood = 0;
-
+    int terminalSignal = true;
     /// Bool that determine print of FPS and UPS in console
     bool consoleCaptionEnabled = true;
 
@@ -95,6 +95,10 @@ public:
         startWood = v;
     }
 
+    void setTerminalSignal(bool b){
+        terminalSignal = b;
+    }
+
     static Config defaults(){
         Config config;
         config.setTickModifier(10);
@@ -111,6 +115,7 @@ public:
         config.setStartGold(1500);
         config.setStartWood(750);
         config.setStartOil(0);
+        config.setTerminalSignal(true);
         return config;
     }
 
