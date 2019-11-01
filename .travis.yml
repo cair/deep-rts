@@ -7,8 +7,10 @@ matrix:
     - language: python
       python: 3.5
       before_script:
-      script:
         - python -m pip install -r sources/python/requirements.txt
+      script:
+        - python sources/python/setup.py build install
+
 
 
 
