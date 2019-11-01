@@ -83,19 +83,19 @@ if __name__ == "__main__":
 # In-Game Footage
 
 ### 10x10 - 2 Player - free-for-all
-![./docs/10x10-2-FFA.png](./docs/10x10-2-FFA.png)
+<img src="./docs/10x10-2-FFA.png" width="400" height="400">
 
 ### 15x15 - 2 Player - free-for-all
-![./docs/15x15-2-FFA.png](./docs/15x15-2-FFA.png)
+<img src="./docs/15x15-2-FFA.png" width="400" height="400">
 
 ### 21x21 - 2 Player - free-for-all
-![./docs/21x21-2-FFA.png](./docs/21x21-2-FFA.png)
+<img src="./docs/21x21-2-FFA.png" width="400" height="400">
 
 ### 31x31 - 2 Player - free-for-all
-![./docs/31x31-2-FFA.png](./docs/31x31-2-FFA.png)
+<img src="./docs/31x31-2-FFA.png" width="400" height="400">
 
 ### 31x31 - 4 Player - free-for-all
-![./docs/31x31-4-FFA.png](./docs/31x31-4-FFA.png)
+<img src="./docs/31x31-4-FFA.png" width="400" height="400">
 
 ### 31x3 - 6 Player - free-for-all
-![./docs/31x31-6-FFA.png](./docs/31x31-6-FFA.png)
+<img src="./docs/31x31-6-FFA.png" width="400" height="400">
