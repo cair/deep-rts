@@ -14,6 +14,7 @@ public:
 
 
 private:
+    std::string getFilePath(std::string fileName);
     bool mapLoaded = false;
     void loadTileJSON();
     ResourceLoader(){
