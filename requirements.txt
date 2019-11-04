@@ -1,5 +1,5 @@
 pybind11
-pygame==2.0.0.dev4
+pygame==2.0.0.dev6
 opencv-python
 cython
 blend_modes
