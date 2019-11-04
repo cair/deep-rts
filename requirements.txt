@@ -5,3 +5,4 @@ cython
 blend_modes
 numpy
 pillow
+gym

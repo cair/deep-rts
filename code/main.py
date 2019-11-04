@@ -42,6 +42,7 @@ if __name__ == "__main__":
         gui_config=gui_config,
         terminal_signal=False
     )
+
     game.set_max_fps(30)
     game.set_max_ups(10000000)
 

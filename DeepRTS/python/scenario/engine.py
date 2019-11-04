@@ -1,14 +1,18 @@
 from functools import partial
-from DeepRTS import python
-from DeepRTS.Engine import Player
+import gym
+import numpy as np
+from DeepRTS.Engine import Constants
 
 
-class Scenario:
+class Scenario(gym.Env):
 
     def __init__(self, game, *scenarios):
         self.game = game
 
         self.scenarios = [partial(scenario, self) for scenario in scenarios]
+
+        self.action_space = gym.spaces.Discrete(Constants.action_max)
+        self.observation_space = gym.spaces.Box(0, 255, shape=game.get_state().shape, dtype=np.float32)
 
     def evaluate(self):
         values = [scenario() for scenario in self.scenarios]
@@ -132,20 +136,25 @@ class Scenario:
         self.game.render()
         return self.game.get_state()
 
-    def step(self, action, render="ai"):
-        player = self.game.selected_player # py::return_value_policy::reference
+    def step(self, action):
+        player = self.game.selected_player  # py::return_value_policy::reference
         player.do_action(action)
 
         self.game.update()
         self.game.render()
-        if render == "human":
-            self.game.view()
+        if self.game.gui.config.view:
+            self.render()
 
         s1 = self.game.get_state()
         t, tarr = self.evaluate()
         r = 1 if t else 0
 
         return s1, r, t, {}
+
+    def render(self, mode='human'):
+        if mode == "human":
+            self.game.view()
+
 
     GOLD_COLLECT = _gold_collect
     OIL_COLLECT = _lumber_collect

@@ -5,6 +5,7 @@
 #ifndef WARC2SIM_CONSTANTS_H
 #define WARC2SIM_CONSTANTS_H
 #include <string>
+#include <map>
 #define DEBUG(x) do { std::cerr << x; } while (0)
 
 namespace Constants{
@@ -42,6 +43,16 @@ namespace Constants{
 		Gold = 102,
 
 	};
+
+
+    const std::map<int, int> TypeToID = {
+            {Spawn, 1},
+            {Grass, 2},
+            {Wall, 3},
+            {Lumber, 4},
+            {Water, 5},
+            {Gold, 6},
+    };
 
 
 	enum State {
