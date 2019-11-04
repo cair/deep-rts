@@ -49,6 +49,8 @@ public:
 
     explicit Map(const std::string& map_file);
 
+    std::string mapFile;
+
     /// A tile's Width
     int TILE_WIDTH;
 

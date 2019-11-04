@@ -9,7 +9,7 @@
 
 
 
-Map::Map(const std::string& map_file) {
+Map::Map(const std::string& map_file): mapFile(map_file) {
     ResourceLoader::getInstance().loadMapJSON(map_file);
 
     auto mapData = ResourceLoader::getInstance().mapJSON.GetObject();

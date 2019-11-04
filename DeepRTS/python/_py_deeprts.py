@@ -24,9 +24,6 @@ class Game(Engine.Game):
         # Call C++ constructor
         super(Game, self).__init__(*super_args)
 
-        # Create gui config
-        self.gui_config = gui_config if isinstance(gui_config, Config) else Config()
-
         # Event listeners
         self._listeners = {
             "on_tile_change": []
@@ -40,7 +37,7 @@ class Game(Engine.Game):
         self._view_every = 1
         self._capture_every = 1
 
-        self.gui = GUI(self, tile_size=tile_size)
+        self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config())
 
         # Must have this to trigger tile refresh (full)
         # This is because the onTileChange callback is added in self.gui, which is AFTER tiles are created
@@ -65,17 +62,17 @@ class Game(Engine.Game):
     def update(self):
         self.tick()
 
-        if self.gui_config.input:
+        if self.gui.config.input:
             self.event()
 
         super().update()
 
         self.caption()
 
-        if self.gui_config.render:
+        if self.gui.config.render:
             self.render()
 
-        if self.gui_config.view:
+        if self.gui.config.view:
             self.view()
 
     def _render(self):
@@ -135,14 +132,7 @@ class Game(Engine.Game):
         #self.gui.gui_tiles.set_tile(tile.x, tile.y, tile.get_type_id())
 
     def _on_tile_change(self, tile):
-        for fn in self._listeners["on_tile_change"]:
-            fn(tile)
-
-    def add_listener(self, name, fn):
-        if name not in self._listeners:
-            self._listeners[name] = []
-
-        self._listeners[name].append(fn)
+        self.gui.on_tile_change(tile)
 
 
 

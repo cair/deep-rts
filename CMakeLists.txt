@@ -4,6 +4,17 @@ project(DeepRTS)
 # Cmake version
 cmake_minimum_required(VERSION 3.0)
 
+
+
+# Creates Engine in DeepRTS package (instead of root)
+if (NOT DEFINED PYTHON_BUILD)
+        find_package(PythonInterp 3.7 REQUIRED) # Todo
+        find_package(PythonLibs 3.7 REQUIRED) # todo - UPGRADE
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")
+endif ()
+
+# -DCMAKE_BUILD_TYPE=Release
+
 # C++ Standard
 set(CMAKE_CXX_STANDARD 17)
 set(PYBIND11_CPP_STANDARD -std=c++1z) # Experimental C++17 support
@@ -76,13 +87,12 @@ set(SOURCE_FILES
         src/util/PriorityQueue.hpp
 
 
-        #src/graphics/PyGUI.cpp
-        #src/graphics/PyGUI.h
+        src/graphics/PyGUI.cpp
+        src/graphics/PyGUI.h
         )
 
 
-pybind11_add_module(
-        Engine
+pybind11_add_module(Engine
         ${SOURCE_FILES}
         bindings/Constants.cpp
         bindings/BaseState.cpp
@@ -101,9 +111,10 @@ pybind11_add_module(
 # Dont create C++ Executable for Python builds (saves time)
 
 if (NOT DEFINED PYTHON_BUILD)
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
         add_executable(DeepRTSGame ${SOURCE_FILES})
         target_link_libraries(DeepRTSGame PRIVATE pybind11::embed)
+        file(COPY ./DeepRTS DESTINATION ${CMAKE_BINARY_DIR})
 endif ()
 
-file(COPY ./DeepRTS DESTINATION ${CMAKE_BINARY_DIR})
 
