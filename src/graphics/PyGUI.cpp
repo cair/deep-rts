@@ -20,6 +20,7 @@ PyGUI::PyGUI(Game& game): game(game) {
 
 PyGUI::~PyGUI() {
     //pybind11::finalize_interpreter();
+    std::cout << "what" << std::endl;
 }
 
 void PyGUI::init_dependencies(){
@@ -49,51 +50,15 @@ void PyGUI::init_cython(){
 }
 
 void PyGUI::init_gui(){
+
     pybind11::module DeepRTS = pybind11::module::import("DeepRTS");
+    pybind11::module::import("pygame");
     auto DeepRTS_Python = DeepRTS.attr("python");
     auto GUI = DeepRTS_Python.attr("GUI");
-    auto Game = DeepRTS_Python.attr("Game");
+    auto GameBridge = DeepRTS_Python.attr("GameBridge");
     auto Config = DeepRTS_Python.attr("Config");
 
-    //auto gameInstance = Game("", &this->game);
+    gui = GUI(GameBridge(&game), 32, Config(true, true, true, false, true, false, true, false, 50));
 
-    /*
-     *     gui_config = python.Config(
-            render=True,
-            view=True,
-            inputs=True,
-            caption=False,
-            unit_health=True,
-            unit_outline=False,
-            unit_animation=True,
-            audio=True,
-            audio_volume=50
-    )
-     */
-
-    //
-    //pybind11::setattr(&game, "_on_tile_change", Game.attr("_on_tile_change"))
-    gui = GUI(&game, 32, Config(true, true, true, false, true, false, true, false, 50));
-
-
-
-
-
-
-    this->gui_attr_render = gui.attr("render");
-    this->gui_attr_view = gui.attr("view");
-
-}
-
-void PyGUI::capture() {
-    gui.attr("capture")();
-}
-
-void PyGUI::view() {
-    gui_attr_view();
-}
-
-void PyGUI::render() {
-    gui_attr_render();
 }
 

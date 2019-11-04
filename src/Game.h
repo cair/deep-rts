@@ -17,7 +17,6 @@
 #include "environment/Tilemap.h"
 #include "Config.h"
 
-
 class Game {
 
     /// List of Game instances
@@ -111,7 +110,6 @@ public:
 
     /// Selected player
     Player* selectedPlayer;
-
 
     ////////////////////////////////////////////////////
     ///

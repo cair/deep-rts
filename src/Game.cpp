@@ -137,7 +137,9 @@ void Game::render(){
         _render_delta += 1;
     }}
 
-void Game::_render(){}
+void Game::_render(){
+
+}
 void Game::_caption(){}
 void Game::_update(){}
 void Game::_reset() {}

@@ -6,37 +6,36 @@
 int main() {
     Config config = Config::defaults();
 
-    Game *g = new Game("15x15-2v2.json", config);
-    Player &player0 = g->addPlayer();
-    Player &player1 = g->addPlayer();
-    auto gui = PyGUI(*g);
-    g->init();
+    auto g = Game("15x15-2v2.json", config);
+    Player &player0 = g.addPlayer();
+    Player &player1 = g.addPlayer();
+    g.init();
+    //auto gui = PyGUI(g);
 
 
 
 
 
-    g->setMaxFPS(1000000000);
-    g->setMaxUPS(1000000000);
-    g->start();
+
+
+    g.setMaxFPS(1000000000);
+    g.setMaxUPS(1000000000);
+    g.start();
 
     while(true){
-        g->tick();
-        g->update();
-        g->render();
-        g->caption();
-        gui.render();
-        gui.view();
+        g.tick();
+        g.update();
+        g.render();
+        g.caption();
+        //gui.view();
 
-        auto v1 = rand() % 15;
-        player0.do_action(v1);
 
-        auto v2 = rand() % 42;
-        player1.do_action(v2);
+        player0.do_action(0);
 
-        if(g->isTerminal()){
-            g->reset();
-        }
+
+        player1.do_action(0);
+
+
     }
 }
 
