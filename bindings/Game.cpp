@@ -4,14 +4,12 @@
 #include "../src/util/pybind11_matrix.h"
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
-#include "../src/Game.h"
-#include "../src/Config.h"
-
 
 void init_Game(py::module &m) {
     py::class_<Game, PyGame>(m, "Game", "Game")
             .def(py::init<std::string>())
             .def(py::init<std::string, Config>())
+            .def(py::init<std::string, Config, bool>())
 
                     // Functions
             .def_readonly("config", &Game::config)
@@ -37,11 +35,10 @@ void init_Game(py::module &m) {
             .def("_on_episode_start", &Game::_onEpisodeStart)
             .def("_on_episode_end", &Game::_onEpisodeEnd)
             .def("_on_tile_change", &Game::_onTileChange)
-            .def("_on_tile_change", &Game::_onTileChange)
             .def("_on_resource_gather", &Game::_onResourceGather)
             .def("_on_resource_depleted", &Game::_onResourceDepleted)
 
-                    /// Getters
+            /// Getters
             .def("get_id", &Game::getId)
             .def("get_episode", &Game::getEpisode)
             .def("get_height", &Game::getHeight)

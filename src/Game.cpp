@@ -5,23 +5,34 @@
 #include "Game.h"
 #include "unit/UnitManager.h"
 
-
 std::unordered_map<int, Game*> Game::games;
+
 
 Game::Game(std::string map_file):
         config(Config::defaults()),
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this) {
-    //init();
+        init();
 }
+
 
 Game::Game(std::string map_file, Config config):
         config(config),
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
+        tilemap(map, *this) {
+    init();
+}
+
+Game::Game(std::string map_file, Config config, bool _init):
+        config(config),
+        map(map_file),
+        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this){
-    //init();
+    if(_init){
+        init();
+    }
 }
 
 void Game::init(){
@@ -33,6 +44,7 @@ void Game::init(){
     // 2 - Unit/Building Player
     // 3 - Unit/Building Health
     // Init environment
+
     players.reserve(Constants::MAX_PLAYERS);
     units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
 
@@ -218,6 +230,7 @@ bool Game::isTerminal(){
 
 
 Player &Game::addPlayer() {
+
     players.emplace_back(*this, players.size());
     Player &player = players.back();
 
@@ -329,6 +342,5 @@ void Game::_onTileChange(Tile &){}
 
 void Game::_onResourceGather(Tile& tile, Unit& unit) {}
 void Game::_onResourceDepleted(Tile& tile, Unit& unit) {}
-
 
 

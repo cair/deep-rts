@@ -9,31 +9,25 @@ int main() {
     auto g = Game("15x15-2v2.json", config);
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();
-    g.init();
     //auto gui = PyGUI(g);
-
-
-
-
-
-
 
     g.setMaxFPS(1000000000);
     g.setMaxUPS(1000000000);
     g.start();
 
+    int c = 0;
     while(true){
         g.tick();
         g.update();
         g.render();
         g.caption();
-        //gui.view();
+        //gui.render();
+
+        //std::cout << c++ << std::endl;
 
 
-        player0.do_action(0);
-
-
-        player1.do_action(0);
+        player0.do_action(rand() % 14);
+        player1.do_action(rand() % 14);
 
 
     }

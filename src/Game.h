@@ -54,8 +54,8 @@ public:
 
     /// Game Constructor
     explicit Game(std::string map_file);
-
     Game(std::string map_file, Config config);
+    Game(std::string map_file, Config config, bool _init);
 
 
     ////////////////////////////////////////////
@@ -210,11 +210,11 @@ public:
     virtual void _onResourceGather(Tile& tile, Unit& unit);
     virtual void _onResourceDepleted(Tile& tile, Unit& unit);
 
-
     virtual void _onEpisodeStart();
     virtual void _onEpisodeEnd();
 
     virtual void _onTileChange(Tile &);
+
 };
 
 

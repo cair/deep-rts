@@ -11,7 +11,9 @@
 
 
 
-Player::Player(Game &game, int id) : game_(game), config(game.config)
+Player::Player(Game &game, int id) :
+    game_(game),
+    config(game.config)
 {
     id_ = id;
 
@@ -54,93 +56,7 @@ Unit& Player::spawn(Tile &spawnPoint) {
 }
 
 void Player::update() {
-
-
-    if (actionQueue.empty()) {
-        return;
-    }
-
-    auto actionID = actionQueue.front();
-    actionQueue.pop_front();
-
-    // No units to perform action on
-    if(unitIndexes.empty()) { ;
-        return;
-    }
-
-    if (
-            !getTargetedUnit() &&
-            actionID != Constants::Action::NextUnit &&
-            actionID != Constants::Action::PreviousUnit) {
-        // No selected unit by the player and he attempts to right click on a targetedUnit;
-        return;
-    }
-
-
-    Unit *targetedUnit = getTargetedUnit();
-
-    switch (actionID) {
-        case Constants::Action::NextUnit:
-            nextUnit();
-            break;
-        case Constants::Action::PreviousUnit:
-            previousUnit();
-            break;
-        case Constants::Action::MoveUpRight:
-            targetedUnit->tryMove(-1, 1);
-            break;
-        case Constants::Action::MoveUpLeft:
-            targetedUnit->tryMove(-1, -1);
-            break;
-        case Constants::Action::MoveDownRight:
-            targetedUnit->tryMove(1, 1);
-            break;
-        case Constants::Action::MoveDownLeft:
-            targetedUnit->tryMove(1, -1);
-            break;
-        case Constants::Action::MoveUp:
-            targetedUnit->tryMove(0, -1);
-            break;
-        case Constants::Action::MoveDown:
-            targetedUnit->tryMove(0, 1);
-            break;
-        case Constants::Action::MoveLeft:
-            targetedUnit->tryMove(-1, 0);
-            break;
-        case Constants::Action::MoveRight:
-            targetedUnit->tryMove(1, 0);
-            break;
-        case Constants::Action::Attack:
-            targetedUnit->tryAttack();
-            break;
-        case Constants::Action::Harvest:
-            targetedUnit->tryHarvest();
-            break;
-        case Constants::Action::Build0:
-            targetedUnit->build(0);
-            break;
-        case Constants::Action::Build1:
-            targetedUnit->build(1);
-            break;
-        case Constants::Action::Build2:
-            targetedUnit->build(2);
-            break;
-        case Constants::Action::NoAction:
-            break;
-        default:
-            // NO ACTION
-            break;
-
-
-    }
-
-
-
-
-
-
-
-
+    // TODO - remove
 }
 
 void Player::reset()
@@ -169,7 +85,6 @@ void Player::reset()
     num_town_hall = 0;
 
     unitIndexes.clear();
-    actionQueue.clear();
     targetedUnitID = -1;
 
 }
@@ -252,15 +167,8 @@ void Player::removeUnit(Unit & unit) {
     auto pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
     unitIndexes.erase(std::remove(unitIndexes.begin(), unitIndexes.end(), pos), unitIndexes.end());
 
-    // If no more units in the index list, clear the action queue
-    if (unitIndexes.empty()) {
-        actionQueue.clear();
-    }
-
     // Callback
     getGame()._onUnitDestroy(unit);
-
-
 }
 
 bool Player::isDefeated() {
@@ -444,13 +352,88 @@ void Player::do_manual_action(int manual_action_id, int x, int y){
 }
 
 void Player::do_action(int actionID) {
-    actionQueue.emplace_back(actionID);
+
+    if (
+            unitIndexes.empty() ||
+            (
+                    !getTargetedUnit() &&
+                    actionID != Constants::Action::NextUnit &&
+                    actionID != Constants::Action::PreviousUnit
+                    )
+                    )
+    {
+        // 1. No units to perform actions with OR
+        // 2.1 Has selected a unit
+        // 2.2 Action is NOT NextUnit
+        // 2.3 Action is NoOT PreviousUnit
+        return;
+    }
+
+
+    Unit *targetedUnit = getTargetedUnit();
+
+    switch (actionID) {
+        case Constants::Action::NextUnit:
+            nextUnit();
+            break;
+        case Constants::Action::PreviousUnit:
+            previousUnit();
+            break;
+        case Constants::Action::MoveUpRight:
+            targetedUnit->tryMove(-1, 1);
+            break;
+        case Constants::Action::MoveUpLeft:
+            targetedUnit->tryMove(-1, -1);
+            break;
+        case Constants::Action::MoveDownRight:
+            targetedUnit->tryMove(1, 1);
+            break;
+        case Constants::Action::MoveDownLeft:
+            targetedUnit->tryMove(1, -1);
+            break;
+        case Constants::Action::MoveUp:
+            targetedUnit->tryMove(0, -1);
+            break;
+        case Constants::Action::MoveDown:
+            targetedUnit->tryMove(0, 1);
+            break;
+        case Constants::Action::MoveLeft:
+            targetedUnit->tryMove(-1, 0);
+            break;
+        case Constants::Action::MoveRight:
+            targetedUnit->tryMove(1, 0);
+            break;
+        case Constants::Action::Attack:
+            targetedUnit->tryAttack();
+            break;
+        case Constants::Action::Harvest:
+            targetedUnit->tryHarvest();
+            break;
+        case Constants::Action::Build0:
+            targetedUnit->build(0);
+            break;
+        case Constants::Action::Build1:
+            targetedUnit->build(1);
+            break;
+        case Constants::Action::Build2:
+            targetedUnit->build(2);
+            break;
+        case Constants::Action::NoAction:
+            break;
+        default:
+            // NO ACTION
+            break;
+
+
+    }
+
+
+
+
+
+
 }
 
-size_t Player::getQueueSize()
-{
-    return actionQueue.size();
-}
 
 Game &Player::getGame() const {
     return game_;
