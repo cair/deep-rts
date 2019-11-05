@@ -5,6 +5,7 @@
 #include "PyGUI.h"
 
 #include <pybind11/embed.h> // everything needed for embedding
+#include "../../bindings/trampolines/PyGame.h"
 #include "../Game.h"
 
 

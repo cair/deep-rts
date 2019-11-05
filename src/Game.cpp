@@ -115,6 +115,7 @@ void Game::reset()
 }
 
 void Game::update(){
+    tick();
 
     if (running && !terminal &&  now >= _update_next) {
 
@@ -143,8 +144,6 @@ void Game::update(){
 void Game::render(){
     if (now >= _render_next) {
         _render();
-
-
         _render_next += _render_interval;
         _render_delta += 1;
     }}
@@ -204,6 +203,7 @@ Game * Game::getGame(uint8_t id)
 
 
 bool Game::isTerminal(){
+
     if(!config.terminalSignal) {
         return false;
     }
