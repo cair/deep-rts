@@ -30,9 +30,6 @@ private:
 	/// Player name
     std::string name = "[NO NAME]";
 
-	/// Action queue
-	std::deque<int> actionQueue;
-
 	/// Get index of next or previous unit
 	int _getNextPrevUnitIdx();
 

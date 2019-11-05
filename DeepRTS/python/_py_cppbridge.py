@@ -12,3 +12,7 @@ class GameBridge:
     @property
     def map(self):
         return self.g.map
+
+    @property
+    def units(self):
+        return self.g.units

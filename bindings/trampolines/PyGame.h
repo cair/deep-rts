@@ -40,8 +40,6 @@ class PyGame: public Game {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_unit_destroy", _onUnitDestroy, unit);
     }
 
-
-
     virtual void _onTileChange(Tile & tile) override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_tile_change", _onTileChange, tile);
     }
