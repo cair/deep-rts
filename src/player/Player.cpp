@@ -12,6 +12,7 @@
 
 
 Player::Player(Game &game, int id) :
+    faction(0), // TODO HARDCORDED
     game_(game),
     config(game.config)
 {
@@ -61,7 +62,7 @@ void Player::update() {
 
 void Player::reset()
 {
-    faction = 0;
+    faction = 0;  // TODO hardcoded
     gold = game_.config.startGold;
     lumber = game_.config.startWood;
     oil = game_.config.startOil;

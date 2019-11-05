@@ -46,7 +46,7 @@ private:
 	int targetedUnitID = -1;
 
 	/// Determines if the player is defeated or not
-	bool defeated;
+	bool defeated = false;
 
 	/// Selects next unit in players units list
 	void nextUnit();

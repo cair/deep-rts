@@ -116,7 +116,7 @@ Tile *Unit::centerTile() {
 }
 
 bool Unit::build(int idx) {
-    //if(state->id != Constants::State::Idle)
+    //if(state->id != Constants::State::Idle
     if(state->id != Constants::State::Idle)
     {
          return false;

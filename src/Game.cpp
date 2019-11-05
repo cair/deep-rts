@@ -30,12 +30,15 @@ Game::Game(std::string map_file, Config config, bool _init):
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this){
+
+
     if(_init){
         init();
     }
 }
 
 void Game::init(){
+    std::cout << "INIT" << std::endl;
     // State vector
     // 0 - Environment
     // 1 - Player ID
@@ -257,6 +260,7 @@ void Game::spawnPlayer(Player &player) {
     Unit &builder = player.spawn(spawnTile);
 
     // If auto-spawn town hall mechanic is activated
+
     if (config.instantTownHall) {
         // build Town-Hall
         builder.build(0);

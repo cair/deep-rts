@@ -9,29 +9,22 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 class Game(Engine.Game):
 
-    def __init__(self, map_name, n_players=2, engine_config=None, gui_config=None, tile_size=32, terminal_signal=False):
+    def __init__(self, map_name, n_players=2, engine_config=Engine.Config.defaults(), gui_config=None, tile_size=32, terminal_signal=False):
         # This sets working directory, so that the C++ can load files correctly (dir_path not directly accessible in
         # c++)
         os.chdir(dir_path)
 
-        # Create arguments for the c++ side
-        super_args = (map_name, engine_config) if engine_config else (map_name, )
-
-        # TODO
-        if engine_config:
-            engine_config.set_terminal_signal(terminal_signal)
+        # Disable terminal signal
+        engine_config.set_terminal_signal(terminal_signal)
 
         # Call C++ constructor
-        super(Game, self).__init__(*super_args)
+        super(Game, self).__init__(map_name, engine_config, False)
 
         # Event listeners
         self._listeners = {
             "on_tile_change": []
         }
 
-        # Create players
-        for i in range(n_players):
-            self.add_player()
 
         self._render_every = 1
         self._view_every = 1
@@ -45,8 +38,14 @@ class Game(Engine.Game):
         # This should have minimal impact on performance
         self.init()
 
+        # Create players
+        for i in range(n_players):
+            self.add_player()
+
         # Select first player as default
         self.set_player(self.players[0])
+
+
 
     def sample_action(self):
         return int(Engine.Constants.action_max * random.random()) + Engine.Constants.action_min

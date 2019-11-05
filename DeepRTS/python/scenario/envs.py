@@ -24,8 +24,8 @@ class GoldCollectOnePlayerFifteen(Scenario):
         engine_config.set_footman(True)
         engine_config.set_instant_town_hall(True)
         engine_config.set_archer(True)
-        engine_config.set_start_wood(0)
-        engine_config.set_start_gold(0)
+        engine_config.set_start_wood(250) # Enough to create TownHall
+        engine_config.set_start_gold(500)  # Enough to create TownHall
         engine_config.set_start_oil(0)
 
         game = python.Game(
