@@ -6,13 +6,13 @@
 #include "../player/Player.h"
 
 void Idle::update(Unit & unit){
-
+    (void)(unit);
 }
 
 void Idle::init(Unit & unit) {
-    //unit.tile->triggerOnTileChange();
+    (void)(unit);
 }
 
 void Idle::end(Unit & unit) {
-
+    (void)(unit);
 }

@@ -9,8 +9,8 @@ void init_Constants(py::module &m) {
 
     constants.attr("MAX_PLAYERS") = py::int_(Constants::MAX_PLAYERS);
     constants.attr("MAX_UNITS") = py::int_(Constants::MAX_UNITS);
-    constants.attr("action_min") = py::int_(Constants::action_min);
-    constants.attr("action_max") = py::int_(Constants::action_max);
+    constants.attr("action_min") = py::int_(Constants::ACTION_MIN);
+    constants.attr("action_max") = py::int_(Constants::ACTION_MAX);
 
 
     py::enum_<Constants::Unit>(constants, "Unit", py::arithmetic(), "Unit Constants")

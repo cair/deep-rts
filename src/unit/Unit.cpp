@@ -104,8 +104,8 @@ void Unit::update() {
 }
 
 Tile *Unit::centerTile() {
-    int addX = floor(width / 2);
-    int addY = floor(height / 2);
+    int addX = floor(width / 2.0);
+    int addY = floor(height / 2.0);
 
     if (addX == 0 && addY == 0) {
         assert(tile);
@@ -123,7 +123,7 @@ bool Unit::build(int idx) {
     }
 
 
-    if((idx < 0 || idx >= buildInventory.size()))
+    if((idx < 0 || idx >= (int)buildInventory.size()))
     {
          return false;
     }
@@ -140,8 +140,8 @@ bool Unit::build(int idx) {
     // PlacementTile is based on dimension of the new unit. For example; town hall has
     // 3x Width && 3x Height. We then want to place  the building by the middle tile;
 
-    int x = tile->x - floor(newUnit.width/2);
-    int y = tile->y - floor(newUnit.height/2);
+    int x = tile->x - (int)floor(newUnit.width/ 2.0);
+    int y = tile->y - (int)floor(newUnit.height/ 2.0);
 
     if(!position_in_bounds(x, y)) {
         return false;
@@ -212,9 +212,9 @@ void Unit::despawn() {
 void Unit::clearTiles(){
     for(auto &t : game->tilemap.getTileArea(*tile, width, height)) {
         clearStateForTile(t);
-        t->setOccupant(NULL);
+        t->setOccupant(nullptr);
     }
-    tile = NULL;
+    tile = nullptr;
 }
 
 void Unit::rightClick(Tile &targetTile) {
@@ -243,11 +243,11 @@ void Unit::rightClick(Tile &targetTile) {
 
 }
 
-void Unit::attack(Tile &tile) {
+void Unit::attack(Tile &tile_) {
     if(!canAttack)
         return;
 
-    Unit* target = tile.getOccupant();
+    Unit* target = tile_.getOccupant();
 
     // Target may have died from another same tick
     if (!target) {
@@ -263,17 +263,17 @@ void Unit::attack(Tile &tile) {
 
 }
 
-void Unit::harvest(Tile &tile) {
+void Unit::harvest(Tile &tile_) {
     if(!canHarvest)
         return;
 
-    this->harvestTargetID = tile.id;
+    this->harvestTargetID = tile_.id;
     transitionState(stateManager->harvestingState);
 
 }
 
-void Unit::enqueueState(std::shared_ptr<BaseState> state) {
-    stateList.push_back(state->id);
+void Unit::enqueueState(const std::shared_ptr<BaseState>& state_) {
+    stateList.push_back(state_->id);
 }
 
 void Unit::transitionState() {
@@ -337,7 +337,7 @@ Position Unit::distanceVector(Tile &target){
 }
 
 Unit* Unit::closestRecallBuilding() {
-    Unit* closest = NULL;
+    Unit* closest = nullptr;
     int dist = INT_MAX;
     for(auto &unit : game->units) {
         if(unit.recallable && unit.player_.getId() == player_.getId() && unit.tile) {
@@ -384,7 +384,7 @@ void Unit::setDirection(Position &dir){
 
 Tile *Unit::getNextTile(){
     if(walking_path.empty()) {
-        return NULL;
+        return nullptr;
     }
     return walking_path.back();
 }
@@ -474,23 +474,23 @@ void Unit::tryMove(int16_t x, int16_t y)
         return;
     }
 
-    Tile &tile = game->tilemap.getTile(newX, newY);
+    Tile &tile_ = game->tilemap.getTile(newX, newY);
 
-    if (tile.isWalkable()) {
-        move(tile);
+    if (tile_.isWalkable()) {
+        move(tile_);
         return;
 
     }
 
     // Allow to automatically attack if config has enabled this
-    if(config.autoAttack && tile.isAttackable(*this)) {
-        attack(tile);
+    if(config.autoAttack && tile_.isAttackable(*this)) {
+        attack(tile_);
         return;
     }
 
 
-    if(config.harvestForever && tile.isHarvestable()) {
-        harvest(tile);
+    if(config.harvestForever && tile_.isHarvestable()) {
+        harvest(tile_);
         return;
     }
 
@@ -522,7 +522,7 @@ Tile &Unit::getSpawnTile() {
 
 Tile *Unit::getTile(int tileID) {
     if(tileID == -1) {
-        return NULL;
+        return nullptr;
     }
     return &game->tilemap.getTiles()[tileID];
 }
@@ -540,7 +540,7 @@ Unit &Unit::getBuildEntity() {
 Unit *Unit::getCombatTarget() {
     //assert(combatTargetID != -1);
     if (combatTargetID == -1) {
-        return NULL;
+        return nullptr;
     }
     return &game->units[combatTargetID];
 }
@@ -569,13 +569,8 @@ std::set<int> Unit::getVisionTileIDs() {
 }
 
 bool Unit::position_in_bounds(int x, int y) {
-    if(
-            x < 0 || x > this->game->map.MAP_WIDTH ||
-            y < 0 || y > this->game->map.MAP_HEIGHT
-            ){
-        return false;
-    }
-    return true;
+    return !(x < 0 || x > this->game->map.MAP_WIDTH ||
+             y < 0 || y > this->game->map.MAP_HEIGHT);
 }
 
 Player &Unit::getPlayer() {
@@ -598,7 +593,7 @@ void Unit::setStateForTile(Tile *t){
     game->state(t->x, t->y, 2) = (canMove) ? 0 : 1; // 1 if its a building
     game->state(t->x, t->y, 3) = (canMove) ? 1 : 0; // 1 if its a unit
     game->state(t->x, t->y, 4) = int(typeId); // Unit Type
-    game->state(t->x, t->y, 5) = health / health_max; // Unit Health percent
+    game->state(t->x, t->y, 5) = health / (double)health_max; // Unit Health percent
     game->state(t->x, t->y, 6) = (int)state->id; // Unit Unit State
     game->state(t->x, t->y, 7) = oilCarry + goldCarry + lumberCarry; // Unit Total Carry
     game->state(t->x, t->y, 8) = damageMin + damageMax + damagePiercing; // Unit Attack Score

@@ -12,7 +12,6 @@ void init_Game(py::module &m) {
 
                     // Functions
             .def_readonly("config", &Game::config)
-            .def("init", &Game::init)
             .def("tick", &Game::tick)
             .def("update", &Game::update)
             .def("_update", &Game::update)

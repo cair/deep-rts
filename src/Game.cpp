@@ -9,24 +9,32 @@
 std::unordered_map<int, Game*> Game::games;
 
 
-Game::Game(std::string map_file):
+Game::Game(const std::string& map_file):
         config(Config::defaults()),
         map(map_file),
-        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
+        state({
+            static_cast<unsigned long>(map.MAP_WIDTH),
+            static_cast<unsigned long>(map.MAP_HEIGHT
+            ), 10}), // Wait until map is loaded
         tilemap(map, *this),
         stateManager(*this) {
     _internalInit();
 }
 
 
-Game::Game(std::string map_file, Config config):
+Game::Game(const std::string& map_file, Config config):
         config(config),
         map(map_file),
-        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
+        state({
+            static_cast<unsigned long>(map.MAP_WIDTH),
+            static_cast<unsigned long>(map.MAP_HEIGHT), 10
+        }), // Wait until map is loaded
         tilemap(map, *this),
         stateManager(*this) {
     _internalInit();
 }
+
+Game::~Game() = default;
 
 void Game::_internalInit(){
     players.reserve(Constants::MAX_PLAYERS);
@@ -42,10 +50,6 @@ void Game::_internalInit(){
         GUI = new PyGUI(*this);
         tilemap.reset();
     }
-}
-
-void Game::init(){
-
 }
 
 void Game::setMaxFPS(uint32_t fps_){
@@ -201,54 +205,53 @@ Player &Game::addPlayer() {
     return player;
 }
 
-Unit & Game::getUnit(uint16_t idx)
+Unit & Game::getUnit(int idx)
 {
-    assert((idx >= 0 && idx < (units.size())) && "getUnit(idx) failed. Index not in range!");
+    assert((idx >= 0 && idx < (int)units.size()) && "getUnit(idx) failed. Index not in range!");
     return units[idx];
 }
 
-size_t Game::getWidth() const{
+int Game::getWidth() const{
     return map.MAP_WIDTH;
 }
 
-size_t Game::getHeight() const{
+int Game::getHeight() const{
     return map.MAP_HEIGHT;
 }
 
-
-uint32_t Game::getMaxFPS() const {
+int Game::getMaxFPS() const {
     return max_fps;
 }
 
-uint32_t Game::getMaxUPS() const {
+int Game::getMaxUPS() const {
     return max_ups;
 }
 
-uint32_t Game::getFPS() const {
+int Game::getFPS() const {
     return currentFPS;
 }
 
-uint32_t Game::getUPS() const {
+int Game::getUPS() const {
     return currentUPS;
 }
 
-uint16_t Game::getEpisode() const {
+int Game::getEpisode() const {
     return episode;
 }
 
-uint64_t Game::getTicks() const{
+long Game::getTicks() const{
     return this->ticks;
 }
 
-uint64_t Game::getGameDuration() const{
+long Game::getGameDuration() const{
     return this->ticks / getTicksModifier();
 }
 
-int Game::getTicksModifier() const {
+long Game::getTicksModifier() const {
     return config.tickModifier;
 }
 
-uint8_t Game::getId() const {
+int Game::getId() const {
     return id;
 }
 
@@ -258,6 +261,7 @@ void Game::setSelectedPlayer(Player &player) {
 }
 
 void Game::_onUnitCreate(Unit& unit) {
+    (void)(unit);
     //DEBUG("Unit Created: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
@@ -271,6 +275,7 @@ void Game::_onEpisodeEnd() {
 }
 
 void Game::_onUnitDestroy(Unit& unit) {
+    (void)(unit);
     //DEBUG("Unit Destroyed: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
@@ -281,8 +286,14 @@ void Game::_onTileChange(Tile& tile){
 }
 
 
-void Game::_onResourceGather(Tile& tile, Unit& unit) {}
-void Game::_onResourceDepleted(Tile& tile, Unit& unit) {}
+void Game::_onResourceGather(Tile& tile, Unit& unit) {
+    (void)(tile);
+    (void)(unit);
+}
+void Game::_onResourceDepleted(Tile& tile, Unit& unit) {
+    (void)(tile);
+    (void)(unit);
+}
 
 
 void Game::_render(){

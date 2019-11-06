@@ -1,11 +1,7 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-
-#ifndef WARC2SIM_STATEMANAGER_H
-#define WARC2SIM_STATEMANAGER_H
-
-
+#pragma once
 #include "Spawning.h"
 #include "Walking.h"
 #include "Idle.h"
@@ -19,7 +15,7 @@ class Game;
 class StateManager {
 
 public:
-    StateManager(Game &game);
+    explicit StateManager(Game &game);
 	std::shared_ptr<BaseState> walkingState;
 	std::shared_ptr<BaseState> spawnState;
 	std::shared_ptr<BaseState> idleState;
@@ -32,5 +28,3 @@ public:
 	std::shared_ptr<BaseState> getByID(int id);
 };
 
-
-#endif //WARC2SIM_STATEMANAGER_H

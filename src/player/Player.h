@@ -110,7 +110,7 @@ public:
  	int getScore();
 
 	/// Get the unit count for this player
-	size_t getUnitCount();
+	int getUnitCount();
 
 	/// Get the targeted unit (Returns null if none)
 	Unit *getTargetedUnit();
@@ -198,19 +198,7 @@ public:
 
 	void leftClick(int x, int y);
 	void rightClick(int x, int y);
-	void rightClick(Position pos);
-	size_t getQueueSize();
 
-
-
-
-
-
-
-
-
-
- 
 	/// TODO move these to Unit.h?
     bool canPlace(Unit & builder, Unit & unit, Tile &tile);
     bool canAfford(Unit & unit);

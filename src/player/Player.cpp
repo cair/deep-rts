@@ -7,10 +7,11 @@
 #include "../Game.h"
 #include "../unit/UnitManager.h"
 #include <algorithm>
+#include <utility>
 
 Player::Player(Game &game, int id) :
     game_(game),
-    faction(0), // TODO HARDCORDED
+    faction(0),
     config(game.config)
 {
     if(id < 0){
@@ -32,7 +33,7 @@ Unit& Player::spawn(Tile &spawnPoint) {
     // Spawn a builder
 
 
-    Unit *unit = NULL;
+    Unit *unit = nullptr;
     if (faction == 0) // Human
     {
 
@@ -136,7 +137,7 @@ int Player::getLumber() {
     return lumber;
 }
 
-size_t Player::getUnitCount() {
+int Player::getUnitCount() {
     return unitIndexes.size();
 }
 
@@ -265,7 +266,7 @@ void Player::removeGold(int n) {
 }
 
 void Player::setName(std::string _name) {
-    name = _name;
+    name = std::move(_name);
 }
 
 

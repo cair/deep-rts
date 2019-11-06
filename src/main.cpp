@@ -23,20 +23,22 @@ int main() {
     g.setMaxUPS(10000000);
     g.start();
 
+    int EPISODES = 100000;
 
-    while(true){
+    for(auto episode=0; episode < EPISODES; episode++)
+    {
 
-        g.update();
-        g.render();
-        g.caption();
+        while(!g.isTerminal())
+        {
+            g.update();
+            g.render();
+            g.caption();
+            player0.do_action(dist6(rng));
+            player1.do_action(dist6(rng));
 
-        player0.do_action(dist6(rng));
-        player1.do_action(dist6(rng));
-
-        if(g.isTerminal()) {
-
-            g.reset();
         }
+
+        g.reset();
 
 
     }

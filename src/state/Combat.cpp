@@ -5,7 +5,6 @@
 #include "Combat.h"
 #include "../unit/Unit.h"
 #include "../player/Player.h"
-#include "../util/Pathfinder.h"
 #include <algorithm>    // std::max
 
 void Combat::update(Unit & unit){
@@ -64,7 +63,7 @@ void Combat::update(Unit & unit){
 }
 
 void Combat::end(Unit & unit){
-
+    (void)(unit);
 }
 
 void Combat::init(Unit & unit){

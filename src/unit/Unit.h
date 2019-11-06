@@ -126,7 +126,7 @@ public:
     // Combat
     int combatTargetID = -1;
 	Unit *getCombatTarget();
-    int combatTimer;
+    double combatTimer;
     double combatInterval = 1; // Must be set in constructor
 
     // Walking
@@ -153,7 +153,7 @@ public:
     void despawn();
     void update();
 	Tile * centerTile();
-    void enqueueState(std::shared_ptr<BaseState> state);
+    void enqueueState(const std::shared_ptr<BaseState>& state);
     void transitionState();
     void transitionState(std::shared_ptr<BaseState> nextState);
     void setPosition(Tile &tile);

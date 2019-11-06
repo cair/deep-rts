@@ -42,7 +42,7 @@ void Spawning::update(Unit& unit){
 }
 
 void Spawning::init(Unit & unit){
-
+    (void)(unit);
 }
 
 void Spawning::end(Unit & unit){

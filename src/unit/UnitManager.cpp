@@ -21,15 +21,14 @@ Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
         case Constants::Unit::Archer:
             return constructArcher(player);
         case Constants::Unit::Peon:
-            assert("Not implemented");
+            //throw std::runtime_error("Not implemented");
             return constructPeasant(player);
         case Constants::Unit::None:
-            assert("Should never happen");
-            return constructPeasant(player);
+            //throw std::runtime_error("Should never happen");
+            return constructPeasant(player); // TODO here! ? Dont think it breaks anything, but eeew
+            break;
         default:
-            assert("Should never happen");
-            return constructPeasant(player);
-
+            throw std::runtime_error("Should never happen");
     }
 }
 
@@ -57,14 +56,11 @@ void UnitManager::updateUnitCount(Player &p, Constants::Unit unitType, int n)
             p.num_archer += n;
             break;
         case Constants::Unit::Peon:
-            assert("Not implemented");
-            break;
+            throw std::runtime_error("Not implemented");
         case Constants::Unit::None:
-            assert("Should never happen");
-            break;
+            throw std::runtime_error("Should never happen");
         default:
-            assert("Should never happen");
-            break;
+            throw std::runtime_error("Should never happen");
 
     }
 }

@@ -38,7 +38,7 @@ std::shared_ptr<BaseState> StateManager::getByID(int id){
             return combatState;
         case Constants::State::Dead:
             return deadState;
+        default:
+            throw std::runtime_error( "Incorrect id of State. Expected a know state type!" );
     }
-
-    return NULL;
 }

@@ -30,8 +30,8 @@ class Game {
     std::chrono::high_resolution_clock::time_point _render_next;
     std::chrono::high_resolution_clock::time_point _stats_next;
 
-    std::chrono::nanoseconds _update_interval;
-    std::chrono::nanoseconds _render_interval;
+    std::chrono::nanoseconds _update_interval{};
+    std::chrono::nanoseconds _render_interval{};
 
     uint32_t _update_delta = 0;
     uint32_t _render_delta = 0;
@@ -40,7 +40,7 @@ class Game {
     void timerInit();
 
     ///
-    bool running;
+    bool running{};
 
 
     /// Inits neccerary memory in stack vectors
@@ -50,15 +50,13 @@ public:
     /// GUI Pointer
     PyGUI* GUI = nullptr;
 
-    /// Init the constructor
-    void init();
-
     // Retrieve game via Game ID
     static Game * getGame(uint8_t id);
 
     /// Game Constructor
-    explicit Game(std::string map_file);
-    Game(std::string map_file, Config config);
+    explicit Game(const std::string& map_file);
+    Game(const std::string& map_file, Config config);
+    ~Game();
 
 
     ////////////////////////////////////////////
@@ -88,31 +86,31 @@ public:
     std::vector<Unit> units;
 
     /// Game Identification
-    uint8_t id;
+    int id{};
 
     /// Game Episode Ticks
-    uint64_t ticks = 0;
+    long ticks = 0;
 
     /// Game Episode
-    uint16_t episode = 1;
+    int episode = 1;
 
     /// Game Max FPS
-	uint32_t max_fps;
+	int max_fps{};
 
     /// Game Max UPS
-	uint32_t max_ups;
+	int max_ups{};
 
     /// Game Current FPS
-    uint32_t currentFPS = 0;
+    int currentFPS = 0;
 
     /// Game Current UPS
-    uint32_t currentUPS = 0;
+    int currentUPS = 0;
 
     /// Game terminal flag
     bool terminal = false;
 
     /// Selected player
-    Player* selectedPlayer;
+    Player* selectedPlayer{};
 
     ////////////////////////////////////////////////////
     ///
@@ -121,29 +119,29 @@ public:
     ////////////////////////////////////////////////////
 
     /// Get a Unit via index
-    Unit &getUnit(uint16_t idx);
+    Unit &getUnit(int idx);
 
-    uint32_t getMaxFPS() const;
+    int getMaxFPS() const;
 
-    uint32_t getMaxUPS() const;
+    int getMaxUPS() const;
 
-    uint32_t getFPS() const;
+    int getFPS() const;
 
-    uint32_t getUPS() const;
+    int getUPS() const;
 
-    uint64_t getGameDuration() const;
+    long getGameDuration() const;
 
-    uint64_t getTicks() const ;
+    long getTicks() const ;
 
-    size_t getWidth() const;
+    int getWidth() const;
 
-    size_t getHeight() const;
+    int getHeight() const;
 
-    uint16_t getEpisode() const;
+    int getEpisode() const;
 
-    uint8_t getId() const;
+    int getId() const;
 
-    int getTicksModifier() const;
+    long getTicksModifier() const;
 
     ////////////////////////////////////////////////////
     ///

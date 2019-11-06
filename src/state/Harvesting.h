@@ -16,9 +16,9 @@ public:
         name = "Harvesting";
     }
 
-    virtual void update(Unit & unit);
-    virtual void init(Unit & unit);
-    virtual void end(Unit & unit);
+    void update(Unit & unit) override;
+    void init(Unit & unit) override;
+    void end(Unit & unit) override;
 };
 
 #endif //WARC2SIM_HARVESTING_H

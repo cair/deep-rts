@@ -4,8 +4,16 @@
 
 #include "BaseState.h"
 
-void BaseState::update(Unit & unit){}
+void BaseState::update(Unit& unit){
+    (void)(unit);
+}
 
-void BaseState::init(Unit & unit) {}
+void BaseState::init(Unit& unit) {
+    (void)(unit);
+}
 
-void BaseState::end(Unit & unit){}
+void BaseState::end(Unit& unit){
+    (void)(unit);
+}
+
+BaseState::~BaseState() = default;

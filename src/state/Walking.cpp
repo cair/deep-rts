@@ -66,7 +66,7 @@ void Walking::init(Unit & unit){
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 
     // Predefine goal pointer
-	Tile *goal = NULL;
+	Tile *goal = nullptr;
 
     // Check if walking goal has a occupant
     if (!walkingGoal->isWalkable()) {
@@ -115,7 +115,7 @@ void Walking::init(Unit & unit){
     }
 
     // Set the initial direction of which the unit will move.
-    if(unit.walking_path.size() > 0){
+    if((int)unit.walking_path.size() > 0){
         Tile * nextTile = unit.walking_path.back();
         unit.setDirection(nextTile->x, nextTile->y);
     }

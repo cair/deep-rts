@@ -14,10 +14,10 @@ void Dead::update(Unit & unit){
 }
 
 void Dead::end(Unit & unit){
-
+    (void)(unit);
 }
 
 void Dead::init(Unit & unit){
-
+    (void)(unit);
 }
 

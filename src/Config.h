@@ -2,9 +2,7 @@
 // Created by per on 12.02.18.
 //
 
-#ifndef DEEPRTS_CONFIG_H
-#define DEEPRTS_CONFIG_H
-
+#pragma once
 
 class Config {
 public:
@@ -20,8 +18,6 @@ public:
     bool enableBarracks = true;
     bool enableFootman = true;
     bool enableArcher = false;
-    bool enableAudio = false;
-    int audioVolume = 0;
     bool pompd = false;
     bool gui = false;
     int startGold = 0;
@@ -123,6 +119,3 @@ public:
 
 
 };
-
-
-#endif //DEEPRTS_CONFIG_H

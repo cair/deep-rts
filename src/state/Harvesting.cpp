@@ -1,8 +1,6 @@
 //
 // Created by Per-Arne on 26.02.2017.
 //
-
-#include <iostream>
 #include "Harvesting.h"
 #include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
@@ -98,7 +96,7 @@ void Harvesting::update(Unit & unit){
         // No base to recall to
         if (!closestBase) {
             unit.transitionState();
-            return;;
+            return;
         }
 
 
@@ -130,7 +128,7 @@ void Harvesting::update(Unit & unit){
 }
 
 void Harvesting::end(Unit & unit){
-
+    (void)(unit);
 }
 
 void Harvesting::init(Unit & unit){
