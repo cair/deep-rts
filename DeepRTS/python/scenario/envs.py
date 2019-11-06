@@ -10,7 +10,7 @@ class GoldCollectOnePlayerFifteen(Scenario):
         gui_config = python.Config(
             render=True,
             view=True,
-            inputs=False,
+            inputs=True,
             caption=True,
             unit_health=False,
             unit_outline=False,

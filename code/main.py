@@ -16,8 +16,8 @@ if __name__ == "__main__":
     random_play = True
 
     env = scenario.GoldCollectOnePlayerFifteen({})
-    env.game.set_max_fps(10000000)
-    env.game.set_max_ups(10000000)
+    env.game.set_max_fps(10)
+    env.game.set_max_ups(60)
 
     for episode in range(episodes):
         print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
@@ -25,8 +25,8 @@ if __name__ == "__main__":
         terminal = False
         state = env.reset()
         while not terminal:
-            #action = random.randint(0, 15)  # TODO AI Goes here
-            next_state, reward, terminal, _ = env.step(0)
+            action = random.randint(0, 15)  # TODO AI Goes here
+            next_state, reward, terminal, _ = env.step(action)
 
             state = next_state
 

@@ -41,6 +41,9 @@ public:
 	/// List of tiles
 	std::vector<Tile> tiles;
 
+	/// Reset the tilemap
+	void reset();
+
 
 
 	bool operator()(unsigned x, unsigned y) const;

@@ -32,12 +32,6 @@ class Game(Engine.Game):
 
         self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config())
 
-        # Must have this to trigger tile refresh (full)
-        # This is because the onTileChange callback is added in self.gui, which is AFTER tiles are created
-        # Also the game resets once before the gui is created
-        # This should have minimal impact on performance
-        self.init()
-
         # Create players
         for i in range(n_players):
             self.add_player()
@@ -45,6 +39,7 @@ class Game(Engine.Game):
         # Select first player as default
         self.set_player(self.players[0])
 
+        self.start()
 
 
     def sample_action(self):

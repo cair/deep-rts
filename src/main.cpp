@@ -12,16 +12,15 @@ int main() {
 
     Config config = Config::defaults();
     config.setConsoleCaptionEnabled(true);
-    config.setGUI(false);
+    config.setGUI(true);
 
     auto g = Game("15x15-2v2.json", config);
 
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();
-    g.reset();
 
-    g.setMaxFPS(1000000000);
-    g.setMaxUPS(1000000000);
+    g.setMaxFPS(30);
+    g.setMaxUPS(30);
     g.start();
 
 
@@ -31,8 +30,8 @@ int main() {
         g.render();
         g.caption();
 
-        player0.do_action(dist6(rng));
-        player1.do_action(dist6(rng));
+        //player0.do_action(dist6(rng));
+        //player1.do_action(dist6(rng));
 
         if(g.isTerminal()) {
 

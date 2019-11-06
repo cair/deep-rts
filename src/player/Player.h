@@ -140,9 +140,6 @@ public:
 	/// Spawns a unit on a tile
 	Unit &spawn(Tile &spawnPoint);
 
-	/// Update the player state
-    void update();
-
 	/// Reset the player state
 	void reset();
 

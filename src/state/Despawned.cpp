@@ -12,6 +12,5 @@ void Despawned::end(Unit & unit)const{
 }
 
 void Despawned::init(Unit & unit)const{
-
 }
 

@@ -142,8 +142,6 @@ class Scenario(gym.Env):
 
         self.game.update()
         self.game.render()
-        if self.game.gui.config.view:
-            self.render()
 
         s1 = self.game.get_state()
         t, tarr = self.evaluate()
@@ -154,7 +152,6 @@ class Scenario(gym.Env):
     def render(self, mode='human'):
         if mode == "human":
             self.game.view()
-
 
     GOLD_COLLECT = _gold_collect
     OIL_COLLECT = _lumber_collect

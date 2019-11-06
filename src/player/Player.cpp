@@ -8,21 +8,22 @@
 #include "../unit/UnitManager.h"
 #include <algorithm>
 
-
-
-
 Player::Player(Game &game, int id) :
-    faction(0), // TODO HARDCORDED
     game_(game),
+    faction(0), // TODO HARDCORDED
     config(game.config)
 {
+    if(id < 0){
+        // Units created with a negative number should not be initialised for in-game purposes
+        return;
+    }
+
     id_ = id;
-
     setName("Player: " + std::to_string(id_));
-
     unitIndexes.reserve(1000);
-
     reset();
+
+
 
 }
 
@@ -54,10 +55,6 @@ Unit& Player::spawn(Tile &spawnPoint) {
 
 
     return *unit;
-}
-
-void Player::update() {
-    // TODO - remove
 }
 
 void Player::reset()

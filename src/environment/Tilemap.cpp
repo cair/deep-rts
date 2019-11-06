@@ -177,6 +177,13 @@ std::vector<Tile *> Tilemap::getTileArea(Tile &source, int width, int height) {
     return tiles;
 }
 
+void Tilemap::reset() {
+    // Reset all tiles
+    for (auto &tile : tiles) {
+        tile.reset();
+    };
+}
+
 
 bool Tilemap::operator()(unsigned x, unsigned y) const
 {

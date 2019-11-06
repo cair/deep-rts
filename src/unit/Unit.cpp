@@ -292,7 +292,7 @@ void Unit::transitionState() {
 
     state->end(*this);
     auto nextState = stateManager->getByID(nextStateId);
-    //std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
+    std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
     state = nextState;
     stateList.pop_back();
     //state->init(*this);
@@ -301,7 +301,7 @@ void Unit::transitionState() {
 }
 
 void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
-    //std::cout << id << " State Transition: " << state->name << " ==> " << nextState->name  << std::endl;
+    std::cout << id << " State Transition: " << state->name << " ==> " << nextState->name  << std::endl;
 
 
     state->end(*this);

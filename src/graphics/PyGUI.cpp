@@ -74,5 +74,6 @@ void PyGUI::onTileChange(Tile & tile){
 }
 
 void PyGUI::view() {
+    gui.attr("event")();
     gui_attr_view();
 }

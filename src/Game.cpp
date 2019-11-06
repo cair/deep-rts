@@ -38,6 +38,7 @@ void Game::_internalInit(){
 
     if(config.gui) {
         GUI = new PyGUI(*this);
+        tilemap.reset();
     }
 }
 
@@ -66,11 +67,8 @@ void Game::stop(){
 
 void Game::reset()
 {
-
-    // Reset all tiles
-    for (auto &tile : tilemap.getTiles()) {
-        tile.reset();
-    }
+    // Reset tilemap
+    tilemap.reset();
 
 	// Remove all units
 	units.clear();
@@ -106,11 +104,6 @@ void Game::update(){
             unit.update();
         }
 
-        // Iterate through all players
-        for (auto &p : players) {
-            p.update();
-        }
-
         _update();
 
         // Update Counters and statistics
@@ -137,8 +130,6 @@ void Game::caption() {
         if (config.consoleCaptionEnabled) {
             std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
         }
-
-
 
         currentFPS = _render_delta;
         currentUPS = _update_delta;
