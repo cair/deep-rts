@@ -6,10 +6,9 @@ namespace py = pybind11;
 #include "./trampolines/PyGame.h"
 
 void init_Game(py::module &m) {
-    py::class_<Game, PyGame>(m, "Game", "Game")
+    py::class_<Game, PyGame>(m, "Game")
             .def(py::init<std::string>())
             .def(py::init<std::string, Config>())
-            .def(py::init<std::string, Config, bool>())
 
                     // Functions
             .def_readonly("config", &Game::config)

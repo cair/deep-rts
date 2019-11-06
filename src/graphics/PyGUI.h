@@ -12,8 +12,12 @@
 class PyGUI {
 private:
     pybind11::object gui;
+    pybind11::object gui_attr_on_tile_change;
+
     pybind11::object gui_attr_render;
     pybind11::object gui_attr_view;
+
+
     void init_dependencies();
     void init_argv();
     void init_cython();
@@ -29,6 +33,7 @@ public:
     ~PyGUI();
 
 
+    void onTileChange(Tile &tile);
 };
 
 

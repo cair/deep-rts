@@ -1,39 +1,43 @@
 
+#include <random>
 #include "Config.h"
 #include "Game.h"
-#include "graphics/PyGUI.h"
+
+
 
 int main() {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 16); // distribution in range [1, 6]
+
     Config config = Config::defaults();
+    config.setConsoleCaptionEnabled(true);
+    config.setGUI(false);
 
     auto g = Game("15x15-2v2.json", config);
+
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();
-    g.init();
-    auto gui = PyGUI(g);
-
-
-
-
-
-
+    g.reset();
 
     g.setMaxFPS(1000000000);
     g.setMaxUPS(1000000000);
     g.start();
 
+
     while(true){
-        g.tick();
+
         g.update();
         g.render();
         g.caption();
-        //gui.view();
 
+        player0.do_action(dist6(rng));
+        player1.do_action(dist6(rng));
 
-        player0.do_action(rand() % 14);
+        if(g.isTerminal()) {
 
-
-        player1.do_action(rand() % 14);
+            g.reset();
+        }
 
 
     }

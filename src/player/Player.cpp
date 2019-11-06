@@ -88,7 +88,34 @@ void Player::reset()
     unitIndexes.clear();
     targetedUnitID = -1;
 
+    spawnPlayer();
+
 }
+
+
+void Player::spawnPlayer() {
+    // Retrieve spawn_point
+
+    if(game_.tilemap.spawnTiles.size() < game_.players.size()){
+        throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
+    }
+
+    int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
+
+    auto spawnTile = game_.tilemap.tiles[spawnPointIdx];
+
+    // Spawn Initial builder
+    Unit &builder = spawn(spawnTile);
+
+    // If auto-spawn town hall mechanic is activated
+
+    if (config.instantTownHall) {
+        // build Town-Hall
+        builder.build(0);
+    }
+
+}
+
 
 
 
@@ -354,16 +381,19 @@ void Player::do_manual_action(int manual_action_id, int x, int y){
 
 void Player::do_action(int actionID) {
 
-    if (
-            unitIndexes.empty() ||
-            (
-                    !getTargetedUnit() &&
-                    actionID != Constants::Action::NextUnit &&
-                    actionID != Constants::Action::PreviousUnit
-                    )
-                    )
-    {
+
+    if(unitIndexes.empty()) {
         // 1. No units to perform actions with OR
+        return;
+    }
+
+    if (
+            !getTargetedUnit() &&
+            actionID != Constants::Action::NextUnit &&
+            actionID != Constants::Action::PreviousUnit
+            )
+    {
+
         // 2.1 Has selected a unit
         // 2.2 Action is NOT NextUnit
         // 2.3 Action is NoOT PreviousUnit

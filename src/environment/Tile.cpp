@@ -95,6 +95,7 @@ oilYield(oilYield)
 		setDepleted();
 	}
 
+	reset();
 }
 
 
@@ -172,6 +173,7 @@ void Tile::reset()
 	if(hasOccupant()) {
 		getOccupant()->clearStateForTile(this);
 	}
+
     occupantID = -1;
     harvestable = newHarvestable;
     walkable = newWalkable;

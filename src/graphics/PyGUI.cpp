@@ -6,11 +6,12 @@
 
 #include <pybind11/embed.h> // everything needed for embedding
 #include "../../bindings/trampolines/PyGame.h"
+
 #include "../Game.h"
 
 
 PyGUI::PyGUI(Game& game): game(game) {
-    pybind11::initialize_interpreter();
+    pybind11::initialize_interpreter(); // start the interpreter and keep it alive
 
     this->init_dependencies();
     this->init_argv();
@@ -20,8 +21,7 @@ PyGUI::PyGUI(Game& game): game(game) {
 
 
 PyGUI::~PyGUI() {
-    //pybind11::finalize_interpreter();
-    std::cout << "what" << std::endl;
+    pybind11::finalize_interpreter();
 }
 
 void PyGUI::init_dependencies(){
@@ -56,10 +56,23 @@ void PyGUI::init_gui(){
     pybind11::module::import("pygame");
     auto DeepRTS_Python = DeepRTS.attr("python");
     auto GUI = DeepRTS_Python.attr("GUI");
-    auto GameBridge = DeepRTS_Python.attr("GameBridge");
+
     auto Config = DeepRTS_Python.attr("Config");
 
-    gui = GUI(GameBridge(&game), 32, Config(true, true, true, false, true, false, true, false, 50));
+    //pybind11::object obj = pybind11::cast(&game);
+
+    gui = GUI(&game, 32, Config(true, true, true, false, true, false, true, false, 50));
+    gui_attr_on_tile_change = gui.attr("on_tile_change");
+    gui_attr_view = gui.attr("view");
 
 }
 
+void PyGUI::onTileChange(Tile & tile){
+    //std::cout << "YES" << std::endl;
+    gui_attr_on_tile_change(tile);
+
+}
+
+void PyGUI::view() {
+    gui_attr_view();
+}

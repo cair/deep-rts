@@ -357,6 +357,7 @@ class GUI(AbstractGUI):
         ]
 
         arb_player = Player(game, -1)  # Create arbitrary player object to create unit manager
+
         units = {
             x: UnitManager.construct_unit(x, arb_player)
             for x in possible_unit_types

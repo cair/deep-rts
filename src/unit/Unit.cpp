@@ -41,7 +41,7 @@ void Unit::moveRelative(int x, int y) {
     int newX = tile->x + x;
     int newY = tile->y + y;
 
-    Tile &moveTile = player_.getGame().tilemap.getTile(newX, newY);
+    Tile &moveTile = game->tilemap.getTile(newX, newY);
 
     move(moveTile);
 }
@@ -52,7 +52,7 @@ void Unit::rightClickRelative(int x, int y) {
     int newX = tile->x + x;
     int newY = tile->y + y;
 
-    Tile &clickTile = player_.getGame().tilemap.getTile(newX, newY);
+    Tile &clickTile = game->tilemap.getTile(newX, newY);
     rightClick(clickTile);
 }
 
@@ -91,7 +91,7 @@ void Unit::setPosition(Tile &newTile) {
     //std::cout << "(" << worldPosition.x << "," << worldPosition.y << ") - (" << newPos.x << "," << newPos.y << ")" << std::endl;
     worldPosition = newPos;
 
-    for(auto &t : player_.getGame().tilemap.getTileArea(newTile, width, height)) {
+    for(auto &t : game->tilemap.getTileArea(newTile, width, height)) {
         setStateForTile(t);
         t->setOccupant(this);
     }
@@ -112,7 +112,7 @@ Tile *Unit::centerTile() {
         return tile;
     }
 
-    return &player_.getGame().tilemap.getTile(tile->x + addX, tile->y + addY);
+    return &game->tilemap.getTile(tile->x + addX, tile->y + addY);
 }
 
 bool Unit::build(int idx) {
@@ -147,7 +147,7 @@ bool Unit::build(int idx) {
         return false;
     }
 
-    Tile &placementTile = player_.getGame().tilemap.getTile(x, y);
+    Tile &placementTile = game->tilemap.getTile(x, y);
     if(!player_.canAfford(newUnit)) {
         ////std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
@@ -198,7 +198,7 @@ bool Unit::build(int idx) {
 
 void Unit::despawn() {
 
-    for(auto &p: player_.getGame().players) {
+    for(auto &p: game->players) {
         if(p.getTargetedUnitID() == this->id)
             p.setTargetedUnitID(-1);
     }
@@ -210,7 +210,7 @@ void Unit::despawn() {
 }
 
 void Unit::clearTiles(){
-    for(auto &t : player_.getGame().tilemap.getTileArea(*tile, width, height)) {
+    for(auto &t : game->tilemap.getTileArea(*tile, width, height)) {
         clearStateForTile(t);
         t->setOccupant(NULL);
     }
@@ -339,7 +339,7 @@ Position Unit::distanceVector(Tile &target){
 Unit* Unit::closestRecallBuilding() {
     Unit* closest = NULL;
     int dist = INT_MAX;
-    for(auto &unit : player_.getGame().units) {
+    for(auto &unit : game->units) {
         if(unit.recallable && unit.player_.getId() == player_.getId() && unit.tile) {
             int d = distance(*unit.tile);
             if(d < dist) {
@@ -449,7 +449,7 @@ void Unit::tryAttack()
         return;
     }
 
-    std::vector<Tile *> availableAttackable = player_.getGame().tilemap.neighbors(*tile, Constants::Pathfinding::Attackable);
+    std::vector<Tile *> availableAttackable = game->tilemap.neighbors(*tile, Constants::Pathfinding::Attackable);
     if (availableAttackable.empty()) {
         // Fail
         return;
@@ -474,7 +474,7 @@ void Unit::tryMove(int16_t x, int16_t y)
         return;
     }
 
-    Tile &tile = player_.getGame().tilemap.getTile(newX, newY);
+    Tile &tile = game->tilemap.getTile(newX, newY);
 
     if (tile.isWalkable()) {
         move(tile);
@@ -504,7 +504,7 @@ void Unit::tryHarvest()
         return;
     }
 
-    std::vector<Tile *> availableHarvestable = player_.getGame().tilemap.neighbors(*tile, Constants::Pathfinding::Harvestable);
+    std::vector<Tile *> availableHarvestable = game->tilemap.neighbors(*tile, Constants::Pathfinding::Harvestable);
     if (availableHarvestable.empty()) {
         // Fail
         return;
@@ -517,24 +517,24 @@ void Unit::tryHarvest()
 
 Tile &Unit::getSpawnTile() {
     assert(spawnTileID != -1);
-    return player_.getGame().tilemap.getTiles()[spawnTileID];
+    return game->tilemap.getTiles()[spawnTileID];
 }
 
 Tile *Unit::getTile(int tileID) {
     if(tileID == -1) {
         return NULL;
     }
-    return &player_.getGame().tilemap.getTiles()[tileID];
+    return &game->tilemap.getTiles()[tileID];
 }
 
 Unit &Unit::getBuiltBy() {
     assert(builtByID != -1);
-    return player_.getGame().units[builtByID];
+    return game->units[builtByID];
 }
 
 Unit &Unit::getBuildEntity() {
     assert(buildEntityID != -1);
-    return player_.getGame().units[buildEntityID];
+    return game->units[buildEntityID];
 }
 
 Unit *Unit::getCombatTarget() {
@@ -542,7 +542,7 @@ Unit *Unit::getCombatTarget() {
     if (combatTargetID == -1) {
         return NULL;
     }
-    return &player_.getGame().units[combatTargetID];
+    return &game->units[combatTargetID];
 }
 
 std::set<int> Unit::getVisionTileIDs() {
@@ -561,7 +561,7 @@ std::set<int> Unit::getVisionTileIDs() {
         for(auto y = -sight; y < height + sight; y++){
             int tX = tileX + x;
             int yY = tileY + y;
-            int idx = player_.getGame().map.MAP_HEIGHT*yY + tX;
+            int idx = game->map.MAP_HEIGHT*yY + tX;
             tileIDs.insert(idx);
         }
     }
@@ -570,8 +570,8 @@ std::set<int> Unit::getVisionTileIDs() {
 
 bool Unit::position_in_bounds(int x, int y) {
     if(
-            x < 0 || x > this->player_.getGame().map.MAP_WIDTH ||
-            y < 0 || y > this->player_.getGame().map.MAP_HEIGHT
+            x < 0 || x > this->game->map.MAP_WIDTH ||
+            y < 0 || y > this->game->map.MAP_HEIGHT
             ){
         return false;
     }
@@ -583,24 +583,24 @@ Player &Unit::getPlayer() {
 }
 
 void Unit::clearStateForTile(Tile *t){
-    player_.getGame().state(t->x, t->y, 1) = 0; // Player ID
-    player_.getGame().state(t->x, t->y, 2) = 0; // 1 if its a building
-    player_.getGame().state(t->x, t->y, 3) = 0; // 1 if its a unit
-    player_.getGame().state(t->x, t->y, 4) = 0; // Unit Type
-    player_.getGame().state(t->x, t->y, 5) = 0; // Unit Health percent
-    player_.getGame().state(t->x, t->y, 6) = 0; // Unit Unit State
-    player_.getGame().state(t->x, t->y, 7) = 0; // Unit Total Carry
-    player_.getGame().state(t->x, t->y, 8) = 0; // Unit Attack Score
-    player_.getGame().state(t->x, t->y, 9) = 0; // Unit Defense Score
+    game->state(t->x, t->y, 1) = 0; // Player ID
+    game->state(t->x, t->y, 2) = 0; // 1 if its a building
+    game->state(t->x, t->y, 3) = 0; // 1 if its a unit
+    game->state(t->x, t->y, 4) = 0; // Unit Type
+    game->state(t->x, t->y, 5) = 0; // Unit Health percent
+    game->state(t->x, t->y, 6) = 0; // Unit Unit State
+    game->state(t->x, t->y, 7) = 0; // Unit Total Carry
+    game->state(t->x, t->y, 8) = 0; // Unit Attack Score
+    game->state(t->x, t->y, 9) = 0; // Unit Defense Score
 }
 void Unit::setStateForTile(Tile *t){
-    player_.getGame().state(t->x, t->y, 1) = player_.getId(); // Player ID
-    player_.getGame().state(t->x, t->y, 2) = (canMove) ? 0 : 1; // 1 if its a building
-    player_.getGame().state(t->x, t->y, 3) = (canMove) ? 1 : 0; // 1 if its a unit
-    player_.getGame().state(t->x, t->y, 4) = int(typeId); // Unit Type
-    player_.getGame().state(t->x, t->y, 5) = health / health_max; // Unit Health percent
-    player_.getGame().state(t->x, t->y, 6) = (int)state->id; // Unit Unit State
-    player_.getGame().state(t->x, t->y, 7) = oilCarry + goldCarry + lumberCarry; // Unit Total Carry
-    player_.getGame().state(t->x, t->y, 8) = damageMin + damageMax + damagePiercing; // Unit Attack Score
-    player_.getGame().state(t->x, t->y, 9) = armor; // Unit Defense Score
+    game->state(t->x, t->y, 1) = player_.getId(); // Player ID
+    game->state(t->x, t->y, 2) = (canMove) ? 0 : 1; // 1 if its a building
+    game->state(t->x, t->y, 3) = (canMove) ? 1 : 0; // 1 if its a unit
+    game->state(t->x, t->y, 4) = int(typeId); // Unit Type
+    game->state(t->x, t->y, 5) = health / health_max; // Unit Health percent
+    game->state(t->x, t->y, 6) = (int)state->id; // Unit Unit State
+    game->state(t->x, t->y, 7) = oilCarry + goldCarry + lumberCarry; // Unit Total Carry
+    game->state(t->x, t->y, 8) = damageMin + damageMax + damagePiercing; // Unit Attack Score
+    game->state(t->x, t->y, 9) = armor; // Unit Defense Score
 }

@@ -23,7 +23,7 @@ public:
     bool enableAudio = false;
     int audioVolume = 0;
     bool pompd = false;
-    bool fastgui = false;
+    bool gui = false;
     int startGold = 0;
     int startOil = 0;
     int startWood = 0;
@@ -31,8 +31,8 @@ public:
     /// Bool that determine print of FPS and UPS in console
     bool consoleCaptionEnabled = true;
 
-    void setFastGUI(bool b){
-        fastgui = b;
+    void setGUI(bool b){
+        gui = b;
     }
 
     void setConsoleCaptionEnabled(bool b) {
@@ -116,6 +116,7 @@ public:
         config.setStartWood(750);
         config.setStartOil(0);
         config.setTerminalSignal(true);
+        config.setGUI(false);
         return config;
     }
 

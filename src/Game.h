@@ -17,6 +17,8 @@
 #include "environment/Tilemap.h"
 #include "Config.h"
 
+
+class PyGUI;
 class Game {
 
     /// List of Game instances
@@ -34,9 +36,6 @@ class Game {
     uint32_t _update_delta = 0;
     uint32_t _render_delta = 0;
 
-    /// Spawn a player
-    void spawnPlayer(Player & player);
-
     /// Initialize the game clock timers
     void timerInit();
 
@@ -44,8 +43,13 @@ class Game {
     bool running;
 
 
+    /// Inits neccerary memory in stack vectors
+    void _internalInit();
 
 public:
+    /// GUI Pointer
+    PyGUI* GUI = nullptr;
+
     /// Init the constructor
     void init();
 
@@ -55,7 +59,6 @@ public:
     /// Game Constructor
     explicit Game(std::string map_file);
     Game(std::string map_file, Config config);
-    Game(std::string map_file, Config config, bool _init);
 
 
     ////////////////////////////////////////////
@@ -156,7 +159,6 @@ public:
 
     /// Set selected player
     void setSelectedPlayer(Player &player);
-
 
     ////////////////////////////////////////////////////
     ///

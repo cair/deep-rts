@@ -18,7 +18,7 @@ class Game(Engine.Game):
         engine_config.set_terminal_signal(terminal_signal)
 
         # Call C++ constructor
-        super(Game, self).__init__(map_name, engine_config, False)
+        super(Game, self).__init__(map_name, engine_config)
 
         # Event listeners
         self._listeners = {

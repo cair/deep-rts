@@ -23,6 +23,7 @@ private:
 	Game &game_;
 
 private:
+    void spawnPlayer();
 
 	/// Player id
 	int id_;

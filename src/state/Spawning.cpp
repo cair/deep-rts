@@ -23,7 +23,6 @@ void Spawning::update(Unit& unit)const{
         }
         else {
             // Unit must simply wait for tile to be available
-            std::cout << "whaht" << std::endl;
             return;
         }
     }

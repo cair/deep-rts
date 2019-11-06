@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "unit/UnitManager.h"
+#include "graphics/PyGUI.h"
 
 std::unordered_map<int, Game*> Game::games;
 
@@ -13,7 +14,7 @@ Game::Game(std::string map_file):
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this) {
-        init();
+    _internalInit();
 }
 
 
@@ -22,47 +23,25 @@ Game::Game(std::string map_file, Config config):
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
         tilemap(map, *this) {
-    init();
+    _internalInit();
 }
 
-Game::Game(std::string map_file, Config config, bool _init):
-        config(config),
-        map(map_file),
-        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
-        tilemap(map, *this){
+void Game::_internalInit(){
+    players.reserve(Constants::MAX_PLAYERS);
+    units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
+    id = static_cast<uint8_t>(games.size());
+    games[id] = this;
 
+    setMaxFPS(60);
+    setMaxUPS(10);
+    timerInit();
 
-    if(_init){
-        init();
+    if(config.gui) {
+        GUI = new PyGUI(*this);
     }
 }
 
 void Game::init(){
-    std::cout << "INIT" << std::endl;
-    // State vector
-    // 0 - Environment
-    // 1 - Player ID
-
-    // 1 - Unit/Building Type
-    // 2 - Unit/Building Player
-    // 3 - Unit/Building Health
-    // Init environment
-
-    players.reserve(Constants::MAX_PLAYERS);
-    units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
-
-
-    setMaxFPS(60);
-    setMaxUPS(10);
-
-    id = static_cast<uint8_t>(games.size());
-    games[id] = this;
-
-    // Update timings
-    tick();
-    timerInit();
-
-    reset();
 
 }
 
@@ -99,7 +78,6 @@ void Game::reset()
     // Reset all players
     for (auto &player : players) {
         player.reset();
-        spawnPlayer(player);
     }
 
     // Reset tick counter
@@ -151,13 +129,6 @@ void Game::render(){
         _render_delta += 1;
     }}
 
-void Game::_render(){
-
-}
-void Game::_caption(){}
-void Game::_update(){}
-void Game::_reset() {}
-
 
 void Game::caption() {
     if (now >= this->_stats_next) {
@@ -175,10 +146,7 @@ void Game::caption() {
         _update_delta = 0;
         _stats_next += std::chrono::nanoseconds(1000000000);    // 1 Second
     }
-
-
 }
-
 
 void Game::tick() {
     now = std::chrono::high_resolution_clock::now();
@@ -190,11 +158,6 @@ void Game::timerInit() {
     _update_next = now + _update_interval;
     _stats_next = now + std::chrono::nanoseconds(0);
 }
-
-
-
-
-
 
 
 Game * Game::getGame(uint8_t id)
@@ -243,29 +206,6 @@ Player &Game::addPlayer() {
     }
 
     return player;
-}
-
-void Game::spawnPlayer(Player &player) {
-    // Retrieve spawn_point
-
-    if(tilemap.spawnTiles.size() < players.size()){
-        throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
-    }
-
-    int spawnPointIdx = tilemap.spawnTiles[player.getId()];
-
-    auto spawnTile = tilemap.tiles[spawnPointIdx];
-
-    // Spawn Initial builder
-    Unit &builder = player.spawn(spawnTile);
-
-    // If auto-spawn town hall mechanic is activated
-
-    if (config.instantTownHall) {
-        // build Town-Hall
-        builder.build(0);
-    }
-
 }
 
 Unit & Game::getUnit(uint16_t idx)
@@ -341,10 +281,23 @@ void Game::_onUnitDestroy(Unit& unit) {
     //DEBUG("Unit Destroyed: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
-void Game::_onTileChange(Tile &){}
+void Game::_onTileChange(Tile& tile){
+    if(GUI) {
+        GUI->onTileChange(tile);
+    }
+}
 
 
 void Game::_onResourceGather(Tile& tile, Unit& unit) {}
 void Game::_onResourceDepleted(Tile& tile, Unit& unit) {}
 
 
+void Game::_render(){
+    if(GUI) {
+        GUI->view();
+    }
+}
+
+void Game::_caption(){}
+void Game::_update(){}
+void Game::_reset() {}
