@@ -187,15 +187,18 @@ void Tilemap::reset() {
 
 bool Tilemap::operator()(unsigned x, unsigned y) const
 {
-	if (x < game.map.MAP_WIDTH && y < game.map.MAP_HEIGHT) // Unsigned will wrap if < 0
-	{
-		int idx = game.map.MAP_WIDTH*y + x;
-		const Tile &t = tiles[idx];
-		const bool isWalk = t.isWalkable();
-		return isWalk;
-	}
 
-    return false;
+	if (x >= game.map.MAP_WIDTH || y >= game.map.MAP_HEIGHT) // Unsigned will wrap if < 0
+    {
+	    return false;
+    }
+
+	int idx = game.map.MAP_WIDTH*y + x;
+	const Tile &t = tiles[idx];
+	const bool isWalk = t.isWalkable();
+	//std::cout << isWalk << " - " <<  x << "," << y << std::endl;
+	return isWalk;
+
 }
 
 

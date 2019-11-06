@@ -15,9 +15,9 @@ public:
     Spawning():BaseState(Constants::State::Spawning){
         name = "Spawning";
     }
-    virtual void update(Unit & unit)const;
-    virtual void init(Unit & unit)const;
-    virtual void end(Unit & unit)const;
+    virtual void update(Unit & unit);
+    virtual void init(Unit & unit);
+    virtual void end(Unit & unit);
 };
 
 

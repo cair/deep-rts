@@ -8,7 +8,12 @@
 #include "../util/Pathfinder.h"
 #include "../util/JPS.h"
 
-void Walking::update(Unit & unit)const{
+Walking::Walking(Game &game): BaseState(Constants::State::Walking), search(game.tilemap){
+    name = "Walking";
+}
+
+
+void Walking::update(Unit & unit){
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 
     if(!walkingGoal){
@@ -50,11 +55,11 @@ void Walking::update(Unit & unit)const{
 
 }
 
-void Walking::end(Unit & unit)const{
+void Walking::end(Unit & unit){
     unit.walking_path.clear();
 }
 
-void Walking::init(Unit & unit)const{
+void Walking::init(Unit & unit){
 
 
     // Retrieve Tile* from walkingGoalID
@@ -92,13 +97,13 @@ void Walking::init(Unit & unit)const{
         JPS::PathVector path;
 
         // Attempt to find a viable path
-        JPS::findPath(
+        /*search.findPath(
                     path,
-                    unit.getPlayer().getGame().tilemap,
-                    unit.tile->x, unit.tile->y,
-                    goal->x,
-                    goal->y,
-                    1);
+                    JPS::Pos(unit.tile->x, unit.tile->y),
+                    JPS::Pos(goal->x, goal->y),
+                    1);*/
+
+        JPS::findPath(path, unit.getPlayer().getGame().tilemap, unit.tile->x, unit.tile->y, goal->x, goal->y, 1);
 
 
         // Insert found path to the walking path vector

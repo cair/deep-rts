@@ -15,10 +15,11 @@
 #include "Combat.h"
 #include "Dead.h"
 
+class Game;
 class StateManager {
 
 public:
-    StateManager();
+    StateManager(Game &game);
 	std::shared_ptr<BaseState> walkingState;
 	std::shared_ptr<BaseState> spawnState;
 	std::shared_ptr<BaseState> idleState;

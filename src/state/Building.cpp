@@ -8,7 +8,7 @@
 #include "../player/Player.h"
 
 
-void Building::update(Unit & unit)const{
+void Building::update(Unit & unit){
     Unit &buildEntity = unit.getBuildEntity();
 
     unit.buildTimer += 1;
@@ -35,11 +35,11 @@ void Building::update(Unit & unit)const{
 
 }
 
-void Building::end(Unit & unit)const{
+void Building::end(Unit & unit){
 	unit.buildEntityID = -1;
 }
 
-void Building::init(Unit & unit)const{
+void Building::init(Unit & unit){
     unit.buildTimer = 0;
 
 }

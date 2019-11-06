@@ -13,7 +13,8 @@ Game::Game(std::string map_file):
         config(Config::defaults()),
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
-        tilemap(map, *this) {
+        tilemap(map, *this),
+        stateManager(*this) {
     _internalInit();
 }
 
@@ -22,7 +23,8 @@ Game::Game(std::string map_file, Config config):
         config(config),
         map(map_file),
         state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
-        tilemap(map, *this) {
+        tilemap(map, *this),
+        stateManager(*this) {
     _internalInit();
 }
 

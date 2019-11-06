@@ -19,8 +19,8 @@ int main() {
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();
 
-    g.setMaxFPS(30);
-    g.setMaxUPS(30);
+    g.setMaxFPS(10000000);
+    g.setMaxUPS(10000000);
     g.start();
 
 
@@ -30,8 +30,8 @@ int main() {
         g.render();
         g.caption();
 
-        //player0.do_action(dist6(rng));
-        //player1.do_action(dist6(rng));
+        player0.do_action(dist6(rng));
+        player1.do_action(dist6(rng));
 
         if(g.isTerminal()) {
 

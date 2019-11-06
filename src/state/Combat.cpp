@@ -8,7 +8,7 @@
 #include "../util/Pathfinder.h"
 #include <algorithm>    // std::max
 
-void Combat::update(Unit & unit)const{
+void Combat::update(Unit & unit){
 
     unit.combatTimer = std::min(unit.combatInterval, unit.combatTimer + 1.0);
     if(unit.combatTimer >= unit.combatInterval) {
@@ -63,11 +63,11 @@ void Combat::update(Unit & unit)const{
 
 }
 
-void Combat::end(Unit & unit)const{
+void Combat::end(Unit & unit){
 
 }
 
-void Combat::init(Unit & unit)const{
+void Combat::init(Unit & unit){
     Position dir = unit.distanceVector(*unit.getCombatTarget()->tile);
     unit.setDirection(dir);
 

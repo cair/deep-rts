@@ -7,16 +7,19 @@
 
 
 #include "BaseState.h"
+#include "../util/JPS.h"
 
+
+class Tilemap;
+class Game;
 class Walking: public BaseState {
+    JPS::Searcher<Tilemap&> search;
 
 public:
-    Walking(): BaseState(Constants::State::Walking){
-        name = "Walking";
-    }
-    virtual void update(Unit & unit)const;
-    virtual void init(Unit & unit)const;
-    virtual void end(Unit & unit)const;
+    Walking(Game & game);
+    virtual void update(Unit & unit);
+    virtual void init(Unit & unit);
+    virtual void end(Unit & unit);
 };
 
 

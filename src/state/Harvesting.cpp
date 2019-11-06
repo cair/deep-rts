@@ -9,7 +9,7 @@
 #include "../player/Player.h"
 #include "../Game.h"
 
-void Harvesting::update(Unit & unit)const{
+void Harvesting::update(Unit & unit){
 
     if (unit.harvestIterator == 0) {
         // Go to harvestable_tile;
@@ -129,11 +129,11 @@ void Harvesting::update(Unit & unit)const{
     }
 }
 
-void Harvesting::end(Unit & unit)const{
+void Harvesting::end(Unit & unit){
 
 }
 
-void Harvesting::init(Unit & unit)const{
+void Harvesting::init(Unit & unit){
     unit.harvestTimer = 0;
     unit.harvestIterator = 0;
     unit.tile->triggerOnTileChange();
