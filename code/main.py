@@ -11,13 +11,12 @@ from DeepRTS import Engine
 from DeepRTS.python import scenario
 
 if __name__ == "__main__":
-
     episodes = 10000000
     random_play = True
 
     env = scenario.GoldCollectOnePlayerFifteen({})
-    env.game.set_max_fps(10)
-    env.game.set_max_ups(60)
+    env.game.set_max_fps(99999999)
+    env.game.set_max_ups(99999999)
 
     for episode in range(episodes):
         print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
@@ -25,8 +24,7 @@ if __name__ == "__main__":
         terminal = False
         state = env.reset()
         while not terminal:
-            action = random.randint(0, 15)  # TODO AI Goes here
-            next_state, reward, terminal, _ = env.step(action)
+            next_state, reward, terminal, _ = env.step(Engine.Random.action())
 
             state = next_state
 

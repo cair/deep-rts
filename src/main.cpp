@@ -2,13 +2,10 @@
 #include <random>
 #include "Config.h"
 #include "Game.h"
-
+#include "util/Random.h"
 
 
 int main() {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 16); // distribution in range [1, 6]
 
     Config config = Config::defaults();
     config.setConsoleCaptionEnabled(true);
@@ -25,6 +22,7 @@ int main() {
 
     int EPISODES = 100000;
 
+
     for(auto episode=0; episode < EPISODES; episode++)
     {
 
@@ -33,8 +31,8 @@ int main() {
             g.update();
             g.render();
             g.caption();
-            player0.do_action(dist6(rng));
-            player1.do_action(dist6(rng));
+            player0.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
+            player1.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
 
         }
 

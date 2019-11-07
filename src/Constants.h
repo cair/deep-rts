@@ -5,6 +5,7 @@
 
 #include <string>
 #include <map>
+
 #define DEBUG(x) do { std::cerr << x; } while (0)
 
 namespace Constants{
@@ -126,5 +127,6 @@ namespace Constants{
             {Build2, "Build 2"},
             {NoAction, "No Action"}
     };
+
 
 }

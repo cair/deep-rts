@@ -15,6 +15,7 @@ void init_Player(py::module &);
 void init_Game(py::module &);
 void init_Map(py::module &);
 void init_Config(py::module &);
+void init_Random(py::module &);
 void init_version(py::module &m) {
 #ifdef VERSION_INFO
     m.attr("__version__") = VERSION_INFO;
@@ -25,6 +26,7 @@ void init_version(py::module &m) {
 
 
 PYBIND11_MODULE(Engine, m) {
+    init_Random(m);
     init_Constants(m);
     init_BaseState(m);
     init_Unit(m);
@@ -36,5 +38,4 @@ PYBIND11_MODULE(Engine, m) {
     init_version(m);
     init_Config(m);
     init_UnitManager(m);
-
 }
