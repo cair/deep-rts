@@ -2,6 +2,18 @@
 
 class Config:
 
+    DEFAULTS = dict(
+        render=True,
+        view=False,
+        inputs=False,
+        caption=False,
+        unit_health=True,
+        unit_outline=True,
+        unit_animation=True,
+        audio=False,
+        audio_volume=50
+    )
+
     class Map:
         TEN = "10x10-2v2.json"
         FIFTEEN = "15x15-2v2.json"
@@ -12,15 +24,15 @@ class Config:
 
     def __init__(
             self,
-            render=True,
-            view=False,
-            inputs=False,
-            caption=False,
-            unit_health=True,
-            unit_outline=True,
-            unit_animation=True,
-            audio=False,
-            audio_volume=50
+            render=DEFAULTS["render"],
+            view=DEFAULTS["view"],
+            inputs=DEFAULTS["inputs"],
+            caption=DEFAULTS["caption"],
+            unit_health=DEFAULTS["unit_health"],
+            unit_outline=DEFAULTS["unit_outline"],
+            unit_animation=DEFAULTS["unit_animation"],
+            audio=DEFAULTS["audio"],
+            audio_volume=DEFAULTS["audio_volume"]
     ):
         self.input = inputs
         self.render = render

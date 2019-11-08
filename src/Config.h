@@ -14,15 +14,15 @@ public:
     bool harvestForever = false;
     bool autoAttack = true;
     int foodLimit = 100;
-    bool enableFarm = true;
-    bool enableBarracks = true;
-    bool enableFootman = true;
-    bool enableArcher = false;
+    bool farmEnabled = true;
+    bool barracksEnabled = true;
+    bool footmanEnabled = true;
+    bool archerEnabled = false;
     bool pompd = false;
-    bool gui = false;
+    bool gui = false;  // No need to export because it is used to initiate gui on C++ side only
     int startGold = 0;
     int startOil = 0;
-    int startWood = 0;
+    int startLumber = 0;
     int terminalSignal = true;
     /// Bool that determine print of FPS and UPS in console
     bool consoleCaptionEnabled = true;
@@ -64,19 +64,19 @@ public:
     }
 
     void setFarm(bool b){
-        enableFarm = b;
+        farmEnabled = b;
     }
 
     void setBarracks(bool b){
-        enableBarracks = b;
+        barracksEnabled = b;
     }
 
     void setFootman(bool b){
-        enableFootman = b;
+        footmanEnabled = b;
     }
 
     void setArcher(bool b){
-        enableArcher = b;
+        archerEnabled = b;
     }
 
     void setStartGold(int v) {
@@ -87,8 +87,8 @@ public:
         startOil = v;
     }
 
-    void setStartWood(int v){
-        startWood = v;
+    void setStartLumber(int v){
+        startLumber = v;
     }
 
     void setTerminalSignal(bool b){
@@ -109,9 +109,12 @@ public:
         config.setArcher(false);
         config.setConsoleCaptionEnabled(false);
         config.setStartGold(1500);
-        config.setStartWood(750);
+        config.setStartLumber(750);
         config.setStartOil(0);
         config.setTerminalSignal(true);
+        config.setPOMDP(false);
+
+        // Engine only
         config.setGUI(false);
         return config;
     }

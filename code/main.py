@@ -18,15 +18,17 @@ if __name__ == "__main__":
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
 
+    env.calculate_optimal_play()
+
     for episode in range(episodes):
         print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
 
         terminal = False
-        state = env.reset()
+        #state = env.reset()
         while not terminal:
-            next_state, reward, terminal, _ = env.step(Engine.Random.action())
+            next_state, reward, terminal, _ = env.step(1)
 
-            state = next_state
+            #state = next_state
 
 
 

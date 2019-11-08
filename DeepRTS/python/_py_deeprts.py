@@ -25,7 +25,6 @@ class Game(Engine.Game):
             "on_tile_change": []
         }
 
-
         self._render_every = 1
         self._view_every = 1
         self._capture_every = 1
@@ -40,7 +39,6 @@ class Game(Engine.Game):
         self.set_player(self.players[0])
 
         self.start()
-
 
     def sample_action(self):
         return int(Engine.Constants.action_max * random.random()) + Engine.Constants.action_min

@@ -174,10 +174,10 @@ Unit UnitManager::constructBarracks(Player &player) {
 
     u.buildInventory = {};
 
-    if(u.config.enableFootman) {
+    if(u.config.footmanEnabled) {
         u.buildInventory.push_back(Constants::Unit::Footman);
     }
-    if(u.config.enableArcher) {
+    if(u.config.archerEnabled) {
         u.buildInventory.push_back(Constants::Unit::Archer);
     }
 
@@ -293,10 +293,10 @@ Unit UnitManager::constructPeasant(Player &player)
 
     u.buildInventory = { Constants::Unit::TownHall};
 
-    if(u.config.enableFarm) {
+    if(u.config.farmEnabled) {
         u.buildInventory.push_back(Constants::Unit::Farm);
     }
-    if(u.config.enableBarracks) {
+    if(u.config.barracksEnabled) {
         u.buildInventory.push_back(Constants::Unit::Barracks);
     }
 

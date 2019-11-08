@@ -150,10 +150,10 @@ public:
     ////////////////////////////////////////////////////
 
     /// Set the Game FPS
-    void setMaxFPS(uint32_t fps_);
+    void setMaxFPS(int fps_);
 
     /// Set the Game UPS
-    void setMaxUPS(uint32_t ups_);
+    void setMaxUPS(int ups_);
 
     /// Set selected player
     void setSelectedPlayer(Player &player);

@@ -52,13 +52,21 @@ void Game::_internalInit(){
     }
 }
 
-void Game::setMaxFPS(uint32_t fps_){
+void Game::setMaxFPS(int fps_){
     max_fps = fps_;
+    if(fps_ < 0){
+        _render_interval = std::chrono::nanoseconds(0);
+        return;
+    }
     _render_interval = std::chrono::nanoseconds(1000000000 /  max_fps);
 }
 
-void Game::setMaxUPS(uint32_t ups_){
+void Game::setMaxUPS(int ups_){
     max_ups = ups_;
+    if(ups_ < 0){
+        _update_interval = std::chrono::nanoseconds(0);
+        return;
+    }
     _update_interval = std::chrono::nanoseconds(1000000000 /  max_ups);
 }
 
