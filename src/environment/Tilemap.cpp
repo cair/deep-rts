@@ -14,10 +14,10 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
 	tiles.reserve(map.MAP_HEIGHT * map.MAP_WIDTH * 2);
 
 
-    uint16_t c = 0;
-    for(uint16_t y = 0; y < map.MAP_HEIGHT; y++)
+    int c = 0;
+    for(int y = 0; y < map.MAP_HEIGHT; y++)
     {
-        for(uint16_t x = 0; x < map.MAP_WIDTH; x++)
+        for(int x = 0; x < map.MAP_WIDTH; x++)
         {
             int newTypeId = map.tileIDs[c];
 
@@ -162,7 +162,7 @@ Tile &Tilemap::getTile(int x, int y){
 
 std::vector<Tile *> Tilemap::getTileArea(Tile &source, int width, int height) {
     /// Get tiles based on width and height of unit
-    std::vector<Tile *> tiles;
+    std::vector<Tile *> tiles_;
     for (int _x = 0; _x < width; _x++) {
         for(auto _y = 0; _y < height; _y++) {
 
@@ -170,25 +170,35 @@ std::vector<Tile *> Tilemap::getTileArea(Tile &source, int width, int height) {
             int y = source.y + _y;
 
             Tile &tile = getTile(x, y);
-            tiles.push_back(&tile);
+            tiles_.push_back(&tile);
         }
     }
 
-    return tiles;
+    return tiles_;
+}
+
+void Tilemap::reset() {
+    // Reset all tiles
+    for (auto &tile : tiles) {
+        tile.reset();
+    }
 }
 
 
 bool Tilemap::operator()(unsigned x, unsigned y) const
 {
-	if (x < game.map.MAP_WIDTH && y < game.map.MAP_HEIGHT) // Unsigned will wrap if < 0
-	{
-		int idx = game.map.MAP_WIDTH*y + x;
-		const Tile &t = tiles[idx];
-		const bool isWalk = t.isWalkable();
-		return isWalk;
-	}
 
-    return false;
+	if ((int)x >= game.map.MAP_WIDTH || (int)y >= game.map.MAP_HEIGHT) // Unsigned will wrap if < 0
+    {
+	    return false;
+    }
+
+	int idx = game.map.MAP_WIDTH * (int)y + (int)x;
+	const Tile &t = tiles[idx];
+	const bool isWalk = t.isWalkable();
+	//std::cout << isWalk << " - " <<  x << "," << y << std::endl;
+	return isWalk;
+
 }
 
 

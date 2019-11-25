@@ -23,6 +23,7 @@ private:
 	Game &game_;
 
 private:
+    void spawnPlayer();
 
 	/// Player id
 	int id_;
@@ -46,7 +47,7 @@ private:
 	int targetedUnitID = -1;
 
 	/// Determines if the player is defeated or not
-	bool defeated;
+	bool defeated = false;
 
 	/// Selects next unit in players units list
 	void nextUnit();
@@ -109,7 +110,7 @@ public:
  	int getScore();
 
 	/// Get the unit count for this player
-	size_t getUnitCount();
+	int getUnitCount();
 
 	/// Get the targeted unit (Returns null if none)
 	Unit *getTargetedUnit();
@@ -138,9 +139,6 @@ public:
 
 	/// Spawns a unit on a tile
 	Unit &spawn(Tile &spawnPoint);
-
-	/// Update the player state
-    void update();
 
 	/// Reset the player state
 	void reset();
@@ -200,19 +198,7 @@ public:
 
 	void leftClick(int x, int y);
 	void rightClick(int x, int y);
-	void rightClick(Position pos);
-	size_t getQueueSize();
 
-
-
-
-
-
-
-
-
-
- 
 	/// TODO move these to Unit.h?
     bool canPlace(Unit & builder, Unit & unit, Tile &tile);
     bool canAfford(Unit & unit);

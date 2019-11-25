@@ -8,7 +8,7 @@
 #include "../util/Pathfinder.h"
 #include "../player/Player.h"
 
-void Spawning::update(Unit& unit)const{
+void Spawning::update(Unit& unit){
 
     if(unit.spawnTimer < unit.spawnDuration) {
         unit.spawnTimer += 1;
@@ -23,7 +23,6 @@ void Spawning::update(Unit& unit)const{
         }
         else {
             // Unit must simply wait for tile to be available
-            std::cout << "whaht" << std::endl;
             return;
         }
     }
@@ -42,10 +41,10 @@ void Spawning::update(Unit& unit)const{
 
 }
 
-void Spawning::init(Unit & unit)const{
-
+void Spawning::init(Unit & unit){
+    (void)(unit);
 }
 
-void Spawning::end(Unit & unit)const{
+void Spawning::end(Unit & unit){
 	unit.builtByID = -1;
 }

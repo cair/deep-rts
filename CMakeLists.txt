@@ -85,15 +85,17 @@ set(SOURCE_FILES
         src/util/Pathfinder.cpp
         src/util/Pathfinder.h
         src/util/PriorityQueue.hpp
-
+        src/util/Random.h
 
         src/graphics/PyGUI.cpp
         src/graphics/PyGUI.h
+
         )
 
 
 pybind11_add_module(Engine
         ${SOURCE_FILES}
+        bindings/Random.cpp
         bindings/Constants.cpp
         bindings/BaseState.cpp
         bindings/UnitManager.cpp

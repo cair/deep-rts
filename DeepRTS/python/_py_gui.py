@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from DeepRTS.Engine import Map, UnitManager, Constants
+from DeepRTS.Engine import Map, UnitManager, Constants, Player
 from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
 from DeepRTS.python import util
 
@@ -219,22 +219,26 @@ class AbstractGUI:
         unit_rect = [rect.x, rect.y, rect.width * unit.width, rect.height * unit.height]
         self.rect_manager.add_changed_rect(unit_rect)
 
-        if unit.state.id == Constants.State.Walking:
-            interval = unit.walking_interval
-            timer = unit.walking_timer
-        elif unit.state.id == Constants.State.Harvesting:
-            interval = unit.harvest_interval
-            timer = unit.harvest_timer
-        elif unit.state.id == Constants.State.Combat:
-            interval = unit.combat_interval
-            timer = unit.combat_timer
-        else:
-            interval = 1
-            timer = 1
+        if self.config.unit_animation:
 
-        # Animation and sprite rendering
-        animation_progress = int((timer / interval) * (len(v) - 1))
-        selected_sprite = v[animation_progress]
+            if unit.state.id == Constants.State.Walking:
+                interval = unit.walking_interval
+                timer = unit.walking_timer
+            elif unit.state.id == Constants.State.Harvesting:
+                interval = unit.harvest_interval
+                timer = unit.harvest_timer
+            elif unit.state.id == Constants.State.Combat:
+                interval = unit.combat_interval
+                timer = unit.combat_timer
+            else:
+                interval = 1
+                timer = 1
+
+            # Animation and sprite rendering
+            animation_progress = int((timer / interval) * (len(v) - 1))
+            selected_sprite = v[animation_progress]
+        else:
+            selected_sprite = v[0]
 
         self.canvas.blit(selected_sprite, unit_rect)
 
@@ -356,8 +360,10 @@ class GUI(AbstractGUI):
             getattr(Unit, x) for x in Unit.__dict__.keys() if not x.startswith("__") and not x == 'name'
         ]
 
+        arb_player = Player(game, -1)  # Create arbitrary player object to create unit manager
+
         units = {
-            x: UnitManager.construct_unit(x, game.players[0])
+            x: UnitManager.construct_unit(x, arb_player)
             for x in possible_unit_types
         }
 

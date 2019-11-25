@@ -21,15 +21,14 @@ Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
         case Constants::Unit::Archer:
             return constructArcher(player);
         case Constants::Unit::Peon:
-            assert("Not implemented");
+            //throw std::runtime_error("Not implemented");
             return constructPeasant(player);
         case Constants::Unit::None:
-            assert("Should never happen");
-            return constructPeasant(player);
+            //throw std::runtime_error("Should never happen");
+            return constructPeasant(player); // TODO here! ? Dont think it breaks anything, but eeew
+            break;
         default:
-            assert("Should never happen");
-            return constructPeasant(player);
-
+            throw std::runtime_error("Should never happen");
     }
 }
 
@@ -57,14 +56,11 @@ void UnitManager::updateUnitCount(Player &p, Constants::Unit unitType, int n)
             p.num_archer += n;
             break;
         case Constants::Unit::Peon:
-            assert("Not implemented");
-            break;
+            throw std::runtime_error("Not implemented");
         case Constants::Unit::None:
-            assert("Should never happen");
-            break;
+            throw std::runtime_error("Should never happen");
         default:
-            assert("Should never happen");
-            break;
+            throw std::runtime_error("Should never happen");
 
     }
 }
@@ -119,6 +115,7 @@ Unit UnitManager::constructFarm(Player &player) {
     u.height = 1;
 
     u.name = "Farm";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = { };
 
@@ -175,13 +172,14 @@ Unit UnitManager::constructBarracks(Player &player) {
     u.height = 3;
 
     u.name = "Barracks";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = {};
 
-    if(u.config.enableFootman) {
+    if(u.config.footmanEnabled) {
         u.buildInventory.push_back(Constants::Unit::Footman);
     }
-    if(u.config.enableArcher) {
+    if(u.config.archerEnabled) {
         u.buildInventory.push_back(Constants::Unit::Archer);
     }
 
@@ -237,6 +235,7 @@ Unit UnitManager::constructTownHall(Player &player) {
     u.height = 3;
 
     u.name = "Town-Hall";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = { Constants::Unit::Peasant };
 
@@ -294,13 +293,14 @@ Unit UnitManager::constructPeasant(Player &player)
     u.height = 1;
 
     u.name = "Peasant";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = { Constants::Unit::TownHall};
 
-    if(u.config.enableFarm) {
+    if(u.config.farmEnabled) {
         u.buildInventory.push_back(Constants::Unit::Farm);
     }
-    if(u.config.enableBarracks) {
+    if(u.config.barracksEnabled) {
         u.buildInventory.push_back(Constants::Unit::Barracks);
     }
 
@@ -357,6 +357,7 @@ Unit UnitManager::constructFootman(Player &player) {
     u.height = 1;
 
     u.name = "Footman";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = {};
 
@@ -413,6 +414,7 @@ Unit UnitManager::constructArcher(Player &player) {
     u.height = 1;
 
     u.name = "Archer";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = {};
 
