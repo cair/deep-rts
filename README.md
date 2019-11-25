@@ -3,6 +3,7 @@
 
 ## Description [![Build Status](https://travis-ci.org/cair/deep-rts.svg?branch=master)](https://travis-ci.org/cair/deep-rts) [![Documentation](https://img.shields.io/badge/docs-readme-blue.svg)](https://github.com/cair/DeepRTS/blob/c%2B%2B/docs/README.md) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cair/DeepRTS/c%2B%2B/LICENCE.MIT)
 A Real-Time Strategy Simulator for (Deep) Reinforment Learning in Python and C++!
+It is recommended to use the master-branch for the newest (and usually best) version of the environment. I am greatful for any input in regards to improving the environment.
 
 Please use the following citation when using this in your work!
 ```
