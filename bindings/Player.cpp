@@ -41,10 +41,12 @@ void init_Player(py::module &m) {
             .def("do_action", &Player::do_action)
             .def("do_manual_action", &Player::do_manual_action)
 
+            .def("set_targeted_unit_id", &Player::setTargetedUnitID)
 
             .def("right_click", (void (Player::*)(int, int)) &Player::rightClick)
             .def("get_targeted_unit", &Player::getTargetedUnit, py::return_value_policy::reference)
             .def("left_click", &Player::leftClick);
+
             //.def("right_click", &Player::rightClick);
 
 }

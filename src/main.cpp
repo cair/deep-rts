@@ -22,6 +22,8 @@ int main() {
 
     int EPISODES = 100000;
 
+    g.getUnitByNameID("Test1");
+
 
     for(auto episode=0; episode < EPISODES; episode++)
     {
@@ -31,6 +33,7 @@ int main() {
             g.update();
             g.render();
             g.caption();
+
             player0.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
             player1.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
 

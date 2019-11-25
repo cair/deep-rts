@@ -3,6 +3,7 @@ import gym
 import numpy as np
 from DeepRTS.Engine import Constants
 from DeepRTS.python import util
+from coding.util import LimitedDiscrete
 
 
 class ScenarioData:
@@ -15,7 +16,6 @@ class ScenarioData:
 
 
 class Scenario(gym.Env):
-
     DEFAULTS = dict(
         updates_per_action=1,
         flatten=True
@@ -32,7 +32,7 @@ class Scenario(gym.Env):
         self.scenarios = [partial(scenario, self) for scenario in scenarios]
 
         # Define the action space
-        self.action_space = gym.spaces.Discrete(Constants.action_max)
+        self.action_space = LimitedDiscrete(Constants.action_min, Constants.action_max)
 
         # Define the observation space, here we assume that max is 255 (image) # TODO
         self.observation_space = gym.spaces.Box(0, 255, shape=self.get_state().shape, dtype=np.float32)
@@ -44,40 +44,46 @@ class Scenario(gym.Env):
     def _optimal_play_sequence(self):
         raise NotImplementedError("The function '_optimal_play_sequence' must be implemented!")
 
+    def _optimal_play_gamestep(self, total_steps=0, total_reward=0):
+        for _ in range(self.config["updates_per_action"]):
+            self.game.update()
+        t, r = self.evaluate()
+        total_reward += r
+        total_steps += 1
+        return total_steps, total_reward, t
+
     def calculate_optimal_play(self):
         self.reset()
         player = self.game.selected_player
-        total_steps = 0
-        total_reward = 0
+        total_steps, total_reward, terminal = self._optimal_play_gamestep()
 
-        for x in range(10000):
-            self.step(1)
+        initial_build_handled = False
+        for action, unitID in self._optimal_play_sequence():
+            unit = self.game.get_unit_by_name_id(unitID)
 
-        for action in self._optimal_play_sequence():
+            if not initial_build_handled:
+                while unit.state.id == Constants.State.Building:
+                    self._optimal_play_gamestep()
+                initial_build_handled = True
+
+            if not unit:
+                raise RuntimeError("Error in optimal_play_sequence. The unit with ID=%s was not found." % unitID)
+
+            player.set_targeted_unit_id(unit.id)
 
             # Process game while unit is not idle
-            while self.game.selected_player.get_targeted_unit().state.id != Constants.State.Idle:     # TODO - convert from getter to property in binding
-                self.game.update()
-                t, r = self.evaluate()
-                total_reward += r
-                total_steps += 1
+            while unit.state.id != Constants.State.Idle:  # TODO - convert from getter to property in binding
+                total_steps, total_reward, terminal = self._optimal_play_gamestep(total_steps, total_reward)
 
             player.do_action(action)
 
-        t = False
-        while not t:
-            self.game.update()
-            t, r = self.evaluate()
-            total_reward += r
-            total_steps += 1
+        terminal = False
+        while not terminal:
+            total_steps, total_reward, terminal = self._optimal_play_gamestep(total_steps, total_reward)
 
         self.reset()
 
-        print(total_steps, total_reward)
-
-
-
-        #self.reset()
+        return total_steps, total_reward
 
     @staticmethod
     def _gold_collect(amount, player=0):
@@ -217,7 +223,7 @@ class Scenario(gym.Env):
 
     def step(self, action):
         player = self.game.selected_player  # py::return_value_policy::reference
-        player.do_action(action)
+        player.do_action(action + 1)
 
         for _ in range(self.config["updates_per_action"]):
             self.game.update()

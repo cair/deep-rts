@@ -85,7 +85,9 @@ void Game::reset()
     tilemap.reset();
 
 	// Remove all units
+	unitsNameMap.clear();
 	units.clear();
+
 
     // Reset all players
     for (auto &player : players) {
@@ -114,7 +116,10 @@ void Game::update(){
 
         // Iterate through all units
         for(auto &unit : units) {
-            if (unit.removedFromGame) continue;		// Skip unit that is removed from game
+            if (unit.removedFromGame){
+                unitsNameMap.erase(unit.nameID);
+                continue;
+            };		// Skip unit that is removed from game
             unit.update();
         }
 
@@ -217,6 +222,15 @@ Unit & Game::getUnit(int idx)
 {
     assert((idx >= 0 && idx < (int)units.size()) && "getUnit(idx) failed. Index not in range!");
     return units[idx];
+}
+
+Unit* Game::getUnitByNameID(std::string nameID) {
+    auto f = unitsNameMap.find(nameID);
+    if (f == unitsNameMap.end() ) {
+        return nullptr;
+    }
+
+    return f->second;
 }
 
 int Game::getWidth() const{

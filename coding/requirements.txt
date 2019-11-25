@@ -9,4 +9,7 @@ tensorboard
 plotly
 git+https://github.com/vitchyr/viskit.git
 aiohttp
-
+tensorboardX
+pygments
+pandas
+uvicorn

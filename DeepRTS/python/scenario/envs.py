@@ -56,10 +56,10 @@ class GoldCollectOnePlayerFifteen(Scenario):
 
     def _optimal_play_sequence(self):
         return [
-            Engine.Constants.Action.MoveRight,
-            Engine.Constants.Action.MoveRight,
-            Engine.Constants.Action.MoveRight,
-            Engine.Constants.Action.MoveRight,
-            Engine.Constants.Action.MoveDownRight,
-            Engine.Constants.Action.MoveRight,
+            (Engine.Constants.Action.MoveRight, "Peasant0"),
+            (Engine.Constants.Action.MoveRight, "Peasant0"),
+            (Engine.Constants.Action.MoveRight, "Peasant0"),
+            (Engine.Constants.Action.MoveRight, "Peasant0"),
+            (Engine.Constants.Action.MoveDownRight, "Peasant0"),
+            (Engine.Constants.Action.MoveRight, "Peasant0")
         ]

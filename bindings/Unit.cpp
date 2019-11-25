@@ -12,6 +12,7 @@ void init_Unit(py::module &m) {
             .def(py::init<Player&>())
 
             .def_readonly("id", &Unit::id)
+            .def_readonly("name_id", &Unit::nameID)
             .def_readonly("type", &Unit::typeId)
             .def_readonly("health", &Unit::health)
             .def_readonly("health_max", &Unit::health_max)

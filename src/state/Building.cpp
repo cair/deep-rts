@@ -37,10 +37,11 @@ void Building::update(Unit & unit){
 
 void Building::end(Unit & unit){
 	unit.buildEntityID = -1;
+    unit.buildTimer = 0;
 }
 
 void Building::init(Unit & unit){
-    unit.buildTimer = 0;
 
+    // Build timer is reset on end. this is so that we can override build time (i.e on spawn)
 }
 

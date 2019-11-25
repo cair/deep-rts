@@ -115,6 +115,7 @@ Unit UnitManager::constructFarm(Player &player) {
     u.height = 1;
 
     u.name = "Farm";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = { };
 
@@ -171,6 +172,7 @@ Unit UnitManager::constructBarracks(Player &player) {
     u.height = 3;
 
     u.name = "Barracks";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = {};
 
@@ -233,6 +235,7 @@ Unit UnitManager::constructTownHall(Player &player) {
     u.height = 3;
 
     u.name = "Town-Hall";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = { Constants::Unit::Peasant };
 
@@ -290,6 +293,7 @@ Unit UnitManager::constructPeasant(Player &player)
     u.height = 1;
 
     u.name = "Peasant";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = { Constants::Unit::TownHall};
 
@@ -353,6 +357,7 @@ Unit UnitManager::constructFootman(Player &player) {
     u.height = 1;
 
     u.name = "Footman";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = {};
 
@@ -409,6 +414,7 @@ Unit UnitManager::constructArcher(Player &player) {
     u.height = 1;
 
     u.name = "Archer";
+    u.nameID = u.name + std::to_string(u.id);
 
     u.buildInventory = {};
 

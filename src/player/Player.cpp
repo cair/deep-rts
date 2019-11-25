@@ -244,6 +244,7 @@ Unit& Player::addUnit(Constants::Unit unitType) {
     game_.units.push_back(UnitManager::constructUnit(unitType, *this));
     Unit& newUnit = game_.units.back();
     unitIndexes.push_back(newUnit.id);
+    game_.unitsNameMap[newUnit.nameID] = &newUnit;
 
     // Update the unit count
     UnitManager::updateUnitCount(*this, newUnit.typeId, 1);

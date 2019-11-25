@@ -85,6 +85,8 @@ public:
     /// List of Units inside the game session
     std::vector<Unit> units;
 
+    std::unordered_map<std::string, Unit*> unitsNameMap;
+
     /// Game Identification
     int id{};
 
@@ -142,6 +144,8 @@ public:
     int getId() const;
 
     long getTicksModifier() const;
+
+    Unit* getUnitByNameID(std::string nameID);
 
     ////////////////////////////////////////////////////
     ///

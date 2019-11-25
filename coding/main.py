@@ -4,10 +4,7 @@ import os
 import random
 import time
 
-import DeepRTS
-from DeepRTS import python
-from DeepRTS import Engine
-
+from DeepRTS.Engine import Random
 from DeepRTS.python import scenario
 
 if __name__ == "__main__":
@@ -24,9 +21,9 @@ if __name__ == "__main__":
         print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
 
         terminal = False
-        #state = env.reset()
-        while not terminal:
-            next_state, reward, terminal, _ = env.step(1)
+        state = env.reset()
+        #while not terminal:
+        #    next_state, reward, terminal, _ = env.step(Random.action())
 
             #state = next_state
 

@@ -49,6 +49,8 @@ void init_Game(py::module &m) {
             .def("get_max_ups", &Game::getMaxUPS)
             .def("get_ticks_modifier", &Game::getTicksModifier)
 
+            .def("get_unit_by_name_id", &Game::getUnitByNameID, py::return_value_policy::reference)
+
                     /// Setters
             .def("set_max_fps", &Game::setMaxFPS)
             .def("set_max_ups", &Game::setMaxUPS)
