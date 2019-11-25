@@ -11,7 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/deep_rts.iml" filepath="$PROJECT_DIR$/deep_rts.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (deep_rts)" project-jdk-type="Python SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="false" project-jdk-name="Python 3.7 (deep_rts) (2)" project-jdk-type="Python SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PySciProjectComponent">

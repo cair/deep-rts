@@ -1,10 +1,6 @@
 
 # Run setup.py install in sources/python to build source files.
-import os
-import random
-import time
 
-from DeepRTS.Engine import Random
 from DeepRTS.python import scenario
 
 if __name__ == "__main__":
