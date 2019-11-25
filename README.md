@@ -4,6 +4,21 @@
 ## Description [![Build Status](https://travis-ci.org/cair/deep-rts.svg?branch=master)](https://travis-ci.org/cair/deep-rts) [![Documentation](https://img.shields.io/badge/docs-readme-blue.svg)](https://github.com/cair/DeepRTS/blob/c%2B%2B/docs/README.md) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cair/DeepRTS/c%2B%2B/LICENCE.MIT)
 A Real-Time Strategy Simulator for (Deep) Reinforment Learning in Python and C++!
 
+Please use the following citation when using this in your work!
+```
+@INPROCEEDINGS{8490409,
+author={P. {Andersen} and M. {Goodwin} and O. {Granmo}},
+booktitle={2018 IEEE Conference on Computational Intelligence and Games (CIG)},
+title={Deep RTS: A Game Environment for Deep Reinforcement Learning in Real-Time Strategy Games},
+year={2018},
+volume={},
+number={},
+pages={1-8},
+keywords={computer games;convolution;feedforward neural nets;learning (artificial intelligence);multi-agent systems;high-performance RTS game;artificial intelligence research;deep reinforcement learning;real-time strategy games;computer games;RTS AIs;Deep RTS game environment;StarCraft II;Deep Q-Network agent;cutting-edge artificial intelligence algorithms;Games;Learning (artificial intelligence);Machine learning;Planning;Ground penetrating radar;Geophysical measurement techniques;real-time strategy game;deep reinforcement learning;deep q-learning},
+doi={10.1109/CIG.2018.8490409},
+ISSN={2325-4270},
+month={Aug},}
+```
 
 ## Dependencies
 
