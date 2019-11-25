@@ -13,9 +13,7 @@ RUN Xvfb :99 -ac &
 
 ENV SDL_VIDEODRIVER dummy
 
-RUN mv drts/coding coding && rm -rf drts
-
-RUN python3 coding/main.py
+RUN python3 drts/coding/main.py
 
 
 
