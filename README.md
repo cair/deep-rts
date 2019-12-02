@@ -26,9 +26,21 @@ month={Aug},}
 * Python >= 3.5
 
 # Installation
+
+### Method 1 (From Git Repo)
 ```
 sudo pip3 git+https://github.com/cair/DeepRTS.git
 ```
+
+### Method 2 (Clone & Build)
+```
+git clone https://github.com/cair/deep-rts.git
+cd deep-rts
+git submodule sync
+git submodule update --init
+sudo pip3 install .
+```
+
 # Available maps
 ```
 10x10-2-FFA
