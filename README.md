@@ -27,7 +27,7 @@ month={Aug},}
 
 # Installation
 ```
-sudo pip3 git+https://github.com/cair/DeepRTS.git
+sudo pip3 install git+https://github.com/cair/DeepRTS.git
 ```
 # Available maps
 ```
