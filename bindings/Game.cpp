@@ -4,6 +4,8 @@
 #include "../src/util/pybind11_matrix.h"
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
+#include "../src/Game.h"
+#include "../src/Config.h"
 
 void init_Game(py::module &m) {
     py::class_<Game, PyGame>(m, "Game")
