@@ -55,15 +55,10 @@ void PyGUI::initGUI(){
 
     auto Config = DeepRTS_Python.attr("Config");
 
-<<<<<<< HEAD
-    pybind11::object obj = pybind11::cast(game);
-    GameBridge(obj);
-    //gui = GUI(&obj, 32, Config(true, true, true, false, true, false, true, false, 50));
-=======
     gui = GUI(&game, 32, Config(true, true, true, false, true, false, true, false, 50));
     gui_attr_on_tile_change = gui.attr("on_tile_change");
     gui_attr_view = gui.attr("view");
->>>>>>> 53c0d69aed448d7b6781f4c955b1c7d2fb4f7a14
+
 
 }
 

@@ -33,32 +33,7 @@ Game::Game(const std::string& map_file, Config config):
         stateManager(*this) {
     _internalInit();
 }
-
-<<<<<<< HEAD
-Game::Game(std::string map_file, Config config, bool _init):
-        config(config),
-        map(map_file),
-        state({map.MAP_WIDTH, map.MAP_HEIGHT, 10}), // Wait until map is loaded
-        tilemap(map, *this){
-
-
-    if(_init){
-        init();
-    }
-}
-
-void Game::init(){
-    // State vector
-    // 0 - Environment
-    // 1 - Player ID
-
-    // 1 - Unit/Building Type
-    // 2 - Unit/Building Player
-    // 3 - Unit/Building Health
-    // Init environment
-=======
 Game::~Game() = default;
->>>>>>> 53c0d69aed448d7b6781f4c955b1c7d2fb4f7a14
 
 void Game::_internalInit(){
     players.reserve(Constants::MAX_PLAYERS);
