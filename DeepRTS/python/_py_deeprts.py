@@ -24,9 +24,6 @@ class Game(Engine.Game):
         if args.map is not None:
             map_name = args.map
 
-        # Create arguments for the c++ side
-        super_args = (map_name, engine_config) if engine_config else (map_name, )
-
         # TODO
         if engine_config:
             engine_config.set_terminal_signal(terminal_signal)
