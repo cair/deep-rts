@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from DeepRTS.Engine import Map, UnitManager, Constants
+from DeepRTS.Engine import Map, UnitManager, Constants, Player
 from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
 from DeepRTS.python import util
 
@@ -53,9 +53,9 @@ class RectangleManager:
 
 class AbstractGUI:
 
-    def __init__(self, game, tile_size, units, window=True):
+    def __init__(self, game, tile_size, units, config, window=True):
         self.game = game
-
+        self.config = config
         self.tile_size = tile_size
 
         self.map = self.game.map
@@ -102,14 +102,12 @@ class AbstractGUI:
             self.canvas = pygame.Surface((self.game_height, self.game_width), flags=SURFTYPE)
 
         # Audio
-        if self.game.gui_config.audio:
+        if self.config.audio:
             pygame.mixer.init()
 
             sound = pygame.mixer.Sound(os.path.join(dir_path, "assets", "audio", "song_1.ogg"))
-            sound.set_volume(self.game.gui_config.audio_volume)
+            sound.set_volume(self.config.audio_volume)
             sound.play(loops=-1)
-
-        self.game.add_listener("on_tile_change", self.on_tile_change)
 
         self.setup()
 
@@ -172,21 +170,21 @@ class AbstractGUI:
                     self.game.selected_player.right_click(tile_pos_x, tile_pos_y)
 
             if event.type == pygame.KEYDOWN and self.game.selected_player:
-                    targeted_unit = self.game.selected_player.get_targeted_unit()
+                targeted_unit = self.game.selected_player.get_targeted_unit()
 
-                    if targeted_unit:
+                if targeted_unit:
 
-                        if event.key == pygame.K_1:
-                            # Build town-hall
-                            targeted_unit.build(0)
+                    if event.key == pygame.K_1:
+                        # Build town-hall
+                        targeted_unit.build(0)
 
-                        elif event.key == pygame.K_2:
-                            # Build barracks
-                            targeted_unit.build(1)
+                    elif event.key == pygame.K_2:
+                        # Build barracks
+                        targeted_unit.build(1)
 
-                        elif event.key == pygame.K_3:
-                            # Build unit 1
-                            targeted_unit.build(2)
+                    elif event.key == pygame.K_3:
+                        # Build unit 1
+                        targeted_unit.build(2)
 
 
 
@@ -221,27 +219,31 @@ class AbstractGUI:
         unit_rect = [rect.x, rect.y, rect.width * unit.width, rect.height * unit.height]
         self.rect_manager.add_changed_rect(unit_rect)
 
-        if unit.state.id == Constants.State.Walking:
-            interval = unit.walking_interval
-            timer = unit.walking_timer
-        elif unit.state.id == Constants.State.Harvesting:
-            interval = unit.harvest_interval
-            timer = unit.harvest_timer
-        elif unit.state.id == Constants.State.Combat:
-            interval = unit.combat_interval
-            timer = unit.combat_timer
-        else:
-            interval = 1
-            timer = 1
+        if self.config.unit_animation:
 
-        # Animation and sprite rendering
-        animation_progress = int((timer / interval) * (len(v) - 1))
-        selected_sprite = v[animation_progress]
+            if unit.state.id == Constants.State.Walking:
+                interval = unit.walking_interval
+                timer = unit.walking_timer
+            elif unit.state.id == Constants.State.Harvesting:
+                interval = unit.harvest_interval
+                timer = unit.harvest_timer
+            elif unit.state.id == Constants.State.Combat:
+                interval = unit.combat_interval
+                timer = unit.combat_timer
+            else:
+                interval = 1
+                timer = 1
+
+            # Animation and sprite rendering
+            animation_progress = int((timer / interval) * (len(v) - 1))
+            selected_sprite = v[animation_progress]
+        else:
+            selected_sprite = v[0]
 
         self.canvas.blit(selected_sprite, unit_rect)
 
         # Health rendering
-        if self.game.gui_config.unit_health:
+        if self.config.unit_health:
             health_percent = int((unit.health / unit.health_max) * 100)
             health_surface = self.health_bars[unit.width][health_percent]
 
@@ -250,10 +252,10 @@ class AbstractGUI:
         return True
 
     def render(self, changes_only=False):
-        if not self.game.gui_config.render:
+        if not self.config.render:
             return
 
-        if not self.game.gui_config.unit_animation:
+        if not self.config.unit_animation:
             changes_only = True
 
         updated_tiles = self.rect_manager.changed_tiles
@@ -320,7 +322,7 @@ class AbstractGUI:
                             self._color_surface(sprite, (170, 170, 170), mask)
 
                             # Border
-                            if self.game.gui_config.unit_outline:
+                            if self.config.unit_outline:
                                 pygame.draw.rect(sprite, mask, (0, 0, sprite.get_width(), sprite.get_height()), 2)
 
                             loaded_sprites[player_id][unit_type][direction][state].append(sprite)
@@ -353,17 +355,19 @@ class AbstractGUI:
 
 class GUI(AbstractGUI):
 
-    def __init__(self, game, tile_size):
+    def __init__(self, game, tile_size, config):
         possible_unit_types = [
             getattr(Unit, x) for x in Unit.__dict__.keys() if not x.startswith("__") and not x == 'name'
         ]
 
+        arb_player = Player(game, -1)  # Create arbitrary player object to create unit manager
+
         units = {
-            x: UnitManager.construct_unit(x, game.players[0])
+            x: UnitManager.construct_unit(x, arb_player)
             for x in possible_unit_types
         }
 
-        super().__init__(game, tile_size, units)
+        super().__init__(game, tile_size, units, config)
 
     def tile_definitions(self):
         tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__") and not x == 'name']

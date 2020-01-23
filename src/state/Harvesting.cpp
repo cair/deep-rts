@@ -1,15 +1,13 @@
 //
 // Created by Per-Arne on 26.02.2017.
 //
-
-#include <iostream>
 #include "Harvesting.h"
 #include "../unit/Unit.h"
 #include "../util/Pathfinder.h"
 #include "../player/Player.h"
 #include "../Game.h"
 
-void Harvesting::update(Unit & unit)const{
+void Harvesting::update(Unit & unit){
 
     if (unit.harvestIterator == 0) {
         // Go to harvestable_tile;
@@ -98,7 +96,7 @@ void Harvesting::update(Unit & unit)const{
         // No base to recall to
         if (!closestBase) {
             unit.transitionState();
-            return;;
+            return;
         }
 
 
@@ -129,11 +127,11 @@ void Harvesting::update(Unit & unit)const{
     }
 }
 
-void Harvesting::end(Unit & unit)const{
-
+void Harvesting::end(Unit & unit){
+    (void)(unit);
 }
 
-void Harvesting::init(Unit & unit)const{
+void Harvesting::init(Unit & unit){
     unit.harvestTimer = 0;
     unit.harvestIterator = 0;
     unit.tile->triggerOnTileChange();

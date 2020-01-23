@@ -35,11 +35,11 @@ public:
 	/// Get a tile on position X and Y
 	Tile &getTile(int x, int y);
 
-	/// Get the game reference
-	Game &getGame() const;
-
 	/// List of tiles
 	std::vector<Tile> tiles;
+
+	/// Reset the tilemap
+	void reset();
 
 
 

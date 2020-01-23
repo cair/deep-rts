@@ -1,11 +1,12 @@
 import contextlib
+
 with contextlib.redirect_stdout(None):
     import pygame
 import math
 import os
 import shutil
 import stat
-
+import warnings
 
 def image_at(sheet, tile_n, tile_size=32):
     size = sheet.get_size()
@@ -23,8 +24,7 @@ def image_at(sheet, tile_n, tile_size=32):
     return image
 
 
-def copytree(src, dst, symlinks = False, ignore = None):
-
+def copytree(src, dst, symlinks=False, ignore=None):
     if not os.path.exists(dst):
         os.makedirs(dst)
         shutil.copystat(src, dst)
@@ -67,6 +67,23 @@ def get_sprite(
 
     image.blit(sheet, (0, 0), rect)
     image = pygame.transform.flip(image, flip, False)
-    #image = pygame.transform.scale(image, (int(w_to), int(h_to)))
+    # image = pygame.transform.scale(image, (int(w_to), int(h_to)))
 
     return image
+
+
+def config(c, key, default=None):
+    return c[key] if key in c else default
+
+
+def dict_update(d1, d2):
+    assert isinstance(d1, dict), "arg1 must be of type dict"
+    assert isinstance(d2, dict), "arg2 must be of type dict"
+
+    for k, v in d2.items():
+        if k not in d1:
+            warnings.warn("The key '%s' is not an existing member of the target dictionary. The update will "
+                                 "most "
+                                 "likely be useless." % k)
+        d1[k] = v
+    return d1

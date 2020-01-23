@@ -19,9 +19,10 @@ public:
     std::string name = "**ERR**";
     BaseState(Constants::State id): id(id){
     };
-    virtual void update(Unit & unit)const;
-    virtual void init(Unit & unit)const;
-    virtual void end(Unit & unit)const;
+    virtual ~BaseState() = 0;
+    virtual void update(Unit & unit);
+    virtual void init(Unit & unit);
+    virtual void end(Unit & unit);
 };
 
 

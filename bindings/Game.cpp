@@ -4,18 +4,14 @@
 #include "../src/util/pybind11_matrix.h"
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
-#include "../src/Game.h"
-#include "../src/Config.h"
-
 
 void init_Game(py::module &m) {
-    py::class_<Game, PyGame>(m, "Game", "Game")
+    py::class_<Game, PyGame>(m, "Game")
             .def(py::init<std::string>())
             .def(py::init<std::string, Config>())
 
                     // Functions
             .def_readonly("config", &Game::config)
-            .def("init", &Game::init)
             .def("tick", &Game::tick)
             .def("update", &Game::update)
             .def("_update", &Game::update)
@@ -37,11 +33,10 @@ void init_Game(py::module &m) {
             .def("_on_episode_start", &Game::_onEpisodeStart)
             .def("_on_episode_end", &Game::_onEpisodeEnd)
             .def("_on_tile_change", &Game::_onTileChange)
-            .def("_on_tile_change", &Game::_onTileChange)
             .def("_on_resource_gather", &Game::_onResourceGather)
             .def("_on_resource_depleted", &Game::_onResourceDepleted)
 
-                    /// Getters
+            /// Getters
             .def("get_id", &Game::getId)
             .def("get_episode", &Game::getEpisode)
             .def("get_height", &Game::getHeight)
@@ -53,6 +48,8 @@ void init_Game(py::module &m) {
             .def("get_max_fps", &Game::getMaxFPS)
             .def("get_max_ups", &Game::getMaxUPS)
             .def("get_ticks_modifier", &Game::getTicksModifier)
+
+            .def("get_unit_by_name_id", &Game::getUnitByNameID, py::return_value_policy::reference)
 
                     /// Setters
             .def("set_max_fps", &Game::setMaxFPS)

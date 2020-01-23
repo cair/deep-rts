@@ -5,14 +5,14 @@
 #include "Idle.h"
 #include "../player/Player.h"
 
-void Idle::update(Unit & unit)const{
-
+void Idle::update(Unit & unit){
+    (void)(unit);
 }
 
-void Idle::init(Unit & unit) const {
-    //unit.tile->triggerOnTileChange();
+void Idle::init(Unit & unit) {
+    (void)(unit);
 }
 
-void Idle::end(Unit & unit) const {
-
+void Idle::end(Unit & unit) {
+    (void)(unit);
 }

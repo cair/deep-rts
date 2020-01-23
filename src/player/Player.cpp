@@ -7,19 +7,25 @@
 #include "../Game.h"
 #include "../unit/UnitManager.h"
 #include <algorithm>
+#include <utility>
+#include <string>
 
-
-
-
-Player::Player(Game &game, int id) : game_(game), config(game.config)
+Player::Player(Game &game, int id) :
+    game_(game),
+    faction(0),
+    config(game.config)
 {
+    if(id < 0){
+        // Units created with a negative number should not be initialised for in-game purposes
+        return;
+    }
+
     id_ = id;
-
     setName("Player: " + std::to_string(id_));
-
     unitIndexes.reserve(1000);
-
     reset();
+
+
 
 }
 
@@ -28,7 +34,7 @@ Unit& Player::spawn(Tile &spawnPoint) {
     // Spawn a builder
 
 
-    Unit *unit = NULL;
+    Unit *unit = nullptr;
     if (faction == 0) // Human
     {
 
@@ -53,101 +59,11 @@ Unit& Player::spawn(Tile &spawnPoint) {
     return *unit;
 }
 
-void Player::update() {
-
-
-    if (actionQueue.empty()) {
-        return;
-    }
-
-    auto actionID = actionQueue.front();
-    actionQueue.pop_front();
-
-    // No units to perform action on
-    if(unitIndexes.empty()) { ;
-        return;
-    }
-
-    if (
-            !getTargetedUnit() &&
-            actionID != Constants::Action::NextUnit &&
-            actionID != Constants::Action::PreviousUnit) {
-        // No selected unit by the player and he attempts to right click on a targetedUnit;
-        return;
-    }
-
-
-    Unit *targetedUnit = getTargetedUnit();
-
-    switch (actionID) {
-        case Constants::Action::NextUnit:
-            nextUnit();
-            break;
-        case Constants::Action::PreviousUnit:
-            previousUnit();
-            break;
-        case Constants::Action::MoveUpRight:
-            targetedUnit->tryMove(-1, 1);
-            break;
-        case Constants::Action::MoveUpLeft:
-            targetedUnit->tryMove(-1, -1);
-            break;
-        case Constants::Action::MoveDownRight:
-            targetedUnit->tryMove(1, 1);
-            break;
-        case Constants::Action::MoveDownLeft:
-            targetedUnit->tryMove(1, -1);
-            break;
-        case Constants::Action::MoveUp:
-            targetedUnit->tryMove(0, -1);
-            break;
-        case Constants::Action::MoveDown:
-            targetedUnit->tryMove(0, 1);
-            break;
-        case Constants::Action::MoveLeft:
-            targetedUnit->tryMove(-1, 0);
-            break;
-        case Constants::Action::MoveRight:
-            targetedUnit->tryMove(1, 0);
-            break;
-        case Constants::Action::Attack:
-            targetedUnit->tryAttack();
-            break;
-        case Constants::Action::Harvest:
-            targetedUnit->tryHarvest();
-            break;
-        case Constants::Action::Build0:
-            targetedUnit->build(0);
-            break;
-        case Constants::Action::Build1:
-            targetedUnit->build(1);
-            break;
-        case Constants::Action::Build2:
-            targetedUnit->build(2);
-            break;
-        case Constants::Action::NoAction:
-            break;
-        default:
-            // NO ACTION
-            break;
-
-
-    }
-
-
-
-
-
-
-
-
-}
-
 void Player::reset()
 {
-    faction = 0;
+    faction = 0;  // TODO hardcoded
     gold = game_.config.startGold;
-    lumber = game_.config.startWood;
+    lumber = game_.config.startLumber;
     oil = game_.config.startOil;
     foodConsumption = 0;
     food = 1;
@@ -169,10 +85,36 @@ void Player::reset()
     num_town_hall = 0;
 
     unitIndexes.clear();
-    actionQueue.clear();
     targetedUnitID = -1;
 
+    spawnPlayer();
+
 }
+
+
+void Player::spawnPlayer() {
+    // Retrieve spawn_point
+
+    if(game_.tilemap.spawnTiles.size() < game_.players.size()){
+        throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
+    }
+
+    int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
+
+    auto spawnTile = game_.tilemap.tiles[spawnPointIdx];
+
+    // Spawn Initial builder
+    Unit &builder = spawn(spawnTile);
+
+    // If auto-spawn town hall mechanic is activated
+
+    if (config.instantTownHall) {
+        // build Town-Hall
+        builder.build(0);
+    }
+
+}
+
 
 
 
@@ -196,7 +138,7 @@ int Player::getLumber() {
     return lumber;
 }
 
-size_t Player::getUnitCount() {
+int Player::getUnitCount() {
     return unitIndexes.size();
 }
 
@@ -252,15 +194,8 @@ void Player::removeUnit(Unit & unit) {
     auto pos = std::find(game_.units.begin(), game_.units.end(), unit.id) - game_.units.begin();
     unitIndexes.erase(std::remove(unitIndexes.begin(), unitIndexes.end(), pos), unitIndexes.end());
 
-    // If no more units in the index list, clear the action queue
-    if (unitIndexes.empty()) {
-        actionQueue.clear();
-    }
-
     // Callback
     getGame()._onUnitDestroy(unit);
-
-
 }
 
 bool Player::isDefeated() {
@@ -309,6 +244,7 @@ Unit& Player::addUnit(Constants::Unit unitType) {
     game_.units.push_back(UnitManager::constructUnit(unitType, *this));
     Unit& newUnit = game_.units.back();
     unitIndexes.push_back(newUnit.id);
+    game_.unitsNameMap[newUnit.nameID] = &newUnit;
 
     // Update the unit count
     UnitManager::updateUnitCount(*this, newUnit.typeId, 1);
@@ -332,7 +268,7 @@ void Player::removeGold(int n) {
 }
 
 void Player::setName(std::string _name) {
-    name = _name;
+    name = std::move(_name);
 }
 
 
@@ -382,6 +318,7 @@ void Player::previousUnit() {
 
     // Get which index in the unitIndexes to lookup
     int idx = _getNextPrevUnitIdx();
+
 
     // Just return if no next unit is returned
     if (idx == -1)
@@ -444,13 +381,96 @@ void Player::do_manual_action(int manual_action_id, int x, int y){
 }
 
 void Player::do_action(int actionID) {
-    actionQueue.emplace_back(actionID);
+
+    if(actionID > Constants::ACTION_MAX || actionID < Constants::ACTION_MIN){
+        throw std::runtime_error("The action '" + std::to_string(actionID) + "' is out of bounds. Actions must be between '" + std::to_string(Constants::ACTION_MIN) + "' and '" + std::to_string(Constants::ACTION_MAX) + "'.");
+    }
+
+    // If there is no units on the map for the player, there is no action to do. therefore:
+    // 1. Check if unitIndex list is empty. if this is the case, return.
+    if(unitIndexes.empty()) {
+        return;
+    }
+
+    // These actions can always be performed regardless of targeted unit or not.
+    // 1 Action is NextUnit
+    // 2 Action is PreviousUnit
+    // 3 Action is no-action
+    if(actionID == Constants::Action::NextUnit){
+        nextUnit();
+        return;
+    }else if(actionID == Constants::Action::PreviousUnit){
+        previousUnit();
+        return;
+    }else if(actionID == Constants::Action::NoAction) {
+        return;
+    }
+
+    Unit *targetedUnit = getTargetedUnit();
+
+    // Ensure that:
+    // 1. Player has selected a unit
+    if(!getTargetedUnit()){
+        return;
+    }
+
+    switch (actionID) {
+        //case Constants::Action::NextUnit:
+        //    break;
+        //case Constants::Action::PreviousUnit:
+        //    break;
+        case Constants::Action::MoveUpRight:
+            targetedUnit->tryMove(-1, 1);
+            break;
+        case Constants::Action::MoveUpLeft:
+            targetedUnit->tryMove(-1, -1);
+            break;
+        case Constants::Action::MoveDownRight:
+            targetedUnit->tryMove(1, 1);
+            break;
+        case Constants::Action::MoveDownLeft:
+            targetedUnit->tryMove(1, -1);
+            break;
+        case Constants::Action::MoveUp:
+            targetedUnit->tryMove(0, -1);
+            break;
+        case Constants::Action::MoveDown:
+            targetedUnit->tryMove(0, 1);
+            break;
+        case Constants::Action::MoveLeft:
+            targetedUnit->tryMove(-1, 0);
+            break;
+        case Constants::Action::MoveRight:
+            targetedUnit->tryMove(1, 0);
+            break;
+        case Constants::Action::Attack:
+            targetedUnit->tryAttack();
+            break;
+        case Constants::Action::Harvest:
+            targetedUnit->tryHarvest();
+            break;
+        case Constants::Action::Build0:
+            targetedUnit->build(0);
+            break;
+        case Constants::Action::Build1:
+            targetedUnit->build(1);
+            break;
+        case Constants::Action::Build2:
+            targetedUnit->build(2);
+            break;
+        //case Constants::Action::NoAction:
+        //    break;
+        default:
+            break;
+    }
+
+
+
+
+
+
 }
 
-size_t Player::getQueueSize()
-{
-    return actionQueue.size();
-}
 
 Game &Player::getGame() const {
     return game_;

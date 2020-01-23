@@ -8,7 +8,7 @@
 #include "../player/Player.h"
 
 
-void Building::update(Unit & unit)const{
+void Building::update(Unit & unit){
     Unit &buildEntity = unit.getBuildEntity();
 
     unit.buildTimer += 1;
@@ -35,12 +35,13 @@ void Building::update(Unit & unit)const{
 
 }
 
-void Building::end(Unit & unit)const{
+void Building::end(Unit & unit){
 	unit.buildEntityID = -1;
+    unit.buildTimer = 0;
 }
 
-void Building::init(Unit & unit)const{
-    unit.buildTimer = 0;
+void Building::init(Unit & unit){
 
+    // Build timer is reset on end. this is so that we can override build time (i.e on spawn)
 }
 

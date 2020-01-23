@@ -3,44 +3,24 @@
 //
 
 #include "PyGUI.h"
-
 #include <pybind11/embed.h> // everything needed for embedding
-#include "../../bindings/Config.cpp"
-#include "../../bindings/Player.cpp"
-#include "../../bindings/Unit.cpp"
-#include "../../bindings/Tile.cpp"
-#include "../../bindings/Map.cpp"
-#include "../../bindings/Tilemap.cpp"
-#include "../../bindings/Game.cpp"
-#include "../../bindings/Constants.cpp"
-#include "../Game.h"
-
-PYBIND11_EMBEDDED_MODULE(DeepRTS, m) {
-    init_Config(m);
-    init_Player(m);
-    init_Unit(m);
-    init_Tile(m);
-    init_Map(m);
-    init_Tilemap(m);
-    init_Game(m);
-    init_Constants(m);
-}
 
 PyGUI::PyGUI(Game& game): game(game) {
-    pybind11::initialize_interpreter();
+    pybind11::initialize_interpreter(); // start the interpreter and keep it alive
 
-    this->init_dependencies();
-    this->init_argv();
-    this->init_cython();
-    this->init_gui();
+    PyGUI::initDependencies();
+    PyGUI::initArgv();
+    PyGUI::initCython();
+
+    this->initGUI();
 }
 
 
 PyGUI::~PyGUI() {
-    //pybind11::finalize_interpreter();
+    pybind11::finalize_interpreter();
 }
 
-void PyGUI::init_dependencies(){
+void PyGUI::initDependencies(){
     pybind11::module subprocess = pybind11::module::import("subprocess");
     pybind11::module sys = pybind11::module::import("sys");
     auto args = pybind11::list();
@@ -49,42 +29,45 @@ void PyGUI::init_dependencies(){
     args.append("pip");
     args.append("install");
     args.append("-r");
-    args.append("requirements.txt");
+    args.append("../requirements.txt");
     args.append("--user");
     subprocess.attr("check_call")(args);
 }
 
-void PyGUI::init_argv(){
+void PyGUI::initArgv(){
     pybind11::module sys = pybind11::module::import("sys");
     auto args = pybind11::list();
     args.append("");
     sys.attr("argv") = args;
 }
 
-void PyGUI::init_cython(){
+void PyGUI::initCython(){
     pybind11::module pyximport = pybind11::module::import("pyximport");
     pyximport.attr("install")();
 }
 
-void PyGUI::init_gui(){
-    auto guiType = (this->game.config.fastgui) ? "fastgui" : "gui";
+void PyGUI::initGUI(){
 
-    pybind11::module GUI_MODULE = pybind11::module::import(guiType);
-    gui = GUI_MODULE.attr("GUI")(&this->game);
-    this->gui_attr_render = gui.attr("render");
-    this->gui_attr_view = gui.attr("view");
+    pybind11::module DeepRTS = pybind11::module::import("DeepRTS");
+    pybind11::module::import("pygame");
+    auto DeepRTS_Python = DeepRTS.attr("python");
+    auto GUI = DeepRTS_Python.attr("GUI");
+
+    auto Config = DeepRTS_Python.attr("Config");
+
+    gui = GUI(&game, 32, Config(true, true, true, false, true, false, true, false, 50));
+    gui_attr_on_tile_change = gui.attr("on_tile_change");
+    gui_attr_view = gui.attr("view");
 
 }
 
-void PyGUI::capture() {
-    gui.attr("capture")();
+void PyGUI::onTileChange(Tile & tile){
+    //std::cout << "YES" << std::endl;
+    gui_attr_on_tile_change(tile);
+
 }
 
 void PyGUI::view() {
+    gui.attr("event")();
     gui_attr_view();
 }
-
-void PyGUI::render() {
-    gui_attr_render();
-}
-

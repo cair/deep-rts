@@ -1,41 +1,47 @@
 
+#include <random>
 #include "Config.h"
 #include "Game.h"
-#include "graphics/PyGUI.h"
+#include "util/Random.h"
+
 
 int main() {
+
     Config config = Config::defaults();
+    config.setConsoleCaptionEnabled(true);
+    config.setGUI(true);
 
-    Game *g = new Game("15x15-2v2.json", config);
-    g->init();
-    //auto gui = PyGUI(*g);
+    auto g = Game("15x15-2v2.json", config);
+
+    Player &player0 = g.addPlayer();
+    Player &player1 = g.addPlayer();
+
+    g.setMaxFPS(10000000);
+    g.setMaxUPS(10000000);
+    g.start();
+
+    int EPISODES = 100000;
+
+    g.getUnitByNameID("Test1");
 
 
-    Player &player0 = g->addPlayer();
-    Player &player1 = g->addPlayer();
+    for(auto episode=0; episode < EPISODES; episode++)
+    {
 
+        while(!g.isTerminal())
+        {
+            g.update();
+            g.render();
+            g.caption();
 
-    g->setMaxFPS(1000000000);
-    g->setMaxUPS(1000000000);
-    g->start();
+            player0.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
+            player1.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
 
-    while(true){
-        g->tick();
-        g->update();
-        g->render();
-        g->caption();
-        //gui.render();
-        //gui.view();
-
-        auto v1 = rand() % 15;
-        player0.do_action(v1);
-
-        auto v2 = rand() % 42;
-        player1.do_action(v2);
-
-        if(g->isTerminal()){
-            g->reset();
         }
+
+        g.reset();
+
+
     }
 }
 

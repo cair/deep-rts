@@ -3,15 +3,15 @@
 //
 
 #include "Despawned.h"
-void Despawned::update(Unit & unit)const{
-
+void Despawned::update(Unit & unit){
+    (void)(unit);
 }
 
-void Despawned::end(Unit & unit)const{
-
+void Despawned::end(Unit & unit){
+    (void)(unit);
 }
 
-void Despawned::init(Unit & unit)const{
-
+void Despawned::init(Unit & unit){
+    (void)(unit);
 }
 

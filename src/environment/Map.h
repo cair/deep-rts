@@ -49,6 +49,8 @@ public:
 
     explicit Map(const std::string& map_file);
 
+    std::string mapFile;
+
     /// A tile's Width
     int TILE_WIDTH;
 
@@ -56,10 +58,10 @@ public:
     int TILE_HEIGHT;
 
     /// The Map Width (Num of tiles in width)
-    size_t MAP_WIDTH;
+    int MAP_WIDTH;
 
     /// The Map Height (Num of tiles in height)
-    size_t MAP_HEIGHT;
+    int MAP_HEIGHT;
 
     std::vector<int> tileIDs;
 

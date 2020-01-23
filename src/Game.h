@@ -18,6 +18,7 @@
 #include "Config.h"
 
 
+class PyGUI;
 class Game {
 
     /// List of Game instances
@@ -29,34 +30,33 @@ class Game {
     std::chrono::high_resolution_clock::time_point _render_next;
     std::chrono::high_resolution_clock::time_point _stats_next;
 
-    std::chrono::nanoseconds _update_interval;
-    std::chrono::nanoseconds _render_interval;
+    std::chrono::nanoseconds _update_interval{};
+    std::chrono::nanoseconds _render_interval{};
 
     uint32_t _update_delta = 0;
     uint32_t _render_delta = 0;
-
-    /// Spawn a player
-    void spawnPlayer(Player & player);
 
     /// Initialize the game clock timers
     void timerInit();
 
     ///
-    bool running;
+    bool running{};
 
 
+    /// Inits neccerary memory in stack vectors
+    void _internalInit();
 
 public:
-    /// Init the constructor
-    void init();
+    /// GUI Pointer
+    PyGUI* GUI = nullptr;
 
     // Retrieve game via Game ID
     static Game * getGame(uint8_t id);
 
     /// Game Constructor
-    explicit Game(std::string map_file);
-
-    Game(std::string map_file, Config config);
+    explicit Game(const std::string& map_file);
+    Game(const std::string& map_file, Config config);
+    ~Game();
 
 
     ////////////////////////////////////////////
@@ -85,33 +85,34 @@ public:
     /// List of Units inside the game session
     std::vector<Unit> units;
 
+    std::unordered_map<std::string, Unit*> unitsNameMap;
+
     /// Game Identification
-    uint8_t id;
+    int id{};
 
     /// Game Episode Ticks
-    uint64_t ticks = 0;
+    long ticks = 0;
 
     /// Game Episode
-    uint16_t episode = 1;
+    int episode = 1;
 
     /// Game Max FPS
-	uint32_t max_fps;
+	int max_fps{};
 
     /// Game Max UPS
-	uint32_t max_ups;
+	int max_ups{};
 
     /// Game Current FPS
-    uint32_t currentFPS = 0;
+    int currentFPS = 0;
 
     /// Game Current UPS
-    uint32_t currentUPS = 0;
+    int currentUPS = 0;
 
     /// Game terminal flag
     bool terminal = false;
 
     /// Selected player
-    Player* selectedPlayer;
-
+    Player* selectedPlayer{};
 
     ////////////////////////////////////////////////////
     ///
@@ -120,29 +121,31 @@ public:
     ////////////////////////////////////////////////////
 
     /// Get a Unit via index
-    Unit &getUnit(uint16_t idx);
+    Unit &getUnit(int idx);
 
-    uint32_t getMaxFPS() const;
+    int getMaxFPS() const;
 
-    uint32_t getMaxUPS() const;
+    int getMaxUPS() const;
 
-    uint32_t getFPS() const;
+    int getFPS() const;
 
-    uint32_t getUPS() const;
+    int getUPS() const;
 
-    uint64_t getGameDuration() const;
+    long getGameDuration() const;
 
-    uint64_t getTicks() const ;
+    long getTicks() const ;
 
-    size_t getWidth() const;
+    int getWidth() const;
 
-    size_t getHeight() const;
+    int getHeight() const;
 
-    uint16_t getEpisode() const;
+    int getEpisode() const;
 
-    uint8_t getId() const;
+    int getId() const;
 
-    int getTicksModifier() const;
+    long getTicksModifier() const;
+
+    Unit* getUnitByNameID(std::string nameID);
 
     ////////////////////////////////////////////////////
     ///
@@ -151,14 +154,13 @@ public:
     ////////////////////////////////////////////////////
 
     /// Set the Game FPS
-    void setMaxFPS(uint32_t fps_);
+    void setMaxFPS(int fps_);
 
     /// Set the Game UPS
-    void setMaxUPS(uint32_t ups_);
+    void setMaxUPS(int ups_);
 
     /// Set selected player
     void setSelectedPlayer(Player &player);
-
 
     ////////////////////////////////////////////////////
     ///
@@ -212,11 +214,11 @@ public:
     virtual void _onResourceGather(Tile& tile, Unit& unit);
     virtual void _onResourceDepleted(Tile& tile, Unit& unit);
 
-
     virtual void _onEpisodeStart();
     virtual void _onEpisodeEnd();
 
     virtual void _onTileChange(Tile &);
+
 };
 
 

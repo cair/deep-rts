@@ -17,14 +17,6 @@ public:
 	static Unit constructBarracks(Player &player);
     static Unit constructFootman(Player &player);
     static Unit constructArcher(Player &player);
-
-    /*static void constructFootman(Unit &u);
-    static void constructArcher(Unit &u);*/
-
-
-
-
-
 };
 
 

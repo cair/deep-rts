@@ -24,16 +24,34 @@ std::string GetCurrentWorkingDir()
     return current_working_dir;
 }
 
+std::string ResourceLoader::getFilePath(const std::string& fileName) {
+    std::string workingDir = GetCurrentWorkingDir();
+    std::string assetLocation = "DeepRTS/python";
 
-void ResourceLoader::loadMapJSON(std::string map_file) {
+    if (workingDir.find(assetLocation) != std::string::npos) {
+        // asset location is included (happens in python runtime)
+        return workingDir + "/assets/" + fileName;
+
+    } else {
+        // Did not find asset location in Working directory
+        return workingDir + "/" + assetLocation + "/assets/" + fileName;
+    }
+
+}
 
 
+void ResourceLoader::loadMapJSON(const std::string& mapFile) {
 
-    if(mapLoaded) return;
-	std::string filePath = GetCurrentWorkingDir() + "/assets/maps/" + map_file;
+    // If map is already loaded
+    if(mapLoaded) {
+        return;
+    }
+
+    // Retrieve map file location
+	auto mapFilePath = getFilePath("maps/" + mapFile);
 
     // Read Map data
-    std::ifstream map(filePath);
+    std::ifstream map(mapFilePath);
 
 	if (map.is_open()) {
 		rapidjson::IStreamWrapper isw(map);
@@ -41,18 +59,20 @@ void ResourceLoader::loadMapJSON(std::string map_file) {
 		mapJSON.ParseStream(isw);
 		mapLoaded = true;
 		if(mapJSON.IsNull()){
-			throw std::runtime_error("File Error: Could not find: " + map_file + " (" + filePath + ").\nEnsure that the data directory exists!");
+			throw std::runtime_error("File Error: Could not find: " + mapFile + " (" + mapFilePath + ").\nEnsure that the data directory exists!");
 		}
 	}
 	else {
-		throw std::runtime_error("File Error: Could not find: " + map_file + " (" + filePath + ").\nEnsure that the data directory exists!");
+		throw std::runtime_error("File Error: Could not find: " + mapFile + " (" + mapFilePath + ").\nEnsure that the data directory exists!");
 	}
 
 }
 
 void ResourceLoader::loadTileJSON() {
+
+
 	std::string fileName = "tile_properties.json";
-	std::string filePath = GetCurrentWorkingDir() + "/assets/" + fileName;
+	std::string filePath = getFilePath(fileName);
 
     std::ifstream map(filePath);
 	if (map.is_open()) {

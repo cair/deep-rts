@@ -1,11 +1,8 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-
-#include <iostream>
 #include "Tile.h"
 #include "../player/Player.h"
-#include "../unit/Unit.h"
 #include "../Game.h"
 
 Tile::Tile(
@@ -87,13 +84,14 @@ oilYield(oilYield)
 {
 
 	// Update state map
-	tilemap.game.state(x, y, 0) = typeId;
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
 
 	// Update state matrix
 	if(resources <= 0) {
 		setDepleted();
 	}
 
+	reset();
 }
 
 
@@ -163,7 +161,7 @@ bool Tile::isBuildable() const {
 
 
 int Tile::distance(Tile &target) {
-    return hypot(x - target.x, y - target.y);
+    return (int)hypot(x - target.x, y - target.y);
 }
 
 void Tile::reset()
@@ -171,6 +169,7 @@ void Tile::reset()
 	if(hasOccupant()) {
 		getOccupant()->clearStateForTile(this);
 	}
+
     occupantID = -1;
     harvestable = newHarvestable;
     walkable = newWalkable;
@@ -180,7 +179,7 @@ void Tile::reset()
     typeId = newTypeId;
     depleted = false;
 
-	tilemap.game.state(x, y, 0) = typeId;
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
     if(resources <= 0) {
         setDepleted();
     }
@@ -197,7 +196,9 @@ void Tile::setDepleted() {
     name = depletedName;
     typeId = depletedTypeId;
 
-	tilemap.game.state(x, y, 0) = typeId;
+
+
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
     triggerOnTileChange();
 }
 
