@@ -6,8 +6,6 @@
 
 #include "../../src/Game.h"
 #include "../../src/unit/Unit.h"
-
-
 class PyGame: public Game {
     using Game::Game;
 

@@ -38,7 +38,6 @@ Game::Game(std::string map_file, Config config, bool _init):
 }
 
 void Game::init(){
-    std::cout << "INIT" << std::endl;
     // State vector
     // 0 - Environment
     // 1 - Player ID

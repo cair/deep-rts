@@ -59,7 +59,9 @@ void PyGUI::init_gui(){
     auto GameBridge = DeepRTS_Python.attr("GameBridge");
     auto Config = DeepRTS_Python.attr("Config");
 
-    gui = GUI(GameBridge(&game), 32, Config(true, true, true, false, true, false, true, false, 50));
+    pybind11::object obj = pybind11::cast(game);
+    GameBridge(obj);
+    //gui = GUI(&obj, 32, Config(true, true, true, false, true, false, true, false, 50));
 
 }
 
