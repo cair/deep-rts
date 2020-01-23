@@ -1,10 +1,4 @@
-
-# Run setup.py install in sources/python to build source files.
-import os
 import random
-import time
-
-import DeepRTS
 from DeepRTS import python
 from DeepRTS import Engine
 
@@ -47,7 +41,6 @@ if __name__ == "__main__":
 
     env = scenario.GoldThousand(game)
 
-
     for episode in range(episodes):
         print("Episode: %s, FPS: %s, UPS: %s" % (episode, game.get_fps(), game.get_ups()))
 
@@ -58,9 +51,4 @@ if __name__ == "__main__":
             next_state, reward, terminal, _ = env.step(action, render="human")
 
             state = next_state
-
-
-
-
-
 

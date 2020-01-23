@@ -4,6 +4,8 @@ from DeepRTS.python import Config
 import numpy as np
 import random
 import os
+import argparse
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -13,6 +15,14 @@ class Game(Engine.Game):
         # This sets working directory, so that the C++ can load files correctly (dir_path not directly accessible in
         # c++)
         os.chdir(dir_path)
+
+        # Override map
+        parser = argparse.ArgumentParser(description='Process some integers.')
+        parser.add_argument('--map', action="store", dest="map", type=str)
+        args = parser.parse_args()
+
+        if args.map is not None:
+            map_name = args.map
 
         # Create arguments for the c++ side
         super_args = (map_name, engine_config) if engine_config else (map_name, )
