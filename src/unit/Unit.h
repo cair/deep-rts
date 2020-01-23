@@ -45,6 +45,9 @@ public:
 	/// Unit ID
 	int id;
 
+	/// Unit Name ID (i.e Peasant1)
+	std::string nameID;
+
 	/// Unit Type
 	Constants::Unit typeId;
 
@@ -111,22 +114,22 @@ public:
 
     // Harvesting
     double harvestInterval = .5; // Must be set in constructor
-    int harvestTimer;
+    int harvestTimer = 0;
     int harvestIterator;
     int harvestTargetID = -1;
 	Tile *getTile(int tileID);
     std::set<int> getVisionTileIDs();
 
     // Building
-    int spawnTimer;
+    int spawnTimer = 0;
     int buildEntityID = -1;
 	Unit &getBuildEntity();
-    int buildTimer;
+    int buildTimer = 0;
 
     // Combat
     int combatTargetID = -1;
 	Unit *getCombatTarget();
-    int combatTimer;
+    double combatTimer = 0;
     double combatInterval = 1; // Must be set in constructor
 
     // Walking
@@ -153,7 +156,7 @@ public:
     void despawn();
     void update();
 	Tile * centerTile();
-    void enqueueState(std::shared_ptr<BaseState> state);
+    void enqueueState(const std::shared_ptr<BaseState>& state);
     void transitionState();
     void transitionState(std::shared_ptr<BaseState> nextState);
     void setPosition(Tile &tile);

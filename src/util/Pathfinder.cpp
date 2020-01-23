@@ -28,7 +28,7 @@ bool Pathfinder::aStar(std::vector<Tile *> &constructedPath, Tile *start, Tile *
     frontier.put(start, 0);
 
 
-    came_from[start] = NULL;
+    came_from[start] = nullptr;
     cost_so_far[start] = 0;
 
     while (!frontier.empty()) {
@@ -85,7 +85,7 @@ Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int
 	std::set<Tile *> visited;
 	std::queue<Tile *> queue;
 
-	Tile *closest = NULL;
+	Tile *closest = nullptr;
 	uint16_t tmpClosest = INT16_MAX;
 
 	for (int dx = -1; dx <= range; dx++) {
@@ -147,7 +147,7 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
         }
     }
 
-    return NULL;
+    return nullptr;
     assert(false); // Should not be here. this means algorithm didnt find any closest tile and there should be one
 
 
@@ -182,7 +182,7 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Tile *Pathfinder::find_first_attackable_tile(Tile *start) {
@@ -214,7 +214,7 @@ Tile *Pathfinder::find_first_attackable_tile(Tile *start) {
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 

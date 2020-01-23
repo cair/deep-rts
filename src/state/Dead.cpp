@@ -6,18 +6,18 @@
 #include "../unit/Unit.h"
 #include "../Game.h"
 
-void Dead::update(Unit & unit)const{
+void Dead::update(Unit & unit){
     unit.despawn();
     unit.player_.removeUnit(unit);
     unit.player_.isDefeated();
     unit.player_.getGame().isTerminal();
 }
 
-void Dead::end(Unit & unit)const{
-
+void Dead::end(Unit & unit){
+    (void)(unit);
 }
 
-void Dead::init(Unit & unit)const{
-
+void Dead::init(Unit & unit){
+    (void)(unit);
 }
 

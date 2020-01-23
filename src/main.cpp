@@ -1,39 +1,45 @@
 
+#include <random>
 #include "Config.h"
 #include "Game.h"
-#include "graphics/PyGUI.h"
+#include "util/Random.h"
+
 
 int main() {
+
     Config config = Config::defaults();
+    config.setConsoleCaptionEnabled(true);
+    config.setGUI(true);
 
     auto g = Game("15x15-2v2.json", config);
+
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();
-    g.init();
-    auto gui = PyGUI(g);
 
-
-
-
-
-
-
-    g.setMaxFPS(1000000000);
-    g.setMaxUPS(1000000000);
+    g.setMaxFPS(10000000);
+    g.setMaxUPS(10000000);
     g.start();
 
-    while(true){
-        g.tick();
-        g.update();
-        g.render();
-        g.caption();
-        //gui.view();
+    int EPISODES = 100000;
+
+    g.getUnitByNameID("Test1");
 
 
-        player0.do_action(rand() % 14);
+    for(auto episode=0; episode < EPISODES; episode++)
+    {
 
+        while(!g.isTerminal())
+        {
+            g.update();
+            g.render();
+            g.caption();
 
-        player1.do_action(rand() % 14);
+            player0.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
+            player1.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
+
+        }
+
+        g.reset();
 
 
     }

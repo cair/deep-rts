@@ -24,7 +24,7 @@ std::string GetCurrentWorkingDir()
     return current_working_dir;
 }
 
-std::string ResourceLoader::getFilePath(std::string fileName) {
+std::string ResourceLoader::getFilePath(const std::string& fileName) {
     std::string workingDir = GetCurrentWorkingDir();
     std::string assetLocation = "DeepRTS/python";
 
@@ -40,7 +40,7 @@ std::string ResourceLoader::getFilePath(std::string fileName) {
 }
 
 
-void ResourceLoader::loadMapJSON(std::string mapFile) {
+void ResourceLoader::loadMapJSON(const std::string& mapFile) {
 
     // If map is already loaded
     if(mapLoaded) {

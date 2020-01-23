@@ -1,17 +1,19 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
+#pragma once
 
-#ifndef WARC2SIM_CONSTANTS_H
-#define WARC2SIM_CONSTANTS_H
 #include <string>
 #include <map>
+
 #define DEBUG(x) do { std::cerr << x; } while (0)
 
 namespace Constants{
 
 	const int MAX_PLAYERS = 8;
 	const int MAX_UNITS = 1000;
+    const int ACTION_MIN = 1;
+    const int ACTION_MAX = 16; // Set based on last action in enum
 
 
 	enum Unit {
@@ -107,38 +109,24 @@ namespace Constants{
 		NoAction = 16,
 	};
 
-	const int action_min = 1;
-	const int action_max = 16;
+    const std::map<int, std::string> ActionToName = {
+            {PreviousUnit, "Prev Unit"},
+            {NextUnit, "Next Unit"},
+            {MoveLeft, "Move Left"},
+            {MoveRight, "Move Right"},
+            {MoveUp, "Move Up"},
+            {MoveDown, "Move Down"},
+            {MoveUpLeft, "Move Up Left"},
+            {MoveUpRight, "Move Up Right"},
+            {MoveDownLeft, "Move Down Left"},
+            {MoveDownRight, "Move Down Right"},
+            {Attack, "Attack"},
+            {Harvest, "Harvest"},
+            {Build0, "Build 0"},
+            {Build1, "Build 1"},
+            {Build2, "Build 2"},
+            {NoAction, "No Action"}
+    };
 
-	const std::string actionNames[16] = {
-		"PrevUnit",
-		"NextUnit",
-
-
-		"MoveLeft",
-		"MoveRight",
-		"MoveUp",
-		"MoveDown",
-		"MoveUpLeft",
-		"MoveUpRight",
-		"MoveDownLeft",
-		"MoveDownRight",
-
-		"Attack",
-		"Harvest",
-
-		"Build0",
-		"Build1",
-		"Build2",
-
-		"NoAction",
-	};
 
 }
-
-
-
-
-
-
-#endif //WARC2SIM_CONSTANTS_H

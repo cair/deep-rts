@@ -1,5 +1,0 @@
-ray[rllib]
-requests
-setproctitle
-psutil
-tensorflow-gpu

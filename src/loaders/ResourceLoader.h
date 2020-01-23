@@ -14,7 +14,7 @@ public:
 
 
 private:
-    std::string getFilePath(std::string fileName);
+    static std::string getFilePath(const std::string& fileName);
     bool mapLoaded = false;
     void loadTileJSON();
     ResourceLoader(){
@@ -22,7 +22,7 @@ private:
     }
 
 public:
-    void loadMapJSON(std::string map_file);
+    void loadMapJSON(const std::string& map_file);
 
     // C++ 11
     // =======

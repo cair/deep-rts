@@ -18,25 +18,18 @@ class Game(Engine.Game):
         engine_config.set_terminal_signal(terminal_signal)
 
         # Call C++ constructor
-        super(Game, self).__init__(map_name, engine_config, False)
+        super(Game, self).__init__(map_name, engine_config)
 
         # Event listeners
         self._listeners = {
             "on_tile_change": []
         }
 
-
         self._render_every = 1
         self._view_every = 1
         self._capture_every = 1
 
         self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config())
-
-        # Must have this to trigger tile refresh (full)
-        # This is because the onTileChange callback is added in self.gui, which is AFTER tiles are created
-        # Also the game resets once before the gui is created
-        # This should have minimal impact on performance
-        self.init()
 
         # Create players
         for i in range(n_players):
@@ -45,7 +38,7 @@ class Game(Engine.Game):
         # Select first player as default
         self.set_player(self.players[0])
 
-
+        self.start()
 
     def sample_action(self):
         return int(Engine.Constants.action_max * random.random()) + Engine.Constants.action_min
