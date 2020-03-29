@@ -23,6 +23,7 @@ void init_Config(py::module &m) {
             .def("set_start_gold", &Config::setStartGold)
             .def("set_start_lumber", &Config::setStartLumber)
             .def("set_start_oil", &Config::setStartOil)
+            .def("set_start_food", &Config::setStartFood)
             .def("set_terminal_signal", &Config::setTerminalSignal)
             .def("set_pomdp", &Config::setPOMDP)
 
@@ -42,6 +43,7 @@ void init_Config(py::module &m) {
             .def_readonly("start_gold", &Config::startGold)
             .def_readonly("start_oil", &Config::startOil)
             .def_readonly("start_lumber", &Config::startLumber)
+            .def_readonly("start_food", &Config::startFood)
             .def_readonly("terminal_signal", &Config::terminalSignal)
             .def_readonly("console_caption_enabled", &Config::consoleCaptionEnabled)
 

@@ -66,7 +66,10 @@ void Player::reset()
     lumber = game_.config.startLumber;
     oil = game_.config.startOil;
     foodConsumption = 0;
-    food = 1;
+    //food = 1;
+    // Trying to config start food
+    //food = 1;
+    food = game_.config.startFood;
     defeated = false;
 
     sGatheredGold = 0;
