@@ -60,6 +60,7 @@ private:
 public:
 	const Config &config;
 
+    void spawnUnit(Constants::Unit unitType);
 	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
 	std::vector<int> unitIndexes;
 

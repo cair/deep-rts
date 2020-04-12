@@ -41,7 +41,6 @@ void Building::end(Unit & unit){
 }
 
 void Building::init(Unit & unit){
-
     // Build timer is reset on end. this is so that we can override build time (i.e on spawn)
 }
 

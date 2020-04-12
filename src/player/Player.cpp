@@ -118,6 +118,27 @@ void Player::spawnPlayer() {
 
 }
 
+void Player::spawnUnit(Constants::Unit unitType) {
+    // Retrieve spawn_point
+    int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
+    auto baseSpawnTile = game_.tilemap.tiles[spawnPointIdx];
+    auto neighbors = game_.tilemap.neighbors(baseSpawnTile, Constants::Pathfinding::Walkable);
+    if (neighbors.size() > 0) {
+        auto spawnTile = neighbors[0];
+        // Create Unit object 
+        //unit = UnitManager::constructUnit(unitType, *this);
+        auto unit = &addUnit(unitType);
+
+        unit->spawn(*spawnTile, unit->spawnDuration);
+        unit->update();
+
+        // Set targeted unit to newly spawned unit
+        targetedUnitID = unit->id;
+    } else {
+        std::cout << "No more space to build units!";
+    }
+}
+
 
 
 

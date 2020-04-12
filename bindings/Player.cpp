@@ -12,9 +12,7 @@ void init_Player(py::module &m) {
             .def(py::init<Game&, int>())
 
             .def_readonly("statistic_gathered_gold", &Player::sGatheredGold)
-            .def_readonly("statistic_gathered_lumber", &Player::sGatheredLumber)
-            .def_readonly("statistic_gathered_oil", &Player::sGatheredOil)
-            .def_readonly("statistic_damage_done", &Player::sDamageDone)
+            .def_readonly("statistic_gathered_lumber", &Player::sGatheredLumber) .def_readonly("statistic_gathered_oil", &Player::sGatheredOil) .def_readonly("statistic_damage_done", &Player::sDamageDone)
             .def_readonly("statistic_damage_taken", &Player::sDamageTaken)
             .def_readonly("statistic_units_created", &Player::sUnitsCreated)
             .def_readonly("num_archer", &Player::num_archer)
@@ -28,6 +26,7 @@ void init_Player(py::module &m) {
             .def_readonly("gold", &Player::gold)
             .def_readonly("lumber", &Player::lumber)
             .def_readonly("food_consumption", &Player::foodConsumption)
+            .def_readonly("food", &Player::food)
             .def_readonly("food", &Player::food)
 
 
@@ -45,8 +44,8 @@ void init_Player(py::module &m) {
 
             .def("right_click", (void (Player::*)(int, int)) &Player::rightClick)
             .def("get_targeted_unit", &Player::getTargetedUnit, py::return_value_policy::reference)
-            .def("left_click", &Player::leftClick);
-
+            .def("left_click", &Player::leftClick)
+            .def("spawn_unit", &Player::spawnUnit)
             .def("add_unit", &Player::addUnit);
 
             //.def("right_click", &Player::rightClick);
