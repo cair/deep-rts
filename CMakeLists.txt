@@ -2,15 +2,14 @@
 project(DeepRTS)
 
 # Cmake version
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.12)
 
 
 
 # Creates Engine in DeepRTS package (instead of root)
 if (NOT DEFINED PYTHON_BUILD)
-        find_package(PythonInterp 3.7 REQUIRED) # Todo
-        find_package(PythonLibs 3.7 REQUIRED) # todo - UPGRADE
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")
+        find_package(Python COMPONENTS Interpreter Development)
 endif ()
 
 # -DCMAKE_BUILD_TYPE=Release
@@ -110,13 +109,20 @@ pybind11_add_module(Engine
         )
 
 
+
 # Dont create C++ Executable for Python builds (saves time)
 
 if (NOT DEFINED PYTHON_BUILD)
+
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
         add_executable(DeepRTSGame ${SOURCE_FILES})
         target_link_libraries(DeepRTSGame PRIVATE pybind11::embed)
-        file(COPY ./DeepRTS DESTINATION ${CMAKE_BINARY_DIR})
+
+        # make python source the build dir.
+        execute_process(
+                COMMAND ln -sf ${PROJECT_SOURCE_DIR}/DeepRTS ${CMAKE_BINARY_DIR}
+        )
+
 endif ()
 
 

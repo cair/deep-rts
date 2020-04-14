@@ -1,6 +1,7 @@
 from DeepRTS import Engine
 from DeepRTS.python import GUI
 from DeepRTS.python import Config
+
 import numpy as np
 import random
 import os

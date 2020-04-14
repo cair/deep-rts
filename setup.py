@@ -79,7 +79,7 @@ except:
 setup(
     name='DeepRTS',
     version_format='{tag}.dev{commitcount}',  # +{gitsha}
-    setup_requires=['setuptools-git-version', 'pybind11'],
+    setup_requires=['pybind11'],
     author='Per-Arne Andersen',
     author_email='per@sysx.no',
     url='https://github.com/cair/deep-rts',

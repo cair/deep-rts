@@ -34,30 +34,34 @@ Unit& Player::spawn(Tile &spawnPoint) {
     // Spawn a builder
 
 
-    Unit *unit = nullptr;
-    if (faction == 0) // Human
-    {
+    Unit *unit;
+    switch (faction) {
+        case 0: // Human
+            unit = &addUnit(Constants::Unit::Peasant);
+            break;
+        case 1: // Orc
+            unit = &addUnit(Constants::Unit::Peasant); // TODO
+            break;
+        default:
+            unit = nullptr;
 
-        unit = &addUnit(Constants::Unit::Peasant);
     }
-    else if (faction == 1) // Orc
-    {
-        unit = &addUnit(Constants::Unit::Peasant);
-    }
-    else {
-        assert(false);
-    }
-
     assert(unit && "Unit was null for some reason");
-    unit->spawn(spawnPoint, unit->spawnDuration);
-    unit->update();
+
+    return spawnUnit(*unit, spawnPoint, 1);
+}
+
+Unit& Player::spawnUnit(Unit& unit, Tile& tile, int select = 1){
+
+    unit.spawn(tile, unit.spawnDuration);
+    unit.update();
 
     // Set targeted unit to newly spawned unit
-    targetedUnitID = unit->id;
+    targetedUnitID = unit.id;
 
-
-    return *unit;
+    return unit;
 }
+
 
 void Player::reset()
 {
@@ -66,9 +70,6 @@ void Player::reset()
     lumber = game_.config.startLumber;
     oil = game_.config.startOil;
     foodConsumption = 0;
-    //food = 1;
-    // Trying to config start food
-    //food = 1;
     food = game_.config.startFood;
     defeated = false;
 
@@ -98,13 +99,7 @@ void Player::reset()
 void Player::spawnPlayer() {
     // Retrieve spawn_point
 
-    if(game_.tilemap.spawnTiles.size() < game_.players.size()){
-        throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
-    }
-
-    int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
-
-    auto spawnTile = game_.tilemap.tiles[spawnPointIdx];
+    auto spawnTile = game_.tilemap.getSpawnTile(getId());
 
     // Spawn Initial builder
     Unit &builder = spawn(spawnTile);
@@ -118,55 +113,45 @@ void Player::spawnPlayer() {
 
 }
 
-void Player::spawnUnit(Constants::Unit unitType) {
-    // Retrieve spawn_point
-    int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
-    auto baseSpawnTile = game_.tilemap.tiles[spawnPointIdx];
-    auto neighbors = game_.tilemap.neighbors(baseSpawnTile, Constants::Pathfinding::Walkable);
-    if (neighbors.size() > 0) {
-        auto spawnTile = neighbors[0];
-        // Create Unit object 
-        //unit = UnitManager::constructUnit(unitType, *this);
-        auto unit = &addUnit(unitType);
-
-        unit->spawn(*spawnTile, unit->spawnDuration);
-        unit->update();
-
-        // Set targeted unit to newly spawned unit
-        targetedUnitID = unit->id;
-    } else {
+void Player::spawnUnitNearSpawnPoint(Constants::Unit unitType) {
+    auto playerSpawnTile = game_.tilemap.getSpawnTile(getId());
+    auto neighbors = game_.tilemap.neighbors(playerSpawnTile, Constants::Pathfinding::Walkable);
+    if (neighbors.empty()) {
         std::cout << "No more space to build units!";
+        return;
     }
+
+    auto unitSpawnTile = neighbors[0];
+    auto unit = addUnit(unitType);
+    spawnUnit(unit, *unitSpawnTile, 1);
 }
 
 
-
-
-int Player::getFoodConsumption() {
+int Player::getFoodConsumption() const {
     return foodConsumption;
 }
 
-int Player::getFood() {
+int Player::getFood() const {
     return food;
 }
 
-int Player::getGold() {
+int Player::getGold() const {
     return gold;
 }
 
-int Player::getOil() {
+int Player::getOil() const {
     return oil;
 }
 
-int Player::getLumber() {
+int Player::getLumber() const {
     return lumber;
 }
 
-int Player::getUnitCount() {
+int Player::getUnitCount() const {
     return unitIndexes.size();
 }
 
-int Player::getId() {
+int Player::getId() const {
     return id_;
 }
 
@@ -182,7 +167,7 @@ void Player::addOil(int n) {
     oil += n;
 }
 
-int Player::getScore() {
+int Player::getScore() const {
     uint8_t GOLD_VALUE = 2;
     uint8_t LUMBER_VALUE = 1;
     //uint8_t OIL_VALUE = 3;
@@ -227,14 +212,13 @@ bool Player::isDefeated() {
     if (defeated){
         return true;
     }      // Defeated flag = True
-    else if (num_peasant + num_footman + num_archer > 0){
-        return false;
-    }    // Have remaining units
+
     else if (
-        (num_town_hall > 0 && gold >= 400) ||
-        (num_barrack > 0 && gold >= 600)
-    ){
-        return false; // No units, but can purchase footman or peasant
+            ((num_town_hall > 0 && gold >= 400) || (num_barrack > 0 && gold >= 600)) || // No units, but can purchase footman or peasant
+            ((num_peasant + num_footman + num_archer > 0)) // Have remaining units
+            )
+    {
+        return false;
     }
 
 
@@ -257,7 +241,7 @@ bool Player::canPlace(Unit & builder, Unit & unit, Tile &_tile) {
     return true;
 }
 
-bool Player::canAfford(Unit & unit) {
+bool Player::canAfford(Unit & unit) const {
     return gold >= unit.goldCost && lumber >= unit.lumberCost && oil >= unit.oilCost;
 
 }

@@ -16,8 +16,8 @@ int main() {
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();
 
-    g.setMaxFPS(10000000);
-    g.setMaxUPS(10000000);
+    g.setMaxFPS(60);
+    g.setMaxUPS(60);
     g.start();
 
     int EPISODES = 100000;
@@ -34,8 +34,8 @@ int main() {
             g.render();
             g.caption();
 
-            player0.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
-            player1.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
+            //player0.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
+            //player1.do_action(Random::randInt(Constants::ACTION_MIN, Constants::ACTION_MAX));
 
         }
 

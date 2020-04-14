@@ -201,4 +201,12 @@ bool Tilemap::operator()(unsigned x, unsigned y) const
 
 }
 
+Tile &Tilemap::getSpawnTile(int playerID) {
+    if(spawnTiles.size() < game.players.size()){
+        throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
+    }
+    int spawnPointIdx = spawnTiles[playerID];
+    return tiles[spawnPointIdx];
+}
+
 

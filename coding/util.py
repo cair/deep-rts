@@ -3,8 +3,7 @@ import sys
 
 import gym
 import numpy as np
-from tensorboard import default
-from tensorboard import program
+
 
 def get_available_gpus():
     from tensorflow_core.python.client import device_lib
@@ -17,9 +16,12 @@ def gpu_count():
 class TensorBoardTool:
 
     def __init__(self, dir_path):
+
         self.dir_path = dir_path
 
     def run(self):
+        from tensorboard import default
+        from tensorboard import program
         # Remove http messages
         log = logging.getLogger('werkzeug').setLevel(logging.ERROR)
         # Start tensorboard server

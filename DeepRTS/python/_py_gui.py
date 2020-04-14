@@ -187,7 +187,6 @@ class AbstractGUI:
                         targeted_unit.build(2)
 
 
-
     def draw_tile(self, tile, rect):
         tile_type = tile.get_type_id()
         sprite = self.sprite_tiles[tile_type]
@@ -207,7 +206,7 @@ class AbstractGUI:
         unit_type = unit.type
         direction = unit.direction
         state_id = unit.state.id
-        player_id = unit.get_player().get_id()  # TODO - prolly slow?
+        player_id = unit.get_player().get_id()
 
         try:
             v = self.sprite_units[player_id][unit_type][direction][state_id]
@@ -278,9 +277,6 @@ class AbstractGUI:
             # hence, we add a larger rect if a unit is drawn at the end of draw_unit function)
 
         self.rect_manager.clear_changed_tile()
-
-
-        pass
 
     def view(self):
         if not self.has_window:

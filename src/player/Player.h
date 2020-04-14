@@ -60,7 +60,7 @@ private:
 public:
 	const Config &config;
 
-    void spawnUnit(Constants::Unit unitType);
+    void spawnUnitNearSpawnPoint(Constants::Unit unitType);
 	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
 	std::vector<int> unitIndexes;
 
@@ -90,28 +90,28 @@ public:
 	Game &getGame() const;
 
 	/// Get Player's ID
-	int getId();
+	int getId() const;
 
 	/// Get the food consumption
-	int getFoodConsumption();
+	int getFoodConsumption() const;
 
-	/// Get Max Food
-	int getFood();
+    [[maybe_unused]] /// Get Max Food
+	int getFood() const;
 
 	/// Get the gold resource
-	int getGold();
+	int getGold() const;
 
 	/// Get the oil resource
-	int getOil();
+	int getOil() const;
 
 	/// Get the lumber resource
-	int getLumber();
+	int getLumber() const;
 
 	/// Get the score
- 	int getScore();
+ 	int getScore() const;
 
 	/// Get the unit count for this player
-	int getUnitCount();
+	int getUnitCount() const;
 
 	/// Get the targeted unit (Returns null if none)
 	Unit *getTargetedUnit();
@@ -134,6 +134,9 @@ public:
 
 	/// Add a unit to the player
 	Unit &addUnit(Constants::Unit unitType);
+
+	//
+    Unit &spawnUnit(Unit &unit, Tile &tile, int select);
 
 	/// Removes a unit from the player
 	void removeUnit(Unit & unit);
@@ -202,19 +205,7 @@ public:
 
 	/// TODO move these to Unit.h?
     bool canPlace(Unit & builder, Unit & unit, Tile &tile);
-    bool canAfford(Unit & unit);
-
-
-
-
-
-
-
-
-
-
-
-
+    bool canAfford(Unit & unit) const;
 
 
 

@@ -26,6 +26,7 @@ void init_version(py::module &m) {
 
 
 PYBIND11_MODULE(Engine, m) {
+    m.doc() = "DeepRTS Engine";
     init_Random(m);
     init_Constants(m);
     init_BaseState(m);

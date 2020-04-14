@@ -3,6 +3,7 @@
 
 from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
+import Engine
 if __name__ == "__main__":
     episodes = 1000
     random_play = True

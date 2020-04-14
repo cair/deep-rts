@@ -26,6 +26,9 @@ public:
 	/// Get all tiles
 	std::vector<Tile>& getTiles();
 
+	/// GetSpawnTile
+	Tile &getSpawnTile(int playerID);
+
 	/// Get a list of tiles that are neighbour to the input tile
 	std::vector<Tile *> neighbors(Tile &tile, Constants::Pathfinding type);
 
