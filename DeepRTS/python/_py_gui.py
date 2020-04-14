@@ -186,7 +186,6 @@ class AbstractGUI:
                         # Build unit 1
                         targeted_unit.build(2)
 
-
     def draw_tile(self, tile, rect):
         tile_type = tile.get_type_id()
         sprite = self.sprite_tiles[tile_type]

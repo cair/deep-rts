@@ -3,7 +3,6 @@
 
 from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
-import Engine
 if __name__ == "__main__":
     episodes = 1000
     random_play = True
@@ -22,7 +21,8 @@ if __name__ == "__main__":
         state = env.reset()
 
         while not terminal:
-            action = Random.action() -1  # TODO AI Goes here
+
+            action = Random.action() - 1  # TODO AI Goes here
             next_state, reward, terminal, _ = env.step(action)
 
 

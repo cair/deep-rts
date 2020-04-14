@@ -228,8 +228,6 @@ class Scenario(gym.Env):
         for _ in range(self.config["updates_per_action"]):
             self.game.update()
 
-        self.game.render()
-
         s1 = self.get_state()
         t, r = self.evaluate()
         return s1, r, t, {}
