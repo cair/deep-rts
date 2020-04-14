@@ -65,7 +65,7 @@ void init_Unit(py::module &m) {
             .def("build", &Unit::build)
             .def_readwrite("animation_counter", &Unit::animationCounter)
 
-
+            .def("spawn", &Unit::spawn)
             ;
 
 }
