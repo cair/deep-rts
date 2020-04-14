@@ -599,3 +599,4 @@ void Unit::setStateForTile(Tile *t){
     game->state(t->x, t->y, 8) = damageMin + damageMax + damagePiercing; // Unit Attack Score
     game->state(t->x, t->y, 9) = armor; // Unit Defense Score
 }
+

@@ -23,6 +23,7 @@ public:
     int startGold = 0;
     int startOil = 0;
     int startLumber = 0;
+    int startFood = 1;
     int terminalSignal = true;
     /// Bool that determine print of FPS and UPS in console
     bool consoleCaptionEnabled = true;
@@ -81,6 +82,10 @@ public:
 
     void setStartGold(int v) {
         startGold = v;
+    }
+
+    void setStartFood(int v) {
+        startFood = v;
     }
 
     void setStartOil(int v){

@@ -206,5 +206,6 @@ public:
 	/// State alterations
 	void setStateForTile(Tile * t);
 	void clearStateForTile(Tile *t);
+
 };
 
