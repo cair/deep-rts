@@ -11,7 +11,7 @@
 #ifdef _WIN32
 #include <direct.h>
 #define GetCurrentDir _getcwd
-#elif __linux__
+#elif __linux__ || __APPLE__
 #include <unistd.h>
 #define GetCurrentDir getcwd
 #endif
