@@ -12,7 +12,6 @@ public:
     rapidjson::Document mapJSON;
     rapidjson::Document tileJSON;
 
-
 private:
     static std::string getFilePath(const std::string& fileName);
     bool mapLoaded = false;
