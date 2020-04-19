@@ -118,7 +118,7 @@ void Player::spawnPlayer() {
 
 }
 
-void Player::spawnUnit(Constants::Unit unitType) {
+void Player::spawnUnitAroundSpawnPoint(Constants::Unit unitType) {
     // Retrieve spawn_point
     int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
     auto baseSpawnTile = game_.tilemap.tiles[spawnPointIdx];
@@ -139,8 +139,18 @@ void Player::spawnUnit(Constants::Unit unitType) {
     }
 }
 
+void Player::spawnUnit(Constants::Unit unitType, Tile &spawnPoint) {
+    if (spawnPoint.isWalkable()) {
+        //unit = UnitManager::constructUnit(unitType, *this);
+        auto unit = &addUnit(unitType);
 
+        unit->spawn(spawnPoint, unit->spawnDuration);
+        unit->update();
 
+        // Set targeted unit to newly spawned unit
+        targetedUnitID = unit->id;
+    }
+}
 
 int Player::getFoodConsumption() {
     return foodConsumption;
@@ -487,11 +497,6 @@ void Player::do_action(int actionID) {
         default:
             break;
     }
-
-
-
-
-
 
 }
 

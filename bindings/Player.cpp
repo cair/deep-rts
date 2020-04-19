@@ -46,6 +46,7 @@ void init_Player(py::module &m) {
             .def("get_targeted_unit", &Player::getTargetedUnit, py::return_value_policy::reference)
             .def("left_click", &Player::leftClick)
             .def("spawn_unit", &Player::spawnUnit)
+            .def("spawn_unit_around_spawn_point", &Player::spawnUnitAroundSpawnPoint)
             .def("add_unit", &Player::addUnit);
 
             //.def("right_click", &Player::rightClick);
