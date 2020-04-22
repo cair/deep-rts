@@ -33,11 +33,15 @@ struct TileData {
             int resources,
             int lumber_yield,
             int gold_yield,
-            int oil_yield): depleteTile(depleteTile), name(std::move(name)), walkable(walkable), harvestable(harvestable),
-                            swimable(swimable), resources(resources), lumber_yield(lumber_yield), gold_yield(gold_yield),
-                            oil_yield(oil_yield){
-
-    }
+            int oil_yield): depleteTile(depleteTile), 
+	                    name(std::move(name)), 
+			    walkable(walkable), 
+			    harvestable(harvestable),
+                            swimable(swimable), 
+			    resources(resources), 
+			    lumber_yield(lumber_yield), 
+			    gold_yield(gold_yield),
+                            oil_yield(oil_yield) {}
 };
 
 
@@ -65,10 +69,9 @@ public:
 
     std::vector<int> tileIDs;
 
+    std::map<int, std::vector<int>> playersUnits;
+
     std::map<int, TileData> tilesData;
-
-
-
 
 };
 

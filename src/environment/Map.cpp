@@ -19,6 +19,20 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
 
     auto tilesetData = mapData["tilesets"].GetArray()[0].GetObject();
     auto mapLayer = mapData["layers"].GetArray()[0].GetObject();
+
+    //get spawn units for each player
+    auto unitLayers = mapData["layers"].GetArray();
+    for (int x = 1; x < unitLayers.Size(); x++) { 
+	auto player = unitLayers[x]["player"].GetInt();
+	std::vector<int> units;
+
+	for (int y = 0; y < unitLayers[x]["data"].GetArray().Size(); y++) {
+		units.emplace_back(unitLayers[x]["data"].GetArray()[y].GetInt());
+	}
+
+        playersUnits.emplace(player, units);
+    }
+
     auto _tileIDs = mapLayer["data"].GetArray();
 
     for(auto &id : _tileIDs) {

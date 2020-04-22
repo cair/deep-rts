@@ -17,21 +17,6 @@
 #endif
 
 
-//#ifdef __APPLE__
-//boost::filesystem::path GetCurrentWorkingDir()
-//{
-//  unsigned int bufferSize = 512;
-//  std::vector<char> buffer(bufferSize + 1);
-//
-//  if(_NSGetExecutablePath(&buffer[0], &bufferSize)) {
-//    buffer.resize(bufferSize);
-//    _NSGetExecutablePath(&buffer[0], &bufferSize);
-//  }
-//
-//  std::string s = &buffer[0];
-//  return s;
-//}
-//#elif
 std::string GetCurrentWorkingDir()
 {
     char buff[FILENAME_MAX];
