@@ -45,18 +45,18 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
     for(auto tileId : tileIDs) {
         auto tileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
 
-	int unit_to_spawn = 0;
-	int unit_owner = -1;
-	if (playersUnits.size() > 0) {
-		for (auto player : playersUnits) {
-			auto units = playersUnits[player];
-			if (units[tileId] != 0) {
-				unit_to_spawn = units[tileId];
-				unit_owner = player;
-				break;
-			}
-		}
-	}
+        int unit_to_spawn = 0;
+        int unit_owner = -1;
+        if (playersUnits.size() > 0) {
+            for (auto &player : playersUnits) {
+                auto units = player.second;
+                if (units[tileId] != 0) {
+                    unit_to_spawn = units[tileId];
+                    unit_owner = player.first;
+                    break;
+                }
+            }
+        }
 
         tilesData.emplace(tileId,TileData(
                 tileData["deplete_tile"].GetInt(),
@@ -68,8 +68,8 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
                 tileData["lumber_yield"].GetInt(),
                 tileData["gold_yield"].GetInt(),
                 tileData["oil_yield"].GetInt(),
-		unit_to_spawn,
-		unit_owner)
+                unit_to_spawn,
+                unit_owner)
         );
 
 

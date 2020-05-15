@@ -98,24 +98,36 @@ void Player::reset()
 void Player::spawnPlayer() {
     // Retrieve spawn_point
 
-    if(game_.tilemap.spawnTiles.size() < game_.players.size()){
-        throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
+    if (game_.tilemap.unitSpawnTiles.size() > 0) {
+        for (auto tile : game_.tilemap.unitSpawnTiles) {
+            if (tile.unitOwner == getId()) {
+                std::cout << "unit int " << tile.unit;
+                auto unit = &addUnit(static_cast<Constants::Unit>(tile.unit));
+
+                unit->spawn(tile, unit->spawnDuration);
+                unit->update();
+
+                // Set targeted unit to newly spawned unit
+                //targetedUnitID = unit->id;
+            }
+        }
+    } else {
+        if(game_.tilemap.spawnTiles.size() < game_.players.size()){
+            throw std::runtime_error(std::string("Failed to spawn player, There are not enough spawn tiles!"));
+        }
+
+        int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
+
+        auto spawnTile = game_.tilemap.tiles[spawnPointIdx];
+
+        // Spawn Initial builder
+        Unit &builder = spawn(spawnTile);
+
+        if (config.instantTownHall) {
+            // build Town-Hall
+            builder.build(0);
+        }
     }
-
-    int spawnPointIdx = game_.tilemap.spawnTiles[getId()];
-
-    auto spawnTile = game_.tilemap.tiles[spawnPointIdx];
-
-    // Spawn Initial builder
-    Unit &builder = spawn(spawnTile);
-
-    // If auto-spawn town hall mechanic is activated
-
-    if (config.instantTownHall) {
-        // build Town-Hall
-        builder.build(0);
-    }
-
 }
 
 void Player::spawnUnitAroundSpawnPoint(Constants::Unit unitType) {

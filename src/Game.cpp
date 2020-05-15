@@ -106,7 +106,6 @@ void Game::reset()
     _onEpisodeStart();
 
 
-
 }
 
 void Game::update(){

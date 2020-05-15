@@ -97,6 +97,10 @@ public:
 
 	const int oilYield;
 
+    const int unit;
+
+    const int unitOwner;
+
 
 
 
@@ -122,6 +126,8 @@ public:
             int depletedResources,
             int lumberYield,
             int goldYield,
+            int unit,
+            int unitOwner,
             int oilYield
 	);
 

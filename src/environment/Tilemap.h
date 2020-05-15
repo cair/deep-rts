@@ -23,6 +23,9 @@ public:
 	/// List of spawn tiles (Tiles that players can spawn on)
 	std::vector<int> spawnTiles;
 
+	/// List of unit spawn tiles (Tiles that custom units will spawn on)
+    std::vector<Tile> unitSpawnTiles;
+
 	/// Get all tiles
 	std::vector<Tile>& getTiles();
 

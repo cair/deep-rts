@@ -44,7 +44,10 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             auto goldYield = newTileData.gold_yield;
             auto oilYield = newTileData.oil_yield;
 
-                      tiles.emplace_back(Tile(
+            auto unit = newTileData.unit_to_spawn;
+            auto unitOwner = newTileData.unit_owner_player;
+
+            auto tl = Tile(
                 *this,
                 c,
                 x,
@@ -65,11 +68,19 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 depletedResources,
                 lumberYield,
                 goldYield,
-                oilYield));
+                unit,
+                unitOwner,
+                oilYield);
+
+            tiles.emplace_back(tl);
 
             //Tile &tile = tiles.back();
             if(newTypeId == Constants::Tile::Spawn){
                 spawnTiles.push_back(c);
+            }
+
+            if (unit != 0 && unitOwner != -1) {
+                unitSpawnTiles.push_back(tl);
             }
 
             c++;

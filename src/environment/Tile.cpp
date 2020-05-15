@@ -26,6 +26,8 @@ Tile::Tile(
 		int depletedResources,
 		int lumberYield,
 		int goldYield,
+        int unit,
+        int unitOwner,
 		int oilYield
 ):
 tilemap(tilemap),
@@ -79,6 +81,10 @@ height(height),
 lumberYield(lumberYield),
 
 goldYield(goldYield),
+
+unit(unit),
+
+unitOwner(unitOwner),
 
 oilYield(oilYield)
 {
