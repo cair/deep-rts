@@ -41,7 +41,6 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
     }
 
     for (int tidx = 0; tidx < tileIDs.size(); tidx++) {
-//    for(auto tileId : tileIDs) {
         auto tileId = tileIDs[tidx];
         auto tileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
 
