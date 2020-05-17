@@ -189,6 +189,7 @@ class AbstractGUI:
 
 
     def draw_tile(self, tile, rect):
+        print("Tile width: {}, height: {}".format(tile.width, tile.height))
         tile_type = tile.get_type_id()
         sprite = self.sprite_tiles[tile_type]
         self.canvas.blit(sprite, rect)

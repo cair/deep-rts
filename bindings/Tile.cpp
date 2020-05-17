@@ -29,5 +29,4 @@ void init_Tile(py::module &m) {
             .def("get_type_id", &Tile::getTypeId)
             .def("is_depleted", &Tile::isDepleted)
             .def("get_name", &Tile::getName);
-
 }
