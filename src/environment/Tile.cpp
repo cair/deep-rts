@@ -5,6 +5,7 @@
 #include "../player/Player.h"
 #include "../Game.h"
 
+/*
 Tile::Tile(
 		Tilemap &tilemap,
 		int id,
@@ -26,9 +27,9 @@ Tile::Tile(
 		int depletedResources,
 		int lumberYield,
 		int goldYield,
+		int oilYield,
         int unit,
-        int unitOwner,
-		int oilYield
+        int unitOwner
 ):
 tilemap(tilemap),
 
@@ -82,12 +83,11 @@ lumberYield(lumberYield),
 
 goldYield(goldYield),
 
+oilYield(oilYield),
+
 unit(unit),
 
-unitOwner(unitOwner),
-
-oilYield(oilYield)
-{
+unitOwner(unitOwner) {
 
 	// Update state map
 	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
@@ -99,6 +99,98 @@ oilYield(oilYield)
 
 	reset();
 }
+
+Tile::Tile(
+		Tilemap &tilemap,
+		int id,
+		int x,
+		int y,
+		int width,
+		int height,
+		std::string& newName,
+		int newTypeID,
+		bool newHarvestable,
+		bool newWalkable,
+		bool newSwimable,
+		int newResources,
+		std::string& depletedName,
+		int depletedTypeID,
+		bool depletedHarvestable,
+		bool depletedWalkable,
+		bool depletedSwimable,
+		int depletedResources,
+		int lumberYield,
+		int goldYield,
+		int oilYield,
+):
+tilemap(tilemap),
+
+harvestable(newHarvestable),
+
+walkable(newWalkable),
+
+swimable(newSwimable),
+
+resources(newResources),
+
+name(newName),
+
+typeId(newTypeID),
+
+newHarvestable(newHarvestable),
+
+newWalkable(newWalkable),
+
+newSwimable(newSwimable),
+
+newTypeId(newTypeID),
+
+newResources(newResources),
+
+newName(newName),
+
+depletedHarvestable(depletedHarvestable),
+
+depletedWalkable(depletedWalkable),
+
+depletedSwimable(depletedSwimable),
+
+depletedTypeId(depletedTypeID),
+
+depletedResources(depletedResources),
+
+depletedName(depletedName),
+
+id(id),
+
+x(x),
+
+y(y),
+
+width(width),
+
+height(height),
+
+lumberYield(lumberYield),
+
+goldYield(goldYield),
+
+oilYield(oilYield),
+
+unit(0),
+
+unitOwner(-1) {
+	// Update state map
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
+
+	// Update state matrix
+	if(resources <= 0) {
+		setDepleted();
+	}
+
+	reset();
+}
+*/
 
 
 bool Tile::hasOccupant()
@@ -244,6 +336,18 @@ const std::string &Tile::getName() const {
 
 int Tile::getDepleteTile() const {
 	return depletedTypeId;
+}
+
+void Tile::doConstructorStuff(int typeId, Tilemap &tilemap, int x, int y) {
+    // Update state map
+    tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
+
+    // Update state matrix
+    if(resources <= 0) {
+        this->setDepleted();
+    }
+
+    this->reset();
 }
 
 

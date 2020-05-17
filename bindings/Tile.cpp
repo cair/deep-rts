@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 void init_Tile(py::module &m) {
     py::class_<Tile>(m, "Tile")
-            .def(py::init<Tilemap &, int, int, int, int, int, std::string &, int, bool, bool, bool, int, std::string &, int, bool, bool, bool, int, int, int, int, int, int>())
+            .def(py::init<Tilemap &, int, int, int, int, int, std::string &, int, bool, bool, bool, int, std::string &, int, bool, bool, bool, int, int, int, int>())
             .def_readonly("id", &Tile::id)
             .def_readonly("oil_yield", &Tile::oilYield)
             .def_readonly("lumber_yield", &Tile::lumberYield)
@@ -17,7 +17,6 @@ void init_Tile(py::module &m) {
             .def_readonly("y", &Tile::y)
             .def_readonly("height", &Tile::height)
             .def_readonly("width", &Tile::width)
-
 
             .def("is_walkable", &Tile::isWalkable)
             .def("is_harvestable", &Tile::isHarvestable)

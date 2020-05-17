@@ -15,8 +15,6 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
     auto mapData = ResourceLoader::getInstance().mapJSON.GetObject();
     auto _tilesData = ResourceLoader::getInstance().tileJSON.GetObject();
 
-
-
     auto tilesetData = mapData["tilesets"].GetArray()[0].GetObject();
     auto mapLayer = mapData["layers"].GetArray()[0].GetObject();
 
@@ -42,16 +40,18 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
         tileIDs.emplace_back(tileId);
     }
 
-    for(auto tileId : tileIDs) {
+    for (int tidx = 0; tidx < tileIDs.size(); tidx++) {
+//    for(auto tileId : tileIDs) {
+        auto tileId = tileIDs[tidx];
         auto tileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
 
         int unit_to_spawn = 0;
         int unit_owner = -1;
         if (playersUnits.size() > 0) {
-            for (auto &player : playersUnits) {
+            for (auto const& player : playersUnits) {
                 auto units = player.second;
-                if (units[tileId] != 0) {
-                    unit_to_spawn = units[tileId];
+                if (units[tidx] != 0) {
+                    unit_to_spawn = units[tidx];
                     unit_owner = player.first;
                     break;
                 }

@@ -269,7 +269,6 @@ class AbstractGUI:
 
             # Draw tile
             if tile.has_occupant():
-
                 self.draw_unit(tile, rect)
             else:
                 self.draw_tile(tile, rect)

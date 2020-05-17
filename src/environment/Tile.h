@@ -12,8 +12,6 @@
 class Unit;
 class Tilemap;
 
-
-
 class Tile{
 private:
 
@@ -75,9 +73,7 @@ private:
 
     const std::string depletedName;
 
-
-
-
+    void doConstructorStuff(int typeId, Tilemap &tilemap, int x, int y);
 
 public:
 
@@ -101,11 +97,8 @@ public:
 
     const int unitOwner;
 
-
-
-
-	/// Constructor
-    Tile(
+	/// Constructors
+        Tile(
 			Tilemap &tilemap,
             int id,
 			int x,
@@ -126,11 +119,94 @@ public:
             int depletedResources,
             int lumberYield,
             int goldYield,
-            int unit,
-            int unitOwner,
             int oilYield
-	);
+        ):  tilemap(tilemap),
+            harvestable(newHarvestable),
+            walkable(newWalkable),
+            swimable(newSwimable),
+            resources(newResources),
+            name(newName),
+            typeId(newTypeId),
+            newHarvestable(newHarvestable),
+            newWalkable(newWalkable),
+            newSwimable(newSwimable),
+            newTypeId(newTypeId),
+            newResources(newResources),
+            newName(newName),
+            depletedHarvestable(depletedHarvestable),
+            depletedWalkable(depletedWalkable),
+            depletedSwimable(depletedSwimable),
+            depletedTypeId(depletedTypeId),
+            depletedResources(depletedResources),
+            depletedName(depletedName),
+            id(id),
+            x(x),
+            y(y),
+            width(w),
+            height(h),
+            lumberYield(lumberYield),
+            goldYield(goldYield),
+            oilYield(oilYield),
+            unit(0),
+            unitOwner(-1) {
+                doConstructorStuff(typeId, tilemap, x, y);
+            }
 
+        Tile(
+			Tilemap &tilemap,
+            int id,
+			int x,
+			int y,
+			int w,
+			int h,
+            std::string& newName,
+			int newTypeId,
+			bool newHarvestable,
+			bool newWalkable,
+			bool newSwimable,
+			int newResources,
+            std::string& depletedName,
+            int depletedTypeId,
+			bool depletedHarvestable,
+			bool depletedWalkable,
+			bool depletedSwimable,
+            int depletedResources,
+            int lumberYield,
+            int goldYield,
+            int oilYield,
+            int unit,
+            int unitOwner
+        ):  tilemap(tilemap),
+            harvestable(newHarvestable),
+            walkable(newWalkable),
+            swimable(newSwimable),
+            resources(newResources),
+            name(newName),
+            typeId(newTypeId),
+            newHarvestable(newHarvestable),
+            newWalkable(newWalkable),
+            newSwimable(newSwimable),
+            newTypeId(newTypeId),
+            newResources(newResources),
+            newName(newName),
+            depletedHarvestable(depletedHarvestable),
+            depletedWalkable(depletedWalkable),
+            depletedSwimable(depletedSwimable),
+            depletedTypeId(depletedTypeId),
+            depletedResources(depletedResources),
+            depletedName(depletedName),
+            id(id),
+            x(x),
+            y(y),
+            width(w),
+            height(h),
+            lumberYield(lumberYield),
+            goldYield(goldYield),
+            oilYield(oilYield),
+            unit(unit),
+            unitOwner(unitOwner) {
+                doConstructorStuff(typeId, tilemap, x, y);
+            }
 
 	//////////////////////////////////////////////////////////////////////////////////
 	///
@@ -201,13 +277,6 @@ public:
 
     /// Reset tile
     void reset();
-
-
-
-
-
-
-
 
 };
 

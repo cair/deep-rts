@@ -47,6 +47,7 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             auto unit = newTileData.unit_to_spawn;
             auto unitOwner = newTileData.unit_owner_player;
 
+
             auto tl = Tile(
                 *this,
                 c,
@@ -68,9 +69,9 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 depletedResources,
                 lumberYield,
                 goldYield,
+                oilYield,
                 unit,
-                unitOwner,
-                oilYield);
+                unitOwner);
 
             tiles.emplace_back(tl);
 
