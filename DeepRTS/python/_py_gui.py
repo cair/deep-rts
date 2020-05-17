@@ -286,7 +286,7 @@ class AbstractGUI:
             return
 
         pygame.display.update(self.rect_manager.changed_rects)
-        pygame.display.flip()
+        #pygame.display.flip()
         self.rect_manager.clear_changed_rect()
 
     def _load_sprites(self, path):
@@ -334,6 +334,7 @@ class AbstractGUI:
 
     def _load_tiles(self, path):
         tile_ids, size = self.tile_definitions()
+        print(path)
         sheet = pygame.image.load(path)
 
         tiles = {

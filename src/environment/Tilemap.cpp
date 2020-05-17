@@ -48,7 +48,7 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             auto unitOwner = newTileData.unit_owner_player;
 
 
-            auto tl = Tile(
+            /*auto tl = Tile(
                 *this,
                 c,
                 x,
@@ -71,9 +71,33 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 goldYield,
                 oilYield,
                 unit,
-                unitOwner);
+                unitOwner);*/
 
-            tiles.emplace_back(tl);
+            //tiles.emplace_back(tl);
+            
+            tiles.emplace_back(Tile(
+                *this,
+                c,
+                x,
+                y,
+                map.TILE_WIDTH,
+                map.TILE_HEIGHT,
+                newName,
+                newTypeId,
+                newHarvestable,
+                newWalkable,
+                newSwimable,
+                newResources,
+                depletedName,
+                depletedTypeId,
+                depletedHarvestable,
+                depletedWalkable,
+                depletedSwimable,
+                depletedResources,
+                lumberYield,
+                goldYield,
+                oilYield
+            ));
 
             //Tile &tile = tiles.back();
             if(newTypeId == Constants::Tile::Spawn){
@@ -81,7 +105,32 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             }
 
             if (unit != 0 && unitOwner != -1) {
-                unitSpawnTiles.push_back(tl);
+                //unitSpawnTiles.push_back(tl);
+                unitSpawnTiles.push_back(Tile(
+                    *this,
+                    c,
+                    x,
+                    y,
+                    map.TILE_WIDTH,
+                    map.TILE_HEIGHT,
+                    newName,
+                    newTypeId,
+                    newHarvestable,
+                    newWalkable,
+                    newSwimable,
+                    newResources,
+                    depletedName,
+                    depletedTypeId,
+                    depletedHarvestable,
+                    depletedWalkable,
+                    depletedSwimable,
+                    depletedResources,
+                    lumberYield,
+                    goldYield,
+                    oilYield,
+                    unit,
+                    unitOwner
+                ));
             }
 
             c++;
