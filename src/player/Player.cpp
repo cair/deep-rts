@@ -97,9 +97,7 @@ void Player::reset()
 
 void Player::spawnPlayer() {
     // Retrieve spawn_point
-    std::cout << "trying to spawn player..." << std::endl;
-    if (/* game_.tilemap.unitSpawnTiles.size() > 0 */ false) {
-        std::cout << "spawning player the NEW way" << std::endl;
+    if (game_.tilemap.unitSpawnTiles.size() > 0) {
         for (auto tile : game_.tilemap.unitSpawnTiles) {
             if (tile.unitOwner == getId()) {
                 std::cout << "unit int " << tile.unit << std::endl;
@@ -109,7 +107,7 @@ void Player::spawnPlayer() {
                 unit->update();
 
                 // Set targeted unit to newly spawned unit
-                //targetedUnitID = unit->id;
+                targetedUnitID = unit->id;
             }
         }
     } else {
