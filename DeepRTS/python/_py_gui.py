@@ -288,7 +288,6 @@ class AbstractGUI:
         pygame.display.update(self.rect_manager.changed_rects)
         #pygame.display.flip()
         self.rect_manager.clear_changed_rect()
-        print("rendering...")
 
     def _load_sprites(self, path):
         sprite_def = self.sprite_definitions()

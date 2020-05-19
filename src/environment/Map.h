@@ -21,8 +21,6 @@ struct TileData {
     int lumber_yield;
     int gold_yield;
     int oil_yield;
-    int unit_to_spawn;
-    int unit_owner_player;
 
     TileData()= default;
 
@@ -35,9 +33,7 @@ struct TileData {
             int resources,
             int lumber_yield,
             int gold_yield,
-            int oil_yield, 
-	    int unit_to_spawn,
-	    int unit_owner_player) : depleteTile(depleteTile),
+            int oil_yield) : depleteTile(depleteTile),
 				     name(std::move(name)), 
 				     walkable(walkable), 
 				     harvestable(harvestable),
@@ -45,12 +41,19 @@ struct TileData {
 				     resources(resources), 
 				     lumber_yield(lumber_yield), 
 				     gold_yield(gold_yield),
-				     oil_yield(oil_yield), 
-				     unit_to_spawn(unit_to_spawn),
-				     unit_owner_player(unit_owner_player) {}
+				     oil_yield(oil_yield) {} 
 };
 
+struct SpawnTile {
+    int unit_to_spawn;
+    int unit_owner_player;
 
+    SpawnTile()= default;
+
+    SpawnTile(int u_to_spawn, 
+            int u_owner_player): unit_to_spawn(u_to_spawn),
+                                 unit_owner_player(u_owner_player) {}
+};
 
 
 class Map {
@@ -75,7 +78,7 @@ public:
 
     std::vector<int> tileIDs;
 
-    std::map<int, std::vector<int>> playersUnits;
+    std::vector<SpawnTile> spawnTiles;
 
     std::map<int, TileData> tilesData;
 

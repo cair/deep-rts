@@ -44,9 +44,8 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             auto goldYield = newTileData.gold_yield;
             auto oilYield = newTileData.oil_yield;
 
-            auto unit = newTileData.unit_to_spawn;
-            auto unitOwner = newTileData.unit_owner_player;
-
+            auto unit = map.spawnTiles[c].unit_to_spawn;
+            auto unitOwner = map.spawnTiles[c].unit_owner_player;
 
             auto tl = Tile(
                 *this,

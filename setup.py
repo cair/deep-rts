@@ -16,6 +16,10 @@ from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 from distutils.version import LooseVersion
 
+def is_mac_os():
+    return platform.system() == "Darwin"
+
+
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
@@ -75,6 +79,10 @@ try:
     shutil.copytree(assets_root, assets_py)
 except:
     pass
+
+pygm = 'pygame' 
+if is_mac_os():
+    pygm = "pygame==2.0.0.dev6"
 
 setup(
     name='DeepRTS',

@@ -100,7 +100,6 @@ void Player::spawnPlayer() {
     if (game_.tilemap.unitSpawnTiles.size() > 0) {
         for (auto tile : game_.tilemap.unitSpawnTiles) {
             if (tile.unitOwner == getId()) {
-                std::cout << "unit int " << tile.unit << std::endl;
                 auto unit = &addUnit(static_cast<Constants::Unit>(tile.unit));
 
                 unit->spawn(tile, unit->spawnDuration);

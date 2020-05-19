@@ -19,7 +19,7 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
     auto mapLayer = mapData["layers"].GetArray()[0].GetObject();
 
     //get spawn units for each player
-    auto unitLayers = mapData["layers"].GetArray();
+    /*auto unitLayers = mapData["layers"].GetArray();
     if (unitLayers.Size() > 1) {
 	    for (int x = 1; x < unitLayers.Size(); x++) { 
 		int player = unitLayers[x]["player"].GetInt();
@@ -31,7 +31,7 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
 
 		playersUnits.emplace(player, units);
 	    }
-    }
+    }*/
 
     auto _tileIDs = mapLayer["data"].GetArray();
 
@@ -44,18 +44,21 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
         auto tileId = tileIDs[tidx];
         auto tileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
 
+        //get spawn units for each player
+        auto unitLayers = mapData["layers"].GetArray();
         int unit_to_spawn = 0;
         int unit_owner = -1;
-        if (playersUnits.size() > 0) {
-            for (auto const& player : playersUnits) {
-                auto units = player.second;
-                if (units[tidx] != 0) {
-                    unit_to_spawn = units[tidx];
-                    unit_owner = player.first;
-                    break;
-                }
+        if (unitLayers.Size() > 1) {
+            for (int x = 1; x < unitLayers.Size(); x++) {
+                unit_owner = unitLayers[x]["player"].GetInt();
+                unit_to_spawn = unitLayers[x]["data"].GetArray()[tidx].GetInt(); 
             }
+
+            if (unit_to_spawn == 0) unit_owner = -1;
         }
+
+        auto st = SpawnTile(unit_to_spawn, unit_owner);
+        spawnTiles.emplace_back(st);
 
         tilesData.emplace(tileId,TileData(
                 tileData["deplete_tile"].GetInt(),
@@ -66,10 +69,8 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
                 tileData["resources"].GetInt(),
                 tileData["lumber_yield"].GetInt(),
                 tileData["gold_yield"].GetInt(),
-                tileData["oil_yield"].GetInt(),
-                unit_to_spawn,
-                unit_owner)
-        );
+                tileData["oil_yield"].GetInt()
+        ));
 
 
         /*auto newTileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
