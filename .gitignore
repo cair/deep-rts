@@ -228,3 +228,5 @@ python/DeepRTS/assets
 /test/experiments/
 test/assets
 code/assets
+
+.DS_Store
