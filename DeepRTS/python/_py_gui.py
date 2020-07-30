@@ -23,12 +23,12 @@ class SpriteLoader:
 
 class RectangleManager:
 
-    def __init__(self, map_height, map_width, tile_size):
+    def __init__(self, map_height, map_width, tile_size, scale_factor):
 
         self.rectangles = [
             pygame.Rect(
-                (x * tile_size, y * tile_size),
-                (tile_size, tile_size)
+                (x * tile_size / scale_factor, y * tile_size / scale_factor),
+                (tile_size / scale_factor, tile_size / scale_factor)
             ) for y in range(map_height) for x in range(map_width)
         ]
 
@@ -53,19 +53,20 @@ class RectangleManager:
 
 class AbstractGUI:
 
-    def __init__(self, game, tile_size, units, config, window=True):
+    def __init__(self, game, tile_size, units, config, window=True, scale_factor = 1):
         self.game = game
         self.config = config
         self.tile_size = tile_size
 
         self.map = self.game.map
         self.has_window = window
-        self.game_height = self.map.map_height * tile_size
-        self.game_width = self.map.map_width * tile_size
         self.map_height = self.map.map_height
         self.map_width = self.map.map_width
+        self.scale_factor = scale_factor
+        self.game_height = int(self.map.map_height * tile_size / scale_factor)
+        self.game_width = int(self.map.map_width * tile_size / scale_factor)
 
-        self.rect_manager = RectangleManager(self.map_height, self.map_width, self.tile_size)
+        self.rect_manager = RectangleManager(self.map_height, self.map_width, self.tile_size, self.scale_factor)
         self.rect_manager.full_refresh()
 
         self.mask = {
@@ -160,8 +161,8 @@ class AbstractGUI:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 abs_pos = pygame.mouse.get_pos()
-                tile_pos_x = int(abs_pos[0] / self.tile_size)
-                tile_pos_y = int(abs_pos[1] / self.tile_size)
+                tile_pos_x = int(abs_pos[0] / self.tile_size / self.scale_factor)
+                tile_pos_y = int(abs_pos[1] / self.tile_size / self.scale_factor)
 
                 if event.button == pygame.BUTTON_LEFT:
                     self.game.selected_player.left_click(tile_pos_x, tile_pos_y)
@@ -216,7 +217,7 @@ class AbstractGUI:
             raise RuntimeError(err)
 
         #print(unit_type, self.directions[direction], state_id)
-        unit_rect = [rect.x, rect.y, rect.width * unit.width, rect.height * unit.height]
+        unit_rect = [rect.x, rect.y, rect.width * unit.width / self.scale_factor, rect.height * unit.height / self.scale_factor]
         self.rect_manager.add_changed_rect(unit_rect)
 
         if self.config.unit_animation:
@@ -322,7 +323,7 @@ class AbstractGUI:
 
                             # Border
                             if self.config.unit_outline:
-                                pygame.draw.rect(sprite, mask, (0, 0, sprite.get_width(), sprite.get_height()), 2)
+                                pygame.draw.rect(sprite, mask, (0, 0, sprite.get_width() / self.scale_factor, sprite.get_height() / self.scale_factor), 2)
 
                             loaded_sprites[player_id][unit_type][direction][state].append(sprite)
 
@@ -354,7 +355,7 @@ class AbstractGUI:
 
 class GUI(AbstractGUI):
 
-    def __init__(self, game, tile_size, config):
+    def __init__(self, game, tile_size, config, scale_factor = 1):
         possible_unit_types = [
             getattr(Unit, x) for x in Unit.__dict__.keys() if not x.startswith("__") and not x == 'name'
         ]
@@ -366,7 +367,7 @@ class GUI(AbstractGUI):
             for x in possible_unit_types
         }
 
-        super().__init__(game, tile_size, units, config)
+        super().__init__(game, tile_size, units, config, scale_factor=scale_factor)
 
     def tile_definitions(self):
         tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__") and not x == 'name']

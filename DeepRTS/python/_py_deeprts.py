@@ -30,15 +30,20 @@ class Game(Engine.Game):
         self._view_every = 1
         self._capture_every = 1
 
+        scale_factor = 1
         if fit_to_screen:
             #change tile_size in a way that the map fits the screen
-            sc_width, sc_height = pygame.display.get_surface().get_size()
-
             #since the map is always a square, we can use only width to do the calculation
-            while sc_width < self.map.map_width and tile_size > 8:
-                tile_size /= 2
+            #sc_width, sc_height = pygame.display.get_surface().get_size()
+            pygame.init()
+            sc_width = pygame.display.Info().current_w
 
-        self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config())
+            while sc_width < self.map.map_width * tile_size / scale_factor and scale_factor <= 4:
+                scale_factor *= 2
+
+        print("SCALE_FACTOR {}".format(scale_factor))
+
+        self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config(), scale_factor = scale_factor)
 
         # Create players
         for i in range(n_players):
