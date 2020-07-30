@@ -1,6 +1,7 @@
 from DeepRTS import Engine
 from DeepRTS.python import GUI
 from DeepRTS.python import Config
+import pygame
 import numpy as np
 import random
 import os
@@ -9,7 +10,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 class Game(Engine.Game):
 
-    def __init__(self, map_name, n_players=2, engine_config=Engine.Config.defaults(), gui_config=None, tile_size=32, terminal_signal=False):
+    def __init__(self, map_name, n_players=2, engine_config=Engine.Config.defaults(), gui_config=None, tile_size=32, terminal_signal=False, fit_to_screen=False):
         # This sets working directory, so that the C++ can load files correctly (dir_path not directly accessible in
         # c++)
         os.chdir(dir_path)
@@ -28,6 +29,14 @@ class Game(Engine.Game):
         self._render_every = 1
         self._view_every = 1
         self._capture_every = 1
+
+        if fit_to_screen:
+            #change tile_size in a way that the map fits the screen
+            sc_width, sc_height = pygame.display.get_surface().get_size()
+
+            #since the map is always a square, we can use only width to do the calculation
+            while sc_width < self.map.map_width and tile_size > 8:
+                tile_size /= 2
 
         self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config())
 
