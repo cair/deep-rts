@@ -217,7 +217,7 @@ class AbstractGUI:
             raise RuntimeError(err)
 
         #print(unit_type, self.directions[direction], state_id)
-        unit_rect = [rect.x, rect.y, rect.width * unit.width / self.scale_factor, rect.height * unit.height / self.scale_factor]
+        unit_rect = [rect.x, rect.y, rect.width * unit.width / self.scale_factor, rect.height * unit.height]
         self.rect_manager.add_changed_rect(unit_rect)
 
         if self.config.unit_animation:
@@ -325,6 +325,9 @@ class AbstractGUI:
                             if self.config.unit_outline:
                                 pygame.draw.rect(sprite, mask, (0, 0, sprite.get_width() / self.scale_factor, sprite.get_height() / self.scale_factor), 2)
 
+                            new_width = int(sprite.get_width() / self.scale_factor)
+                            new_height = int(sprite.get_height() / self.scale_factor)
+                            sprite = pygame.transform.scale(sprite, (new_width, new_height))
                             loaded_sprites[player_id][unit_type][direction][state].append(sprite)
 
 
