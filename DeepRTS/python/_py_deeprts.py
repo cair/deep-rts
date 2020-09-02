@@ -41,8 +41,6 @@ class Game(Engine.Game):
             while sc_width < self.map.map_width * tile_size / scale_factor and scale_factor <= 4:
                 scale_factor *= 2
 
-        print("SCALE_FACTOR {}".format(scale_factor))
-
         self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config(), scale_factor = scale_factor)
 
         # Create players
