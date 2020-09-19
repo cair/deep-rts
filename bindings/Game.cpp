@@ -57,12 +57,12 @@ void init_Game(py::module &m) {
             .def("set_selected_player", &Game::setSelectedPlayer)
 
 
-            .def_readonly("state", &Game::state)
+            .def_readonly("state", &Game::state, return_value_policy::take_ownership)
 
-            .def_readonly("units", &Game::units)
-            .def_readonly("players", &Game::players)
-            .def_readonly("tilemap", &Game::tilemap)
-            .def_readonly("map", &Game::map)
+            .def_readonly("units", &Game::units, return_value_policy::take_ownership)
+            .def_readonly("players", &Game::players, return_value_policy::take_ownership)
+            .def_readonly("tilemap", &Game::tilemap, return_value_policy::take_ownership)
+            .def_readonly("map", &Game::map, return_value_policy::take_ownership)
             .def_readonly("selected_player", &Game::selectedPlayer);
 
 
