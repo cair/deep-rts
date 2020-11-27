@@ -4,7 +4,7 @@
 from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
 if __name__ == "__main__":
-    episodes = 1000
+    episodes = 10
     random_play = True
 
     env = scenario.GoldCollectOnePlayerFifteen({})
