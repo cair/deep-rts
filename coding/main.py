@@ -15,77 +15,17 @@ import pandas as pd
 import random
 from collections import deque, defaultdict, namedtuple
 
-class NewScenario(Scenario):
-
-    def __init__(self, config):
-
-        engconf = config["engine"] if "engine" in config else {}
-        gconf = config["gui"] if "gui" in config else {}
-        rlconf = config["rl"] if "rl" in config else {}
-
-        gui_config = Config(
-            render=util.config(gconf, "render", True),
-            view=util.config(gconf, "view", True),
-            inputs=util.config(gconf, "inputs", False),
-            caption=util.config(gconf, "caption", False),
-            unit_health=util.config(gconf, "unit_health", True),
-            unit_outline=util.config(gconf, "unit_outline", True),
-            unit_animation=util.config(gconf, "unit_animation", False),
-            audio=util.config(gconf, "audio", False),
-            audio_volume=util.config(gconf, "audio_volume", 50)
-        )
-
-        engine_config: Engine.Config = Engine.Config.defaults()
-        engine_config.set_barracks(True)
-        engine_config.set_footman(True)
-        engine_config.set_instant_town_hall(True)
-        engine_config.set_archer(True)
-        engine_config.set_start_lumber(250)  # Enough to create TownHall
-        engine_config.set_start_gold(500)  # Enough to create TownHall
-        engine_config.set_start_oil(0)
-        engine_config.set_tick_modifier(util.config(engconf, "tick_modifier", engine_config.tick_modifier))
-
-        game = Game(
-            Config.Map.FIFTEEN,
-            n_players=2,
-            engine_config=engine_config,
-            gui_config=gui_config,
-            terminal_signal=True
-        )
-
-        c_fps = engconf["fps"] if "fps" in engconf else -1
-        c_ups = engconf["ups"] if "ups" in engconf else -1
-
-        game.set_max_fps(c_fps)
-        game.set_max_ups(c_ups)
-
-        super().__init__(
-            rlconf,
-            game,
-            #Scenario.GOLD_COLLECT(1000),
-            Scenario.GOLD_COLLECT_INCREMENT(100)
-        )
-
-    def _optimal_play_sequence(self):
-        return [
-            (Engine.Constants.Action.MoveRight, "Peasant0"),
-            (Engine.Constants.Action.MoveRight, "Peasant0"),
-            (Engine.Constants.Action.MoveRight, "Peasant0"),
-            (Engine.Constants.Action.MoveRight, "Peasant0"),
-            (Engine.Constants.Action.MoveDownRight, "Peasant0"),
-            (Engine.Constants.Action.MoveRight, "Peasant0")
-        ]
-
 if __name__ == "__main__":
     episodes = 10
     random_play = True
 
-    env = NewScenario({})
+    env = Scenario.Scenario182({})
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
 
-    scores = []
+    scores_a = []
+    scores_b = []
 
     class QNetwork(nn.Module):
         def __init__(self, state_size, action_size, seed):
@@ -150,7 +90,6 @@ if __name__ == "__main__":
 
         def __len__(self):
             return len(self.memory)
-
     class DQNAgent:
         def __init__(self, state_size, action_size, seed):
             """
@@ -239,7 +178,7 @@ if __name__ == "__main__":
                 target_parameters.data.copy_(TAU * source_parameters.data + (1.0 - TAU) * target_parameters.data)
 
 
-        def act(self, state, eps=0.02):
+        def act(self, state, eps=0):
             """
             Choose the action
 
@@ -283,39 +222,39 @@ if __name__ == "__main__":
 
         terminal = False
         state = env.reset()
-        score = 0
+        score_a = 0
+        score_b = 0
 
         while not terminal:
 
+            # AI for player 1
             env.game.set_player(env.game.players[0])
 
-            action = Random.action() - 1  # TODO AI Goes here
+            # chooses a random action
+            action = Random.action() - 1
             next_state, reward, terminal, _ = env.step(action)
 
-            if (terminal):
-                break
+            score_a += reward
 
+
+            
+
+            # AI for player 2
             env.game.set_player(env.game.players[1])
 
-            action = Random.action() - 1  # TODO AI Goes here
-            next_state, reward, terminal, _ = env.step(action)
+            # chooses an action based on a neural network
+            action = dqn_agent.act(state, 0.2)
+            next_state, reward, done, info = env.step(action)
+            dqn_agent.step(state, action, reward, next_state, done)
+            state = next_state
 
-            if (env.game.is_terminal()):
-                break
+            score_b += reward
 
-            # action = dqn_agent.act(state)
-            # next_state, reward, done, info = env.step(action)
-            # dqn_agent.step(state, action, reward, next_state, done)
-            # state = next_state
+        scores_a.append(score_a)
+        scores_b.append(score_b)
 
-            # action = Random.action() - 1  # TODO AI Goes here
-            # next_state, reward, terminal, _ = env.step(action)
-
-            score += reward
-
-        scores.append(score)
-
-    print(scores)
+    print(scores_a)
+    print(scores_b)
 
 
 
