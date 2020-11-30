@@ -1,14 +1,8 @@
 
 # Run setup.py install in sources/python to build source files.
+
 from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
-from DeepRTS.python.scenario.engine import Scenario
-from DeepRTS.python import util, Config, Game
-from DeepRTS import Engine
-
-import time
-
-import pickle
 
 import torch
 import torch.nn as nn
@@ -18,23 +12,18 @@ import numpy as np
 import pandas as pd
 import random
 from collections import deque, defaultdict, namedtuple
-
+ 
 if __name__ == "__main__":
-    episodes = 10
+    episodes = 1000
     random_play = True
 
-    result = open("result.txt", "w")
-    result.write("Results from experiment:\n")
-
-    env = scenario.Scenario182({})
+    env = scenario.GoldCollectOnePlayerFifteen({})
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
 
-    scores_a = []
-    scores_b = []
+    # env.calculate_optimal_play()
 
-    durations = []
 
     class QNetwork(nn.Module):
         def __init__(self, state_size, action_size, seed):
@@ -99,6 +88,7 @@ if __name__ == "__main__":
 
         def __len__(self):
             return len(self.memory)
+
     class DQNAgent:
         def __init__(self, state_size, action_size, seed):
             """
@@ -187,7 +177,7 @@ if __name__ == "__main__":
                 target_parameters.data.copy_(TAU * source_parameters.data + (1.0 - TAU) * target_parameters.data)
 
 
-        def act(self, state, eps=0):
+        def act(self, state, eps=0.02):
             """
             Choose the action
 
@@ -225,71 +215,24 @@ if __name__ == "__main__":
     action_size = env.action_space.n
 
     dqn_agent = DQNAgent(state_size, action_size, seed=0)
-
-    torch.save(dqn_agent.q_network.state_dict(), "/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/before.pt")
-
+    scores = []
     for episode in range(episodes):
-        print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()), flush = True)
-
-        terminal = False
+        print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
+        done = False
         state = env.reset()
-        score_a = 0
-        score_b = 0
+        score = 0
 
-        while not terminal:
-
-            # AI for player 1
-            env.game.set_player(env.game.players[0])
-
-            # chooses a random action
-            action = Random.action() - 1
-            next_state, reward, terminal, _ = env.step(action)
-
-            score_a += reward
-
-
-
-
-            # AI for player 2
-            env.game.set_player(env.game.players[1])
-
-            # chooses an action based on a neural network
-            action = dqn_agent.act(state, 0.2)
+        count = 0
+        while not done:
+            action = dqn_agent.act(state)
+            # action = Random.action() - 1
             next_state, reward, done, info = env.step(action)
             dqn_agent.step(state, action, reward, next_state, done)
             state = next_state
+            score += reward
+            # print(action, end = " ", flush=True)
+            count += 1
 
-            score_b += reward
+        print(score)
 
-        scores_a.append(score_a)
-        scores_b.append(score_b)
-
-        durations.append(env.game.get_episode_duration())
-
-
-    torch.save(dqn_agent.q_network.state_dict(), "/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/after.pt")
-    # pickle.dump(dqn_agent, open("model", "wb"))
-
-    for score in scores_a:
-
-        result.write(str(score) + ",")
-
-    result.write("\n")
-
-    for score in scores_b:
-
-        result.write(str(score) + ",")
-
-    result.write("\n")
-
-    for duration in durations:
-
-        result.write(str(duration) + ",")
-
-    result.write("\n")
-
-
-
-
-
-
+        scores.append(score)
