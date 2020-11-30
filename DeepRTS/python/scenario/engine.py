@@ -87,11 +87,15 @@ class Scenario(gym.Env):
         return total_steps, total_reward
 
     @staticmethod
-    def _game_end(player=0):
+    def _game_end():
         def wrap(self):
-            t = game.is_terminal()
-            r = 0
+            t = self.game.is_terminal()
+
+            p = self.game.selected_player
+            r = -1000 if p.is_defeated() else 0
             return t, r
+
+        return wrap
 
     @staticmethod
     def _gold_collect(amount, player=0):

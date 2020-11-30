@@ -6,6 +6,10 @@ from DeepRTS.python.scenario.engine import Scenario
 from DeepRTS.python import util, Config, Game
 from DeepRTS import Engine
 
+import time
+
+import pickle
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -19,13 +23,18 @@ if __name__ == "__main__":
     episodes = 10
     random_play = True
 
-    env = Scenario.Scenario182({})
+    result = open("result.txt", "w")
+    result.write("Results from experiment:\n")
+
+    env = scenario.Scenario182({})
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
 
     scores_a = []
     scores_b = []
+
+    durations = []
 
     class QNetwork(nn.Module):
         def __init__(self, state_size, action_size, seed):
@@ -217,6 +226,8 @@ if __name__ == "__main__":
 
     dqn_agent = DQNAgent(state_size, action_size, seed=0)
 
+    torch.save(dqn_agent.q_network.state_dict(), "/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/before.pt")
+
     for episode in range(episodes):
         print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()), flush = True)
 
@@ -237,7 +248,7 @@ if __name__ == "__main__":
             score_a += reward
 
 
-            
+
 
             # AI for player 2
             env.game.set_player(env.game.players[1])
@@ -253,8 +264,29 @@ if __name__ == "__main__":
         scores_a.append(score_a)
         scores_b.append(score_b)
 
-    print(scores_a)
-    print(scores_b)
+        durations.append(env.game.get_episode_duration())
+
+
+    torch.save(dqn_agent.q_network.state_dict(), "/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/after.pt")
+    # pickle.dump(dqn_agent, open("model", "wb"))
+
+    for score in scores_a:
+
+        result.write(str(score) + ",")
+
+    result.write("\n")
+
+    for score in scores_b:
+
+        result.write(str(score) + ",")
+
+    result.write("\n")
+
+    for duration in durations:
+
+        result.write(str(duration) + ",")
+
+    result.write("\n")
 
 
 
