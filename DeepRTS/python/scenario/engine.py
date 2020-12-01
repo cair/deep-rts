@@ -10,7 +10,6 @@ class ScenarioData:
 
     def __init__(self):
         self.previous_statistic_gathered_gold = 0
-        self.previous_statistic_gathered_lumber = 0
 
     def reset(self):
         self.__init__()
@@ -87,17 +86,6 @@ class Scenario(gym.Env):
         return total_steps, total_reward
 
     @staticmethod
-    def _game_end():
-        def wrap(self):
-            t = self.game.is_terminal()
-
-            p = self.game.selected_player
-            r = -1000 if p.is_defeated() else 0
-            return t, r
-
-        return wrap
-
-    @staticmethod
     def _gold_collect(amount, player=0):
         def wrap(self):
             p = self.game.players[player]
@@ -122,18 +110,6 @@ class Scenario(gym.Env):
         def wrap(self):
             p = self.game.players[player]
             return p.statistic_gathered_lumber >= amount
-
-        return wrap
-
-    @staticmethod
-    def _lumber_collect_increment(amount, reward_success=1, reward_fail=-0.01, player=0):
-        def wrap(self):
-            p = self.game.players[player]
-            diff = p.statistic_gathered_lumber - self.data.previous_statistic_gathered_lumber
-            self.data.previous_statistic_gathered_lumber = p.statistic_gathered_lumber
-            r = reward_success if diff > 0 else reward_fail
-            t = p.statistic_gathered_lumber >= amount
-            return t, r
 
         return wrap
 
@@ -260,13 +236,10 @@ class Scenario(gym.Env):
         if mode == "human":
             self.game.view()
 
-    GAME_END = _game_end
-
     GOLD_COLLECT = _gold_collect
     GOLD_COLLECT_INCREMENT = _gold_collect_increment
     OIL_COLLECT = _lumber_collect
     LUMBER_COLLECT = _oil_collect
-    LUMBER_COLLECT_INCREMENT = _lumber_collect_increment
     FOOD_CONSUMPTION = _food_consumption
     FOOD_COUNT = _food_count
     DAMAGE_DONE = _damage_done
