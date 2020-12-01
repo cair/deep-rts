@@ -223,25 +223,16 @@ if __name__ == "__main__":
         score = 0
 
         count = 0
-        prev_damage = 0
-        prev_units = 0
 
         while not done:
             action = dqn_agent.act(state)
-            # action = Random.action() - 1
-            next_state, reward, done, info = env.step(action)
 
-            damage_delta = env.game.DAMAGE_DONE - prev_damage
-            unit_delta = env.game.UNITS_CREATED - prev_units
-            learn_score = reward + damage_delta + unit_delta
+            next_state, reward, done, info = env.step(action)
 
             dqn_agent.step(state, action, reward, next_state, done)
             state = next_state
             score += reward
 
-            prev_damage = env.game.DAMAGE_DONE
-            prev_units = env.game.UNITS_CREATED
-            # print(action, end = " ", flush=True)
             count += 1
 
         print(score)
