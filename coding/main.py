@@ -30,6 +30,7 @@ if __name__ == "__main__":
     result_a = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_a/result.txt", "w+")
     result_b = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_b/result.txt", "w+")
     result_dur = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/durations.txt", "w+")
+    result_wins = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/results.txt", "w+")
 
     for epoch in range(epochs):
 
@@ -40,6 +41,7 @@ if __name__ == "__main__":
         scores_a = []
         scores_b = []
         durations = []
+        results = []
 
         for episode in range(episodes):
             print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
@@ -73,6 +75,12 @@ if __name__ == "__main__":
 
                 score_b += reward
 
+                if (env.game.is_terminal()):
+                    if (env.game.players[0].is_defeated()):
+                        results.append(0)
+                    else:
+                        results.append(1)
+
                 state = next_state
 
             scores_a.append(score_a)
@@ -99,4 +107,11 @@ if __name__ == "__main__":
             result_dur.write(str(duration) + ",")
         result_dur.write("\n")
 
+        result_wins.write("Epoch: " + str(epoch) + "\n")
+        for result in results:
+            result_wins.write(str(result) + ",")
+        result_wins.write("\n")
+
+    result_a.close()
+    result_b.close()
     print("Finished")
