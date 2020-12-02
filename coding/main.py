@@ -10,8 +10,8 @@ import random_agent
 
 if __name__ == "__main__":
     result = open("result.txt", "w")
-    episodes = 100
-    epochs = 10
+    episodes = 5
+    epochs = 2
     random_play = True
 
     env = scenario182.Scenario182({})
@@ -96,21 +96,25 @@ if __name__ == "__main__":
         for score in scores_a:
             result_a.write(str(score) + ",")
         result_a.write("\n")
+        result_a.flush()
 
         result_b.write("Epoch: " + str(epoch) + "\n")
         for score in scores_b:
             result_b.write(str(score) + ",")
         result_b.write("\n")
+        result_b.flush()
 
         result_dur.write("Epoch: " + str(epoch) + "\n")
         for duration in durations:
             result_dur.write(str(duration) + ",")
         result_dur.write("\n")
+        result_dur.flush()
 
         result_wins.write("Epoch: " + str(epoch) + "\n")
         for result in results:
             result_wins.write(str(result) + ",")
         result_wins.write("\n")
+        result_wins.flush()
 
     result_a.close()
     result_b.close()
