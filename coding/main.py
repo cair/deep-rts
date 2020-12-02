@@ -5,8 +5,9 @@ from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
 
 import scenario182
-import dqn_agent
+# import dqn_agent
 import random_agent
+import dqn_agent_conv as dqn_agent
 
 if __name__ == "__main__":
     result = open("result.txt", "w")
@@ -23,9 +24,9 @@ if __name__ == "__main__":
     action_size = env.action_space.n
 
     # agent_a = random_agent.RandomAgent()
-    agent_a = dqn_agent.DQNAgent(state_size, action_size, seed=0)
+    agent_a = dqn_agent.DQNAgent(state_size, action_size)
     # agent_b = random_agent.RandomAgent()
-    agent_b = dqn_agent.DQNAgent(state_size, action_size, seed=0)
+    agent_b = dqn_agent.DQNAgent(state_size, action_size)
 
     result_a = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_a/result.txt", "w+")
     result_b = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_b/result.txt", "w+")
