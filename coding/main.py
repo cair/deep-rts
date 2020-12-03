@@ -5,62 +5,127 @@ from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
 
 import scenario182
-# import dqn_agent
+import dqn_agent
 import random_agent
-import dqn_agent_conv as dqn_agent
+import torch
+# import new_dqn_conv as dqn_agent
+
+from torchsummary import summary
+
+import os
+from datetime import datetime
+
+# to print out action name do:
+# print(action_names.get(action + 1))
+action_names = {
+
+    1: "Previous Unit",
+    2: "Next Unit",
+
+    3: "Move Left",
+    4: "Move Right",
+    5: "Move Up",
+    6: "Move Down",
+    7: "Move Up Left",
+    8: "Move Up Right",
+    9: "Move Down Left",
+    10: "Move Down Right",
+
+    11: "Attack",
+    12: "Harvest",
+
+    13: "Build 0",
+    14: "Build 1",
+    15: "Build 2",
+
+    16: "No Action"
+}
 
 if __name__ == "__main__":
-    result = open("result.txt", "w")
-    episodes = 5
-    epochs = 2
-    random_play = True
+
+    # Generating the output folders
+
+    now = datetime.now()
+    now_string = now.strftime("%d-%m-%Y %H-%M-%S")
+    directory = "Results " + now_string
+
+    results_path = os.path.join(os.getcwd(), directory)
+    a_path = os.path.join(results_path, "Agent A")
+    b_path = os.path.join(results_path, "Agent B")
+
+    os.mkdir(results_path)
+    os.mkdir(a_path)
+    os.mkdir(b_path)
+
+    # Generating the output text files
+
+    results_a_path  = os.path.join(a_path, "rewards.txt")
+    results_b_path  = os.path.join(b_path, "rewards.txt")
+    durations_path  = os.path.join(results_path, "durations.txt")
+    outcomes_path   = os.path.join(results_path, "outcomes.txt")
+
+    result_a    = open(results_a_path, "w+")
+    result_b    = open(results_b_path, "w+")
+    result_dur  = open(durations_path, "w+")
+    result_wins = open(outcomes_path, "w+")
+
+    # hyper parameters
+
+    EPISODES = 100
+    EPOCHS = 5
+
+    EPS_START = 0.9999
+    EPS_DECAY = 0.999
+    EPS_MIN = 0.1
+
+    # environment
 
     env = scenario182.Scenario182({})
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
 
+    # agent parameters
+
     state_size = env.observation_space.shape[0]
     action_size = env.action_space.n
 
-    # agent_a = random_agent.RandomAgent()
-    agent_a = dqn_agent.DQNAgent(state_size, action_size)
-    # agent_b = random_agent.RandomAgent()
-    agent_b = dqn_agent.DQNAgent(state_size, action_size)
+    # agents
 
-    result_a = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_a/result.txt", "w+")
-    result_b = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_b/result.txt", "w+")
-    result_dur = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/durations.txt", "w+")
-    result_wins = open("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/results.txt", "w+")
+    agent_a = random_agent.RandomAgent()
+    agent_b = random_agent.RandomAgent()
 
-    for epoch in range(epochs):
+    for epoch in range(EPOCHS):
 
         file_name = "epoch_" + str(epoch) + ".pt"
 
         print("Epoch: " + str(epoch))
 
-        scores_a = []
-        scores_b = []
-        durations = []
-        results = []
+        scores_a    = []
+        scores_b    = []
+        durations   = []
+        results     = []
 
-        for episode in range(episodes):
-            print("Episode: %s, FPS: %s, UPS: %s" % (episode, env.game.get_fps(), env.game.get_ups()))
+        eps = EPS_START
+
+        for episode in range(EPISODES):
+
+            fps = env.game.get_fps()
+            ups = env.game.get_ups()
+            print("Episode: %s, FPS: %s, UPS: %s" % (episode, fps, ups))
+
             terminal = False
             state = env.reset()
+
             score_a = 0
             score_b = 0
-
-            count = 0
-            prev_damage = 0
-            prev_units = 0
 
             while not terminal:
 
                 # AI for player 1
                 env.game.set_player(env.game.players[0])
 
-                action = agent_a.get_action(state)
+                action = agent_a.get_action(state, eps)
                 next_state, reward, terminal, info = env.step(action)
                 agent_a.update(state, action, reward, next_state, terminal)
 
@@ -70,17 +135,20 @@ if __name__ == "__main__":
                 # AI for player 1
                 env.game.set_player(env.game.players[1])
 
-                action = agent_b.get_action(state)
+                action = agent_b.get_action(state, eps)
                 next_state, reward, terminal, info = env.step(action)
                 agent_b.update(state, action, reward, next_state, terminal)
 
                 score_b += reward
 
+                # check if there is a winner
                 if (env.game.is_terminal()):
                     if (env.game.players[0].is_defeated()):
                         results.append(0)
                     else:
                         results.append(1)
+
+                eps = max(eps * EPS_DECAY, EPS_MIN)
 
                 state = next_state
 
@@ -89,28 +157,38 @@ if __name__ == "__main__":
 
             durations.append(env.game.get_episode_duration())
 
+        # saving a copy of the neural network
 
-        agent_a.save("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_a/" + file_name)
-        agent_b.save("/Users/diegogutierrez/Documents/college/semester_3/COMPSCI_182/final_project/myfork/results/agent_b/" + file_name)
+        a_checkpoint = os.path.join(a_path, file_name)
+        b_checkpoint = os.path.join(b_path, file_name)
 
+        agent_a.save(a_checkpoint)
+        agent_b.save(b_checkpoint)
+
+        # saving results from previous epoch
+
+        # saving agent a's rewards
         result_a.write("Epoch: " + str(epoch) + "\n")
         for score in scores_a:
             result_a.write(str(score) + ",")
         result_a.write("\n")
         result_a.flush()
 
+        # saving agent b's rewards
         result_b.write("Epoch: " + str(epoch) + "\n")
         for score in scores_b:
             result_b.write(str(score) + ",")
         result_b.write("\n")
         result_b.flush()
 
+        # saving duration of episodes
         result_dur.write("Epoch: " + str(epoch) + "\n")
         for duration in durations:
             result_dur.write(str(duration) + ",")
         result_dur.write("\n")
         result_dur.flush()
 
+        # saving outcomes of episodes
         result_wins.write("Epoch: " + str(epoch) + "\n")
         for result in results:
             result_wins.write(str(result) + ",")

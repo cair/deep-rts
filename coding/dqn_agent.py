@@ -11,7 +11,7 @@ from agent import Agent
 
 BUFFER_SIZE = int(1e5) # Replay memory size
 BATCH_SIZE = 64         # Number of experiences to sample from memory
-GAMMA = 0.99            # Discount factor
+GAMMA = 1            # Discount factor
 TAU = 1e-3              # Soft update parameter for updating fixed q network
 LR = 1e-4               # Q Network learning rate
 UPDATE_EVERY = 4        # How often to update Q network
@@ -29,15 +29,17 @@ class QNetwork(nn.Module):
         """
         super(QNetwork, self).__init__()
         self.seed = torch.manual_seed(seed)
-        self.fc1 = nn.Linear(state_size, 32)
-        self.fc2 = nn.Linear(32, 64)
-        self.fc3 = nn.Linear(64, action_size)
+        self.fc1 = nn.Linear(state_size, 2048)
+        self.fc2 = nn.Linear(2048, 1024)
+        self.fc3 = nn.Linear(1024, 512)
+        self.fc4 = nn.Linear(512, action_size)
 
     def forward(self, x):
         """Forward pass"""
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = F.relu(self.fc3(x))
+        x = self.fc4(x)
 
         return x
 

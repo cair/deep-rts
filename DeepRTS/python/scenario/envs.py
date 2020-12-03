@@ -51,7 +51,7 @@ class GoldCollectOnePlayerFifteen(Scenario):
             rlconf,
             game,
             #Scenario.GOLD_COLLECT(1000),
-            Scenario.GOLD_COLLECT_INCREMENT(100)
+            Scenario.GOLD_COLLECT_INCREMENT(10000)
         )
 
     def _optimal_play_sequence(self):

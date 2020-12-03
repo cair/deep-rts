@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torch.autograd as autograd
 import numpy as np
 import pandas as pd
 import random
@@ -11,13 +12,13 @@ from agent import Agent
 
 class ConvDQN(nn.Module):
 
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, input_shape, output_dim):
         super(ConvDQN, self).__init__()
-        self.input_dim = input_dim
+        self.input_shape = input_shape
         self.output_dim = output_dim
 
         self.conv = nn.Sequential(
-            nn.Conv2d(self.input_dim, 9*9*64, kernel_size=8, stride=4),
+            nn.Conv2d(self.input_shape[0], 9*9*64, kernel_size=8, stride=4),
             nn.ReLU(),
             nn.Conv2d(9*9*64, 7*7*64, kernel_size=4, stride=2),
             nn.ReLU(),
@@ -26,7 +27,7 @@ class ConvDQN(nn.Module):
         )
 
         self.fc = nn.Sequential(
-            nn.Linear(self.input_dim, 512),
+            nn.Linear(512, 512),
             nn.ReLU(),
             nn.Linear(512, 512),
             nn.ReLU(),
@@ -35,7 +36,6 @@ class ConvDQN(nn.Module):
 
     def forward(self, state):
         features = self.conv(state)
-        features = features.view(features.size(0), -1)
         qvals = self.fc(features)
         return qvals
 
@@ -82,7 +82,16 @@ class DQNAgent:
         self.MSE_loss = nn.MSELoss()
 
     def get_action(self, state):
-        state = autograd.Variable(torch.from_numpy(state).float().unsqueeze(0))
+        state  = torch.from_numpy(state).float()
+        # state = state.unsqueeze(1)  # 21
+        # state = state.unsqueeze(1)  # 21
+        # state = state.unsqueeze(0)
+        # state = state.numpy()
+        # print(state)
+        # state[2] = 21
+        # state[3] = 21
+        # state = torch.from_numpy(state).float()
+        # state = autograd.Variable(torch.from_numpy(state).float().unsqueeze(0))
         qvals = self.model.forward(state)
         action = np.argmax(qvals.detach().numpy())
 

@@ -3,7 +3,7 @@ from DeepRTS.Engine import Random
 
 class RandomAgent(Agent):
 
-	def get_action(self, state):
+	def get_action(self, state, eps=0):
 		return Random.action() - 1
 
 	def update(self, state, next_state, action, reward, terminal):

@@ -113,9 +113,9 @@ class Scenario182(Scenario):
             render=util.config(gconf, "render", True),
             view=util.config(gconf, "view", True),
             inputs=util.config(gconf, "inputs", False),
-            caption=util.config(gconf, "caption", True),
-            unit_health=util.config(gconf, "unit_health", True),
-            unit_outline=util.config(gconf, "unit_outline", True),
+            caption=util.config(gconf, "caption", False),
+            unit_health=util.config(gconf, "unit_health", False),
+            unit_outline=util.config(gconf, "unit_outline", False),
             unit_animation=util.config(gconf, "unit_animation", False),
             audio=util.config(gconf, "audio", False),
             audio_volume=util.config(gconf, "audio_volume", 50)
@@ -123,13 +123,14 @@ class Scenario182(Scenario):
 
         engine_config: Engine.Config = Engine.Config.defaults()
         engine_config.set_instant_building(True)
+        engine_config.set_instant_town_hall(True)
         engine_config.set_barracks(True)
         engine_config.set_farm(True)
         engine_config.set_footman(True)
         engine_config.set_archer(True)
-        engine_config.set_start_lumber(0)
-        engine_config.set_start_gold(0)
-        engine_config.set_start_oil(0)
+        engine_config.set_start_lumber(500)
+        engine_config.set_start_gold(500)
+        engine_config.set_start_oil(500)
         engine_config.set_tick_modifier(util.config(engconf, "tick_modifier", engine_config.tick_modifier))
         engine_config.set_console_caption_enabled(False)
 
@@ -153,12 +154,11 @@ class Scenario182(Scenario):
 
             # Scenarios
             self.GAME_END(),
-            self.DAMAGE_DONE(),
             self.FOOD(),
             self.RESOURCE_GATHERED(),
             self.BUILDINGS_BUILT(),
-            self.UNITS_CREATED()
-            # Scenario.DAMAGE_DONE()
+            self.UNITS_CREATED(),
+            self.DAMAGE_DONE()
             # Scenario.DAMAGE_TAKEN(),
             # Scenario.NUM_FARM(),
             # Scenario.NUM_TOWN_HALL(),
