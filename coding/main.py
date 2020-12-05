@@ -4,13 +4,10 @@
 from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
 
-import scenario182
-import dqn_agent
-import random_agent
-import torch
-# import new_dqn_conv as dqn_agent
+import Scenarios
+import Agents
 
-from torchsummary import summary
+import torch
 
 import os
 from datetime import datetime
@@ -45,11 +42,15 @@ if __name__ == "__main__":
 
     # Generating the output folders
 
+    results_folder = "Results"
+
     now = datetime.now()
     now_string = now.strftime("%d-%m-%Y %H-%M-%S")
     directory = "Results " + now_string
 
-    results_path = os.path.join(os.getcwd(), directory)
+
+    results_path = os.path.join(os.getcwd(), results_folder)
+    results_path = os.path.join(results_path, directory)
     a_path = os.path.join(results_path, "Agent A")
     b_path = os.path.join(results_path, "Agent B")
 
@@ -71,7 +72,7 @@ if __name__ == "__main__":
 
     # hyper parameters
 
-    EPISODES = 100
+    EPISODES = 1
     EPOCHS = 5
 
     EPS_START = 0.9999
@@ -80,7 +81,7 @@ if __name__ == "__main__":
 
     # environment
 
-    env = scenario182.Scenario182({})
+    env = Scenarios.Scenario182({})
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
@@ -92,8 +93,8 @@ if __name__ == "__main__":
 
     # agents
 
-    agent_a = random_agent.RandomAgent()
-    agent_b = random_agent.RandomAgent()
+    agent_a = Agents.random_agent.RandomAgent()
+    agent_b = Agents.random_agent.RandomAgent()
 
     for epoch in range(EPOCHS):
 

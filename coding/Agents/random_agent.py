@@ -1,4 +1,4 @@
-from agent import Agent
+from Agents import Agent
 from DeepRTS.Engine import Random
 
 class RandomAgent(Agent):

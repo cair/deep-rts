@@ -1,7 +1,7 @@
 import torch
-from q_network import QNetwork
+from Agents import Agent
 
-class saved_agent(Agent):
+class SavedAgent(Agent):
 
 	def __init__(self, path, state_size, action_size, seed):
 
