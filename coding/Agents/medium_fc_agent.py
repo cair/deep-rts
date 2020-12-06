@@ -83,7 +83,7 @@ class ReplayBuffer:
     def __len__(self):
         return len(self.memory)
 
-class DQNAgent(Agent):
+class MedAgent(Agent):
     def __init__(self, state_size, action_size, seed):
         """
         DQN Agent interacts with the environment,
