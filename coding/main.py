@@ -8,9 +8,12 @@ import Scenarios
 import Agents
 
 import torch
+import imageio
 
 import os
 from datetime import datetime
+
+import pygame
 
 # to print out action name do:
 # print(action_names.get(action + 1))
@@ -53,10 +56,12 @@ if __name__ == "__main__":
     results_path = os.path.join(results_path, directory)
     a_path = os.path.join(results_path, "Agent A")
     b_path = os.path.join(results_path, "Agent B")
+    videos_path = os.path.join(results_path, "Videos")
 
     os.mkdir(results_path)
     os.mkdir(a_path)
     os.mkdir(b_path)
+    os.mkdir(videos_path)
 
     # Generating the output text files
 
@@ -93,8 +98,8 @@ if __name__ == "__main__":
 
     # agents
 
-    agent_a = Agents.random_agent.RandomAgent()
-    agent_b = Agents.random_agent.RandomAgent()
+    agent_a = Agents.RandomAgent()
+    agent_b = Agents.RandomAgent()
 
     for epoch in range(EPOCHS):
 
@@ -121,7 +126,22 @@ if __name__ == "__main__":
             score_a = 0
             score_b = 0
 
+            filenames = []
+
+            recording_path = os.path.join(videos_path, "episode_" + str(episode))
+            os.mkdir(recording_path)
+
+            count = 0
+
             while not terminal:
+
+                window = pygame.display.get_surface()
+
+                image_name = "image_" + str(count) + ".jpeg"
+                image_path = os.path.join(recording_path, image_name)
+                pygame.image.save(window, image_path)
+
+                filenames.append(image_path)
 
                 # AI for player 1
                 env.game.set_player(env.game.players[0])
@@ -153,10 +173,18 @@ if __name__ == "__main__":
 
                 state = next_state
 
+                count += 1
+
             scores_a.append(score_a)
             scores_b.append(score_b)
 
             durations.append(env.game.get_episode_duration())
+
+            images = []
+            for filename in filenames:
+                images.append(imageio.imread(filename))
+            video_path = os.path.join(recording_path, "video.gif")
+            imageio.mimsave(videos_path, images)
 
         # saving a copy of the neural network
 
