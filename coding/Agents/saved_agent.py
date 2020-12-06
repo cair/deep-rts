@@ -3,9 +3,9 @@ from Agents import Agent
 
 class SavedAgent(Agent):
 
-	def __init__(self, path, state_size, action_size, seed):
+	def __init__(self, path, module):
 
-		this.network = QNetwork(state_size, action_size, seed)
+		this.network = module
 		this.network.load_state_dict(torch.load(path))
 		this.network.eval()
 
