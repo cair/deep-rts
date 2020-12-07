@@ -33,6 +33,8 @@ class ConvDQN(nn.Module):
             nn.ReLU(),
             nn.Linear(512, self.output_dim)
         )
+        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        self.to(self.device)
 
     def forward(self, state):
         features = self.conv(state)
