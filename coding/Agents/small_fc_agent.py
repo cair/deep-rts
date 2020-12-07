@@ -32,7 +32,9 @@ class QNetwork(nn.Module):
         self.fc1 = nn.Linear(state_size, 64)
         self.fc2 = nn.Linear(64, 64)
         self.fc3 = nn.Linear(64, action_size)
-
+        
+        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        self.to(self.device)
     def forward(self, x):
         """Forward pass"""
         x = F.relu(self.fc1(x))
