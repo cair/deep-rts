@@ -126,15 +126,9 @@ if __name__ == "__main__":
             score_a = 0
             score_b = 0
 
-            filenames = []
-
-            recording_path = os.path.join(videos_path, "episode_" + str(episode))
-            os.mkdir(recording_path)
-
-            count = 0
-
             while not terminal:
 
+<<<<<<< HEAD
                 window = pygame.display.get_surface()
 
                 image_name = "image_" + str(count) + ".jpeg"
@@ -144,6 +138,8 @@ if __name__ == "__main__":
                 if episode in save_image_epochs:
                     filenames.append(image_path)
 
+=======
+>>>>>>> a7b6d5344b72d23e41b9a95832af17d61bec21c6
                 # AI for player 1
                 env.game.set_player(env.game.players[0])
 
@@ -174,13 +170,12 @@ if __name__ == "__main__":
 
                 state = next_state
 
-                count += 1
-
             scores_a.append(score_a)
             scores_b.append(score_b)
 
             durations.append(env.game.get_episode_duration())
 
+<<<<<<< HEAD
             if episode in save_image_epochs:
                 images = []
                 for filename in filenames:
@@ -188,6 +183,8 @@ if __name__ == "__main__":
                 video_path = os.path.join(recording_path, "video.gif")
                 imageio.mimsave(videos_path, images)
 
+=======
+>>>>>>> a7b6d5344b72d23e41b9a95832af17d61bec21c6
         # saving a copy of the neural network
 
         a_checkpoint = os.path.join(a_path, file_name)
