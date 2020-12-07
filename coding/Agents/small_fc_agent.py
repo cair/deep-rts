@@ -7,7 +7,7 @@ import pandas as pd
 import random
 from collections import deque, defaultdict, namedtuple
 
-from agent import Agent
+from Agents import Agent
 
 BUFFER_SIZE = int(1e5) # Replay memory size
 BATCH_SIZE = 64         # Number of experiences to sample from memory
@@ -168,7 +168,7 @@ class SmallAgent(Agent):
         for source_parameters, target_parameters in zip(q_network.parameters(), fixed_network.parameters()):
             target_parameters.data.copy_(TAU * source_parameters.data + (1.0 - TAU) * target_parameters.data)
 
-    def get_action(self, state, eps=0.2):
+    def get_action(self, state, eps=0):
         """
         Choose the action
 

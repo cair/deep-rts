@@ -93,6 +93,8 @@ if __name__ == "__main__":
 
     # agent parameters
 
+    print(type(env.observation_space.shape))
+
     state_size = env.observation_space.shape[0]
     action_size = env.action_space.n
 
