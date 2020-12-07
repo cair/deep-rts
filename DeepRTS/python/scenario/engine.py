@@ -18,7 +18,7 @@ class ScenarioData:
 class Scenario(gym.Env):
     DEFAULTS = dict(
         updates_per_action=1,
-        flatten=True
+        flatten=False
     )
 
     def __init__(self, config, game, *scenarios):

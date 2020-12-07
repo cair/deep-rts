@@ -86,19 +86,22 @@ if __name__ == "__main__":
 
     # environment
 
-    env = Scenarios.Scenario182({})
+    env = Scenarios.ImageToPyTorch(Scenarios.Scenario182({}))
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
 
     # agent parameters
 
-    state_size = (env.observation_space.shape)
+    state_size = env.observation_space.shape
     action_size = env.action_space.n
+
+    print(type(env.observation_space.shape))
+    print(env.observation_space.shape)
 
     # agents
 
-    agent_a = Agents.ConvAgent(state_size, action_size)
+    agent_a = Agents.DiegoConvAgent(state_size, action_size)
     agent_b = Agents.RandomAgent()
 
     for epoch in range(EPOCHS):
