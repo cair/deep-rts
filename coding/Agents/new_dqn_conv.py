@@ -7,7 +7,7 @@ import pandas as pd
 import random
 from collections import deque, defaultdict, namedtuple
 
-from agent import Agent
+from Agents import Agent
 
 BUFFER_SIZE = int(1e5) # Replay memory size
 BATCH_SIZE = 64         # Number of experiences to sample from memory
@@ -28,37 +28,29 @@ class QNetwork(nn.Module):
         seed (int): random seed
         """
         super(QNetwork, self).__init__()
-        # self.seed = torch.manual_seed(seed)
-        # self.fc1 = nn.Linear(state_size, 32)
-        # self.fc2 = nn.Linear(32, 64)
-        # self.fc3 = nn.Linear(64, action_size)
 
         self.conv = nn.Sequential(
-                nn.Conv2d(10, 32, kernel_size=8, stride=4),
+                nn.Conv2d(state_size[0], 32, kernel_size=8, stride=4),
+                nn.ReLU(),
+                nn.Conv2d(64, 64, kernel_size=3, stride=1),
                 nn.ReLU()
             )
-        def get_size_out(size, kernel_size, stride):
-            return (size - (kernel_size - 1) - 1) // stride + 1
 
-        a = get_size_out(21, 8, 4)
-        b = get_size_out(21, 8, 4)
-
+        conv_out_size = self._get_conv_out(state_size)
         self.fc = nn.Sequential(
-                nn.Linear(a, action_size)
+                nn.Linear(conv_out_size, 512),
+                nn.ReLU(),
+                nn.Linear(512, action_size)
             )
+
+    def _get_conv_out(self, shape):
+        o = self.conv(torch.zeros(1, *shape))
+        return int(np.prod(o.size()))
 
     def forward(self, x):
         """Forward pass"""
-        # x = F.relu(self.fc1(x))
-        # x = F.relu(self.fc2(x))
-        # x = self.fc3(x)
-
-        conv_out = self.conv(x)
-        fc_out = self.fc(conv_out)
-        print("forward")
-        print(fc_out.shape)
-
-        return fc_out
+        conv_out = self.conv(x).view(x.size()[0] - 1)
+        return self.fc(conv_out)
 
 class ReplayBuffer:
     def __init__(self, buffer_size, batch_size, seed):
@@ -97,10 +89,10 @@ class ReplayBuffer:
 
         return (states, actions, rewards, next_states, dones)
 
-    def __len__(self):
-        return len(self.memory)
+    # def __len__(self):
+    #     # return len(self.memory)
 
-class DQNAgent(Agent):
+class ConvAgent(Agent):
     def __init__(self, state_size, action_size, seed=0):
         """
         DQN Agent interacts with the environment,
@@ -200,8 +192,9 @@ class DQNAgent(Agent):
         if rnd < eps:
             return np.random.randint(self.action_size)
         else:
-            state = torch.from_numpy(state).float().unsqueeze(0)
-            state = torch.reshape(state, (1, 10, 21, 21))
+            state = torch.from_numpy(state)
+            # .float().unsqueeze(0)
+            # state = torch.reshape(state, (1, 10, 21, 21))
             # state = state.unsqueeze(2)
             # state = state.unsqueeze(2)
             # state = state.numpy()

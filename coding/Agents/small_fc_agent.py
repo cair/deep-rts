@@ -7,7 +7,7 @@ import pandas as pd
 import random
 from collections import deque, defaultdict, namedtuple
 
-from agent import Agent
+from Agents import Agent
 
 BUFFER_SIZE = int(1e5) # Replay memory size
 BATCH_SIZE = 64         # Number of experiences to sample from memory
