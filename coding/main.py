@@ -16,7 +16,6 @@ from datetime import datetime
 import pygame
 
 # to print out action name do:
-# print(action_names.get(action + 1))
 action_names = {
 
     1: "Previous Unit",
@@ -79,6 +78,7 @@ if __name__ == "__main__":
 
     EPISODES = 1
     EPOCHS = 5
+    save_image_epochs = [0, int((EPOCHS-1)/2), int(EPOCHS-1)]
 
     EPS_START = 0.9999
     EPS_DECAY = 0.999
@@ -93,14 +93,12 @@ if __name__ == "__main__":
 
     # agent parameters
 
-    print(type(env.observation_space.shape))
-
-    state_size = env.observation_space.shape[0]
+    state_size = (env.observation_space.shape)
     action_size = env.action_space.n
 
     # agents
 
-    agent_a = Agents.RandomAgent()
+    agent_a = Agents.ConvAgent(state_size, action_size)
     agent_b = Agents.RandomAgent()
 
     for epoch in range(EPOCHS):
@@ -135,10 +133,10 @@ if __name__ == "__main__":
 
                 action = agent_a.get_action(state, eps)
                 next_state, reward, terminal, info = env.step(action)
+                print(next_state.shape)
                 agent_a.update(state, action, reward, next_state, terminal)
 
                 score_a += reward
-
 
                 # AI for player 1
                 env.game.set_player(env.game.players[1])

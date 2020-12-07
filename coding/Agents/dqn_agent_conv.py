@@ -8,7 +8,7 @@ import pandas as pd
 import random
 from collections import deque, defaultdict, namedtuple
 
-from agent import Agent
+from Agents import Agent
 
 class ConvDQN(nn.Module):
 
@@ -71,7 +71,7 @@ class BasicBuffer:
     def __len__(self):
         return len(self.buffer)
 
-class DQNAgent:
+class ConvAgent:
 
     def __init__(self, obs_space, act_space, use_conv=True, learning_rate=3e-4, gamma=0.99, buffer_size=10000):
         self.learning_rate = learning_rate
