@@ -76,8 +76,8 @@ if __name__ == "__main__":
 
     # hyper parameters
 
-    EPISODES = 1
-    EPOCHS = 5
+    EPISODES = 100
+    EPOCHS = 10
     save_image_epochs = [0, int((EPOCHS-1)/2), int(EPOCHS-1)]
 
     EPS_START = 0.9999
@@ -87,22 +87,23 @@ if __name__ == "__main__":
     # environment
 
     env = Scenarios.ImageToPyTorch(Scenarios.Scenario182({}))
+    env_2 = Scenarios.ImageToPyTorch(Scenarios.Scenario182NoRewards({}))
 
     env.game.set_max_fps(99999999)
     env.game.set_max_ups(99999999)
+
+    env_2.game.set_max_fps(99999999)
+    env_2.game.set_max_ups(99999999)
 
     # agent parameters
 
     state_size = env.observation_space.shape
     action_size = env.action_space.n
 
-    print(type(env.observation_space.shape))
-    print(env.observation_space.shape)
-
     # agents
 
     agent_a = Agents.DiegoConvAgent(state_size, action_size)
-    agent_b = Agents.RandomAgent()
+    agent_b = Agents.DiegoConvAgent(state_size, action_size)
 
     for epoch in range(EPOCHS):
 
@@ -115,13 +116,20 @@ if __name__ == "__main__":
         durations   = []
         results     = []
 
+        duration = 0
+
         eps = EPS_START
+
+        if (epoch == 2):
+            env = env_2
 
         for episode in range(EPISODES):
 
+            episode_start = datetime.now()
+
             fps = env.game.get_fps()
             ups = env.game.get_ups()
-            print("Episode: %s, FPS: %s, UPS: %s" % (episode, fps, ups))
+            print("Episode: %s, FPS: %s, UPS: %s, TIME: %s" % (episode, fps, ups, duration))
 
             terminal = False
             state = env.reset()
@@ -136,7 +144,6 @@ if __name__ == "__main__":
 
                 action = agent_a.get_action(state, eps)
                 next_state, reward, terminal, info = env.step(action)
-                print(next_state.shape)
                 agent_a.update(state, action, reward, next_state, terminal)
 
                 score_a += reward
@@ -165,6 +172,12 @@ if __name__ == "__main__":
             scores_b.append(score_b)
 
             durations.append(env.game.get_episode_duration())
+
+            episode_end = datetime.now()
+
+            duration = episode_end - episode_start
+
+            durations.append(duration)
 
         # saving a copy of the neural network
 
