@@ -33,8 +33,8 @@ class QNetwork(nn.Module):
         self.fc2 = nn.Linear(64, 64)
         self.fc3 = nn.Linear(64, action_size)
         
-        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
-        self.to(self.device)
+        # self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        # self.to(self.device)
     def forward(self, x):
         """Forward pass"""
         x = F.relu(self.fc1(x))
@@ -84,7 +84,7 @@ class ReplayBuffer:
         return len(self.memory)
 
 class SmallAgent(Agent):
-    def __init__(self, state_size, action_size, seed):
+    def __init__(self, state_size, action_size, seed=0):
         """
         DQN Agent interacts with the environment,
         stores the experience and learns from it
@@ -195,3 +195,7 @@ class SmallAgent(Agent):
 
     def save(self, filename):
         torch.save(self.q_network.state_dict(), filename)
+
+    def load(self, file):
+
+        self.q_network.load_state_dict(torch.load(file))

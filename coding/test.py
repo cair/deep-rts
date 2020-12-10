@@ -37,8 +37,17 @@ action_names = {
 
 if __name__ == "__main__":
 
+	now = datetime.now()
+	now_string = now.strftime("%d-%m-%Y %H-%M-%S")
+	directory = "Videos " + now_string
+
+	test_directory = "Tests"
+	test_path = os.path.join(os.getcwd(), test_directory)
+
+	files = ["NN_700"]
+
 	results_path = os.path.join(os.getcwd(), "Results")
-	recording_path = os.path.join(results_path, "Video")
+	recording_path = os.path.join(results_path, directory)
 	log_path = os.path.join(recording_path, "log.txt")
 
 	os.mkdir(recording_path)
@@ -46,65 +55,97 @@ if __name__ == "__main__":
 
 	# environment
 
-	env = Scenarios.Scenario182({})
+	env = Scenarios.ImageToPyTorch(Scenarios.Scenario182({}))
 
 	env.game.set_max_fps(99999999)
 	env.game.set_max_ups(99999999)
 
-	state = env.reset()
+	TRIALS = 100
 
-	print(type(state))
+	for file in files:
 
-	# agents
+		file_path = os.path.join(test_path, file + ".pt")
 
-	agent_a = Agents.RandomAgent()
-	agent_b = Agents.RandomAgent()
+		results_directory = file + "-Random"
+		results_path = os.path.join(test_path, results_directory)
+		os.mkdir(results_path)
 
-	# video stuff
+		outcomes_path = os.path.join(results_path, "outcomes.txt")
+		durations_path = os.path.join(results_path, "durations.txt")
 
-	filenames = []
+		outcomes_file = open(outcomes_path, "w+")
+		durations_file = open(durations_path, "w+")
 
-	terminal = False
-	changed = False
-	count = 0
+		# agents
 
-	# play game
-	while not terminal:
+		state_size = env.observation_space.shape
+		action_size = env.action_space.n
 
-		if changed:
-			# save the current window
-			window = pygame.display.get_surface()
+		agent_a = Agents.SmallAgent(4410, action_size)
+		agent_a.load(file_path)
 
-			image_name = "image_" + str(count) + ".jpeg"
-			image_path = os.path.join(recording_path, image_name)
-			pygame.image.save(window, image_path)
+		agent_b = Agents.RandomAgent()
 
-			filenames.append(image_path)
+		for trial in range(TRIALS):
 
-			count += 1
+			state = env.reset()
+			flat_state = state.flatten()
 
-		# AI for player 1
-		env.game.set_player(env.game.players[0])
+			# video stuff
 
-		action = agent_a.get_action(state, 0)
-		next_state, _, terminal, _ = env.step(action)
+			filenames = []
 
-		log.write(action_names.get(action + 1) + ",")
+			terminal = False
+			changed = False
+			count = 0
 
-		# AI for player 1
-		env.game.set_player(env.game.players[1])
+			# play game
+			while not terminal:
 
-		action = agent_b.get_action(state, 0)
-		next_state, _, terminal, _ = env.step(action)
+				if trial == 0:
+					if changed:
+						# save the current window
+						window = pygame.display.get_surface()
 
-		log.write(action_names.get(action + 1) + "\n")
+						image_name = "image_" + str(count) + ".jpeg"
+						image_path = os.path.join(results_path, image_name)
+						pygame.image.save(window, image_path)
 
-		changed = not numpy.array_equal(state, next_state)
+						filenames.append(image_path)
 
-		state = next_state
+						count += 1
 
-	images = []
-	for filename in filenames:
-		images.append(imageio.imread(filename))
-	video_path = os.path.join(recording_path, "video.gif")
-	imageio.mimsave(video_path, images)
+				# AI for player 1
+				env.game.set_player(env.game.players[0])
+
+				action = agent_a.get_action(flat_state, 0)
+				next_state, _, terminal, _ = env.step(action)
+				flat_next_state = next_state.flatten()
+
+				# AI for player 1
+				env.game.set_player(env.game.players[1])
+
+				action = agent_b.get_action(state, 0)
+				next_state, _, terminal, _ = env.step(action)
+
+				changed = not numpy.array_equal(state, next_state)
+
+				state = next_state
+				flat_state = flat_next_state
+
+			if (env.game.players[0].is_defeated()):
+				outcomes_file.write("0,")
+				outcomes_file.flush()
+			else:
+				outcomes_file.write("1,")
+				outcomes_file.flush()
+
+			durations_file.write(str(env.game.get_episode_duration()) + ",")
+			durations_file.flush()
+
+			if trial == 0:
+				images = []
+				for filename in filenames:
+					images.append(imageio.imread(filename))
+				video_path = os.path.join(results_path, "video.gif")
+				imageio.mimsave(video_path, images)

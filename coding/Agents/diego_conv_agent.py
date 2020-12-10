@@ -212,5 +212,9 @@ class DiegoConvAgent(Agent):
             action = np.argmax(action_values.cpu().data.numpy())
             return action
 
+    def load(self, file):
+
+        self.q_network.load_state_dict(torch.load(file))
+
     def save(self, filename):
         torch.save(self.q_network.state_dict(), filename)

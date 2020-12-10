@@ -76,8 +76,8 @@ if __name__ == "__main__":
 
     # hyper parameters
 
-    EPISODES = 100
-    EPOCHS = 10
+    EPISODES = 1
+    EPOCHS = 1000
     save_image_epochs = [0, int((EPOCHS-1)/2), int(EPOCHS-1)]
 
     EPS_START = 0.9999
@@ -97,13 +97,13 @@ if __name__ == "__main__":
 
     # agent parameters
 
-    state_size = env.observation_space.shape
+    state_size = 4410
     action_size = env.action_space.n
 
     # agents
 
-    agent_a = Agents.DiegoConvAgent(state_size, action_size)
-    agent_b = Agents.DiegoConvAgent(state_size, action_size)
+    agent_a = Agents.SmallAgent(state_size, action_size)
+    agent_b = Agents.SmallAgent(state_size, action_size)
 
     for epoch in range(EPOCHS):
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
             print("Episode: %s, FPS: %s, UPS: %s, TIME: %s" % (episode, fps, ups, duration))
 
             terminal = False
-            state = env.reset()
+            state = env.reset().flatten()
 
             score_a = 0
             score_b = 0
@@ -144,6 +144,7 @@ if __name__ == "__main__":
 
                 action = agent_a.get_action(state, eps)
                 next_state, reward, terminal, info = env.step(action)
+                next_state = next_state.flatten()
                 agent_a.update(state, action, reward, next_state, terminal)
 
                 score_a += reward
@@ -153,6 +154,7 @@ if __name__ == "__main__":
 
                 action = agent_b.get_action(state, eps)
                 next_state, reward, terminal, info = env.step(action)
+                next_state = next_state.flatten()
                 agent_b.update(state, action, reward, next_state, terminal)
 
                 score_b += reward
