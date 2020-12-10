@@ -15,7 +15,7 @@ from datetime import datetime
 
 import pygame
 
-# to print out action name do:
+# all actions:
 action_names = {
 
     1: "Previous Unit",
