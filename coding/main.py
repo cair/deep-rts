@@ -97,13 +97,16 @@ if __name__ == "__main__":
 
     # agent parameters
 
-    state_size = 4410
+    state_size = env.observation_space.shape
     action_size = env.action_space.n
 
     # agents
 
-    agent_a = Agents.SmallAgent(state_size, action_size)
-    agent_b = Agents.SmallAgent(state_size, action_size)
+    agent_a = Agents.SmallAgent(4410, action_size)
+    agent_b = Agents.DiegoConvAgent(state_size, action_size)
+
+    print(agent_b.q_network)
+    print(agent_a.q_network)
 
     for epoch in range(EPOCHS):
 
