@@ -19,10 +19,8 @@ UPDATE_EVERY = 4        # How often to update Q network
 class QNetwork(nn.Module):
     def __init__(self, input_dims, output_dims, seed):
         """
-        Build a fully connected neural network
+        Build a convolutional neural network
 
-        Parameters
-        ----------
         state_size (int): State dimension
         action_size (int): Action dimension
         seed (int): random seed
@@ -44,8 +42,6 @@ class QNetwork(nn.Module):
         return int(np.prod(dims.size()))
 
     def forward(self, state):
-        # print("state shape")
-        # print(state.shape())
         some  = self.conv1(state)
         conv1 = F.relu(some)
         conv2 = F.relu(self.conv2(conv1))
@@ -57,18 +53,11 @@ class QNetwork(nn.Module):
 
         return actions
 
-    # def forward(self, x):
-    #     """Forward pass"""
-    #     conv_out = self.conv(x).view(x.size()[0] - 1)
-    #     return self.fc(conv_out)
-
 class ReplayBuffer:
     def __init__(self, buffer_size, batch_size, seed):
         """
         Replay memory allow agent to record experiences and learn from them
 
-        Parametes
-        ---------
         buffer_size (int): maximum size of internal memory
         batch_size (int): sample size from experience
         seed (int): random seed
@@ -108,8 +97,6 @@ class DiegoConvAgent(Agent):
         DQN Agent interacts with the environment,
         stores the experience and learns from it
 
-        Parameters
-        ----------
         state_size (int): Dimension of state
         action_size (int): Dimension of action
         seed (int): random seed
@@ -131,7 +118,6 @@ class DiegoConvAgent(Agent):
         Update Agent's knowledge
 
         Parameters
-        ----------
         state (array_like): Current state of environment
         action (int): Action taken in current state
         reward (float): Reward received after taking action
@@ -150,16 +136,11 @@ class DiegoConvAgent(Agent):
         Learn from experience by training the q_network
 
         Parameters
-        ----------
         experiences (array_like): List of experiences sampled from agent's memory
         """
         states, actions, rewards, next_states, dones = experiences
         # Get the action with max Q value
         action_values = self.fixed_network(next_states).detach()
-        # Notes
-        # tensor.max(1)[0] returns the values, tensor.max(1)[1] will return indices
-        # unsqueeze operation --> np.reshape
-        # Here, we make it from torch.Size([64]) -> torch.Size([64, 1])
         max_action_values = action_values.max(1)[0].unsqueeze(1)
 
         # If done just use reward, else update Q_target with discounted action values
@@ -181,8 +162,6 @@ class DiegoConvAgent(Agent):
         """
         Update fixed network by copying weights from Q network using TAU param
 
-        Parameters
-        ----------
         q_network (PyTorch model): Q network
         fixed_network (PyTorch model): Fixed target network
         """
@@ -193,8 +172,6 @@ class DiegoConvAgent(Agent):
         """
         Choose the action
 
-        Parameters
-        ----------
         state (array_like): current state of environment
         eps (float): epsilon for epsilon-greedy action selection
         """

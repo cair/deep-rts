@@ -21,8 +21,6 @@ class QNetwork(nn.Module):
         """
         Build a fully connected neural network
 
-        Parameters
-        ----------
         state_size (int): State dimension
         action_size (int): Action dimension
         seed (int): random seed
@@ -32,11 +30,8 @@ class QNetwork(nn.Module):
         self.fc1 = nn.Linear(state_size, 64)
         self.fc2 = nn.Linear(64, 64)
         self.fc3 = nn.Linear(64, action_size)
-        
-        # self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
-        # self.to(self.device)
+
     def forward(self, x):
-        """Forward pass"""
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
@@ -48,8 +43,6 @@ class ReplayBuffer:
         """
         Replay memory allow agent to record experiences and learn from them
 
-        Parametes
-        ---------
         buffer_size (int): maximum size of internal memory
         batch_size (int): sample size from experience
         seed (int): random seed
@@ -60,7 +53,6 @@ class ReplayBuffer:
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
 
     def add(self, state, action, reward, next_state, done):
-        """Add experience"""
         experience = self.experience(state, action, reward, next_state, done)
         self.memory.append(experience)
 
@@ -89,8 +81,6 @@ class SmallAgent(Agent):
         DQN Agent interacts with the environment,
         stores the experience and learns from it
 
-        Parameters
-        ----------
         state_size (int): Dimension of state
         action_size (int): Dimension of action
         seed (int): random seed
@@ -111,8 +101,6 @@ class SmallAgent(Agent):
         """
         Update Agent's knowledge
 
-        Parameters
-        ----------
         state (array_like): Current state of environment
         action (int): Action taken in current state
         reward (float): Reward received after taking action
@@ -130,17 +118,11 @@ class SmallAgent(Agent):
         """
         Learn from experience by training the q_network
 
-        Parameters
-        ----------
         experiences (array_like): List of experiences sampled from agent's memory
         """
         states, actions, rewards, next_states, dones = experiences
         # Get the action with max Q value
         action_values = self.fixed_network(next_states).detach()
-        # Notes
-        # tensor.max(1)[0] returns the values, tensor.max(1)[1] will return indices
-        # unsqueeze operation --> np.reshape
-        # Here, we make it from torch.Size([64]) -> torch.Size([64, 1])
         max_action_values = action_values.max(1)[0].unsqueeze(1)
 
         # If done just use reward, else update Q_target with discounted action values
@@ -162,8 +144,6 @@ class SmallAgent(Agent):
         """
         Update fixed network by copying weights from Q network using TAU param
 
-        Parameters
-        ----------
         q_network (PyTorch model): Q network
         fixed_network (PyTorch model): Fixed target network
         """
@@ -174,8 +154,6 @@ class SmallAgent(Agent):
         """
         Choose the action
 
-        Parameters
-        ----------
         state (array_like): current state of environment
         eps (float): epsilon for epsilon-greedy action selection
         """
