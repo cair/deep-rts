@@ -4,7 +4,13 @@ project(DeepRTS)
 # Cmake version
 cmake_minimum_required(VERSION 3.12)
 
+# Includes
+add_subdirectory(./include/pybind11 pybind11)
 
+# Set variables
+set(CMAKE_CXX_STANDARD 17)
+set(PYBIND11_CPP_STANDARD -std=c++17) # Experimental C++17 support
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") # -Werror # TODO
 
 # Creates Engine in DeepRTS package (instead of root)
 if (NOT DEFINED PYTHON_BUILD)
@@ -12,19 +18,11 @@ if (NOT DEFINED PYTHON_BUILD)
         find_package(Python COMPONENTS Interpreter Development)
 endif ()
 
-# -DCMAKE_BUILD_TYPE=Release
-
-# C++ Standard
-set(CMAKE_CXX_STANDARD 17)
-set(PYBIND11_CPP_STANDARD -std=c++1z) # Experimental C++17 support
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") # -Werror
-add_subdirectory(./include/pybind11 pybind11)
-
 # Clang # TODO
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         target_compile_options(pybind11 INTERFACE -fsized-deallocation)
 endif()
+
 
 set(SOURCE_FILES
         # Engine

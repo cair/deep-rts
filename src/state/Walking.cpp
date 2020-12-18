@@ -103,7 +103,7 @@ void Walking::init(Unit & unit){
                     JPS::Pos(goal->x, goal->y),
                     1);*/
 
-        JPS::findPath(path, unit.getPlayer().getGame().tilemap, unit.tile->x, unit.tile->y, goal->x, goal->y, 1);
+        JPS::findPath(path, unit.getPlayer().getGame().tilemap, unit.tile->x, unit.tile->y, goal->x, goal->y, 1, (JPS_Flag_NoStartCheck | JPS_Flag_NoEndCheck));
 
 
         // Insert found path to the walking path vector
