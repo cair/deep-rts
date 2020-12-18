@@ -1,15 +1,14 @@
-# Project Name
-project(DeepRTS)
+cmake_minimum_required(VERSION 3.17)
 
-# Cmake version
-cmake_minimum_required(VERSION 3.12)
+project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
+
+
 
 # Includes
 add_subdirectory(./include/pybind11 pybind11)
 
 # Set variables
 set(CMAKE_CXX_STANDARD 17)
-set(PYBIND11_CPP_STANDARD -std=c++17) # Experimental C++17 support
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") # -Werror # TODO
 
 # Creates Engine in DeepRTS package (instead of root)

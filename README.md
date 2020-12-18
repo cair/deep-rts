@@ -23,7 +23,7 @@ month={Aug},}
 
 ## Dependencies
 
-* Python >= 3.5
+* Python >= 3.9.1
 
 # Installation
 
