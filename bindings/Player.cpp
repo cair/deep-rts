@@ -12,7 +12,9 @@ void init_Player(py::module &m) {
             .def(py::init<Game&, int>())
 
             .def_readonly("statistic_gathered_gold", &Player::sGatheredGold)
-            .def_readonly("statistic_gathered_lumber", &Player::sGatheredLumber) .def_readonly("statistic_gathered_oil", &Player::sGatheredOil) .def_readonly("statistic_damage_done", &Player::sDamageDone)
+            .def_readonly("statistic_gathered_lumber", &Player::sGatheredLumber)
+            .def_readonly("statistic_gathered_oil", &Player::sGatheredOil)
+            .def_readonly("statistic_damage_done", &Player::sDamageDone)
             .def_readonly("statistic_damage_taken", &Player::sDamageTaken)
             .def_readonly("statistic_units_created", &Player::sUnitsCreated)
             .def_readonly("num_archer", &Player::num_archer)
