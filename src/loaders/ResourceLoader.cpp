@@ -11,10 +11,11 @@
 #ifdef _WIN32
 #include <direct.h>
 #define GetCurrentDir _getcwd
-#elif __linux__ || __APPLE__
+#elif defined __linux__ || defined __APPLE__
 #include <unistd.h>
 #define GetCurrentDir getcwd
 #endif
+
 
 std::string GetCurrentWorkingDir()
 {
