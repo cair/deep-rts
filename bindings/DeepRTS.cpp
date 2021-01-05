@@ -24,7 +24,7 @@ void init_version(py::module &m) {
 #endif
 }
 
-
+#ifndef EMBEDDED
 PYBIND11_MODULE(Engine, m) {
     m.doc() = "DeepRTS Engine";
     init_Random(m);
@@ -40,3 +40,20 @@ PYBIND11_MODULE(Engine, m) {
     init_Config(m);
     init_UnitManager(m);
 }
+#else
+PYBIND11_EMBEDDED_MODULE(Engine, m){
+    m.doc() = "DeepRTS Engine";
+    init_Random(m);
+    init_Constants(m);
+    init_BaseState(m);
+    init_Unit(m);
+    init_Map(m);
+    init_Tile(m);
+    init_Tilemap(m);
+    init_Game(m);
+    init_Player(m);
+    init_version(m);
+    init_Config(m);
+    init_UnitManager(m);
+}
+#endif

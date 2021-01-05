@@ -1,7 +1,14 @@
 from abc import abstractmethod
 
-from DeepRTS.Engine import Map, UnitManager, Constants, Player
-from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
+
+try:
+    from DeepRTS.Engine import Map, UnitManager, Constants, Player
+    from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
+except ImportError:
+    from Engine import Map, UnitManager, Constants, Player
+    from Engine.Constants import Unit, Direction, Tile, State
+
+
 from DeepRTS.python import util
 
 
@@ -267,7 +274,6 @@ class AbstractGUI:
 
             # Draw tile
             if tile.has_occupant():
-
                 self.draw_unit(tile, rect)
             else:
                 self.draw_tile(tile, rect)

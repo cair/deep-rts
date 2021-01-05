@@ -3,7 +3,6 @@
 //
 
 #include "Game.h"
-#include "unit/UnitManager.h"
 #include "graphics/PyGUI.h"
 
 std::unordered_map<int, Game*> Game::games;
@@ -223,7 +222,7 @@ Unit & Game::getUnit(int idx)
     return units[idx];
 }
 
-Unit* Game::getUnitByNameID(std::string nameID) {
+Unit* Game::getUnitByNameID(const std::string& nameID) {
     auto f = unitsNameMap.find(nameID);
     if (f == unitsNameMap.end() ) {
         return nullptr;

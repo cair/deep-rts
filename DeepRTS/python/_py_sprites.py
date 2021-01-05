@@ -3,8 +3,11 @@ import contextlib
 with contextlib.redirect_stdout(None):
     import pygame
 
+try:
+    from DeepRTS.Engine.Constants import Unit, Direction, Tile
+except ImportError:
+    from Engine.Constants import Unit, Direction, Tile
 
-from DeepRTS.Engine.Constants import Unit, Direction, Tile
 from DeepRTS.python import util
 
 

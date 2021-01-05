@@ -47,9 +47,10 @@ void PyGUI::initCython(){
 }
 
 void PyGUI::initGUI(){
-
+    pybind11::module Engine = pybind11::module::import("Engine");
     pybind11::module DeepRTS = pybind11::module::import("DeepRTS");
-    pybind11::module::import("pygame");    auto DeepRTS_Python = DeepRTS.attr("python");
+    pybind11::module::import("pygame");
+    auto DeepRTS_Python = DeepRTS.attr("python");
     auto GUI = DeepRTS_Python.attr("GUI");
 
     auto Config = DeepRTS_Python.attr("Config");

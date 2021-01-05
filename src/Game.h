@@ -145,7 +145,7 @@ public:
 
     long getTicksModifier() const;
 
-    Unit* getUnitByNameID(std::string nameID);
+    Unit* getUnitByNameID(const std::string& nameID);
 
     ////////////////////////////////////////////////////
     ///

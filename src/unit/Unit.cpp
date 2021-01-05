@@ -358,6 +358,7 @@ void Unit::afflictDamage(int dmg_) {
         transitionState(stateManager->deadState);
     }
 
+    tile->triggerOnTileChange();
 }
 
 bool Unit::isDead() {

@@ -5,7 +5,9 @@ project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
 
 # Includes
-add_subdirectory(./include/pybind11 pybind11)
+add_subdirectory(include/pybind11 pybind11)
+add_subdirectory(include/random random)
+add_subdirectory(include/spdlog spdlog)
 
 # Set variables
 set(CMAKE_CXX_STANDARD 17)
@@ -22,6 +24,22 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         target_compile_options(pybind11 INTERFACE -fsized-deallocation)
 endif()
 
+set(BINDING_SOURCES
+
+        bindings/Random.cpp
+        bindings/Constants.cpp
+        bindings/BaseState.cpp
+        bindings/UnitManager.cpp
+        bindings/Unit.cpp
+        bindings/Map.cpp
+        bindings/Tile.cpp
+        bindings/Tilemap.cpp
+        bindings/Game.cpp
+        bindings/Player.cpp
+        bindings/Config.cpp
+        bindings/DeepRTS.cpp
+
+        )
 
 set(SOURCE_FILES
         # Engine
@@ -86,6 +104,7 @@ set(SOURCE_FILES
         src/graphics/PyGUI.cpp
         src/graphics/PyGUI.h
 
+        ${BINDING_SOURCES}
         )
 
 
@@ -113,7 +132,13 @@ if (NOT DEFINED PYTHON_BUILD)
 
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
         add_executable(DeepRTSGame ${SOURCE_FILES})
-        target_link_libraries(DeepRTSGame PRIVATE pybind11::embed)
+        target_compile_definitions(DeepRTSGame PRIVATE EMBEDDED=1)
+        target_link_libraries(DeepRTSGame PRIVATE
+                pybind11::embed
+                spdlog::spdlog
+                effolkronium_random
+
+        )
 
         # make python source the build dir.
         execute_process(

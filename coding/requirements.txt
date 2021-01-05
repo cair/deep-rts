@@ -1,6 +1,5 @@
 ray[rllib]
-ray[tune]
-
+torch
 requests
 setproctitle
 psutil
