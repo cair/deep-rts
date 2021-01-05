@@ -4,12 +4,12 @@
 [submodule "include/pybind11"]
 	path = include/pybind11
 	url = https://github.com/pybind/pybind11.git
-[submodule "include/seasocks"]
-	path = include/seasocks
-	url = https://github.com/mattgodbolt/seasocks.git
 [submodule "include/spdlog"]
 	path = include/spdlog
 	url = https://github.com/gabime/spdlog.git
 [submodule "include/random"]
 	path = include/random
 	url = https://github.com/effolkronium/random.git
+[submodule "include/drogon"]
+	path = include/drogon
+	url = https://github.com/an-tao/drogon.git
