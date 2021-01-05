@@ -3,40 +3,56 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
-import pandas as pd
 import random
-from collections import deque, defaultdict, namedtuple
+from collections import deque, namedtuple
 
-from Agents import Agent
+from DeepRTS.contrib.agents import Agent
 
-BUFFER_SIZE = int(1e5) # Replay memory size
-BATCH_SIZE = 64         # Number of experiences to sample from memory
-GAMMA = 1            # Discount factor
-TAU = 1e-3              # Soft update parameter for updating fixed q network
-LR = 1e-4               # Q Network learning rate
-UPDATE_EVERY = 4        # How often to update Q network
+BUFFER_SIZE = int(1e5)  # Replay memory size
+BATCH_SIZE = 64  # Number of experiences to sample from memory
+GAMMA = 0.99  # Discount factor
+TAU = 1e-3  # Soft update parameter for updating fixed q network
+LR = 1e-4  # Q Network learning rate
+UPDATE_EVERY = 4  # How often to update Q network
+
 
 class QNetwork(nn.Module):
-    def __init__(self, state_size, action_size, seed):
+    def __init__(self, input_dims, output_dims, seed):
         """
-        Build a fully connected neural network
+        Build a convolutional neural network
 
         state_size (int): State dimension
         action_size (int): Action dimension
         seed (int): random seed
         """
         super(QNetwork, self).__init__()
-        self.seed = torch.manual_seed(seed)
-        self.fc1 = nn.Linear(state_size, 64)
-        self.fc2 = nn.Linear(64, 64)
-        self.fc3 = nn.Linear(64, action_size)
 
-    def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        self.conv1 = nn.Conv2d(input_dims[0], 32, 7, 3)
+        self.conv2 = nn.Conv2d(32, 64, 3, 1)
 
-        return x
+        fc_input_dims = self.calculate_conv_output_dims(input_dims)
+
+        self.fc1 = nn.Linear(fc_input_dims, 512)
+        self.fc2 = nn.Linear(512, output_dims)
+
+    def calculate_conv_output_dims(self, input_dims):
+        state = torch.zeros(1, *input_dims)
+        dims = self.conv1(state)
+        dims = self.conv2(dims)
+        return int(np.prod(dims.size()))
+
+    def forward(self, state):
+        some = self.conv1(state)
+        conv1 = F.relu(some)
+        conv2 = F.relu(self.conv2(conv1))
+        # conv3 shape is BS x n_filters x H x W
+        conv_state = conv2.view(conv2.size()[0], -1)
+        # conv_state shape is BS x (n_filters * H * W)
+        flat1 = F.relu(self.fc1(conv_state))
+        actions = self.fc2(flat1)
+
+        return actions
+
 
 class ReplayBuffer:
     def __init__(self, buffer_size, batch_size, seed):
@@ -48,11 +64,12 @@ class ReplayBuffer:
         seed (int): random seed
         """
         self.batch_size = batch_size
-        self.seed =0
+        self.seed = 0
         self.memory = deque(maxlen=buffer_size)
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
 
     def add(self, state, action, reward, next_state, done):
+        """Add experience"""
         experience = self.experience(state, action, reward, next_state, done)
         self.memory.append(experience)
 
@@ -63,19 +80,26 @@ class ReplayBuffer:
         experiences = random.sample(self.memory, k=self.batch_size)
 
         # Convert to torch tensors
-        states = torch.from_numpy(np.vstack([experience.state for experience in experiences if experience is not None])).float()
-        actions = torch.from_numpy(np.vstack([experience.action for experience in experiences if experience is not None])).long()
-        rewards = torch.from_numpy(np.vstack([experience.reward for experience in experiences if experience is not None])).float()
-        next_states = torch.from_numpy(np.vstack([experience.next_state for experience in experiences if experience is not None])).float()
+        states = torch.from_numpy(
+            np.stack([experience.state for experience in experiences if experience is not None])).float()
+        actions = torch.from_numpy(
+            np.vstack([experience.action for experience in experiences if experience is not None])).long()
+        rewards = torch.from_numpy(
+            np.vstack([experience.reward for experience in experiences if experience is not None])).float()
+        next_states = torch.from_numpy(
+            np.stack([experience.next_state for experience in experiences if experience is not None])).float()
         # Convert done from boolean to int
-        dones = torch.from_numpy(np.vstack([experience.done for experience in experiences if experience is not None]).astype(np.uint8)).float()
+        dones = torch.from_numpy(
+            np.vstack([experience.done for experience in experiences if experience is not None]).astype(
+                np.uint8)).float()
 
         return (states, actions, rewards, next_states, dones)
 
     def __len__(self):
         return len(self.memory)
 
-class SmallAgent(Agent):
+
+class DiegoConvAgent(Agent):
     def __init__(self, state_size, action_size, seed=0):
         """
         DQN Agent interacts with the environment,
@@ -96,11 +120,11 @@ class SmallAgent(Agent):
         self.memory = ReplayBuffer(BUFFER_SIZE, BATCH_SIZE, seed)
         self.timestep = 0
 
-
     def update(self, state, action, reward, next_state, done):
         """
         Update Agent's knowledge
 
+        Parameters
         state (array_like): Current state of environment
         action (int): Action taken in current state
         reward (float): Reward received after taking action
@@ -118,6 +142,7 @@ class SmallAgent(Agent):
         """
         Learn from experience by training the q_network
 
+        Parameters
         experiences (array_like): List of experiences sampled from agent's memory
         """
         states, actions, rewards, next_states, dones = experiences
@@ -171,9 +196,9 @@ class SmallAgent(Agent):
             action = np.argmax(action_values.cpu().data.numpy())
             return action
 
-    def save(self, filename):
-        torch.save(self.q_network.state_dict(), filename)
-
     def load(self, file):
 
         self.q_network.load_state_dict(torch.load(file))
+
+    def save(self, filename):
+        torch.save(self.q_network.state_dict(), filename)
