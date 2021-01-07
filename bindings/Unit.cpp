@@ -62,7 +62,8 @@ void init_Unit(py::module &m) {
 
             .def("get_player", &Unit::getPlayer, py::return_value_policy::reference)
             .def("right_click", &Unit::rightClick)
-            .def("build", &Unit::build)
+            .def("build", py::overload_cast<int>(&Unit::build))
+            .def("build_no_cost", py::overload_cast<int, bool>(&Unit::build))
             .def_readwrite("animation_counter", &Unit::animationCounter)
 
             .def("spawn", &Unit::spawn)

@@ -160,6 +160,12 @@ class AbstractGUI:
         self.rect_manager.add_changed_tile(tile)
         self.render(changes_only=True)
 
+    def capture(self, copy=False):
+        if copy:
+            return pygame.surfarray.array3d(self.canvas)
+        else:
+            return pygame.surfarray.pixels3d(self.canvas)
+
     def event(self):
         ev = pygame.event.get()
 

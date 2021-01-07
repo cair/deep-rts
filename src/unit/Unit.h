@@ -152,6 +152,7 @@ public:
 
 	Tile *getNextTile();
     bool build(int idx);
+    bool build(int idx, bool ignoreCost);
     void spawn(Tile &x, int initValue);
     void despawn();
     void update();

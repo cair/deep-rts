@@ -2,12 +2,17 @@ cmake_minimum_required(VERSION 3.17)
 
 project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
+# If you want to use CUSTOM python, enable these. if not disable these :D
+set(PYTHON_REQUIRED_VERSION 3.8)
 
 
 # Includes
+include(cmake/CMakeRC.cmake)
 add_subdirectory(include/pybind11 pybind11)
 add_subdirectory(include/random random)
 add_subdirectory(include/spdlog spdlog)
+add_subdirectory(include/drogon drogon)  # git submodule update --init --recursive
+add_subdirectory(include/json json)
 
 # Set variables
 set(CMAKE_CXX_STANDARD 17)
@@ -16,7 +21,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") # -Werror # TODO
 # Creates Engine in DeepRTS package (instead of root)
 if (NOT DEFINED PYTHON_BUILD)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")
-        find_package(Python COMPONENTS Interpreter Development)
+        find_package(Python ${PYTHON_REQUIRED_VERSION} REQUIRED COMPONENTS Interpreter Development)
 endif ()
 
 # Clang # TODO
@@ -24,8 +29,14 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         target_compile_options(pybind11 INTERFACE -fsized-deallocation)
 endif()
 
-set(BINDING_SOURCES
+set(WEBSERVER_SOURCES
+        src/contrib/webserver/Webserver.cpp
+        src/contrib/webserver/Webserver.h
+        src/contrib/webserver/Websockets.cpp
+        src/contrib/webserver/Websockets.h
+        )
 
+set(BINDING_SOURCES
         bindings/Random.cpp
         bindings/Constants.cpp
         bindings/BaseState.cpp
@@ -38,7 +49,6 @@ set(BINDING_SOURCES
         bindings/Player.cpp
         bindings/Config.cpp
         bindings/DeepRTS.cpp
-
         )
 
 set(SOURCE_FILES
@@ -105,6 +115,7 @@ set(SOURCE_FILES
         src/graphics/PyGUI.h
 
         ${BINDING_SOURCES}
+        ${WEBSERVER_SOURCES}
         )
 
 
@@ -124,7 +135,29 @@ pybind11_add_module(Engine
         bindings/DeepRTS.cpp
         )
 
+target_link_libraries(Engine PRIVATE
+        effolkronium_random
+        drogon
+        nlohmann_json::nlohmann_json
+        deeprts::rc
 
+        )
+
+# CMRC
+# Find All web files
+FILE(GLOB_RECURSE web_resources RELATIVE ${PROJECT_SOURCE_DIR} src/contrib/webclient/dist/webclient/*)
+cmrc_add_resource_library(DeepRTSResources ALIAS deeprts::rc
+        WHENCE
+        src/contrib
+        ${web_resources}
+)
+
+
+# TODO hmmm is this good shit or do  i get bugs?
+set_property(TARGET Engine PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET trantor PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET drogon PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET DeepRTSResources PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # Dont create C++ Executable for Python builds (saves time)
 
@@ -133,10 +166,14 @@ if (NOT DEFINED PYTHON_BUILD)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
         add_executable(DeepRTSGame ${SOURCE_FILES})
         target_compile_definitions(DeepRTSGame PRIVATE EMBEDDED=1)
+        target_compile_definitions(DeepRTSGame PRIVATE WEBDEV=1)
         target_link_libraries(DeepRTSGame PRIVATE
                 pybind11::embed
                 spdlog::spdlog
                 effolkronium_random
+                drogon
+                nlohmann_json::nlohmann_json
+                deeprts::rc
 
         )
 

@@ -13,3 +13,6 @@
 [submodule "include/drogon"]
 	path = include/drogon
 	url = https://github.com/an-tao/drogon.git
+[submodule "include/json"]
+	path = include/json
+	url = https://github.com/nlohmann/json.git

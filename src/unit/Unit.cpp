@@ -116,6 +116,10 @@ Tile *Unit::centerTile() {
 }
 
 bool Unit::build(int idx) {
+    return build(idx, false);
+}
+
+bool Unit::build(int idx, bool ignoreCost) {
     //if(state->id != Constants::State::Idle
     if(state->id != Constants::State::Idle)
     {
@@ -148,7 +152,7 @@ bool Unit::build(int idx) {
     }
 
     Tile &placementTile = game->tilemap.getTile(x, y);
-    if(!player_.canAfford(newUnit)) {
+    if(!player_.canAfford(newUnit) && !ignoreCost) {
         ////std::cout << "Cannot afford " << newUnit->name << std::endl;
         return false;
     }

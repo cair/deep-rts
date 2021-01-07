@@ -1,14 +1,21 @@
-from DeepRTS.contrib.agents import Agent
+from DeepRTS.contrib.agents.agent import BaseAgent
 from DeepRTS.Engine import Random
 
 
-class RandomAgent(Agent):
+class RandomAgent(BaseAgent):
 
-    def get_action(self, state, eps=0):
+    def __init__(self, env):
+        super(RandomAgent, self).__init__(env=env)
+
+    def get_state(self):
+        return self.env.get_state(image=False, copy=False)
+
+    def get_action(self, obs):
         return Random.action() - 1
 
-    def update(self, state, next_state, action, reward, terminal):
-        return
+    def state_preprocess(self, obs):
+        return obs
+        # return obs.swapaxes(0, 1).copy()
 
-    def save(self, file_name):
-        return
+    def memorize(self, obs, obs1, action, reward, terminal, info):
+        pass

@@ -101,7 +101,7 @@ class Game(Engine.Game):
         self.set_selected_player(player)
 
     def get_state(self, image=False, copy=False):
-        return self.gui.capture() if image else np.array(self.state, copy=copy)
+        return self.gui.capture(copy=copy) if image else np.array(self.state, copy=copy)
 
     def view_every(self, n):
         self._view_every = n

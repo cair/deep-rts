@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  color: black;
+  font-weight: 400;
+}
+
+.dark-themed{
+  background-color: black !important;
+  color: white !important;
+}
+
+.standalone-header{
+  height: 56px;
+}
+
+.squared{
+  border-radius: 0!important;
+}
+
+.no-padding{
+  padding: 0 !important;
+}
+
+.margin-left-10{
+  margin-left: 10px !important;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

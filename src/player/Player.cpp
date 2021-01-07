@@ -108,7 +108,7 @@ void Player::spawnPlayer() {
 
     if (config.instantTownHall) {
         // build Town-Hall
-        builder.build(0);
+        builder.build(0, true);
     }
 
 }

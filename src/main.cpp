@@ -3,9 +3,13 @@
 #include "Config.h"
 #include "Game.h"
 #include "util/Random.h"
+#include "contrib/webserver/Webserver.h"
 
 
 int main() {
+
+    auto webServer = Webserver("0.0.0.0", 4300, true);
+    webServer.start();
 
     Config config = Config::defaults();
     config.setConsoleCaptionEnabled(true);
