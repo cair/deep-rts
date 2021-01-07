@@ -202,6 +202,12 @@ class Tournament:
                 participant.agent.set_player(self._env.players[i])
 
         def play(self):
+            if len(self.participants) == 1:
+                winner = self.participants[0]
+                self._winner = winner
+                self._logbook["winner"] = winner
+                return self.get_logbook()
+
             print(
                 f"[ROUND={self._match_round}|MATCH={self._match_id},GAMES={self._games}]Playing  - {' vs '.join(self.participant_ids)}")
             for episode in range(self._games):
@@ -374,21 +380,47 @@ class Tournament:
 
             return result
 
+        def generate_summary(self):
+
+            summary = dict(
+                nodes=[],
+                edges=[]
+            )
+
+            for match_group in self._matches:
+                for match in match_group:
+
+                    summary["nodes"].append(dict(
+                        name=match.match_id,
+                        data=[dict(
+                            round=match.match_round,
+                            id=match.match_id,
+                            participants=match.participant_ids,
+                            winner=match.winner.pid
+                        )]
+                    ))
+
+                    if match.next_match:
+                        summary["edges"].append((match.match_id, match.next_match.match_id))
+
+            return summary
+
         def start(self):
-            if self.t.tournament_strategy == Strategy.SINGLE_ELIMINATION:
-                if len(self.t.roster) < 2:
-                    raise RuntimeError("A tournament should have AT LEAST 2 players")
-                elif not self.t.byes_enabled and not Tournament.is_pow_2(len(self.t.roster)):
-                    raise RuntimeError("Byes are not enabled, and the player pool is not a power of 2")
-                elif self.t.tournament_is_started:
-                    raise RuntimeError("Cannot start tournament twice!")
+            if len(self.t.roster) < 2:
+                raise RuntimeError("A tournament should have AT LEAST 2 players")
+            elif not self.t.byes_enabled and not Tournament.is_pow_2(len(self.t.roster)):
+                raise RuntimeError("Byes are not enabled, and the player pool is not a power of 2")
+            elif self.t.tournament_is_started:
+                raise RuntimeError("Cannot start tournament twice!")
 
-                self._matches = self.create_tournament_tree(next_match=None)
-                self._populate_initial_round()
+            self._matches = self.create_tournament_tree(next_match=None)
+            self._populate_initial_round()
 
-                while self._round_iterator < len(self._matches):
-                    self.play_round()
-                    self._round_iterator += 1
+            while self._round_iterator < len(self._matches):
+                self.play_round()
+                self._round_iterator += 1
+
+            return self.generate_summary()
 
         def play_round(self):
             assert self._matches is not None
@@ -438,7 +470,7 @@ class Tournament:
             self.match_counter = 1
 
         def start(self):
-            ## Ensure that all players are 0-0 at the start
+            # Ensure that all players are 0-0 at the start
             assert [m.group for m in self.t.roster].count("0-0") == len(self.t.roster)
 
             tournament_done = False
@@ -459,9 +491,6 @@ class Tournament:
                         self.t.players_per_match)
 
                     for matched_players in group_participants:
-
-                        if len(matched_players) == 1:
-                            continue
 
                         self.groups[group]["matches"].append(
                             Tournament.Match(
@@ -484,8 +513,35 @@ class Tournament:
                     # Group is all played. aka finished.
                     group_data["finished"] = True
 
-            for player in sorted(self.t.roster, key=lambda p: p.rating, reverse=False):
-                print(player.group, " - ", player.rating)
+            # for player in sorted(self.t.roster, key=lambda p: p.rating, reverse=False):
+            #    print(player.group, " - ", player.rating)
+            return self.generate_summary()
+
+        def generate_summary(self):
+
+            summary = dict(
+                nodes=[],
+                edges=[]
+            )
+
+            for group, group_data in self.groups.items():
+                summary["nodes"].append(dict(
+                    name=group,
+                    data=[dict(
+                        id=match.match_id,
+                        participants=match.participant_ids,
+                        winner=match.winner.pid
+                    ) for match in group_data["matches"]]
+                ))
+                w, l = [int(x) for x in group.split("-")]
+                prev_1 = f"{w - 1}-{l}"
+                prev_2 = f"{w}-{l - 1}"
+                if prev_1 in self.groups:
+                    summary["edges"].append((prev_1, group))
+                if prev_2 in self.groups:
+                    summary["edges"].append((prev_2, group))
+
+            return summary
 
         def create_initial_group(self):
             player_split = list(
@@ -516,7 +572,7 @@ class Tournament:
                  byes_enabled=False,
                  best_of_n_matches=3,
                  default_player_rank=500,
-                 tournament_strategy=Strategy.SWISS,
+                 tournament_strategy=Strategy.SINGLE_ELIMINATION,
                  initial_matchup_strategy=SortStrategy.RANK
                  ):
 
@@ -549,7 +605,7 @@ class Tournament:
             p.reset()
 
     def start(self):
-        self.model.start()
+        return self.model.start()
 
     def add_agent(self, agent_cls, rank=None):
         if self.tournament_is_started:
