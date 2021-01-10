@@ -39,6 +39,8 @@ class Scenario(gym.Env):
         # Define the action space
         self.action_space = LimitedDiscrete(Constants.action_min, Constants.action_max)
 
+
+
         # Define the observation space, here we assume that max is 255 (image) # TODO
         self.observation_space = gym.spaces.Box(0, 255, shape=self.get_state().shape, dtype=np.float32)
 
@@ -351,7 +353,7 @@ class Scenario(gym.Env):
         return self.game.players
 
     def get_state(self, image=False, copy=False):
-        if self.config["flatten"]:
+        if self.config["state_flatten"]:
             return self.game.get_state(image=image, copy=copy).flatten()
         return self.game.get_state(image=image, copy=copy)
 

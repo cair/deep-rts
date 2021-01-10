@@ -18,12 +18,16 @@ class Game(Engine.Game):
         os.chdir(dir_path)
 
         # Override map
-        parser = argparse.ArgumentParser(description='Process some integers.')
-        parser.add_argument('--map', action="store", dest="map", type=str)
-        args = parser.parse_args()
+        try:
+            # This sometimmes fails under ray
+            parser = argparse.ArgumentParser(description='Process some integers.')
+            parser.add_argument('--map', action="store", dest="map", type=str)
+            args = parser.parse_args()
 
-        if args.map is not None:
-            map_name = args.map
+            if args.map is not None:
+                map_name = args.map
+        except:
+            pass
 
         # TODO
         if engine_config:

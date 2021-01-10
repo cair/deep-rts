@@ -49,6 +49,7 @@ set(BINDING_SOURCES
         bindings/Player.cpp
         bindings/Config.cpp
         bindings/DeepRTS.cpp
+        bindings/Webserver.cpp
         )
 
 set(SOURCE_FILES

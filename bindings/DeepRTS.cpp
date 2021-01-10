@@ -16,6 +16,7 @@ void init_Game(py::module &);
 void init_Map(py::module &);
 void init_Config(py::module &);
 void init_Random(py::module &);
+void init_Webserver(py::module &);
 void init_version(py::module &m) {
 #ifdef VERSION_INFO
     m.attr("__version__") = VERSION_INFO;
@@ -39,6 +40,7 @@ PYBIND11_MODULE(Engine, m) {
     init_version(m);
     init_Config(m);
     init_UnitManager(m);
+    init_Webserver(m);
 }
 #else
 PYBIND11_EMBEDDED_MODULE(Engine, m){
