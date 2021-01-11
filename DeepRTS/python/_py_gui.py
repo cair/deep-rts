@@ -3,10 +3,10 @@ from abc import abstractmethod
 
 try:
     from DeepRTS.Engine import Map, UnitManager, Constants, Player
-    from DeepRTS.Engine.Constants import Unit, Direction, Tile, State
+    from DeepRTS.Engine.Constants import Unit, Direction, State
 except ImportError:
     from Engine import Map, UnitManager, Constants, Player
-    from Engine.Constants import Unit, Direction, Tile, State
+    from Engine.Constants import Unit, Direction, State
 
 
 from DeepRTS.python import util
@@ -341,11 +341,14 @@ class AbstractGUI:
         return loaded_sprites
 
     def _load_tiles(self, path):
-        tile_ids, size = self.tile_definitions()
+
+        tile_ids = set([t.id for t in self.game.tilemap.tiles])
+        size = self.tile_size
+
         sheet = pygame.image.load(path)
 
         tiles = {
-            tile: util.image_at(sheet, tile - 1, size).convert_alpha()for tile in tile_ids
+            tile: util.image_at(sheet, tile , size).convert_alpha()for tile in tile_ids
         }
 
         return tiles
@@ -376,9 +379,6 @@ class GUI(AbstractGUI):
 
         super().__init__(game, tile_size, units, config)
 
-    def tile_definitions(self):
-        tile_types = [int(getattr(Tile, x)) for x in Tile.__dict__.keys() if not x.startswith("__") and not x == 'name']
-        return tile_types, self.tile_size
 
     def sprite_definitions(self):
         return {

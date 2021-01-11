@@ -27,14 +27,6 @@ void init_Constants(py::module &m) {
             .value("Human", Constants::Race::Human)
             .value("Orc", Constants::Race::Orc);
 
-    py::enum_<Constants::Tile>(constants, "Tile", py::arithmetic(), "Tile Constants")
-            .value("Spawn", Constants::Tile::Spawn)
-            .value("Grass", Constants::Tile::Grass)
-            .value("Wall", Constants::Tile::Wall)
-            .value("Lumber", Constants::Tile::Lumber)
-            .value("Water", Constants::Tile::Water)
-            .value("Gold", Constants::Tile::Gold);
-
     py::enum_<Constants::State>(constants, "State", py::arithmetic(), "State Constants")
             .value("Idle", Constants::State::Idle)
             .value("Spawning", Constants::State::Spawning)

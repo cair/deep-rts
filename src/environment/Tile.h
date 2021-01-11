@@ -28,7 +28,7 @@ private:
 
 	bool walkable;
 
-	bool swimable;
+    float walkModifier;
 
 	int occupantID = -1;
 
@@ -50,7 +50,7 @@ private:
 
 	const bool newWalkable;
 
-	const bool newSwimable;
+	const float newWalkModifier;
 
 	const int newTypeId;
 
@@ -67,7 +67,7 @@ private:
 
 	const bool depletedWalkable;
 
-	const bool depletedSwimable;
+	const float depletedWalkModifier;
 
 	const int depletedTypeId;
 
@@ -95,7 +95,7 @@ public:
 
 	const int goldYield;
 
-	const int oilYield;
+	const int stoneYield;
 
 
 
@@ -112,17 +112,17 @@ public:
 			int newTypeId,
 			bool newHarvestable,
 			bool newWalkable,
-			bool newSwimable,
+            float newWalkModifier,
 			int newResources,
             std::string& depletedName,
             int depletedTypeId,
 			bool depletedHarvestable,
 			bool depletedWalkable,
-			bool depletedSwimable,
+			float depletedWalkmMdifier,
             int depletedResources,
             int lumberYield,
             int goldYield,
-            int oilYield
+            int stoneYield
 	);
 
 

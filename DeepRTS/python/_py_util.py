@@ -7,6 +7,7 @@ import os
 import shutil
 import stat
 import warnings
+import collections.abc
 
 def image_at(sheet, tile_n, tile_size=32):
     size = sheet.get_size()
@@ -83,7 +84,26 @@ def dict_update(d1, d2):
     for k, v in d2.items():
         if k not in d1:
             warnings.warn("The key '%s' is not an existing member of the target dictionary. The update will "
-                                 "most "
-                                 "likely be useless." % k)
+                          "most "
+                          "likely be useless." % k)
         d1[k] = v
     return d1
+
+
+def apply_overrides(config, overrides):
+    """
+    Overrides configurations by keys
+    :param config:
+    :param overrides:
+    :return:
+    """
+
+    def update(d, u):
+        for k, v in u.items():
+            if isinstance(v, collections.abc.Mapping):
+                d[k] = update(d.get(k, {}), v)
+            else:
+                d[k] = v
+        return d
+
+    update(config, overrides)

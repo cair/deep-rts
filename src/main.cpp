@@ -13,9 +13,9 @@ int main() {
 
     Config config = Config::defaults();
     config.setConsoleCaptionEnabled(true);
-    config.setGUI(true);
+    config.setGUI(false);
 
-    auto g = Game("15x15-2v2.json", config);
+    auto g = Game("scenario-find-gold.json", config);
 
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();

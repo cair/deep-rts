@@ -1,69 +1,103 @@
 {
-  "52": {
-    "name": "Wall",
-    "harvestable": false,
-    "walkable": false,
-    "swimable": false,
-    "oil_yield": 0,
-    "lumber_yield": 0,
-    "gold_yield": 0,
-    "resources": 0,
-    "deplete_tile": 52
+  "tile_types": {
+    "Spawn": [16],
+    "Wall": ["17-86", 87],
+    "Gold": ["88-101"],
+    "Lumber": ["102-141"],
+    "Stone": ["142-179"],
+    "Water": ["300-333"],
+    "Desert": ["180-205", "334-355"],
+    "Grass": ["238-269", "356-371"]
   },
-  "142": {
-    "name": "Lumber",
-    "harvestable": true,
-    "walkable": false,
-    "swimable": false,
-    "oil_yield": 0,
-    "lumber_yield": 1,
-    "gold_yield": 0,
-    "resources": 1000,
-    "deplete_tile": 270
-  },
-  "334": {
-    "name": "Water",
-    "harvestable": false,
-    "walkable": false,
-    "swimable": true,
-    "oil_yield": 0,
-    "lumber_yield": 0,
-    "gold_yield": 0,
-    "resources": 0,
-    "deplete_tile": 334
-  },
-  "270": {
-    "name": "Grass",
-    "harvestable": false,
-    "walkable": true,
-    "swimable": false,
-    "oil_yield": 0,
-    "lumber_yield": 0,
-    "gold_yield": 0,
-    "resources": 0,
-    "deplete_tile": 270
-  },
-  "102": {
-    "name": "Gold",
-    "harvestable": true,
-    "walkable": false,
-    "swimable": false,
-    "oil_yield": 0,
-    "lumber_yield": 0,
-    "gold_yield": 1,
-    "resources": 1000,
-    "deplete_tile": 270
-  },
-  "17": {
-    "name": "Spawn",
-    "harvestable": false,
-    "walkable": false,
-    "swimable": false,
-    "oil_yield": 0,
-    "lumber_yield": 0,
-    "gold_yield": 0,
-    "resources": 0,
-    "deplete_tile": 270
+  "tile_metadata": {
+    "Wall": {
+      "name": "Wall",
+      "harvestable": false,
+      "walkable": false,
+      "walk_modifier": 0,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 0,
+      "deplete_tile": 51
+    },
+    "Lumber": {
+      "name": "Lumber",
+      "harvestable": true,
+      "walkable": false,
+      "walk_modifier": 0,
+      "stone_yield": 0,
+      "lumber_yield": 1,
+      "gold_yield": 0,
+      "resources": 1000,
+      "deplete_tile": 269
+    },
+    "Water": {
+      "name": "Water",
+      "harvestable": false,
+      "walkable": false,
+      "walk_modifier": 0.0,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 0,
+      "deplete_tile": 334
+    },
+    "Grass": {
+      "name": "Grass",
+      "harvestable": false,
+      "walkable": true,
+      "walk_modifier": 1.0,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 0,
+      "deplete_tile": 269
+    },
+    "Desert": {
+      "name": "Desert",
+      "harvestable": false,
+      "walkable": true,
+      "walk_modifier": 0.5,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 0,
+      "deplete_tile": 269
+    },
+    "Gold": {
+      "name": "Gold",
+      "harvestable": true,
+      "walkable": false,
+      "walk_modifier": 0,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 1,
+      "resources": 1000,
+      "deplete_tile": 269
+    },
+    "Stone": {
+      "name": "Stone",
+      "harvestable": true,
+      "walkable": false,
+      "walk_modifier": 0,
+      "stone_yield": 1,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 1000,
+      "deplete_tile": 269
+    },
+    "Spawn": {
+      "name": "Spawn",
+      "harvestable": false,
+      "walkable": false,
+      "walk_modifier": 0,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 0,
+      "deplete_tile": 269
+    }
   }
 
 

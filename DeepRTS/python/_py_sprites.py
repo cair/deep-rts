@@ -4,9 +4,9 @@ with contextlib.redirect_stdout(None):
     import pygame
 
 try:
-    from DeepRTS.Engine.Constants import Unit, Direction, Tile
+    from DeepRTS.Engine.Constants import Unit, Direction
 except ImportError:
-    from Engine.Constants import Unit, Direction, Tile
+    from Engine.Constants import Unit, Direction
 
 from DeepRTS.python import util
 

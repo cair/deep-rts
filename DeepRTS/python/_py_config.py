@@ -21,6 +21,7 @@ class Config:
         THIRTYONE = "31x31-2v2.json"
         THIRTYONE_FOUR = "31x31-4v4.json"
         THIRTYONE_SIX = "31x31-6v6.json"
+        FIND_GOLD = "scenario-find-gold.json"
 
     def __init__(
             self,

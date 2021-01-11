@@ -79,6 +79,7 @@ set(SOURCE_FILES
         src/environment/Tilemap.h
         src/environment/Map.cpp
         src/environment/Map.h
+        src/environment/TileInfo.h
 
         # State
         src/state/BaseState.cpp
@@ -111,6 +112,7 @@ set(SOURCE_FILES
         src/util/Pathfinder.h
         src/util/PriorityQueue.hpp
         src/util/Random.h
+        src/util/String.h
 
         src/graphics/PyGUI.cpp
         src/graphics/PyGUI.h

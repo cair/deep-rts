@@ -5,6 +5,9 @@ from DeepRTS.Engine import Constants
 from DeepRTS.python import util
 from coding.util import LimitedDiscrete
 from tabulate import tabulate
+from DeepRTS import Engine
+from DeepRTS.python import util, Config, Game
+import collections.abc
 
 
 class ScenarioData:
@@ -19,14 +22,21 @@ class ScenarioData:
 class Scenario(gym.Env):
     DEFAULTS = dict(
         updates_per_action=1,
-        flatten=False,
+        state_flatten=False,
         stats_print_interval=10000,
         stats_print=True,
         stats_print_on_terminal=True
     )
 
-    def __init__(self, config, game, *scenarios):
+    def __init__(self, config, *scenarios, config_override=None):
+        config_override = config_override if isinstance(config_override, dict) else {}
+
         self.config = util.dict_update(Scenario.DEFAULTS.copy(), config)
+        util.apply_overrides(config, config_override)
+
+        game, engine_conf, gui_conf, scenario_conf, engine_config, gui_config = self.read_config(
+            config
+        )
         self.game = game
 
         # Struct that holds all data that needs to be stored during a episode
@@ -39,8 +49,6 @@ class Scenario(gym.Env):
         # Define the action space
         self.action_space = LimitedDiscrete(Constants.action_min, Constants.action_max)
 
-
-
         # Define the observation space, here we assume that max is 255 (image) # TODO
         self.observation_space = gym.spaces.Box(0, 255, shape=self.get_state().shape, dtype=np.float32)
 
@@ -52,13 +60,58 @@ class Scenario(gym.Env):
         self.stats_print = self.config.get("stats_print")
         self.stats_print_on_terminal = self.config.get("stats_print_on_terminal")
 
+    def read_config(self, config):
+        engine_conf = config["engine"] if "engine" in config else {}
+        gui_conf = config["gui"] if "gui" in config else {}
+        scenario_conf = config["scenario"] if "scenario" in config else {}
+
+        gui_config = Config(
+            render=util.config(gui_conf, "render", True),
+            view=util.config(gui_conf, "view", True),
+            inputs=util.config(gui_conf, "inputs", False),
+            caption=util.config(gui_conf, "caption", False),
+            unit_health=util.config(gui_conf, "unit_health", False),
+            unit_outline=util.config(gui_conf, "unit_outline", False),
+            unit_animation=util.config(gui_conf, "unit_animation", False),
+            audio=util.config(gui_conf, "audio", False),
+            audio_volume=util.config(gui_conf, "audio_volume", 50)
+        )
+        engine_config: Engine.Config = Engine.Config.defaults()
+        engine_config.set_barracks(util.config(engine_conf, "unit_barracks", True))
+        engine_config.set_footman(util.config(engine_conf, "unit_footman", True))
+        engine_config.set_instant_town_hall(util.config(engine_conf, "unit_town_hall", True))
+        engine_config.set_archer(util.config(engine_conf, "unit_archer", False))
+        engine_config.set_start_lumber(util.config(engine_conf, "start_lumber", 0))  # Enough to create TownHall
+        engine_config.set_start_gold(util.config(engine_conf, "start_gold", 0))  # Enough to create TownHall
+        engine_config.set_start_stone(util.config(engine_conf, "start_stone", 0))
+        engine_config.set_tick_modifier(util.config(engine_conf, "tick_modifier", engine_config.tick_modifier))
+
+        c_n_players = engine_conf["n_players"] if "n_players" in engine_conf else 1
+        c_fps = engine_conf["fps"] if "fps" in engine_conf else -1
+        c_ups = engine_conf["ups"] if "ups" in engine_conf else -1
+        if "map" not in engine_conf:
+            raise RuntimeError("No map was loaded during configuration. PLease set 'map' in engine config")
+        c_map = engine_conf["map"]
+
+        game = Game(
+            c_map,
+            n_players=c_n_players,
+            engine_config=engine_config,
+            gui_config=gui_config,
+            terminal_signal=False
+        )
+        game.set_max_fps(c_fps)
+        game.set_max_ups(c_ups)
+
+        return game, engine_conf, gui_conf, scenario_conf, engine_config, gui_config
+
     def is_terminal(self):
         return self.terminal
 
     def print_stats(self):
         full_output = []
         for player in self.game.players:
-            output = [[self._step_count] + scenario(player=player) for scenario in self.scenarios_stat_fns]
+            output = [[self._step_count] + scenario(player=player.base) for scenario in self.scenarios_stat_fns]
             full_output.extend(output)
         print(tabulate(full_output, headers=["Step", "Desc", "Player ID", "Current", "Target", "Goal"],
                        showindex="always", tablefmt="simple"))
@@ -71,7 +124,8 @@ class Scenario(gym.Env):
         self.terminal = all(successes)
         self.last_reward = sum(rewards)
 
-        if (self.stats_print_on_terminal and self.terminal) or (self.stats_print and self._step_count % self.stats_print_interval == 0):
+        if (self.stats_print_on_terminal and self.terminal) or (
+                self.stats_print and self._step_count % self.stats_print_interval == 0):
             self.print_stats()
 
         self._step_count += 1
@@ -113,230 +167,17 @@ class Scenario(gym.Env):
 
             # Process game while unit is not idle
             while unit.state.id != Constants.State.Idle:  # TODO - convert from getter to property in binding
-                total_steps, total_reward, terminal = self._optimal_play_gamestep(total_steps, total_reward)
+                total_steps, total_reward, terminal = self._optimal_play_gamestep(player, total_steps, total_reward)
 
             player.do_action(action)
 
         terminal = False
         while not terminal:
-            total_steps, total_reward, terminal = self._optimal_play_gamestep(total_steps, total_reward)
+            total_steps, total_reward, terminal = self._optimal_play_gamestep(player, total_steps, total_reward)
 
         self.reset()
 
         return total_steps, total_reward
-
-    @staticmethod
-    def _gold_collect(target):
-        def eval_wrapper(self, player):
-            t = player.statistic_gathered_gold >= target
-            r = 1 if t else 0
-            return t, r
-
-        def stats_wrapper(self, player):
-            t, r = eval_wrapper(self, player)
-            return ["Gold Collected", player.get_id(), player.statistic_gathered_gold, target, t]
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _gold_collect_increment(amount, reward_success=1, reward_fail=-0.01):
-        def eval_wrapper(self, player):
-            diff = player.statistic_gathered_gold - self.data.previous_statistic_gathered_gold
-            self.data.previous_statistic_gathered_gold = player.statistic_gathered_gold
-            r = reward_success if diff > 0 else reward_fail
-            t = player.statistic_gathered_gold >= amount
-            return t, r
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _lumber_collect(amount):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.statistic_gathered_lumber >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(eval=eval_wrapper,
-                    stats=stats_wrapper
-                    )
-
-    @staticmethod
-    def _oil_collect(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.statistic_gathered_oil >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(eval=eval_wrapper,
-                    stats=stats_wrapper
-                    )
-
-    @staticmethod
-    def _food_consumption(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.food_consumption >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _food_count(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.food >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _damage_done(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.statistic_damage_done >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _damage_taken(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.statistic_damage_taken >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _units_created(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.statistic_units_created >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _num_footman(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.num_footman >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _num_peasant(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.num_peasant >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _num_archer(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.num_archer >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _num_farm(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.num_farm >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _num_barracks(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.num_barrack >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
-
-    @staticmethod
-    def _num_town_hall(amount, player=0):
-        def eval_wrapper(self, player):
-            p = self.game.players[player]
-            return p.num_town_hall >= amount
-
-        def stats_wrapper(self, player):
-            return []
-
-        return dict(
-            eval=eval_wrapper,
-            stats=stats_wrapper
-        )
 
     def reset(self):
         self.data.reset()
@@ -347,10 +188,6 @@ class Scenario(gym.Env):
         self.terminal = False
         self._step_count = 0
         return self.get_state()
-
-    @property
-    def players(self):
-        return self.game.players
 
     def get_state(self, image=False, copy=False):
         if self.config["state_flatten"]:
@@ -372,20 +209,6 @@ class Scenario(gym.Env):
         if mode == "human":
             self.game.view()
 
-    GOLD_COLLECT = _gold_collect
-    GOLD_COLLECT_INCREMENT = _gold_collect_increment
-    OIL_COLLECT = _lumber_collect
-    LUMBER_COLLECT = _oil_collect
-    FOOD_CONSUMPTION = _food_consumption
-    FOOD_COUNT = _food_count
-    DAMAGE_DONE = _damage_done
-    DAMAGE_TAKEN = _damage_taken
-    UNITS_CREATED = _units_created
-
-    NUM_FOOTMAN = _num_footman
-    NUM_PEASANT = _num_peasant
-    NUM_ARCHER = _num_archer
-
-    NUM_FARM = _num_farm
-    NUM_BARRACKS = _num_barracks
-    NUM_TOWN_HALL = _num_town_hall
+    @property
+    def players(self):
+        return self.game.players

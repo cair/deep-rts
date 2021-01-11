@@ -5,6 +5,8 @@
 #include "Map.h"
 #include <string>
 #include "../loaders/ResourceLoader.h"
+#include "../util/String.h"
+
 
 
 
@@ -12,67 +14,68 @@
 Map::Map(const std::string& map_file): mapFile(map_file) {
     ResourceLoader::getInstance().loadMapJSON(map_file);
 
-    auto mapData = ResourceLoader::getInstance().mapJSON.GetObject();
-    auto _tilesData = ResourceLoader::getInstance().tileJSON.GetObject();
 
 
+    auto mapData = ResourceLoader::getInstance().mapJSON;
+    auto _tileData = ResourceLoader::getInstance().tileData;
 
-    auto tilesetData = mapData["tilesets"].GetArray()[0].GetObject();
-    auto mapLayer = mapData["layers"].GetArray()[0].GetObject();
-    auto _tileIDs = mapLayer["data"].GetArray();
+    auto tilesetData = mapData["tilesets"][0];
+
+    auto mapLayer = mapData["layers"][0];
+
+    auto _tileIDs = mapLayer["data"];
 
     for(auto &id : _tileIDs) {
-        int tileId = id.GetInt();
-        tileIDs.emplace_back(tileId);
+        int tileId = id.get<int>();
+        tileIDs.emplace_back(tileId-1);
     }
 
     for(auto tileId : tileIDs) {
-        auto tileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
+        auto tileData = _tileData.getTileData(tileId);
+        if(tileData.is_null()){
+            std::runtime_error("Could not load tile");
+        }
+
+        if(tileData["deplete_tile"].is_null()){std::cout << "Deplete Tile missing" << std::endl;}
+        else if(tileData["name"].is_null()){std::cout << "Name missing" << std::endl;}
+        else if(tileData["walkable"].is_null()){std::cout << "walkable missing" << std::endl;}
+        else if(tileData["walk_modifier"].is_null()){std::cout << "walk_modifier missing" << std::endl;}
+        else if(tileData["harvestable"].is_null()){std::cout << "harvestable missing" << std::endl;}
+        else if(tileData["resources"].is_null()){std::cout << "resources" << std::endl;}
+        else if(tileData["lumber_yield"].is_null()){std::cout << "lumber_yield" << std::endl;}
+        else if(tileData["gold_yield"].is_null()){std::cout << "gold_yield" << std::endl;}
+        else if(tileData["stone_yield"].is_null()){std::cout << "stone_yield" << std::endl;}
+
+        //std::cout << tileId << " - " << tileData.dump() << std::endl;
+
+        auto deplete_tile = tileData["deplete_tile"].get<int>();
+        auto name = tileData["name"].get<std::string>();
+        auto walkable = tileData["walkable"].get<bool>();
+        auto walk_modifier = tileData["walk_modifier"].get<float>();
+        auto harvestable = tileData["harvestable"].get<bool>();
+        auto resources = tileData["resources"].get<int>();
+        auto lumber_yield = tileData["lumber_yield"].get<int>();
+        auto gold_yield = tileData["gold_yield"].get<int>();
+        auto stone_yield = tileData["stone_yield"].get<int>();
 
         tilesData.emplace(tileId,TileData(
-                tileData["deplete_tile"].GetInt(),
-                tileData["name"].GetString(),
-                tileData["walkable"].GetBool(),
-                tileData["harvestable"].GetBool(),
-                tileData["swimable"].GetBool(),
-                tileData["resources"].GetInt(),
-                tileData["lumber_yield"].GetInt(),
-                tileData["gold_yield"].GetInt(),
-                tileData["oil_yield"].GetInt())
-        );
-
-
-        /*auto newTileData = _tilesData[std::to_string(tileId).c_str()].GetObject();
-        int depletedTypeId = newTileData["deplete_tile"].GetInt();
-        auto depletedTileData = map.tilesData[std::to_string(depletedTypeId).c_str()].GetObject();
-
-        auto newName = std::string(newTileData["name"].GetString());
-        auto depletedName = std::string(depletedTileData["name"].GetString());
-
-        auto newWalkable = newTileData["walkable"].GetBool();
-        auto depletedWalkable = depletedTileData["walkable"].GetBool();
-
-        auto newHarvestable = newTileData["harvestable"].GetBool();
-        auto depletedHarvestable = depletedTileData["harvestable"].GetBool();
-
-        auto newSwimable = newTileData["swimable"].GetBool();
-        auto depletedSwimable = depletedTileData["swimable"].GetBool();
-
-        auto newResources = newTileData["resources"].GetUint();
-        auto depletedResources = depletedTileData["resources"].GetUint();
-
-        auto lumberYield = newTileData["lumber_yield"].GetInt();
-        auto goldYield = newTileData["gold_yield"].GetInt();
-        auto oilYield = newTileData["oil_yield"].GetInt();*/
-
-
+                deplete_tile,
+                name,
+                walkable,
+                walk_modifier,
+                harvestable,
+                resources,
+                lumber_yield,
+                gold_yield,
+                stone_yield
+        ));
 
     }
 
-    int mapWidth = mapData["width"].GetInt();
-    int mapHeight = mapData["height"].GetInt();
-    int tWidth = tilesetData["tilewidth"].GetInt();
-    int tHeight = tilesetData["tileheight"].GetInt();
+    int mapWidth = mapData["width"].get<int>();
+    int mapHeight = mapData["height"].get<int>();
+    int tWidth = tilesetData["tilewidth"].get<int>();
+    int tHeight = tilesetData["tileheight"].get<int>();
     //int tFirstGid = tilesetData["firstgid"].GetInt();
 
     TILE_WIDTH = tWidth;

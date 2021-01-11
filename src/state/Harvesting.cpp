@@ -52,7 +52,7 @@ void Harvesting::update(Unit & unit){
             return;
         }
 
-        if(unit.lumberCarry + unit.goldCarry + unit.oilCarry >= unit.carryCapacity) {
+        if(unit.lumberCarry + unit.goldCarry + unit.stoneCarry >= unit.carryCapacity) {
             // Return to base
             unit.harvestIterator = 2;
             return;
@@ -60,11 +60,11 @@ void Harvesting::update(Unit & unit){
 
         unit.lumberCarry += harvestTarget->lumberYield;
         unit.goldCarry += harvestTarget->goldYield;
-        unit.oilCarry += harvestTarget->oilYield;
+        unit.stoneCarry += harvestTarget->stoneYield;
         unit.player_.sGatheredGold += harvestTarget->goldYield;
         unit.player_.sGatheredLumber += harvestTarget->lumberYield;
-        unit.player_.sGatheredOil += harvestTarget->oilYield;
-        harvestTarget->takeResource(harvestTarget->lumberYield + harvestTarget->goldYield + harvestTarget->oilYield);
+        unit.player_.sGatheredStone += harvestTarget->stoneYield;
+        harvestTarget->takeResource(harvestTarget->lumberYield + harvestTarget->goldYield + harvestTarget->stoneYield);
 
         // Callback
         unit.game->_onResourceGather(*harvestTarget, unit);
@@ -110,11 +110,11 @@ void Harvesting::update(Unit & unit){
             // Can deliver
             unit.player_.addGold(unit.goldCarry);
             unit.player_.addLumber(unit.lumberCarry);
-            unit.player_.addOil(unit.oilCarry);
+            unit.player_.addStone(unit.stoneCarry);
 
             unit.goldCarry = 0;
             unit.lumberCarry = 0;
-            unit.oilCarry = 0;
+            unit.stoneCarry = 0;
 
             if(unit.config.harvestForever)
             {

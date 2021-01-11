@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <nlohmann/json.hpp>
 #include "../../../include/rapidjson/include/rapidjson/document.h"
 
 struct TileData {
@@ -16,11 +17,11 @@ struct TileData {
     std::string name;
     bool walkable;
     bool harvestable;
-    bool swimable;
+    float walk_modifier;
     int resources;
     int lumber_yield;
     int gold_yield;
-    int oil_yield;
+    int stone_yield;
 
     TileData()= default;
 
@@ -28,19 +29,17 @@ struct TileData {
             int depleteTile,
             std::string name,
             bool walkable,
+            float walk_modifier,
             bool harvestable,
-            bool swimable,
             int resources,
             int lumber_yield,
             int gold_yield,
-            int oil_yield): depleteTile(depleteTile), name(std::move(name)), walkable(walkable), harvestable(harvestable),
-                            swimable(swimable), resources(resources), lumber_yield(lumber_yield), gold_yield(gold_yield),
-                            oil_yield(oil_yield){
+            int stone_yield): depleteTile(depleteTile), name(std::move(name)), walkable(walkable), harvestable(harvestable),
+                              walk_modifier(walk_modifier), resources(resources), lumber_yield(lumber_yield), gold_yield(gold_yield),
+                            stone_yield(stone_yield){
 
     }
 };
-
-
 
 
 class Map {
@@ -66,9 +65,6 @@ public:
     std::vector<int> tileIDs;
 
     std::map<int, TileData> tilesData;
-
-
-
 
 };
 

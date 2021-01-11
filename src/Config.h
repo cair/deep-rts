@@ -21,7 +21,7 @@ public:
     bool pompd = false;
     bool gui = false;  // No need to export because it is used to initiate gui on C++ side only
     int startGold = 0;
-    int startOil = 0;
+    int startStone = 0;
     int startLumber = 0;
     int startFood = 1;
     int terminalSignal = true;
@@ -88,8 +88,8 @@ public:
         startFood = v;
     }
 
-    void setStartOil(int v){
-        startOil = v;
+    void setStartStone(int v){
+        startStone = v;
     }
 
     void setStartLumber(int v){
@@ -115,7 +115,7 @@ public:
         config.setConsoleCaptionEnabled(false);
         config.setStartGold(1500);
         config.setStartLumber(750);
-        config.setStartOil(0);
+        config.setStartStone(0);
         config.setTerminalSignal(true);
         config.setPOMDP(false);
 

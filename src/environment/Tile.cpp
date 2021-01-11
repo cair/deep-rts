@@ -15,18 +15,18 @@ Tile::Tile(
 		std::string& newName,
 		int newTypeID,
 		bool newHarvestable,
-		bool newWalkable,
-		bool newSwimable,
+        bool newWalkable,
+        float newWalkModifier,
 		int newResources,
 		std::string& depletedName,
 		int depletedTypeID,
 		bool depletedHarvestable,
 		bool depletedWalkable,
-		bool depletedSwimable,
+		float depletedWalkModifier,
 		int depletedResources,
 		int lumberYield,
 		int goldYield,
-		int oilYield
+		int stoneYield
 ):
 tilemap(tilemap),
 
@@ -34,7 +34,7 @@ harvestable(newHarvestable),
 
 walkable(newWalkable),
 
-swimable(newSwimable),
+walkModifier(newWalkModifier),
 
 resources(newResources),
 
@@ -46,7 +46,7 @@ newHarvestable(newHarvestable),
 
 newWalkable(newWalkable),
 
-newSwimable(newSwimable),
+newWalkModifier(newWalkModifier),
 
 newTypeId(newTypeID),
 
@@ -58,7 +58,7 @@ depletedHarvestable(depletedHarvestable),
 
 depletedWalkable(depletedWalkable),
 
-depletedSwimable(depletedSwimable),
+depletedWalkModifier(depletedWalkModifier),
 
 depletedTypeId(depletedTypeID),
 
@@ -80,11 +80,11 @@ lumberYield(lumberYield),
 
 goldYield(goldYield),
 
-oilYield(oilYield)
+stoneYield(stoneYield)
 {
 
 	// Update state map
-	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(name);
 
 	// Update state matrix
 	if(resources <= 0) {
@@ -173,13 +173,13 @@ void Tile::reset()
     occupantID = -1;
     harvestable = newHarvestable;
     walkable = newWalkable;
-    swimable = newSwimable;
+    walkModifier = newWalkModifier;
     resources = newResources;
     name = newName;
     typeId = newTypeId;
     depleted = false;
 
-	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(name);
     if(resources <= 0) {
         setDepleted();
     }
@@ -191,14 +191,14 @@ void Tile::setDepleted() {
 	depleted = true;
     harvestable = depletedHarvestable;
     walkable = depletedWalkable;
-    swimable = depletedSwimable;
+    walkModifier = depletedWalkModifier;
     resources = depletedResources;
     name = depletedName;
     typeId = depletedTypeId;
 
 
 
-	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(typeId);
+	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(name);
     triggerOnTileChange();
 }
 

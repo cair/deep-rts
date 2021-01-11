@@ -13,7 +13,7 @@ void init_Player(py::module &m) {
 
             .def_readonly("statistic_gathered_gold", &Player::sGatheredGold)
             .def_readonly("statistic_gathered_lumber", &Player::sGatheredLumber)
-            .def_readonly("statistic_gathered_oil", &Player::sGatheredOil)
+            .def_readonly("statistic_gathered_stone", &Player::sGatheredStone)
             .def_readonly("statistic_damage_done", &Player::sDamageDone)
             .def_readonly("statistic_damage_taken", &Player::sDamageTaken)
             .def_readonly("statistic_units_created", &Player::sUnitsCreated)
@@ -24,7 +24,7 @@ void init_Player(py::module &m) {
             .def_readonly("num_peasant", &Player::num_peasant)
             .def_readonly("num_town_hall", &Player::num_town_hall)
 
-            .def_readonly("oil", &Player::oil)
+            .def_readonly("stone", &Player::stone)
             .def_readonly("gold", &Player::gold)
             .def_readonly("lumber", &Player::lumber)
             .def_readonly("food_consumption", &Player::foodConsumption)

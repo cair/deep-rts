@@ -1,11 +1,14 @@
 from DeepRTS import Engine
 from DeepRTS.python import GUI
 from DeepRTS.python import Config
+from DeepRTS.python._py_player import DeepRTSPlayer
 
 import numpy as np
 import random
 import os
 import argparse
+
+
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -50,13 +53,22 @@ class Game(Engine.Game):
         self.gui = GUI(self, tile_size=tile_size, config=gui_config if isinstance(gui_config, Config) else Config())
 
         # Create players
+        # Also, build a python interface
+        self.py_players = []  # Python interface for extended player object
+
         for i in range(n_players):
-            self.add_player()
+            self.py_players.append(
+                DeepRTSPlayer(self, self.add_player())
+            )
 
         # Select first player as default
         self.set_player(self.players[0])
 
         self.start()
+
+    @property
+    def players(self):
+        return self.py_players
 
     def sample_action(self):
         return int(Engine.Constants.action_max * random.random()) + Engine.Constants.action_min
@@ -101,8 +113,8 @@ class Game(Engine.Game):
             return self.gui.capture()
         return None
 
-    def set_player(self, player):
-        self.set_selected_player(player)
+    def set_player(self, player: DeepRTSPlayer):
+        self.set_selected_player(player.base)
 
     def get_state(self, image=False, copy=False):
         return self.gui.capture(copy=copy) if image else np.array(self.state, copy=copy)

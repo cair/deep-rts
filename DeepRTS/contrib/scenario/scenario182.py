@@ -64,8 +64,8 @@ class Scenario182(Scenario):
         def wrap(self):
 
             p = self.game.selected_player
-            diff = p.statistic_gathered_lumber + p.statistic_gathered_oil + p.statistic_gathered_gold - self.data.previous_statistic_resources
-            self.data.previous_statistic_resources = p.statistic_gathered_lumber + p.statistic_gathered_oil + p.statistic_gathered_gold
+            diff = p.statistic_gathered_lumber + p.statistic_gathered_stone + p.statistic_gathered_gold - self.data.previous_statistic_resources
+            self.data.previous_statistic_resources = p.statistic_gathered_lumber + p.statistic_gathered_stone + p.statistic_gathered_gold
             r = reward_success if diff > 0 else reward_fail
 
             t = True
@@ -143,7 +143,7 @@ class Scenario182(Scenario):
         engine_config.set_archer(True)
         engine_config.set_start_lumber(500)
         engine_config.set_start_gold(500)
-        engine_config.set_start_oil(500)
+        engine_config.set_start_stone(500)
         engine_config.set_tick_modifier(util.config(engconf, "tick_modifier", engine_config.tick_modifier))
         engine_config.set_console_caption_enabled(False)
 

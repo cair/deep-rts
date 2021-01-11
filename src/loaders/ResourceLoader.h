@@ -5,17 +5,29 @@
 #ifndef DEEPRTS_RESOURCELOADER_H
 #define DEEPRTS_RESOURCELOADER_H
 
-#include "../../../include/rapidjson/include/rapidjson/document.h"
+#include <nlohmann/json.hpp>
+
+struct TilePropertyData{
+    std::unordered_map<int, std::string> tileID2Type;
+    std::unordered_map<std::string, nlohmann::json> tileData;
+
+    nlohmann::json& getTileData(int tileID){
+        auto &tileType = tileID2Type[tileID];
+        auto &tData = tileData[tileType];
+        return tData;
+    }
+};
 
 class ResourceLoader {
 public:
-    rapidjson::Document mapJSON;
-    rapidjson::Document tileJSON;
+    nlohmann::json mapJSON;
+    nlohmann::json tileJSON;
 
 
 private:
     static std::string getFilePath(const std::string& fileName);
     bool mapLoaded = false;
+    bool tilesLoaded = true;
     void loadTileJSON();
     ResourceLoader(){
         loadTileJSON();
@@ -32,6 +44,7 @@ public:
     ResourceLoader(ResourceLoader const&)               = delete;
     void operator=(ResourceLoader const&)  = delete;
 
+    TilePropertyData tileData;
     // Note: Scott Meyers mentions in his Effective Modern
     //       C++ book, that deleted functions should generally
     //       be public as it results in better error messages
@@ -43,6 +56,8 @@ public:
         // Instantiated on first use.
         return instance;
     }
+
+    static TilePropertyData loadMAPJson(const nlohmann::json& tJSON);
 };
 
 

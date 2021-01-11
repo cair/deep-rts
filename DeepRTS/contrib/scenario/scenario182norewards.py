@@ -49,7 +49,7 @@ class Scenario182NoRewards(Scenario):
         engine_config.set_archer(True)
         engine_config.set_start_lumber(500)
         engine_config.set_start_gold(500)
-        engine_config.set_start_oil(500)
+        engine_config.set_start_stone(500)
         engine_config.set_tick_modifier(util.config(engconf, "tick_modifier", engine_config.tick_modifier))
         engine_config.set_console_caption_enabled(False)
 

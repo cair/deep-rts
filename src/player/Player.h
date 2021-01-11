@@ -102,7 +102,7 @@ public:
 	int getGold() const;
 
 	/// Get the oil resource
-	int getOil() const;
+	int getStone() const;
 
 	/// Get the lumber resource
 	int getLumber() const;
@@ -154,7 +154,7 @@ public:
 	void removeLumber(int n);
 
 	/// Remove N oil from the player
-	void removeOil(int n);
+	void removeStone(int n);
 
 	/// Add N gold to the player
 	void addGold(int n);
@@ -163,14 +163,14 @@ public:
 	void addLumber(int n);
 
 	/// Add N oil to the player
-	void addOil(int n);
+	void addStone(int n);
 
 	///////////////////////////////////////////////////////////
 	///
 	/// Player Resources
 	///
 	///////////////////////////////////////////////////////////
-	int oil = 0;
+	int stone = 0;
 	int gold = 0;
 	int lumber = 0;
 	int foodConsumption = 0;
@@ -191,7 +191,7 @@ public:
 	///////////////////////////////////////////////////////////
 	int sGatheredGold = 0;
 	int sGatheredLumber = 0;
-	int sGatheredOil = 0;
+	int sGatheredStone = 0;
 	int sDamageDone = 0;
 	int sDamageTaken = 0;
 	int sUnitsCreated = 0;

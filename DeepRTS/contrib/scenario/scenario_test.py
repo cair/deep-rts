@@ -7,7 +7,7 @@ if __name__ == "__main__":
     x = Scenario(
         python.Game("15x15-2v2.json", n_players=2),
         Scenario.GOLD_COLLECT(1),
-        Scenario.OIL_COLLECT(1),
+        Scenario.STONE_COLLECT(1),
         Scenario.LUMBER_COLLECT(1),
         Scenario.FOOD_CONSUMPTION(1),
         Scenario.FOOD_COUNT(1),

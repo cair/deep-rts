@@ -34,15 +34,15 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             auto newHarvestable = newTileData.harvestable;
             auto depletedHarvestable = depletedTileData.harvestable;
 
-            auto newSwimable = newTileData.swimable;
-            auto depletedSwimable = depletedTileData.swimable;
+            auto newWalkModifier = newTileData.walk_modifier;
+            auto depletedWalkModifier = depletedTileData.walk_modifier;
 
             auto newResources = newTileData.resources;
             auto depletedResources = depletedTileData.resources;
 
             auto lumberYield = newTileData.lumber_yield;
             auto goldYield = newTileData.gold_yield;
-            auto oilYield = newTileData.oil_yield;
+            auto stoneYield = newTileData.stone_yield;
 
                       tiles.emplace_back(Tile(
                 *this,
@@ -55,20 +55,20 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 newTypeId,
                 newHarvestable,
                 newWalkable,
-                newSwimable,
+                newResources,
                 newResources,
                 depletedName,
                 depletedTypeId,
                 depletedHarvestable,
                 depletedWalkable,
-                depletedSwimable,
+                depletedResources,
                 depletedResources,
                 lumberYield,
                 goldYield,
-                oilYield));
+                stoneYield));
 
             //Tile &tile = tiles.back();
-            if(newTypeId == Constants::Tile::Spawn){
+            if(newName == "Spawn"){ // Constants::Tile::Spawn
                 spawnTiles.push_back(c);
             }
 

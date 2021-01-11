@@ -85,7 +85,7 @@ Unit UnitManager::constructFarm(Player &player) {
 
     u.goldCarry = 0;
     u.lumberCarry = 0;
-    u.oilCarry = 0;
+    u.stoneCarry = 0;
     u.carryCapacity = 0;
     u.speed = 0;
     u.sight = 2;
@@ -100,7 +100,7 @@ Unit UnitManager::constructFarm(Player &player) {
 
     u.lumberCost = 250;
     u.goldCost = 500;
-    u.oilCost = 0;
+    u.stoneCarry = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -141,7 +141,7 @@ Unit UnitManager::constructBarracks(Player &player) {
 
     u.goldCarry = 0;
     u.lumberCarry = 0;
-    u.oilCarry = 0;
+    u.stoneCarry = 0;
     u.carryCapacity = 0;
     u.speed = 0;
     u.sight = 3;
@@ -156,7 +156,7 @@ Unit UnitManager::constructBarracks(Player &player) {
 
     u.lumberCost = 450;
     u.goldCost = 700;
-    u.oilCost = 0;
+    u.stoneCarry = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -205,7 +205,7 @@ Unit UnitManager::constructTownHall(Player &player) {
 
     u.goldCarry = 0;
     u.lumberCarry = 0;
-    u.oilCarry = 0;
+    u.stoneCarry = 0;
     u.carryCapacity = 0;
     u.speed = 0;
     u.sight = 4;
@@ -220,7 +220,7 @@ Unit UnitManager::constructTownHall(Player &player) {
 
     u.lumberCost = 250;
     u.goldCost = 500;
-    u.oilCost = 0;
+    u.stoneCarry = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -263,7 +263,7 @@ Unit UnitManager::constructPeasant(Player &player)
 
     u.goldCarry = 0;
     u.lumberCarry = 0;
-    u.oilCarry = 0;
+    u.stoneCarry = 0;
     u.carryCapacity = 10;
     u.speed = 10;
     u.sight = 2;
@@ -277,7 +277,7 @@ Unit UnitManager::constructPeasant(Player &player)
 
     u.lumberCost = 0;
     u.goldCost = 400;
-    u.oilCost = 0;
+    u.stoneCarry = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -328,7 +328,7 @@ Unit UnitManager::constructFootman(Player &player) {
 
     u.goldCarry = 0;
     u.lumberCarry = 0;
-    u.oilCarry = 0;
+    u.stoneCarry = 0;
     u.carryCapacity = 0;
     u.speed = 10;
     u.sight = 3;
@@ -342,7 +342,7 @@ Unit UnitManager::constructFootman(Player &player) {
 
     u.lumberCost = 0;
     u.goldCost = 600;
-    u.oilCost = 0;
+    u.stoneCarry = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -384,7 +384,7 @@ Unit UnitManager::constructArcher(Player &player) {
 
     u.goldCarry = 0;
     u.lumberCarry = 0;
-    u.oilCarry = 0;
+    u.stoneCarry = 0;
     u.carryCapacity = 0;
     u.speed = 10;
     u.sight = 4; // +4
@@ -398,7 +398,7 @@ Unit UnitManager::constructArcher(Player &player) {
 
     u.lumberCost = 50;
     u.goldCost = 500;
-    u.oilCost = 0;
+    u.stoneCarry = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;

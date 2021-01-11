@@ -189,7 +189,7 @@ bool Unit::build(int idx, bool ignoreCost) {
 
         player_.removeGold(unit.goldCost);
         player_.removeLumber(unit.lumberCost);
-        player_.removeOil(unit.oilCost);
+        player_.removeStone(unit.stoneCost);
         player_.sUnitsCreated += 1;
 
         return true;
@@ -600,7 +600,7 @@ void Unit::setStateForTile(Tile *t){
     game->state(t->x, t->y, 4) = int(typeId); // Unit Type
     game->state(t->x, t->y, 5) = health / (double)health_max; // Unit Health percent
     game->state(t->x, t->y, 6) = (int)state->id; // Unit Unit State
-    game->state(t->x, t->y, 7) = oilCarry + goldCarry + lumberCarry; // Unit Total Carry
+    game->state(t->x, t->y, 7) = stoneCarry + goldCarry + lumberCarry; // Unit Total Carry
     game->state(t->x, t->y, 8) = damageMin + damageMax + damagePiercing; // Unit Attack Score
     game->state(t->x, t->y, 9) = armor; // Unit Defense Score
 }

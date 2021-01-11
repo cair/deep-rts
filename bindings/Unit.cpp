@@ -21,10 +21,10 @@ void init_Unit(py::module &m) {
             .def_readonly("height", &Unit::height)
             .def_readonly("lumber_cost", &Unit::lumberCost)
             .def_readonly("gold_cost", &Unit::goldCost)
-            .def_readonly("oil_cost", &Unit::oilCost)
+            .def_readonly("stone_cost", &Unit::stoneCost)
             .def_readonly("lumber_carry", &Unit::lumberCarry)
             .def_readonly("gold_carry", &Unit::goldCarry)
-            .def_readonly("oil_carry", &Unit::oilCarry)
+            .def_readonly("stone_carry", &Unit::stoneCarry)
 
             .def_readonly("structure", &Unit::structure)
             .def_readonly("can_attack", &Unit::canAttack)

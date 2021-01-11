@@ -68,14 +68,14 @@ void Player::reset()
     faction = 0;  // TODO hardcoded
     gold = game_.config.startGold;
     lumber = game_.config.startLumber;
-    oil = game_.config.startOil;
+    stone = game_.config.startStone;
     foodConsumption = 0;
     food = game_.config.startFood;
     defeated = false;
 
     sGatheredGold = 0;
     sGatheredLumber = 0;
-    sGatheredOil = 0;
+    sGatheredStone = 0;
     sDamageDone = 0;
     sDamageTaken = 0;
     sUnitsCreated = 0;
@@ -139,8 +139,8 @@ int Player::getGold() const {
     return gold;
 }
 
-int Player::getOil() const {
-    return oil;
+int Player::getStone() const {
+    return stone;
 }
 
 int Player::getLumber() const {
@@ -163,8 +163,8 @@ void Player::addLumber(int n) {
     lumber += n;
 }
 
-void Player::addOil(int n) {
-    oil += n;
+void Player::addStone(int n) {
+    stone += n;
 }
 
 int Player::getScore() const {
@@ -242,7 +242,7 @@ bool Player::canPlace(Unit & builder, Unit & unit, Tile &_tile) {
 }
 
 bool Player::canAfford(Unit & unit) const {
-    return gold >= unit.goldCost && lumber >= unit.lumberCost && oil >= unit.oilCost;
+    return gold >= unit.goldCost && lumber >= unit.lumberCost && stone >= unit.stoneCost;
 
 }
 
@@ -263,8 +263,8 @@ Unit& Player::addUnit(Constants::Unit unitType) {
     return newUnit;
 }
 
-void Player::removeOil(int n) {
-    oil -= n;
+void Player::removeStone(int n) {
+    stone -= n;
 }
 
 void Player::removeLumber(int n) {

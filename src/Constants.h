@@ -4,6 +4,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 #include <map>
 
 #define DEBUG(x) do { std::cerr << x; } while (0)
@@ -36,24 +37,15 @@ namespace Constants{
 	};
 
 
-	enum Tile {
-		Spawn = 17,
-		Grass = 270,
-		Wall = 52,
-		Lumber = 142,
-		Water = 334,
-		Gold = 102,
-
-	};
-
-
-    const std::map<int, int> TypeToID = {
-            {Spawn, 1},
-            {Grass, 2},
-            {Wall, 3},
-            {Lumber, 4},
-            {Water, 5},
-            {Gold, 6},
+    const std::unordered_map<std::string, int> TypeToID = {
+            {"Spawn", 1},
+            {"Grass", 2},
+            {"Wall", 3},
+            {"Desert", 4},
+            {"Water", 5},
+            {"Lumber", 6},
+            {"Gold", 7},
+            {"Stone", 8},
     };
 
 
