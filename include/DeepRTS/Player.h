@@ -11,9 +11,9 @@
 #include <deque>
 #include <cmath>
 
-#include "../unit/Unit.h"
-#include "../environment/Tile.h"
-#include "../Config.h"
+#include "Unit.h"
+#include "Tile.h"
+#include "Config.h"
 
 class Game;
 class Player {

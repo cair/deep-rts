@@ -1,9 +1,9 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-#include "Tile.h"
-#include "../player/Player.h"
-#include "../Game.h"
+#include "../include/DeepRTS/Tile.h"
+#include "../include/DeepRTS/Player.h"
+#include "../include/DeepRTS/Game.h"
 
 Tile::Tile(
 		Tilemap &tilemap,

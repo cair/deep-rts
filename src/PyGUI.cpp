@@ -2,7 +2,7 @@
 // Created by per on 06.06.18.
 //
 
-#include "PyGUI.h"
+#include "../include/DeepRTS/PyGUI.h"
 #include <pybind11/embed.h> // everything needed for embedding
 
 PyGUI::PyGUI(Game& game): game(game) {

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <pybind11/pytypes.h>
-#include "../Game.h"
+#include "Game.h"
 
 class PyGUI {
 private:

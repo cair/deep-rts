@@ -3,18 +3,17 @@
 //
 
 #include "Game.h"
-#include "graphics/PyGUI.h"
-
-std::unordered_map<int, Game*> Game::games;
+#include "PyGUI.h"
 
 
 Game::Game(const std::string& map_file):
         config(Config::defaults()),
         map(map_file),
-        state({
+        state(xt::xarray<double>::shape_type{
             static_cast<unsigned long>(map.MAP_WIDTH),
-            static_cast<unsigned long>(map.MAP_HEIGHT
-            ), 10}), // Wait until map is loaded
+            static_cast<unsigned long>(map.MAP_HEIGHT),
+            10
+        }), // Wait until map is loaded
         tilemap(map, *this),
         stateManager(*this) {
     _internalInit();
@@ -24,9 +23,10 @@ Game::Game(const std::string& map_file):
 Game::Game(const std::string& map_file, Config config):
         config(config),
         map(map_file),
-        state({
-            static_cast<unsigned long>(map.MAP_WIDTH),
-            static_cast<unsigned long>(map.MAP_HEIGHT), 10
+        state(xt::xarray<double>::shape_type{
+                static_cast<unsigned long>(map.MAP_WIDTH),
+                static_cast<unsigned long>(map.MAP_HEIGHT),
+                10
         }), // Wait until map is loaded
         tilemap(map, *this),
         stateManager(*this) {
@@ -37,8 +37,6 @@ Game::~Game() = default;
 void Game::_internalInit(){
     players.reserve(Constants::MAX_PLAYERS);
     units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
-    id = static_cast<uint8_t>(games.size());
-    games[id] = this;
 
     setMaxFPS(60);
     setMaxUPS(10);
@@ -165,14 +163,6 @@ void Game::timerInit() {
     _render_next = now + _render_interval;
     _update_next = now + _update_interval;
     _stats_next = now + std::chrono::nanoseconds(0);
-}
-
-
-Game * Game::getGame(uint8_t id)
-{
-    Game *g = games.at(id);
-    assert(g);
-    return g;
 }
 
 

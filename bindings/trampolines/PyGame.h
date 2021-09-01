@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "../../src/Game.h"
-#include "../../src/unit/Unit.h"
+#include "../../include/DeepRTS/Game.h"
+#include "../../include/DeepRTS/Unit.h"
 class PyGame: public Game {
     using Game::Game;
 

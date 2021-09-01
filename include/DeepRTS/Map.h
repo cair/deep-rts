@@ -10,7 +10,6 @@
 #include <iostream>
 #include <map>
 #include <nlohmann/json.hpp>
-#include "../../../include/rapidjson/include/rapidjson/document.h"
 
 struct TileData {
     int depleteTile;

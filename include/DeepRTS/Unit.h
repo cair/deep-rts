@@ -9,12 +9,12 @@
 #include <map>
 #include <set>
 #include <deque>
-#include "../Constants.h"
-#include "../environment/Tile.h"
-#include "../state/StateManager.h"
-#include "../util/Position.h"
-#include "../Config.h"
-#include "../Constants.h"
+#include "Constants.h"
+#include "Tile.h"
+#include "state/StateManager.h"
+#include "util/Position.h"
+#include "Config.h"
+#include "Constants.h"
 
 class Game;
 class Player;

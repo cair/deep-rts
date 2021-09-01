@@ -7,7 +7,7 @@
 namespace py = pybind11;
 
 #include <string>
-#include "../src/environment/Map.h"
+#include "../include/DeepRTS/Map.h"
 
 
 void init_Map(py::module &m) {

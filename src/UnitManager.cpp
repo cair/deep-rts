@@ -2,8 +2,8 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "UnitManager.h"
-#include "../Game.h"
+#include "../include/DeepRTS/UnitManager.h"
+#include "../include/DeepRTS/Game.h"
 
 Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
 {

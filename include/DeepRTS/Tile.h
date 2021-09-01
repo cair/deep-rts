@@ -5,8 +5,8 @@
 #pragma once
 
 #include <string>
-#include "../environment/Tile.h"
-#include "../util/Position.h"
+#include "Tile.h"
+#include "util/Position.h"
 #include <cstdint>
 
 class Unit;

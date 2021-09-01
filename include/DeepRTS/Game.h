@@ -10,20 +10,14 @@
 #include <unordered_map>
 #include <iostream>
 #include <chrono>
-
-#include "util/matrix.cpp"
-#include "player/Player.h"
-#include "environment/Map.h"
-#include "environment/Tilemap.h"
+#include "Player.h"
+#include "Map.h"
+#include "Tilemap.h"
 #include "Config.h"
-
+#include <xtensor/xarray.hpp>
 
 class PyGUI;
 class Game {
-
-    /// List of Game instances
-    static std::unordered_map<int, Game *> games;
-
     /// Game Clock
     std::chrono::high_resolution_clock::time_point now;
     std::chrono::high_resolution_clock::time_point _update_next;
@@ -50,9 +44,6 @@ public:
     /// GUI Pointer
     PyGUI* GUI = nullptr;
 
-    // Retrieve game via Game ID
-    static Game * getGame(uint8_t id);
-
     /// Game Constructor
     explicit Game(const std::string& map_file);
     Game(const std::string& map_file, Config config);
@@ -71,7 +62,7 @@ public:
     Map map;
 
     /// Game state (Order 2)
-    cppmat::matrix<float> state;
+    xt::xarray<double, xt::layout_type::row_major> state;
 
     /// Game Tilemap (Order 3)
     Tilemap tilemap;

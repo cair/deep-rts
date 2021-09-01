@@ -1,8 +1,8 @@
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
 
-#include "../src/player/Player.h"
-#include "../src/unit/UnitManager.h"
+#include "../include/DeepRTS/Player.h"
+#include "../include/DeepRTS/UnitManager.h"
 
 
 

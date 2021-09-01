@@ -2,10 +2,9 @@
 // Created by per on 04.02.18.
 //
 
-#include "Map.h"
+#include "../include/DeepRTS/Map.h"
 #include <string>
-#include "../loaders/ResourceLoader.h"
-#include "../util/String.h"
+#include "../include/DeepRTS/ResourceLoader.h"
 
 
 

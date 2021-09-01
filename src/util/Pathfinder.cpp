@@ -8,11 +8,11 @@
 #include <vector>
 #include <map>
 #include <set>
-#include "Pathfinder.h"
-#include "../environment/Tile.h"
-#include "../util/PriorityQueue.hpp"
-#include "../Constants.h"
-#include "../environment/Tilemap.h"
+#include "../../include/DeepRTS/util/Pathfinder.h"
+#include "../../include/DeepRTS/Tile.h"
+#include "../../include/DeepRTS/util/PriorityQueue.hpp"
+#include "../../include/DeepRTS/Constants.h"
+#include "../../include/DeepRTS/Tilemap.h"
 
 
 

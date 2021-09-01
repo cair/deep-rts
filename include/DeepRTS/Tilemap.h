@@ -4,11 +4,10 @@
 #pragma once
 
 
-#include "../Constants.h"
+#include "Constants.h"
 #include "Tile.h"
 #include "Map.h"
 #include <vector>
-#include "../../../include/rapidjson/include/rapidjson/document.h"
 
 class Game;
 

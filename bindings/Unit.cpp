@@ -3,9 +3,9 @@
 namespace py = pybind11;
 
 
-#include "../src/unit/Unit.h"
-#include "../src/player/Player.h"
-#include "../src/environment/Tile.h"
+#include "../include/DeepRTS/Unit.h"
+#include "../include/DeepRTS/Player.h"
+#include "../include/DeepRTS/Tile.h"
 
 void init_Unit(py::module &m) {
     py::class_<Unit>(m, "Unit")

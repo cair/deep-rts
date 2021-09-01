@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
 
-#include "../src/Constants.h"
+#include "../include/DeepRTS/Constants.h"
 
 void init_Constants(py::module &m) {
 

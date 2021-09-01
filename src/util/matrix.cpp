@@ -7,7 +7,7 @@
 #ifndef CPPMAT_MATRIX_CPP
 #define CPPMAT_MATRIX_CPP
 
-#include "matrix.h"
+#include "../../include/DeepRTS/util/matrix.h"
 
 namespace cppmat {
 

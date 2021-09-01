@@ -2,11 +2,11 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "Walking.h"
-#include "../player/Player.h"
-#include "../Game.h"
-#include "../util/Pathfinder.h"
-#include "../util/JPS.h"
+#include "../../include/DeepRTS/state/Walking.h"
+#include "../../include/DeepRTS/Player.h"
+#include "../../include/DeepRTS/Game.h"
+#include "../../include/DeepRTS/util/Pathfinder.h"
+#include "../../include/DeepRTS/util/JPS.h"
 
 Walking::Walking(Game &game): BaseState(Constants::State::Walking), search(game.tilemap){
     name = "Walking";

@@ -1,11 +1,11 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-#include "Tilemap.h"
+#include "../include/DeepRTS/Tilemap.h"
 
-#include "../unit/Unit.h"
-#include "../Game.h"
-#include "../loaders/ResourceLoader.h"
+#include "../include/DeepRTS/Unit.h"
+#include "../include/DeepRTS/Game.h"
+#include "../include/DeepRTS/ResourceLoader.h"
 
 Tilemap::Tilemap(Map& map, Game &game): game(game){
 

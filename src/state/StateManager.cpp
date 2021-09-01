@@ -2,8 +2,8 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "StateManager.h"
-#include "../Game.h"
+#include "../../include/DeepRTS/state/StateManager.h"
+#include "../../include/DeepRTS/Game.h"
 
 
 StateManager::StateManager(Game &game)

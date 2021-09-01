@@ -3,7 +3,7 @@
 //
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
-#include "../src/Config.h"
+#include "../include/DeepRTS/Config.h"
 
 void init_Config(py::module &m) {
     py::class_<Config>(m, "Config")

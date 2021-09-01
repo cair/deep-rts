@@ -3,10 +3,10 @@
 //
 
 
-#include "Spawning.h"
-#include "../unit/Unit.h"
-#include "../util/Pathfinder.h"
-#include "../player/Player.h"
+#include "../../include/DeepRTS/state/Spawning.h"
+#include "../../include/DeepRTS/Unit.h"
+#include "../../include/DeepRTS/util/Pathfinder.h"
+#include "../../include/DeepRTS/Player.h"
 
 void Spawning::update(Unit& unit){
 

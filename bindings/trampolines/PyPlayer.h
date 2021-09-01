@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../../src/player/Player.h"
+#include "../../include/DeepRTS/Player.h"
 class PyPlayer: public Player {
     using Player::Player;
 

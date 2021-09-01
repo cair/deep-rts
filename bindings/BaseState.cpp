@@ -2,9 +2,9 @@
 
 namespace py = pybind11;
 
-#include "../src/state/BaseState.h"
-#include "../src/state/Walking.h"
-#include "../src/Constants.h"
+#include "../include/DeepRTS/state/BaseState.h"
+#include "../include/DeepRTS/state/Walking.h"
+#include "../include/DeepRTS/Constants.h"
 
 void init_BaseState(py::module &m) {
 

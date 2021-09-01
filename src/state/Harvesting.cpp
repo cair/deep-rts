@@ -1,11 +1,11 @@
 //
 // Created by Per-Arne on 26.02.2017.
 //
-#include "Harvesting.h"
-#include "../unit/Unit.h"
-#include "../util/Pathfinder.h"
-#include "../player/Player.h"
-#include "../Game.h"
+#include "../../include/DeepRTS/state/Harvesting.h"
+#include "../../include/DeepRTS/Unit.h"
+#include "../../include/DeepRTS/util/Pathfinder.h"
+#include "../../include/DeepRTS/Player.h"
+#include "../../include/DeepRTS/Game.h"
 
 void Harvesting::update(Unit & unit){
 

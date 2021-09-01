@@ -2,9 +2,9 @@
 
 namespace py = pybind11;
 
-#include "../src/player/Player.h"
-#include "../src/unit/Unit.h"
-#include "../src/Game.h"
+#include "../include/DeepRTS/Player.h"
+#include "../include/DeepRTS/Unit.h"
+#include "../include/DeepRTS/Game.h"
 #include "./trampolines/PyPlayer.h"
 
 

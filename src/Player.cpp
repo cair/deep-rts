@@ -3,9 +3,9 @@
 //
 
 
-#include "Player.h"
-#include "../Game.h"
-#include "../unit/UnitManager.h"
+#include "../include/DeepRTS/Player.h"
+#include "../include/DeepRTS/Game.h"
+#include "../include/DeepRTS/UnitManager.h"
 #include <algorithm>
 #include <utility>
 #include <string>

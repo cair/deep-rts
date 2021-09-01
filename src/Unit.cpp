@@ -2,11 +2,11 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "Unit.h"
-#include "../player/Player.h"
-#include "../Game.h"
-#include "../util/Pathfinder.h"
-#include "./UnitManager.h"
+#include "../include/DeepRTS/Unit.h"
+#include "../include/DeepRTS/Player.h"
+#include "../include/DeepRTS/Game.h"
+#include "../include/DeepRTS/util/Pathfinder.h"
+#include "../include/DeepRTS/UnitManager.h"
 #include <random>
 #include <climits>
 

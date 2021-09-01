@@ -1,7 +1,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "../src/util/pybind11_matrix.h"
+
 namespace py = pybind11;
 #include "./trampolines/PyGame.h"
 
@@ -26,8 +26,6 @@ void init_Game(py::module &m) {
             .def("is_terminal", &Game::isTerminal)
             .def("add_player", &Game::addPlayer, py::return_value_policy::reference)
             .def("insert_player", &Game::insertPlayer)
-            .def_static("get_game", &Game::getGame, py::return_value_policy::reference)
-
                     // Callbacks
             .def("_on_unit_create", &Game::_onUnitCreate)
             .def("_on_unit_destroy", &Game::_onUnitDestroy)
