@@ -10,6 +10,19 @@ class ScenarioData:
 
     def __init__(self):
         self.previous_statistic_gathered_gold = 0
+        self.previous_statistic_gathered_lumber = 0
+        self.previous_statistic_food = 0
+        self.previous_statistic_damage_done = 0
+        self.previous_statistic_damage_taken = 0
+        self.previous_num_footman = 0
+        self.previous_num_archer = 0
+        self.previous_num_peasant = 0
+        self.previous_num_town_hall = 0
+        self.previous_num_farm = 0
+        self.previous_num_barrack = 0
+        self.stepCountMax = 1000
+        self.stepCounter = 0
+
 
     def reset(self):
         self.__init__()
@@ -39,7 +52,7 @@ class Scenario(gym.Env):
 
     def evaluate(self):
         success, reward = zip(*[scenario() for scenario in self.scenarios])
-        return all(success), sum(reward)
+        return any(success), sum(reward)
 
     def _optimal_play_sequence(self):
         raise NotImplementedError("The function '_optimal_play_sequence' must be implemented!")
@@ -93,14 +106,152 @@ class Scenario(gym.Env):
 
         return wrap
 
-    @staticmethod
-    def _gold_collect_increment(amount, reward_success=1, reward_fail=-0.01, player=0):
+    def gold_increment(amount=100, reward_success=1, reward_fail=-0.003, player=0):
         def wrap(self):
-            p = self.game.players[player]
+            p = self.game.selected_player
             diff = p.statistic_gathered_gold - self.data.previous_statistic_gathered_gold
             self.data.previous_statistic_gathered_gold = p.statistic_gathered_gold
             r = reward_success if diff > 0 else reward_fail
-            t = p.statistic_gathered_gold >= amount
+            t = False
+            return t, r
+
+        return wrap
+
+    def farm_increment(amount=5, reward_success=100, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.num_farm - self.data.previous_num_farm
+            self.data.previous_num_farm = p.num_farm
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+
+            return t, r
+
+        return wrap
+
+    def lumber_increment(amount=100, reward_success=1, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.statistic_gathered_lumber - self.data.previous_statistic_gathered_lumber
+            self.data.previous_statistic_gathered_lumber = p.statistic_gathered_lumber
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def damage_done_increment(amount=100, reward_success=1, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.statistic_damage_done - self.data.previous_statistic_damage_done
+            self.data.previous_statistic_damage_done = p.statistic_damage_done
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def damage_taken_increment(amount=100, reward_success=0.003, reward_fail=-1, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.statistic_damage_taken - self.data.previous_statistic_damage_taken
+            self.data.previous_statistic_damage_taken = p.statistic_damage_taken
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def peasant_increment(amount=5, reward_success=50, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.num_peasant - self.data.previous_num_peasant
+            self.data.previous_num_peasant = p.num_peasant
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def footman_increment(amount=5, reward_success=50, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.num_footman - self.data.previous_num_footman
+            self.data.previous_num_footman = p.num_footman
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def archer_increment(amount=5, reward_success=50, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.num_archer - self.data.previous_num_archer
+            self.data.previous_num_archer = p.num_archer
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def game_end(amount=100, reward_success=10000, reward_fail=-1000, player=0):
+        def wrap(self):
+            t = False
+            r = 0
+            if(self.game.selected_player == self.game.players[0]):
+                p = self.game.players[0]
+                if (p.is_defeated()):
+                    t = True
+                    r = reward_fail
+                elif (self.game.players[1].is_defeated()):
+                    t = True
+                    r = reward_success
+                return t, r
+
+            if (self.game.selected_player == self.game.players[1]):
+                p = self.game.players[1]
+                if (p.is_defeated()):
+                    t = True
+                    r = reward_fail
+                elif (self.game.players[0].is_defeated()):
+                    t = True
+                    r = reward_success
+                return t, r
+
+        return wrap
+
+    def food_increment(amount=50, reward_success=1, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.food - self.data.previous_statistic_food
+            self.data.previous_statistic_food = p.food
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+            return t, r
+
+        return wrap
+
+    def town_hall_increment(amount=3, reward_success=100, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.num_town_hall - self.data.previous_num_town_hall
+            self.data.previous_num_town_hall = p.num_town_hall
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+
+            return t, r
+
+        return wrap
+
+    def barrack_increment(amount=3, reward_success=100, reward_fail=-0.003, player=0):
+        def wrap(self):
+            p = self.game.selected_player
+            diff = p.num_barrack - self.data.previous_num_barrack
+            self.data.previous_num_barrack = p.num_barrack
+            r = reward_success if diff > 0 else reward_fail
+            t = False
+
             return t, r
 
         return wrap
@@ -236,8 +387,6 @@ class Scenario(gym.Env):
         if mode == "human":
             self.game.view()
 
-    GOLD_COLLECT = _gold_collect
-    GOLD_COLLECT_INCREMENT = _gold_collect_increment
     OIL_COLLECT = _lumber_collect
     LUMBER_COLLECT = _oil_collect
     FOOD_CONSUMPTION = _food_consumption
