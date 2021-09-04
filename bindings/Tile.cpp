@@ -4,7 +4,7 @@ namespace py = pybind11;
 #include <iostream>
 #include "../include/DeepRTS/Tile.h"
 #include "../include/DeepRTS/Tilemap.h"
-#include "../include/DeepRTS/Unit.h"
+#include "unit/Unit.h"
 
 void init_Tile(py::module &m) {
     py::class_<Tile>(m, "Tile")

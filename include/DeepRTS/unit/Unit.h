@@ -52,18 +52,18 @@ public:
 	Constants::Unit typeId;
 
 	/// Unit Current Health
-    int health;
+    int health{};
 
 	/// Unit Max Health
-    int health_max;
+    int health_max{};
 
 	/// Unit Direction
-    int direction;
+    int direction{};
 
 
-    int groundUnit;
+    [[maybe_unused]] int groundUnit{};
 
-    int waterUnit;
+    [[maybe_unused]] int waterUnit{};
 
     int damageMin = -1;
     int damageMax = -1;
@@ -76,25 +76,25 @@ public:
     float stoneCarry = 0;
     float carryCapacity = 10;
     std::vector<Constants::Unit> buildInventory;
-    int speed;
-    int sight;
+    int speed{};
+    int sight{};
 
-    bool canHarvest;
-    bool canAttack;
-    bool canMove;
-    bool military;
-    bool structure;
+    bool canHarvest{};
+    bool canAttack{};
+    bool canMove{};
+    bool military{};
+    bool structure{};
     bool recallable = false;
 
-    int lumberCost;
-    int goldCost;
-    int stoneCost;
+    int lumberCost{};
+    int goldCost{};
+    int stoneCost{};
 
-    int foodProduction;
-    int foodConsumption;
+    int foodProduction{};
+    int foodConsumption{};
 
-    int width;
-    int height;
+    int width{};
+    int height{};
 
     std::string name;
 
@@ -105,32 +105,33 @@ public:
     // State attributes
 
 	// Spawning
-	int spawnDuration;
+	int spawnDuration{};
 	int spawnTileID = -1;
 	int builtByID = -1;
-	Unit &getBuiltBy();
-	Tile &getSpawnTile();
+	[[nodiscard]] Unit &getBuiltBy() const;
+	[[nodiscard]] Tile &getSpawnTile() const;
 
 
     // Harvesting
     double harvestInterval = .5; // Must be set in constructor
     int harvestTimer = 0;
-    int harvestIterator;
+    int harvestIterator{};
     int harvestTargetID = -1;
-	Tile *getTile(int tileID);
-    std::set<int> getVisionTileIDs();
+	[[nodiscard]] Tile *getTile(int tileID) const;
+    [[maybe_unused]] [[nodiscard]] std::set<int> getVisionTileIDs() const;
 
     // Building
     int spawnTimer = 0;
     int buildEntityID = -1;
-	Unit &getBuildEntity();
+	[[nodiscard]] Unit &getBuildEntity() const;
     int buildTimer = 0;
 
     // Combat
     int combatTargetID = -1;
-	Unit *getCombatTarget();
-    double combatTimer = 0;
+	[[nodiscard]] Unit *getCombatTarget() const;
     double combatInterval = 1; // Must be set in constructor
+    double combatTimer = 0;
+
 
     // Walking
     int walking_timer = 0;
@@ -156,7 +157,7 @@ public:
     void spawn(Tile &x, int initValue);
     void despawn();
     void update();
-	Tile * centerTile();
+	[[nodiscard]] Tile * centerTile() const;
     void enqueueState(const std::shared_ptr<BaseState>& state);
     void transitionState();
     void transitionState(std::shared_ptr<BaseState> nextState);
@@ -165,21 +166,21 @@ public:
     void move(Tile &targetTile);
     void attack(Tile &tile);
     void harvest(Tile &tile);
-    int distance(Tile &tile);
-    int distance(Unit & unit);
-	Position distanceVector(Tile &target);
+    int distance(Tile &tile) const;
+    int distance(Unit & unit) const;
+	Position distanceVector(Tile &target) const;
 
 
     void clearTiles();
 
-    Unit  *closestRecallBuilding();
+    [[nodiscard]] Unit  *closestRecallBuilding() const;
 
 
     bool isDead();
 
     void afflictDamage(int dmg_);
 
-    int getDamage(Unit &target);
+    int getDamage(Unit &target) const;
 
     Position worldPosition;
 
@@ -201,7 +202,7 @@ public:
 	Player &getPlayer();
 
 
-    bool position_in_bounds(int x, int y);
+    [[nodiscard]] bool position_in_bounds(int x, int y) const;
 
 
 	/// State alterations

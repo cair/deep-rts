@@ -79,25 +79,25 @@ public:
     std::unordered_map<std::string, Unit*> unitsNameMap;
 
     /// Game Identification
-    int id{};
+    uint32_t id{};
 
     /// Game Episode Ticks
-    long ticks = 0;
+    uint64_t ticks = 0;
 
     /// Game Episode
-    int episode = 1;
+    uint32_t episode = 1;
 
     /// Game Max FPS
-	int max_fps{};
+    uint32_t max_fps{};
 
     /// Game Max UPS
-	int max_ups{};
+    uint32_t max_ups{};
 
     /// Game Current FPS
-    int currentFPS = 0;
+    uint32_t currentFPS = 0;
 
     /// Game Current UPS
-    int currentUPS = 0;
+    uint32_t currentUPS = 0;
 
     /// Game terminal flag
     bool terminal = false;
@@ -114,25 +114,25 @@ public:
     /// Get a Unit via index
     Unit &getUnit(int idx);
 
-    int getMaxFPS() const;
+    uint32_t getMaxFPS() const;
 
-    int getMaxUPS() const;
+    uint32_t getMaxUPS() const;
 
-    int getFPS() const;
+    uint32_t getFPS() const;
 
-    int getUPS() const;
+    uint32_t getUPS() const;
 
-    long getGameDuration() const;
+    uint64_t getGameDuration() const;
 
-    long getTicks() const ;
+    uint64_t getTicks() const ;
 
     int getWidth() const;
 
     int getHeight() const;
 
-    int getEpisode() const;
+    uint32_t getEpisode() const;
 
-    int getId() const;
+    uint32_t getId() const;
 
     long getTicksModifier() const;
 

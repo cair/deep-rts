@@ -2,7 +2,7 @@
 // Created by Per-Arne on 25.02.2017.
 //
 
-#include "../../include/DeepRTS/state/Despawned.h"
+#include "state/Despawned.h"
 void Despawned::update(Unit & unit){
     (void)(unit);
 }

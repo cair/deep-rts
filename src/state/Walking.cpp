@@ -2,13 +2,15 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "../../include/DeepRTS/state/Walking.h"
-#include "../../include/DeepRTS/Player.h"
-#include "../../include/DeepRTS/Game.h"
-#include "../../include/DeepRTS/util/Pathfinder.h"
-#include "../../include/DeepRTS/util/JPS.h"
+#include "state/Walking.h"
+#include "Player.h"
+#include "Game.h"
+#include "util/Pathfinder.h"
+#include "util/JPS.h"
 
-Walking::Walking(Game &game): BaseState(Constants::State::Walking), search(game.tilemap){
+Walking::Walking(Game &game)
+: BaseState(Constants::State::Walking)
+, search(game.tilemap){
     name = "Walking";
 }
 
@@ -66,7 +68,7 @@ void Walking::init(Unit & unit){
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 
     // Predefine goal pointer
-	Tile *goal = nullptr;
+	Tile *goal;
 
     // Check if walking goal has a occupant
     if (!walkingGoal->isWalkable()) {

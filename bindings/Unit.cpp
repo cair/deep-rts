@@ -3,7 +3,7 @@
 namespace py = pybind11;
 
 
-#include "../include/DeepRTS/Unit.h"
+#include "unit/Unit.h"
 #include "../include/DeepRTS/Player.h"
 #include "../include/DeepRTS/Tile.h"
 

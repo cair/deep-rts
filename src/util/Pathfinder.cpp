@@ -6,13 +6,12 @@
 #include <queue>
 #include <unordered_map>
 #include <vector>
-#include <map>
 #include <set>
-#include "../../include/DeepRTS/util/Pathfinder.h"
-#include "../../include/DeepRTS/Tile.h"
-#include "../../include/DeepRTS/util/PriorityQueue.hpp"
-#include "../../include/DeepRTS/Constants.h"
-#include "../../include/DeepRTS/Tilemap.h"
+#include "util/Pathfinder.h"
+#include "Tile.h"
+#include "util/PriorityQueue.hpp"
+#include "Constants.h"
+#include "Tilemap.h"
 
 
 
@@ -65,9 +64,6 @@ double Pathfinder::heuristic(Tile *goal, Tile *next) {
     int dy = abs(next->y - goal->y);
 
     return (dx + dy) + (1 - 2 * 1) * std::min(dx, dy);
-
-
-    return abs(goal->x - next->y) + abs(goal->y - next->y);
 }
 
 double Pathfinder::crossover(Tile *current, Tile *start, Tile *goal) {
@@ -80,7 +76,7 @@ double Pathfinder::crossover(Tile *current, Tile *start, Tile *goal) {
     return cross*0.001;
 }
 
-Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int range) {
+[[maybe_unused]] Tile* Pathfinder::find_closest_walkable_tile(Tile *start, Tile *destination, int range) {
 
 	std::set<Tile *> visited;
 	std::queue<Tile *> queue;
@@ -119,20 +115,19 @@ Tile* Pathfinder::find_first_walkable_tile(Tile *start) {
      * This is a breadth-first search which looks for a walkable tile
      */
 
-    std::set<Tile *> visited;
-    std::queue<Tile *> queue;
+    std::set<Tile*> visited;
+    std::queue<Tile*> queue;
 
     queue.push(start);
 
-    while(queue.size() > 0) {
+    while(!queue.empty()) {
 
-        Tile *current = queue.front();
+        auto *current = queue.front();
 
         assert(current);
         queue.pop();
 
         if (current->isWalkable()) {
-
             return current;
         }
 
@@ -163,7 +158,7 @@ Tile *Pathfinder::find_first_harvestable_tile(Tile *start) {
 
     queue.push(start);
 
-    while(queue.size() > 0) {
+    while(!queue.empty()) {
 
         Tile *current = queue.front();
 
@@ -195,7 +190,7 @@ Tile *Pathfinder::find_first_attackable_tile(Tile *start) {
 
     queue.push(start);
 
-    while(queue.size() > 0) {
+    while(!queue.empty()) {
 
         Tile *current = queue.front();
 

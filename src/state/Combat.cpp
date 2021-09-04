@@ -2,9 +2,9 @@
 // Created by Per-Arne on 27.02.2017.
 //
 
-#include "../../include/DeepRTS/state/Combat.h"
-#include "../../include/DeepRTS/Unit.h"
-#include "../../include/DeepRTS/Player.h"
+#include "state/Combat.h"
+#include "unit/Unit.h"
+#include "Player.h"
 #include <algorithm>    // std::max
 
 void Combat::update(Unit & unit){

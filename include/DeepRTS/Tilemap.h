@@ -32,10 +32,10 @@ public:
 	std::vector<Tile *> neighbors(Tile &tile, Constants::Pathfinding type);
 
 	/// Get tiles in an area around a tile
-	std::vector<Tile *> getTileArea(Tile &source, int width, int height);
+	std::vector<Tile *> getTileArea(Tile &source, uint32_t width, uint32_t height);
 
 	/// Get a tile on position X and Y
-	Tile &getTile(int x, int y);
+	Tile &getTile(uint32_t x, uint32_t y);
 
 	/// List of tiles
 	std::vector<Tile> tiles;

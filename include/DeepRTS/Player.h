@@ -11,7 +11,7 @@
 #include <deque>
 #include <cmath>
 
-#include "Unit.h"
+#include "unit/Unit.h"
 #include "Tile.h"
 #include "Config.h"
 
@@ -87,43 +87,43 @@ public:
 	////////////////////////////////////////////////////
 
 	/// Get the game instance
-	Game &getGame() const;
+	[[nodiscard]] Game &getGame() const;
 
 	/// Get Player's ID
-	int getId() const;
+	[[nodiscard]] int getId() const;
 
 	/// Get the food consumption
-    [[maybe_unused]] int getFoodConsumption() const;
+    [[maybe_unused]] [[nodiscard]] int getFoodConsumption() const;
 
     [[maybe_unused]] /// Get Max Food
-	int getFood() const;
+	[[nodiscard]] int getFood() const;
 
 	/// Get the gold resource
-    [[maybe_unused]] int getGold() const;
+    [[maybe_unused]] [[nodiscard]] int getGold() const;
 
 	/// Get the oil resource
-    [[maybe_unused]] int getStone() const;
+    [[maybe_unused]] [[nodiscard]] int getStone() const;
 
 	/// Get the lumber resource
-    [[maybe_unused]] int getLumber() const;
+    [[maybe_unused]] [[nodiscard]] int getLumber() const;
 
-	virtual /// Get the score
+	[[nodiscard]] virtual /// Get the score
  	int getScore() const;
 
 	/// Get the unit count for this player
-	int getUnitCount() const;
+    [[maybe_unused]] [[nodiscard]] int getUnitCount() const;
 
 	/// Get the targeted unit (Returns null if none)
 	Unit *getTargetedUnit();
 
 	/// Get the targeted unit ID (-1 if none)
-	int getTargetedUnitID() const;
+	[[nodiscard]] int getTargetedUnitID() const;
 
     virtual /// Check if player is defeated
 	Constants::PlayerState playerState();
 
 	/// Get the player name
-	const std::string &getName() const;
+	[[nodiscard]] const std::string &getName() const;
 
 
 	////////////////////////////////////////////////////

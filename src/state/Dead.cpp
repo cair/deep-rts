@@ -2,9 +2,9 @@
 // Created by Per-Arne on 27.02.2017.
 //
 
-#include "../../include/DeepRTS/state/Dead.h"
-#include "../../include/DeepRTS/Unit.h"
-#include "../../include/DeepRTS/Game.h"
+#include "state/Dead.h"
+#include "unit/Unit.h"
+#include "Game.h"
 
 void Dead::update(Unit & unit){
     unit.despawn();

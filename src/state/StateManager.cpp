@@ -2,8 +2,8 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "../../include/DeepRTS/state/StateManager.h"
-#include "../../include/DeepRTS/Game.h"
+#include "state/StateManager.h"
+#include "Game.h"
 
 
 StateManager::StateManager(Game &game)
@@ -20,7 +20,7 @@ StateManager::StateManager(Game &game)
 }
 
 
-std::shared_ptr<BaseState> StateManager::getByID(int id){
+std::shared_ptr<BaseState> StateManager::getByID(int id) const{
     switch(id) {
         case Constants::State::Building:
             return buildingState;

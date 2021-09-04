@@ -115,7 +115,7 @@ void Game::update(){
             if (unit.removedFromGame){
                 unitsNameMap.erase(unit.nameID);
                 continue;
-            };		// Skip unit that is removed from game
+            }		// Skip unit that is removed from game
             unit.update();
         }
 
@@ -241,31 +241,31 @@ int Game::getHeight() const{
     return map.MAP_HEIGHT;
 }
 
-int Game::getMaxFPS() const {
+uint32_t Game::getMaxFPS() const {
     return max_fps;
 }
 
-int Game::getMaxUPS() const {
+uint32_t Game::getMaxUPS() const {
     return max_ups;
 }
 
-int Game::getFPS() const {
+uint32_t Game::getFPS() const {
     return currentFPS;
 }
 
-int Game::getUPS() const {
+uint32_t Game::getUPS() const {
     return currentUPS;
 }
 
-int Game::getEpisode() const {
+uint32_t Game::getEpisode() const {
     return episode;
 }
 
-long Game::getTicks() const{
+uint64_t Game::getTicks() const{
     return this->ticks;
 }
 
-long Game::getGameDuration() const{
+uint64_t Game::getGameDuration() const{
     return this->ticks / getTicksModifier();
 }
 
@@ -273,7 +273,7 @@ long Game::getTicksModifier() const {
     return config.tickModifier;
 }
 
-int Game::getId() const {
+uint32_t Game::getId() const {
     return id;
 }
 

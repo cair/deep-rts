@@ -2,8 +2,8 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "../../include/DeepRTS/state/Idle.h"
-#include "../../include/DeepRTS/Player.h"
+#include "state/Idle.h"
+#include "Player.h"
 
 void Idle::update(Unit & unit){
     (void)(unit);

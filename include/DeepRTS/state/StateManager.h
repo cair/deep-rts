@@ -25,6 +25,6 @@ public:
 	std::shared_ptr<BaseState> combatState;
 	std::shared_ptr<BaseState> deadState;
 
-	std::shared_ptr<BaseState> getByID(int id);
+	std::shared_ptr<BaseState> getByID(int id) const;
 };
 

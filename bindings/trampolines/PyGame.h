@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../../include/DeepRTS/Game.h"
-#include "../../include/DeepRTS/Unit.h"
+#include "unit/Unit.h"
 class PyGame: public Game {
     using Game::Game;
 

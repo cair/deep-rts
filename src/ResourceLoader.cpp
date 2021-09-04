@@ -4,8 +4,8 @@
 
 #include <fstream>
 #include <iostream>
-#include "../include/DeepRTS/ResourceLoader.h"
-#include "../include/DeepRTS/util/String.h"
+#include "ResourceLoader.h"
+#include "util/String.h"
 #include <cstdio>
 #include <string>
 #ifdef _WIN32

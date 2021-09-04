@@ -192,7 +192,10 @@ set(SOURCE_FILES
 
         ${BINDING_SOURCES}
         ${WEBSERVER_SOURCES}
-        )
+        include/DeepRTS/unit/Footman.h)
+
+
+
 
 set(DEEPRTS_PYBIND_SOURCES
         ${SOURCE_FILES}
@@ -211,8 +214,6 @@ set(DEEPRTS_PYBIND_SOURCES
 )
 
 
-
-
 if (NOT DEFINED PYTHON_BUILD)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")
         find_package(Python ${PYTHON_REQUIRED_VERSION} REQUIRED COMPONENTS Interpreter Development)
@@ -225,7 +226,6 @@ target_link_libraries(Engine PRIVATE ${LIBRARIES})
 
 # Dont create C++ Executable for Python builds (saves time)
 if (NOT DEFINED PYTHON_BUILD)
-
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
         add_executable(DeepRTSGame src/main.cpp ${SOURCE_FILES})
         target_include_directories(DeepRTSGame PRIVATE include/DeepRTS)

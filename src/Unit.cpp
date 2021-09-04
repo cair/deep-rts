@@ -2,30 +2,28 @@
 // Created by Per-Arne on 24.02.2017.
 //
 
-#include "../include/DeepRTS/Unit.h"
-#include "../include/DeepRTS/Player.h"
-#include "../include/DeepRTS/Game.h"
-#include "../include/DeepRTS/util/Pathfinder.h"
-#include "../include/DeepRTS/UnitManager.h"
-#include <random>
-#include <climits>
+#include "unit/Unit.h"
+#include "Player.h"
+#include "Game.h"
+#include "util/Pathfinder.h"
+#include "UnitManager.h"
+#include <effolkronium/random.hpp>
+using Random = effolkronium::random_static;
 
 Unit::Unit(Player &player):
         game(&player.getGame()),
         config(player.config),
         player_(player),
-        stateManager(&player.getGame().stateManager)
-{
+        stateManager(&player.getGame().stateManager),
+        harvestInterval(.5 * config.tickModifier),
+        combatInterval(1 * config.tickModifier),
+        combatTimer(combatInterval),
+        walking_interval(1 * config.tickModifier),
+        id(player.getGame().units.size()),
+        state(stateManager->despawnedState),
+        stateList(50)
+{}
 
-    // Harvesting
-    harvestInterval = .5 * config.tickModifier;
-    combatInterval = 1 * config.tickModifier;
-    combatTimer = combatInterval;
-    walking_interval = 1 * config.tickModifier;
-    id = player.getGame().units.size();
-    state = stateManager->despawnedState;
-    stateList.reserve(50);
-}
 void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
     spawnTileID = _toSpawnOn.id;
@@ -103,7 +101,7 @@ void Unit::update() {
     state->update(*this);
 }
 
-Tile *Unit::centerTile() {
+Tile *Unit::centerTile() const {
     int addX = floor(width / 2.0);
     int addY = floor(height / 2.0);
 
@@ -313,7 +311,7 @@ void Unit::transitionState(std::shared_ptr<BaseState> nextState) {
     state->init(*this);
 }
 
-int Unit::distance(Tile &target) {
+int Unit::distance(Tile &target) const {
     int dim = 0; // TODO
     double d = hypot(tile->x - (target.x + dim), tile->y - (target.y + dim));
     return (int)d - dim;
@@ -321,11 +319,11 @@ int Unit::distance(Tile &target) {
 }
 
 
-int Unit::distance(Unit & target) {
+int Unit::distance(Unit & target) const {
     int targ_x = target.tile->x;
     int targ_y = target.tile->y;
-    int dim_x = floor(target.width / 2);
-    int dim_y = floor(target.height / 2);
+    int dim_x = std::floor(target.width / 2);
+    int dim_y = std::floor(target.height / 2);
 
     double d = hypot(tile->x - (targ_x + dim_x), tile->y - (targ_y + dim_y));
 
@@ -333,14 +331,14 @@ int Unit::distance(Unit & target) {
 
 }
 
-Position Unit::distanceVector(Tile &target){
+Position Unit::distanceVector(Tile &target) const{
     int dx = tile->x - target.x;
     int dy = tile->y - target.y;
 
     return {dx, dy};
 }
 
-Unit* Unit::closestRecallBuilding() {
+Unit* Unit::closestRecallBuilding() const {
     Unit* closest = nullptr;
     int dist = INT_MAX;
     for(auto &unit : game->units) {
@@ -369,18 +367,15 @@ bool Unit::isDead() {
     return state->id == Constants::State::Dead || state->id == Constants::State::Despawned;
 }
 
-int Unit::getDamage(Unit &target) {
-
-    // TODO better random
-    double output = damageMin + (rand() % (damageMax - damageMin + 1));
+int Unit::getDamage(Unit &target) const {
+    double output = damageMin + Random::get(damageMin, damageMax);
     double myDamage = (output - (target.armor*0.12)) + damagePiercing;
     myDamage = std::max(0.0, myDamage);
 
     double mini = myDamage * .50;
-    double output2 = mini + (rand() % (int)(myDamage - mini + 1));
+    double output2 = mini + Random::get(mini, myDamage);
 
     return floor(output2);
-
 }
 
 void Unit::setDirection(Position &dir){
@@ -429,13 +424,12 @@ void Unit::setDirection(int newX, int newY){
         // Up
         direction = Constants::Direction::Up;
         //std::cout << "Up" << std::endl;
-    } else if (dx == 0 && dy > 0) {
+    } else if (dx == 0 && dy > 0 || dx == 0 && dy == 0) {
         // Down
         direction = Constants::Direction::Down;
         //std::cout << "Down" << std::endl;
-    } else if(dx == 0 && dy == 0) {
-       // No change (aka same position) force down
-       direction = Constants::Direction::Down;
+    } else{
+        throw std::runtime_error("Unhandled case in Unit::setDirection");
     }
 
 
@@ -520,29 +514,29 @@ void Unit::tryHarvest()
 }
 
 
-Tile &Unit::getSpawnTile() {
+Tile &Unit::getSpawnTile() const {
     assert(spawnTileID != -1);
     return game->tilemap.getTiles()[spawnTileID];
 }
 
-Tile *Unit::getTile(int tileID) {
+Tile *Unit::getTile(int tileID) const {
     if(tileID == -1) {
         return nullptr;
     }
     return &game->tilemap.getTiles()[tileID];
 }
 
-Unit &Unit::getBuiltBy() {
+Unit &Unit::getBuiltBy() const {
     assert(builtByID != -1);
     return game->units[builtByID];
 }
 
-Unit &Unit::getBuildEntity() {
+Unit &Unit::getBuildEntity() const {
     assert(buildEntityID != -1);
     return game->units[buildEntityID];
 }
 
-Unit *Unit::getCombatTarget() {
+Unit *Unit::getCombatTarget() const {
     //assert(combatTargetID != -1);
     if (combatTargetID == -1) {
         return nullptr;
@@ -550,7 +544,7 @@ Unit *Unit::getCombatTarget() {
     return &game->units[combatTargetID];
 }
 
-std::set<int> Unit::getVisionTileIDs() {
+std::set<int> Unit::getVisionTileIDs() const {
 
     std::set<int> tileIDs = std::set<int>();
     if(!tile){
@@ -573,7 +567,7 @@ std::set<int> Unit::getVisionTileIDs() {
     return tileIDs;
 }
 
-bool Unit::position_in_bounds(int x, int y) {
+bool Unit::position_in_bounds(int x, int y) const {
     return !(x < 0 || x > this->game->map.MAP_WIDTH ||
              y < 0 || y > this->game->map.MAP_HEIGHT);
 }

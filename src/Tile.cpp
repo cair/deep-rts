@@ -1,9 +1,9 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-#include "../include/DeepRTS/Tile.h"
-#include "../include/DeepRTS/Player.h"
-#include "../include/DeepRTS/Game.h"
+#include "Tile.h"
+#include "Player.h"
+#include "Game.h"
 
 Tile::Tile(
 		Tilemap &tilemap,
@@ -12,13 +12,13 @@ Tile::Tile(
 		int y,
 		int width,
 		int height,
-		std::string& newName,
+		const std::string& newName,
 		int newTypeID,
 		bool newHarvestable,
         bool newWalkable,
         float newWalkModifier,
 		int newResources,
-		std::string& depletedName,
+		const std::string& depletedName,
 		int depletedTypeID,
 		bool depletedHarvestable,
 		bool depletedWalkable,
@@ -66,6 +66,8 @@ depletedResources(depletedResources),
 
 depletedName(depletedName),
 
+depleted(false),
+
 id(id),
 
 x(x),
@@ -81,6 +83,7 @@ lumberYield(lumberYield),
 goldYield(goldYield),
 
 stoneYield(stoneYield)
+
 {
 
 	// Update state map
@@ -236,7 +239,7 @@ const std::string &Tile::getName() const {
 	return name;
 }
 
-int Tile::getDepleteTile() const {
+[[maybe_unused]] int Tile::getDepleteTile() const {
 	return depletedTypeId;
 }
 

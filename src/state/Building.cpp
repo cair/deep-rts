@@ -2,10 +2,10 @@
 // Created by Per-Arne on 26.02.2017.
 //
 
-#include "../../include/DeepRTS/state/Building.h"
-#include "../../include/DeepRTS/Unit.h"
-#include "../../include/DeepRTS/util/Pathfinder.h"
-#include "../../include/DeepRTS/Player.h"
+#include "state/Building.h"
+#include "unit/Unit.h"
+#include "util/Pathfinder.h"
+#include "Player.h"
 
 
 void Building::update(Unit & unit){

@@ -1,11 +1,9 @@
 //
 // Created by Per-Arne on 24.02.2017.
 //
-#include "../include/DeepRTS/Tilemap.h"
-
-#include "../include/DeepRTS/Unit.h"
-#include "../include/DeepRTS/Game.h"
-#include "../include/DeepRTS/ResourceLoader.h"
+#include "Tilemap.h"
+#include "unit/Unit.h"
+#include "Game.h"
 
 Tilemap::Tilemap(Map& map, Game &game): game(game){
 
@@ -44,7 +42,7 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
             auto goldYield = newTileData.gold_yield;
             auto stoneYield = newTileData.stone_yield;
 
-                      tiles.emplace_back(Tile(
+            tiles.emplace_back(Tile(
                 *this,
                 c,
                 x,
@@ -55,13 +53,13 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 newTypeId,
                 newHarvestable,
                 newWalkable,
-                newResources,
+                newWalkModifier,
                 newResources,
                 depletedName,
                 depletedTypeId,
                 depletedHarvestable,
                 depletedWalkable,
-                depletedResources,
+                depletedWalkModifier,
                 depletedResources,
                 lumberYield,
                 goldYield,
@@ -152,15 +150,13 @@ std::vector<Tile *> Tilemap::neighbors(Tile &tile, Constants::Pathfinding type) 
 
 }
 
-Tile &Tilemap::getTile(int x, int y){
-    assert(x >= 0);
-    assert(y >= 0);
-    int idx = game.map.MAP_WIDTH*y + x;
+Tile &Tilemap::getTile(uint32_t x, uint32_t y){
+    uint32_t idx = game.map.MAP_WIDTH*y + x;
     Tile &t = tiles[idx];
     return t;
 }
 
-std::vector<Tile *> Tilemap::getTileArea(Tile &source, int width, int height) {
+std::vector<Tile *> Tilemap::getTileArea(Tile &source, uint32_t width, uint32_t height) {
     /// Get tiles based on width and height of unit
     std::vector<Tile *> tiles_;
     for (int _x = 0; _x < width; _x++) {

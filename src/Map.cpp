@@ -1,10 +1,9 @@
 //
 // Created by per on 04.02.18.
 //
-
-#include "../include/DeepRTS/Map.h"
 #include <string>
-#include "../include/DeepRTS/ResourceLoader.h"
+#include "Map.h"
+#include "ResourceLoader.h"
 
 
 

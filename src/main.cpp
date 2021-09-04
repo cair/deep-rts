@@ -5,10 +5,8 @@
 
 
 int main() {
-
     //auto webServer = Webserver("0.0.0.0", 4300, true);
     //webServer.start();
-
     Config config = Config::defaults();
     config.setConsoleCaptionEnabled(true);
     config.setGUI(false);

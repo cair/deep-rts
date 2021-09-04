@@ -22,7 +22,7 @@ public:
 
     static double crossover(Tile *pTile, Tile *start, Tile *goal);
 
-	static Tile * find_closest_walkable_tile(Tile * start, Tile * destination, int range);
+    [[maybe_unused]] static Tile * find_closest_walkable_tile(Tile * start, Tile * destination, int range);
 
     static Tile *find_first_walkable_tile(Tile *start);
 

@@ -3,7 +3,7 @@
 //
 
 #include "../../include/DeepRTS/gamestate/AddUnit.h"
-#include "../../include/DeepRTS/Unit.h"
+#include "unit/Unit.h"
 #include "../../include/DeepRTS/Game.h"
 
 void AddUnit::apply(Game * game){

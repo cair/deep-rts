@@ -7,7 +7,7 @@
 #include <string>
 #include "Tile.h"
 #include "util/Position.h"
-#include <cstdint>
+
 
 class Unit;
 class Tilemap;
@@ -30,7 +30,7 @@ private:
 
     float walkModifier;
 public:
-    float getWalkModifier() const;
+    [[nodiscard]] float getWalkModifier() const;
 
 private:
 
@@ -112,13 +112,13 @@ public:
 			int y,
 			int w,
 			int h,
-            std::string& newName,
+            const std::string& newName,
 			int newTypeId,
 			bool newHarvestable,
 			bool newWalkable,
             float newWalkModifier,
 			int newResources,
-            std::string& depletedName,
+            const std::string& depletedName,
             int depletedTypeId,
 			bool depletedHarvestable,
 			bool depletedWalkable,
@@ -138,19 +138,19 @@ public:
 
 
 	/// Tile Position
-	Position getPosition() const;
+	[[nodiscard]] Position getPosition() const;
 
 	/// Check if tile is Attackable
 	bool isAttackable(Unit & unit);
 
 	/// Check if tile is Walkable
-	bool isWalkable()const;
+	[[nodiscard]] bool isWalkable()const;
 
 	/// Check if tile is Harvestable
-	bool isHarvestable()const;
+	[[nodiscard]] bool isHarvestable()const;
 
 	/// Check if tile is Buildable
-	bool isBuildable()const;
+	[[nodiscard]] bool isBuildable()const;
 
     /// Get distance between this tile and another tile
     int distance(Tile &pTile) const;
@@ -159,23 +159,23 @@ public:
     Unit* getOccupant();
 
     /// Get ID for a occupant on this tile
-    int getOccupantID() const;
+    [[nodiscard]] int getOccupantID() const;
 
     /// Check if tile has a occupant
-    bool hasOccupant() const;
+    [[nodiscard]] bool hasOccupant() const;
 
     /// Get resource count
-    int getResources() const;
+    [[nodiscard]] int getResources() const;
 
-    bool isDepleted() const;
+    [[nodiscard]] bool isDepleted() const;
 
-    int getTypeId() const;
+    [[nodiscard]] int getTypeId() const;
 
-    Tilemap &getTilemap() const;
+    [[nodiscard]] Tilemap &getTilemap() const;
 
-    const std::string &getName() const;
+    [[nodiscard]] const std::string &getName() const;
 
-	int getDepleteTile() const;
+    [[maybe_unused]] [[nodiscard]] int getDepleteTile() const;
 
 	void triggerOnTileChange();
 
