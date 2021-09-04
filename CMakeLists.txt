@@ -75,11 +75,12 @@ set(DEEPRTS_LINK_TARGETS
         DeepRTSResources
         spdlog::spdlog
         effolkronium_random
-        Python3::NumPy
+        Python3::Python
         xtensor::optimize
         xtensor::use_xsimd
+        Drogon::Drogon
         #blend2d
-        drogon
+
 )
 
 
@@ -98,12 +99,13 @@ pmm(
 ##### CMAKE - Find Packages
 #####
 #############################################################################################
+find_package(OpenSSL REQUIRED)
+find_package(Drogon CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
-find_package(Python3 COMPONENTS Interpreter NumPy REQUIRED)
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(effolkronium_random CONFIG REQUIRED)
 find_package(xtensor CONFIG REQUIRED)
-
 find_package(nlohmann_json CONFIG REQUIRED)
 
 # CMRC
