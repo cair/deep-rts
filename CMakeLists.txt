@@ -14,6 +14,9 @@ add_subdirectory(include/spdlog spdlog)
 add_subdirectory(include/drogon drogon)  # git submodule update --init --recursive
 add_subdirectory(include/json json)
 
+
+find_package(spdlog REQUIRED)
+
 # Set variables
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") # -Werror # TODO
@@ -28,6 +31,14 @@ endif ()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         target_compile_options(pybind11 INTERFACE -fsized-deallocation)
 endif()
+
+set(LIBRARIES
+        effolkronium_random
+        drogon
+        nlohmann_json::nlohmann_json
+        deeprts::rc
+        spdlog::spdlog
+        )
 
 set(WEBSERVER_SOURCES
         src/contrib/webserver/Webserver.cpp
@@ -138,13 +149,7 @@ pybind11_add_module(Engine
         bindings/DeepRTS.cpp
         )
 
-target_link_libraries(Engine PRIVATE
-        effolkronium_random
-        drogon
-        nlohmann_json::nlohmann_json
-        deeprts::rc
-
-        )
+target_link_libraries(Engine PRIVATE ${LIBRARIES})
 
 # CMRC
 # Find All web files
@@ -172,12 +177,7 @@ if (NOT DEFINED PYTHON_BUILD)
         target_compile_definitions(DeepRTSGame PRIVATE WEBDEV=1)
         target_link_libraries(DeepRTSGame PRIVATE
                 pybind11::embed
-                spdlog::spdlog
-                effolkronium_random
-                drogon
-                nlohmann_json::nlohmann_json
-                deeprts::rc
-
+                ${LIBRARIES}
         )
 
         # make python source the build dir.

@@ -58,9 +58,9 @@ void Harvesting::update(Unit & unit){
             return;
         }
 
-        unit.lumberCarry += harvestTarget->lumberYield;
-        unit.goldCarry += harvestTarget->goldYield;
-        unit.stoneCarry += harvestTarget->stoneYield;
+        unit.lumberCarry += harvestTarget->lumberYield * unit.config.yieldModifierLumber;
+        unit.goldCarry += harvestTarget->goldYield  * unit.config.yieldModifierGold;
+        unit.stoneCarry += harvestTarget->stoneYield  * unit.config.yieldModifierStone;
         unit.player_.sGatheredGold += harvestTarget->goldYield;
         unit.player_.sGatheredLumber += harvestTarget->lumberYield;
         unit.player_.sGatheredStone += harvestTarget->stoneYield;

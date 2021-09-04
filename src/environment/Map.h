@@ -19,9 +19,9 @@ struct TileData {
     bool harvestable;
     float walk_modifier;
     int resources;
-    int lumber_yield;
-    int gold_yield;
-    int stone_yield;
+    float lumber_yield;
+    float gold_yield;
+    float stone_yield;
 
     TileData()= default;
 
@@ -32,9 +32,9 @@ struct TileData {
             float walk_modifier,
             bool harvestable,
             int resources,
-            int lumber_yield,
-            int gold_yield,
-            int stone_yield): depleteTile(depleteTile), name(std::move(name)), walkable(walkable), harvestable(harvestable),
+            float lumber_yield,
+            float gold_yield,
+            float stone_yield): depleteTile(depleteTile), name(std::move(name)), walkable(walkable), harvestable(harvestable),
                               walk_modifier(walk_modifier), resources(resources), lumber_yield(lumber_yield), gold_yield(gold_yield),
                             stone_yield(stone_yield){
 

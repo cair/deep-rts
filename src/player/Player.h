@@ -93,21 +93,21 @@ public:
 	int getId() const;
 
 	/// Get the food consumption
-	int getFoodConsumption() const;
+    [[maybe_unused]] int getFoodConsumption() const;
 
     [[maybe_unused]] /// Get Max Food
 	int getFood() const;
 
 	/// Get the gold resource
-	int getGold() const;
+    [[maybe_unused]] int getGold() const;
 
 	/// Get the oil resource
-	int getStone() const;
+    [[maybe_unused]] int getStone() const;
 
 	/// Get the lumber resource
-	int getLumber() const;
+    [[maybe_unused]] int getLumber() const;
 
-	/// Get the score
+	virtual /// Get the score
  	int getScore() const;
 
 	/// Get the unit count for this player
@@ -119,8 +119,8 @@ public:
 	/// Get the targeted unit ID (-1 if none)
 	int getTargetedUnitID() const;
 
-	/// Check if player is defeated
-	bool isDefeated();
+    virtual /// Check if player is defeated
+	Constants::PlayerState playerState();
 
 	/// Get the player name
 	const std::string &getName() const;

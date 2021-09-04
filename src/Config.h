@@ -3,8 +3,22 @@
 //
 
 #pragma once
+#include <spdlog/spdlog.h>
 
 class Config {
+private:
+
+    float _boundLimits(float v, float min, float max){
+        if(v > max){
+            v = max;
+            SPDLOG_WARN("Yield modifier can not be above 10.0");
+        }else if(v < min){
+            v = min;
+            SPDLOG_WARN("Yield modifier can not be below 10.0");
+        }
+        return v;
+    }
+
 public:
 
 
@@ -25,11 +39,27 @@ public:
     int startLumber = 0;
     int startFood = 1;
     int terminalSignal = true;
+    float yieldModifierGold = 1.0;
+    float yieldModifierStone = 1.0;
+    float yieldModifierLumber = 1.0;
+
     /// Bool that determine print of FPS and UPS in console
     bool consoleCaptionEnabled = true;
 
     void setGUI(bool b){
         gui = b;
+    }
+
+    void setYieldModifierGold(float mod){
+        yieldModifierGold = _boundLimits(mod, 0.0, 10.0);
+    }
+
+    void setYieldModifierStone(float mod){
+        yieldModifierStone = _boundLimits(mod, 0.0, 10.0);
+    }
+
+    void setYieldModifierLumber(float mod){
+        yieldModifierLumber = _boundLimits(mod, 0.0, 10.0);
     }
 
     void setConsoleCaptionEnabled(bool b) {

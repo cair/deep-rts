@@ -25,6 +25,7 @@ void init_Game(py::module &m) {
             .def("reset", &Game::reset)
             .def("is_terminal", &Game::isTerminal)
             .def("add_player", &Game::addPlayer, py::return_value_policy::reference)
+            .def("insert_player", &Game::insertPlayer)
             .def_static("get_game", &Game::getGame, py::return_value_policy::reference)
 
                     // Callbacks

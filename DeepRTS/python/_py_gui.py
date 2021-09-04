@@ -1,61 +1,19 @@
 from abc import abstractmethod
-
-
-try:
-    from DeepRTS.Engine import Map, UnitManager, Constants, Player
-    from DeepRTS.Engine.Constants import Unit, Direction, State
-except ImportError:
-    from Engine import Map, UnitManager, Constants, Player
-    from Engine.Constants import Unit, Direction, State
-
+from DeepRTS import Player, UnitManager, Constants
+from DeepRTS.python import RectangleManager
 
 from DeepRTS.python import util
 
-
 import contextlib
+
 with contextlib.redirect_stdout(None):
     import pygame
 
 import os
-SURFTYPE = pygame.SWSURFACE #pygame.SWSURFACE | pygame.ASYNCBLIT  | pygame.DOUBLEBUF
+
+SURFTYPE = pygame.SWSURFACE  # pygame.SWSURFACE | pygame.ASYNCBLIT  | pygame.DOUBLEBUF
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-
-
-class SpriteLoader:
-
-    def __init__(self, base_bath):
-        self.base_path = base_bath
-
-
-class RectangleManager:
-
-    def __init__(self, map_height, map_width, tile_size):
-
-        self.rectangles = [
-            pygame.Rect(
-                (x * tile_size, y * tile_size),
-                (tile_size, tile_size)
-            ) for y in range(map_height) for x in range(map_width)
-        ]
-
-        self.changed_tiles = []
-        self.changed_rects = []
-
-    def add_changed_tile(self, tile):
-        self.changed_tiles.append(tile)
-
-    def clear_changed_tile(self):
-        self.changed_tiles = []
-
-    def add_changed_rect(self, rect):
-        self.changed_rects.append(rect)
-
-    def clear_changed_rect(self):
-        self.changed_rects = []
-
-    def full_refresh(self):
-        self.changed_rects.extend(self.rectangles)
 
 
 class AbstractGUI:
@@ -131,7 +89,7 @@ class AbstractGUI:
 
         for i, size in enumerate([32, 64, 96, 128]):
 
-            health_bars[i+1] = []
+            health_bars[i + 1] = []
 
             bar_height = 2
             bar_width = size
@@ -144,7 +102,7 @@ class AbstractGUI:
                 health_bar_surface.fill((0, 255, 0, 80), rect=rect_green)
                 health_bar_surface.fill((255, 0, 0, 80), rect=rect_red)
 
-                health_bars[i+1].append(health_bar_surface)
+                health_bars[i + 1].append(health_bar_surface)
 
         return health_bars
 
@@ -170,6 +128,13 @@ class AbstractGUI:
         ev = pygame.event.get()
 
         for event in ev:
+
+            if event.type == pygame.WINDOWEVENT:
+                # Rerender everything on focus since overlapping windows might have defiled the buffer.
+                if event.dict["event"] == pygame.WINDOWEVENT_FOCUS_GAINED:
+                    self.view()
+                elif event.dict["event"] == pygame.WINDOWEVENT_FOCUS_LOST:
+                    self.view()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 abs_pos = pygame.mouse.get_pos()
@@ -207,6 +172,7 @@ class AbstractGUI:
     def draw_unit(self, tile, rect):
 
         unit = self.game.units[tile.get_occupant_id()]
+
         if unit.tile and unit.tile.id != tile.id or (not unit.structure and unit.state.id == Constants.State.Spawning):
             return False
 
@@ -226,7 +192,7 @@ class AbstractGUI:
             err = "Could not find appropriate sprite for %s:%s:%s" % (unit_type, self.directions[direction], state_id)
             raise RuntimeError(err)
 
-        #print(unit_type, self.directions[direction], state_id)
+        # print(unit_type, self.directions[direction], state_id)
         unit_rect = [rect.x, rect.y, rect.width * unit.width, rect.height * unit.height]
         self.rect_manager.add_changed_rect(unit_rect)
 
@@ -294,7 +260,7 @@ class AbstractGUI:
             return
 
         pygame.display.update(self.rect_manager.changed_rects)
-        #pygame.display.flip()
+        # pygame.display.flip()
         self.rect_manager.clear_changed_rect()
 
     def _load_sprites(self, path):
@@ -334,10 +300,6 @@ class AbstractGUI:
 
                             loaded_sprites[player_id][unit_type][direction][state].append(sprite)
 
-
-
-
-
         return loaded_sprites
 
     def _load_tiles(self, path):
@@ -348,12 +310,13 @@ class AbstractGUI:
         sheet = pygame.image.load(path)
 
         tiles = {
-            tile: util.image_at(sheet, tile , size).convert_alpha()for tile in tile_ids
+            tile: util.image_at(sheet, tile, size).convert_alpha() for tile in tile_ids
         }
 
         return tiles
 
-    def _color_surface(self, surface, original, newcolor):
+    @staticmethod
+    def _color_surface(surface, original, newcolor):
         arr = pygame.surfarray.pixels3d(surface)
 
         r1, g1, b1 = original
@@ -367,7 +330,8 @@ class GUI(AbstractGUI):
 
     def __init__(self, game, tile_size, config):
         possible_unit_types = [
-            getattr(Unit, x) for x in Unit.__dict__.keys() if not x.startswith("__") and not x == 'name'
+            getattr(Constants.Unit, x) for x in Constants.Unit.__dict__.keys() if
+            not x.startswith("__") and not x == 'name'
         ]
 
         arb_player = Player(game, -1)  # Create arbitrary player object to create unit manager
@@ -379,244 +343,264 @@ class GUI(AbstractGUI):
 
         super().__init__(game, tile_size, units, config)
 
-
     def sprite_definitions(self):
         return {
-            Unit.Peasant: {
+            Constants.Unit.Peasant: {
                 "file_name": "textures/peasant.png",
-                Direction.Up: {
-                    State.Walking: [(0, 0, False), (32, 0, False), (64, 0, False), (96, 0, False), (128, 0, False)],
-                    State.Idle: [(0, 0, False)],
+                Constants.Direction.Up: {
+                    Constants.State.Walking: [(0, 0, False), (32, 0, False), (64, 0, False), (96, 0, False),
+                                              (128, 0, False)],
+                    Constants.State.Idle: [(0, 0, False)],
 
-                    State.Building: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False), (128, 288, False)],
-                    State.Harvesting: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False), (128, 288, False)],
-                    State.Combat: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False), (128, 288, False)],
+                    Constants.State.Building: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False),
+                                               (128, 288, False)],
+                    Constants.State.Harvesting: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False),
+                                                 (128, 288, False)],
+                    Constants.State.Combat: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False),
+                                             (128, 288, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Down: {
-                    State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False),(128, 32, False)],
-                    State.Idle: [(0, 32, False)],
+                Constants.Direction.Down: {
+                    Constants.State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False),
+                                              (128, 32, False)],
+                    Constants.State.Idle: [(0, 32, False)],
 
-                    State.Building: [(0, 352, False), (32, 352, False), (64, 352, False), (96, 352, False), (128, 352, False)],
-                    State.Harvesting: [(0, 352, False), (32, 352, False), (64, 352, False), (96, 352, False), (128, 352, False)],
-                    State.Combat: [(0, 352, False), (32, 352, False), (64, 352, False), (96, 352, False), (128, 352, False)],
+                    Constants.State.Building: [(0, 352, False), (32, 352, False), (64, 352, False), (96, 352, False),
+                                               (128, 352, False)],
+                    Constants.State.Harvesting: [(0, 352, False), (32, 352, False), (64, 352, False), (96, 352, False),
+                                                 (128, 352, False)],
+                    Constants.State.Combat: [(0, 352, False), (32, 352, False), (64, 352, False), (96, 352, False),
+                                             (128, 352, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Right: {
-                    State.Walking: [(0, 64, False), (32, 64, False), (64, 64, False), (96, 64, False),(128, 64, False)],
-                    State.Idle: [(0, 64, False)],
+                Constants.Direction.Right: {
+                    Constants.State.Walking: [(0, 64, False), (32, 64, False), (64, 64, False), (96, 64, False),
+                                              (128, 64, False)],
+                    Constants.State.Idle: [(0, 64, False)],
 
-                    State.Building: [(0, 320, False), (32, 320, False), (64, 320, False), (96, 320, False), (128, 320, False)],
-                    State.Harvesting: [(0, 320, False), (32, 320, False), (64, 320, False), (96, 320, False)],
-                    State.Combat: [(0, 320, False), (32, 320, False), (64, 320, False), (96, 320, False)],
+                    Constants.State.Building: [(0, 320, False), (32, 320, False), (64, 320, False), (96, 320, False),
+                                               (128, 320, False)],
+                    Constants.State.Harvesting: [(0, 320, False), (32, 320, False), (64, 320, False), (96, 320, False)],
+                    Constants.State.Combat: [(0, 320, False), (32, 320, False), (64, 320, False), (96, 320, False)],
 
-
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Left: {
-                    State.Walking: [(0, 96, False), (32, 96, False), (64, 96, False), (96, 96, False),(128, 96, False)],
-                    State.Idle: [(0, 96, False)],
+                Constants.Direction.Left: {
+                    Constants.State.Walking: [(0, 96, False), (32, 96, False), (64, 96, False), (96, 96, False),
+                                              (128, 96, False)],
+                    Constants.State.Idle: [(0, 96, False)],
 
-                    State.Building: [(0, 320, True), (32, 320, True), (64, 320, True), (96, 320, True), (128, 320, True)],
-                    State.Harvesting: [(0, 320, True), (32, 320, True), (64, 320, True), (96, 320, True)],
-                    State.Combat:  [(0, 320, True), (32, 320, True), (64, 320, True), (96, 320, True)],
+                    Constants.State.Building: [(0, 320, True), (32, 320, True), (64, 320, True), (96, 320, True),
+                                               (128, 320, True)],
+                    Constants.State.Harvesting: [(0, 320, True), (32, 320, True), (64, 320, True), (96, 320, True)],
+                    Constants.State.Combat: [(0, 320, True), (32, 320, True), (64, 320, True), (96, 320, True)],
 
-
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.UpRight: {
-                    State.Walking: [(0, 128, False), (32, 128, False), (64, 128, False), (96, 128, False),(128, 128, False)],
-                    State.Idle: [(0, 128, False)],
+                Constants.Direction.UpRight: {
+                    Constants.State.Walking: [(0, 128, False), (32, 128, False), (64, 128, False), (96, 128, False),
+                                              (128, 128, False)],
+                    Constants.State.Idle: [(0, 128, False)],
 
-                    State.Building: [(0, 256, False), (32, 256, False), (64, 256, False)],
-                    State.Harvesting: [(0, 256, False), (32, 256, False), (64, 256, False)],
-                    State.Combat: [(0, 256, False), (32, 256, False), (64, 256, False)],
+                    Constants.State.Building: [(0, 256, False), (32, 256, False), (64, 256, False)],
+                    Constants.State.Harvesting: [(0, 256, False), (32, 256, False), (64, 256, False)],
+                    Constants.State.Combat: [(0, 256, False), (32, 256, False), (64, 256, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.UpLeft: {
-                    State.Walking: [(0, 160, False), (32, 160, False), (64, 160, False), (96, 160, False), (128, 160, False)],
-                    State.Idle: [(0, 160, False)],
+                Constants.Direction.UpLeft: {
+                    Constants.State.Walking: [(0, 160, False), (32, 160, False), (64, 160, False), (96, 160, False),
+                                              (128, 160, False)],
+                    Constants.State.Idle: [(0, 160, False)],
 
-                    State.Building: [(0, 256, True), (32, 256, True), (64, 256, True)],
-                    State.Harvesting: [(0, 256, True), (32, 256, True), (64, 256, True)],
-                    State.Combat: [(0, 256, True), (32, 256, True), (64, 256, True)],
+                    Constants.State.Building: [(0, 256, True), (32, 256, True), (64, 256, True)],
+                    Constants.State.Harvesting: [(0, 256, True), (32, 256, True), (64, 256, True)],
+                    Constants.State.Combat: [(0, 256, True), (32, 256, True), (64, 256, True)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.DownRight: {
-                    State.Walking: [(0, 192, False), (32, 192, False), (64, 192, False), (96, 192, False),(128, 192, False)],
-                    State.Idle: [(0, 192, False)],
+                Constants.Direction.DownRight: {
+                    Constants.State.Walking: [(0, 192, False), (32, 192, False), (64, 192, False), (96, 192, False),
+                                              (128, 192, False)],
+                    Constants.State.Idle: [(0, 192, False)],
 
-                    State.Building: [(0, 320, False), (32, 320, False)],
-                    State.Harvesting: [(32, 320, False), (64, 352, False), (96, 352, False),  (128, 352, False)],
-                    State.Combat: [(32, 320, False), (64, 352, False), (96, 352, False),  (128, 352, False)],
+                    Constants.State.Building: [(0, 320, False), (32, 320, False)],
+                    Constants.State.Harvesting: [(32, 320, False), (64, 352, False), (96, 352, False),
+                                                 (128, 352, False)],
+                    Constants.State.Combat: [(32, 320, False), (64, 352, False), (96, 352, False), (128, 352, False)],
 
-
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.DownLeft: {
-                    State.Walking: [(0, 224, False), (32, 224, False), (64, 224, False), (96, 224, False),(128, 224, False)],
-                    State.Idle: [(0, 224, False)],
+                Constants.Direction.DownLeft: {
+                    Constants.State.Walking: [(0, 224, False), (32, 224, False), (64, 224, False), (96, 224, False),
+                                              (128, 224, False)],
+                    Constants.State.Idle: [(0, 224, False)],
 
-                    State.Building: [(0, 320, True), (32, 320, True)],
-                    State.Harvesting: [(32, 320, True), (64, 352, True), (96, 352, True), (128, 352, True)],
-                    State.Combat: [(32, 320, True), (64, 352, True), (96, 352, True), (128, 352, True)],
+                    Constants.State.Building: [(0, 320, True), (32, 320, True)],
+                    Constants.State.Harvesting: [(32, 320, True), (64, 352, True), (96, 352, True), (128, 352, True)],
+                    Constants.State.Combat: [(32, 320, True), (64, 352, True), (96, 352, True), (128, 352, True)],
 
-
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
             },
-            Unit.Footman: {
+            Constants.Unit.Footman: {
                 "file_name": "textures/footman.png",
-                Direction.Up: {
-                    State.Walking: [(0, 0, False), (32, 0, False), (64, 0, False), (96, 0, False), (128, 0, False)],
-                    State.Combat: [(0, 160, False), (32, 160, False), (64, 160, False), (96, 160, False)],
-                    State.Idle: [(0, 0, False)],
+                Constants.Direction.Up: {
+                    Constants.State.Walking: [(0, 0, False), (32, 0, False), (64, 0, False), (96, 0, False),
+                                              (128, 0, False)],
+                    Constants.State.Combat: [(0, 160, False), (32, 160, False), (64, 160, False), (96, 160, False)],
+                    Constants.State.Idle: [(0, 0, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Down: {
-                    State.Walking: [(0, 128, False), (32, 128, False), (64, 128, False), (96, 128, False), (128, 128, False)],
-                    State.Combat: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False)],
-                    State.Idle: [(0, 128, False)],
+                Constants.Direction.Down: {
+                    Constants.State.Walking: [(0, 128, False), (32, 128, False), (64, 128, False), (96, 128, False),
+                                              (128, 128, False)],
+                    Constants.State.Combat: [(0, 288, False), (32, 288, False), (64, 288, False), (96, 288, False)],
+                    Constants.State.Idle: [(0, 128, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Right: {
-                    State.Walking: [(0, 64, False), (32, 64, False), (64, 64, False), (96, 64, False), (128, 64, False)],
-                    State.Combat: [(0, 224, False), (32, 224, False), (64, 224, False), (96, 224, False)],
-                    State.Idle: [(0, 64, False)],
+                Constants.Direction.Right: {
+                    Constants.State.Walking: [(0, 64, False), (32, 64, False), (64, 64, False), (96, 64, False),
+                                              (128, 64, False)],
+                    Constants.State.Combat: [(0, 224, False), (32, 224, False), (64, 224, False), (96, 224, False)],
+                    Constants.State.Idle: [(0, 64, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Left: {
-                    State.Walking: [(0, 64, True), (32, 64, True), (64, 64, True), (96, 64, True), (128, 64, True)],
-                    State.Combat: [(0, 224, True), (32, 224, True), (64, 224, True), (96, 224, True)],
-                    State.Idle: [(0, 64, True)],
+                Constants.Direction.Left: {
+                    Constants.State.Walking: [(0, 64, True), (32, 64, True), (64, 64, True), (96, 64, True),
+                                              (128, 64, True)],
+                    Constants.State.Combat: [(0, 224, True), (32, 224, True), (64, 224, True), (96, 224, True)],
+                    Constants.State.Idle: [(0, 64, True)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.UpRight: {
-                    State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False), (128, 32, False)],
-                    State.Combat: [(0, 192, False), (32, 192, False), (64, 192, False)],
-                    State.Idle: [(0, 32, False)],
+                Constants.Direction.UpRight: {
+                    Constants.State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False),
+                                              (128, 32, False)],
+                    Constants.State.Combat: [(0, 192, False), (32, 192, False), (64, 192, False)],
+                    Constants.State.Idle: [(0, 32, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.UpLeft: {
-                    State.Walking: [(0, 32, True), (32, 32, True), (64, 32, True), (96, 32, True), (128, 32, True)],
-                    State.Combat: [(0, 192, True), (32, 192, True), (64, 192, True)],
-                    State.Idle: [(0, 32, True)],
+                Constants.Direction.UpLeft: {
+                    Constants.State.Walking: [(0, 32, True), (32, 32, True), (64, 32, True), (96, 32, True),
+                                              (128, 32, True)],
+                    Constants.State.Combat: [(0, 192, True), (32, 192, True), (64, 192, True)],
+                    Constants.State.Idle: [(0, 32, True)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.DownRight: {
-                    State.Walking: [(0, 96, False), (32, 96, False), (64, 96, False), (96, 96, False), (128, 96, False)],
-                    State.Combat: [(0, 256, False), (32, 256, False), (64, 256, False), (96, 256, False)],
-                    State.Idle: [(0, 96, False)],
+                Constants.Direction.DownRight: {
+                    Constants.State.Walking: [(0, 96, False), (32, 96, False), (64, 96, False), (96, 96, False),
+                                              (128, 96, False)],
+                    Constants.State.Combat: [(0, 256, False), (32, 256, False), (64, 256, False), (96, 256, False)],
+                    Constants.State.Idle: [(0, 96, False)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.DownLeft: {
-                    State.Walking: [(0, 96, True), (32, 96, True), (64, 96, True), (96, 96, True), (128, 96, True)],
-                    State.Combat: [(0, 256, True), (32, 256, True), (64, 256, True), (96, 256, True)],
-                    State.Idle: [(0, 96, True)],
+                Constants.Direction.DownLeft: {
+                    Constants.State.Walking: [(0, 96, True), (32, 96, True), (64, 96, True), (96, 96, True),
+                                              (128, 96, True)],
+                    Constants.State.Combat: [(0, 256, True), (32, 256, True), (64, 256, True), (96, 256, True)],
+                    Constants.State.Idle: [(0, 96, True)],
 
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
             },
-            Unit.Archer: {
+            Constants.Unit.Archer: {
                 "file_name": "textures/archer.png",
-                Direction.Up: {
-                    State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False)],
-                    State.Combat: [(0, 192, False), (32, 192, False)],
+                Constants.Direction.Up: {
+                    Constants.State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False)],
+                    Constants.State.Combat: [(0, 192, False), (32, 192, False)],
 
-                    State.Idle: [(0, 32, False)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 32, False)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Down: {
-                    State.Walking: [(0, 160, False), (32, 160, False), (64, 160, False), (96, 160, False),
-                                    (128, 160, False)],
-                    State.Combat: [(0, 320, False), (32, 320, False)],
+                Constants.Direction.Down: {
+                    Constants.State.Walking: [(0, 160, False), (32, 160, False), (64, 160, False), (96, 160, False),
+                                              (128, 160, False)],
+                    Constants.State.Combat: [(0, 320, False), (32, 320, False)],
 
-                    State.Idle: [(0, 160, False)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 160, False)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Right: {
-                    State.Walking: [(0, 96, False), (32, 96, False), (64, 96, False), (96, 96, False)],
-                    State.Combat: [(0, 256, False), (32, 256, False)],
+                Constants.Direction.Right: {
+                    Constants.State.Walking: [(0, 96, False), (32, 96, False), (64, 96, False), (96, 96, False)],
+                    Constants.State.Combat: [(0, 256, False), (32, 256, False)],
 
-                    State.Idle: [(0, 96, False)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 96, False)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.Left: {
-                    State.Walking: [(0, 96, True), (32, 96, True), (64, 96, True), (96, 96, True)],
-                    State.Combat: [(0, 256, True), (32, 256, True)],
+                Constants.Direction.Left: {
+                    Constants.State.Walking: [(0, 96, True), (32, 96, True), (64, 96, True), (96, 96, True)],
+                    Constants.State.Combat: [(0, 256, True), (32, 256, True)],
 
-                    State.Idle: [(0, 96, True)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 96, True)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.UpRight: {
-                    State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False),
-                                    (128, 32, False)],
-                    State.Combat: [(0, 224, False), (32, 224, False)],
+                Constants.Direction.UpRight: {
+                    Constants.State.Walking: [(0, 32, False), (32, 32, False), (64, 32, False), (96, 32, False),
+                                              (128, 32, False)],
+                    Constants.State.Combat: [(0, 224, False), (32, 224, False)],
 
-                    State.Idle: [(0, 32, False)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 32, False)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.UpLeft: {
-                    State.Walking: [(0, 32, True), (32, 32, True), (64, 32, True), (96, 32, True), (128, 32, True)],
-                    State.Combat: [(0, 224, True), (32, 224, True)],
+                Constants.Direction.UpLeft: {
+                    Constants.State.Walking: [(0, 32, True), (32, 32, True), (64, 32, True), (96, 32, True),
+                                              (128, 32, True)],
+                    Constants.State.Combat: [(0, 224, True), (32, 224, True)],
 
-                    State.Idle: [(0, 32, True)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 32, True)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.DownRight: {
-                    State.Walking: [(0, 128, False), (32, 128, False), (64, 128, False), (96, 128, False),
-                                    (128, 128, False)],
-                    State.Combat: [(0, 288, False), (32, 288, False)],
+                Constants.Direction.DownRight: {
+                    Constants.State.Walking: [(0, 128, False), (32, 128, False), (64, 128, False), (96, 128, False),
+                                              (128, 128, False)],
+                    Constants.State.Combat: [(0, 288, False), (32, 288, False)],
 
-                    State.Idle: [(0, 128, False)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 128, False)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
-                Direction.DownLeft: {
-                    State.Walking: [(0, 128, True), (32, 128, True), (64, 128, True), (96, 128, True), (128, 128, True)],
-                    State.Combat: [(0, 288, True), (32, 288, True)],
+                Constants.Direction.DownLeft: {
+                    Constants.State.Walking: [(0, 128, True), (32, 128, True), (64, 128, True), (96, 128, True),
+                                              (128, 128, True)],
+                    Constants.State.Combat: [(0, 288, True), (32, 288, True)],
 
-                    State.Idle: [(0, 128, True)],
-                    State.Dead: [(164, 4, False)]  # TODO
+                    Constants.State.Idle: [(0, 128, True)],
+                    Constants.State.Dead: [(164, 4, False)]  # TODO
                 },
             },
-            Unit.Barracks: {
+            Constants.Unit.Barracks: {
                 "file_name": "textures/barracks.png",
-                Direction.Down: {
-                    State.Spawning: [(96, 0, False)],
-                    State.Idle: [(0, 0, False)],
-                    State.Building: [(0, 0, False)],
-                    State.Dead: [(96, 0, False)]
+                Constants.Direction.Down: {
+                    Constants.State.Spawning: [(96, 0, False)],
+                    Constants.State.Idle: [(0, 0, False)],
+                    Constants.State.Building: [(0, 0, False)],
+                    Constants.State.Dead: [(96, 0, False)]
                 },
             },
-            Unit.TownHall: {
+            Constants.Unit.TownHall: {
                 "file_name": "textures/town_hall.png",
-                Direction.Down: {
-                    State.Spawning: [(96, 0, False)],
-                    State.Idle: [(0, 0, False)],
-                    State.Building: [(0, 0, False)],
-                    State.Dead: [(96, 0, False)]
+                Constants.Direction.Down: {
+                    Constants.State.Spawning: [(96, 0, False)],
+                    Constants.State.Idle: [(0, 0, False)],
+                    Constants.State.Building: [(0, 0, False)],
+                    Constants.State.Dead: [(96, 0, False)]
                 },
             },
-            Unit.Farm: {
+            Constants.Unit.Farm: {
                 "file_name": "textures/farm.png",
-                Direction.Down: {
-                    State.Spawning: [(32, 0, False)],
-                    State.Idle: [(0, 0, False)],
-                    State.Dead: [(32, 0, False)]
+                Constants.Direction.Down: {
+                    Constants.State.Spawning: [(32, 0, False)],
+                    Constants.State.Idle: [(0, 0, False)],
+                    Constants.State.Dead: [(32, 0, False)]
                 },
 
             }
         }
-
-

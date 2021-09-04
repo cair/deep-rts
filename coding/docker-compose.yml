@@ -1,0 +1,10 @@
+version: "3.0"
+services:
+
+  jupyterlab:
+    image: jupyter/all-spark-notebook
+    ports:
+      - 8333:8888
+    volumes:
+      - ./:/home/jovyan/work
+    command: "start.sh jupyter lab --no-browser --ip='*' --NotebookApp.token='' --NotebookApp.password=''"

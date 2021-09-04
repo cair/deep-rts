@@ -29,8 +29,12 @@ private:
 	bool walkable;
 
     float walkModifier;
+public:
+    float getWalkModifier() const;
 
-	int occupantID = -1;
+private:
+
+    int occupantID = -1;
 
 	int resources;
 
@@ -91,11 +95,11 @@ public:
 
 	const int height;
 
-	const int lumberYield;
+	const float lumberYield;
 
-	const int goldYield;
+	const float goldYield;
 
-	const int stoneYield;
+	const float stoneYield;
 
 
 
@@ -120,9 +124,9 @@ public:
 			bool depletedWalkable,
 			float depletedWalkmMdifier,
             int depletedResources,
-            int lumberYield,
-            int goldYield,
-            int stoneYield
+            float lumberYield,
+            float goldYield,
+            float stoneYield
 	);
 
 
@@ -134,7 +138,7 @@ public:
 
 
 	/// Tile Position
-	Position getPosition();
+	Position getPosition() const;
 
 	/// Check if tile is Attackable
 	bool isAttackable(Unit & unit);
@@ -149,19 +153,19 @@ public:
 	bool isBuildable()const;
 
     /// Get distance between this tile and another tile
-    int distance(Tile &pTile);
+    int distance(Tile &pTile) const;
 
     /// Get occupant Pointer
     Unit* getOccupant();
 
     /// Get ID for a occupant on this tile
-    int getOccupantID();
+    int getOccupantID() const;
 
     /// Check if tile has a occupant
-    bool hasOccupant();
+    bool hasOccupant() const;
 
     /// Get resource count
-    int getResources();
+    int getResources() const;
 
     bool isDepleted() const;
 

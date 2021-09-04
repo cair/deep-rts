@@ -3,5 +3,9 @@ try:
 except ImportError:
     import Engine
 
-from DeepRTS import python
+try:
+    from DeepRTS.Engine import Map, UnitManager, Constants, Player
+    from DeepRTS.Engine import Constants
+except ImportError:
+    from Engine import Map, UnitManager, Constants, Player, Constants
 

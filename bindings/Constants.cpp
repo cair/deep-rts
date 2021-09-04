@@ -27,6 +27,11 @@ void init_Constants(py::module &m) {
             .value("Human", Constants::Race::Human)
             .value("Orc", Constants::Race::Orc);
 
+    py::enum_<Constants::PlayerState>(constants, "PlayerState", py::arithmetic(), "Player State")
+            .value("Victory", Constants::PlayerState::Victory)
+            .value("Defeat", Constants::PlayerState::Defeat)
+            .value("Playing", Constants::PlayerState::Playing);
+
     py::enum_<Constants::State>(constants, "State", py::arithmetic(), "State Constants")
             .value("Idle", Constants::State::Idle)
             .value("Spawning", Constants::State::Spawning)

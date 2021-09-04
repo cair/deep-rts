@@ -71,10 +71,10 @@ public:
     int damagePiercing = -1;
     int armor = -1;
 
-    int lumberCarry = 0;
-    int goldCarry = 0;
-    int stoneCarry = 0;
-    int carryCapacity = 10;
+    float lumberCarry = 0;
+    float goldCarry = 0;
+    float stoneCarry = 0;
+    float carryCapacity = 10;
     std::vector<Constants::Unit> buildInventory;
     int speed;
     int sight;

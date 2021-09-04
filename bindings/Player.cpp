@@ -5,12 +5,12 @@ namespace py = pybind11;
 #include "../src/player/Player.h"
 #include "../src/unit/Unit.h"
 #include "../src/Game.h"
+#include "./trampolines/PyPlayer.h"
 
 
 void init_Player(py::module &m) {
-    py::class_<Player>(m, "Player")
+    py::class_<Player, PyPlayer>(m, "Player")
             .def(py::init<Game&, int>())
-
             .def_readonly("statistic_gathered_gold", &Player::sGatheredGold)
             .def_readonly("statistic_gathered_lumber", &Player::sGatheredLumber)
             .def_readonly("statistic_gathered_stone", &Player::sGatheredStone)
@@ -29,14 +29,13 @@ void init_Player(py::module &m) {
             .def_readonly("lumber", &Player::lumber)
             .def_readonly("food_consumption", &Player::foodConsumption)
             .def_readonly("food", &Player::food)
-            .def_readonly("food", &Player::food)
 
 
             .def("get_name", &Player::getName)
             .def("set_name", &Player::setName)
 
-            .def("is_defeated", &Player::isDefeated)
-
+            .def("player_state", &Player::playerState)
+            .def("get_score", &Player::getScore)
 
             .def("get_id", &Player::getId)
             .def("do_action", &Player::do_action)

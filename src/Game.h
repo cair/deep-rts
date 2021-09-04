@@ -170,6 +170,9 @@ public:
     // Add a player to the game
     Player &addPlayer();
 
+    // Insert a player using a precreated object. specifically useful for python
+    void insertPlayer(Player &player);
+
     /// Game Tick Function
     void tick();
 
@@ -218,6 +221,7 @@ public:
     virtual void _onEpisodeEnd();
 
     virtual void _onTileChange(Tile &);
+
 
 };
 

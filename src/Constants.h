@@ -36,6 +36,11 @@ namespace Constants{
 		Orc = 2
 	};
 
+	enum PlayerState{
+	    Victory = 1,
+	    Defeat = 2,
+	    Playing = 3
+	};
 
     const std::unordered_map<std::string, int> TypeToID = {
             {"Spawn", 1},
@@ -82,7 +87,6 @@ namespace Constants{
 	enum Action {
 		PreviousUnit = 1,
 		NextUnit = 2,
-
 		MoveLeft = 3,
 		MoveRight = 4,
 		MoveUp = 5,

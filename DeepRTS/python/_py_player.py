@@ -1,12 +1,18 @@
+from DeepRTS import Player
 
-class DeepRTSPlayer:
 
-    def __init__(self, game, player):
-        self.game = game  # Python game object
-        self.base = player  # C++ Object
+class DeepRTSPlayer(Player):
+
+    def __init__(self, game):
+        self.game_instance = game
+        super(DeepRTSPlayer, self).__init__(game, len(game.players))
 
     def step(self, action):
         pass
+
+    def get_state(self):
+
+        return self.game_instance.get_state()
 
     def reset(self):
         pass

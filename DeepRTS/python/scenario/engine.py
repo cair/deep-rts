@@ -1,13 +1,11 @@
 from functools import partial
-import gym
 import numpy as np
-from DeepRTS.Engine import Constants
-from DeepRTS.python import util
-from coding.util import LimitedDiscrete
+import typing
 from tabulate import tabulate
-from DeepRTS import Engine
+from DeepRTS import Engine, Constants
 from DeepRTS.python import util, Config, Game
-import collections.abc
+
+from python import DeepRTSPlayer
 
 
 class ScenarioData:
@@ -19,25 +17,43 @@ class ScenarioData:
         self.__init__()
 
 
-class Scenario(gym.Env):
+class Scenario(Game):
     DEFAULTS = dict(
         updates_per_action=1,
         state_flatten=False,
         stats_print_interval=10000,
         stats_print=True,
-        stats_print_on_terminal=True
+        stats_print_on_terminal=True,
+        default_reward_function=False
     )
 
     def __init__(self, config, *scenarios, config_override=None):
         config_override = config_override if isinstance(config_override, dict) else {}
-
-        self.config = util.dict_update(Scenario.DEFAULTS.copy(), config)
         util.apply_overrides(config, config_override)
 
-        game, engine_conf, gui_conf, scenario_conf, engine_config, gui_config = self.read_config(
-            config
+        self.scenario_config = util.dict_update(Scenario.DEFAULTS.copy(), config)
+        self.stats_print_interval = self.scenario_config.get("stats_print_interval")
+        self.stats_print = self.scenario_config.get("stats_print")
+        self.stats_print_on_terminal = self.scenario_config.get("stats_print_on_terminal")
+
+        engine_conf, gui_conf, scenario_conf, engine_config, gui_config = self.read_config(self.scenario_config)
+
+        c_n_players = engine_conf["n_players"] if "n_players" in engine_conf else 1
+        c_fps = engine_conf["fps"] if "fps" in engine_conf else -1
+        c_ups = engine_conf["ups"] if "ups" in engine_conf else -1
+        c_map = engine_conf["map"]
+        c_terminal_signal = self.scenario_config["default_reward_function"]
+
+        super().__init__(
+            c_map,
+            n_players=c_n_players,
+            engine_config=engine_config,
+            gui_config=gui_config,
+            terminal_signal=c_terminal_signal
         )
-        self.game = game
+
+        self.set_max_fps(c_fps)
+        self.set_max_ups(c_ups)
 
         # Struct that holds all data that needs to be stored during a episode
         self.data = ScenarioData()
@@ -46,19 +62,10 @@ class Scenario(gym.Env):
         self.scenarios_eval_fns = [partial(scenario["eval"], self) for scenario in scenarios]
         self.scenarios_stat_fns = [partial(scenario["stats"], self) for scenario in scenarios]
 
-        # Define the action space
-        self.action_space = LimitedDiscrete(Constants.action_min, Constants.action_max)
-
-        # Define the observation space, here we assume that max is 255 (image) # TODO
-        self.observation_space = gym.spaces.Box(0, 255, shape=self.get_state().shape, dtype=np.float32)
-
         self.terminal = False
         self.winner = None
         self.last_reward = 0
         self._step_count = 0
-        self.stats_print_interval = self.config.get("stats_print_interval")
-        self.stats_print = self.config.get("stats_print")
-        self.stats_print_on_terminal = self.config.get("stats_print_on_terminal")
 
     def read_config(self, config):
         engine_conf = config["engine"] if "engine" in config else {}
@@ -86,37 +93,25 @@ class Scenario(gym.Env):
         engine_config.set_start_stone(util.config(engine_conf, "start_stone", 0))
         engine_config.set_tick_modifier(util.config(engine_conf, "tick_modifier", engine_config.tick_modifier))
 
-        c_n_players = engine_conf["n_players"] if "n_players" in engine_conf else 1
-        c_fps = engine_conf["fps"] if "fps" in engine_conf else -1
-        c_ups = engine_conf["ups"] if "ups" in engine_conf else -1
-        if "map" not in engine_conf:
-            raise RuntimeError("No map was loaded during configuration. PLease set 'map' in engine config")
-        c_map = engine_conf["map"]
-
-        game = Game(
-            c_map,
-            n_players=c_n_players,
-            engine_config=engine_config,
-            gui_config=gui_config,
-            terminal_signal=False
-        )
-        game.set_max_fps(c_fps)
-        game.set_max_ups(c_ups)
-
-        return game, engine_conf, gui_conf, scenario_conf, engine_config, gui_config
+        return engine_conf, gui_conf, scenario_conf, engine_config, gui_config
 
     def is_terminal(self):
         return self.terminal
 
     def print_stats(self):
         full_output = []
-        for player in self.game.players:
-            output = [[self._step_count] + scenario(player=player.base) for scenario in self.scenarios_stat_fns]
+        for player in self.players:
+            output = [[self._step_count] + scenario(player=player) for scenario in self.scenarios_stat_fns]
             full_output.extend(output)
         print(tabulate(full_output, headers=["Step", "Desc", "Player ID", "Current", "Target", "Goal"],
                        showindex="always", tablefmt="simple"))
 
-    def evaluate(self, player):
+    def evaluate(self, player: DeepRTSPlayer):
+        """
+        Evaluates scenario criteria for a specific player. This does NOT process the game further
+        :param player: DeepRTSPlayer
+        :return: terminal_signal, last_received reward
+        """
         if self.terminal:
             return True, self.last_reward
 
@@ -139,6 +134,13 @@ class Scenario(gym.Env):
         raise NotImplementedError("The function '_optimal_play_sequence' must be implemented!")
 
     def _optimal_play_gamestep(self, player, total_steps=0, total_reward=0):
+        """
+        Calculate optimal play for the current player. This PROCESSES the game.
+        :param player:
+        :param total_steps:
+        :param total_reward:
+        :return:
+        """
         for _ in range(self.config["updates_per_action"]):
             self.game.update()
         t, r = self.evaluate(player=player)  # TODO
@@ -181,34 +183,70 @@ class Scenario(gym.Env):
 
     def reset(self):
         self.data.reset()
-        self.game.reset()
-        self.game.update()
-        self.game.render()
+        super().reset()
+        self.update()
+        self.render()
         self.winner = None
         self.terminal = False
         self._step_count = 0
         return self.get_state()
 
-    def get_state(self, image=False, copy=False):
-        if self.config["state_flatten"]:
-            return self.game.get_state(image=image, copy=copy).flatten()
-        return self.game.get_state(image=image, copy=copy)
+    def step(self, action: typing.Union[dict, int]) -> (
+            typing.Union[typing.Dict[int, np.ndarray], np.ndarray],  # State
+            typing.Union[typing.Dict[int, float], float],   # Reward
+            typing.Union[typing.Dict[int, bool], bool],  # Terminal
+            typing.Union[typing.Dict[int, dict], dict]  # Info
+    ):
 
-    def step(self, action, player=None):
-        selected_player = player if player else self.game.selected_player  # py::return_value_policy::reference
-        selected_player.do_action(action + 1)
+        if isinstance(action, int):
+            player = self.selected_player
+            player.do_action(action)
+            for _ in range(self.scenario_config["updates_per_action"]):
+                self.update()
 
-        for _ in range(self.config["updates_per_action"]):
-            self.game.update()
+            s1 = player.get_state()
+            t, r = self.evaluate(player=player)
+            return s1, r, t, {}
 
-        s1 = self.get_state()
-        t, r = self.evaluate(player=selected_player)
+        elif isinstance(action, dict):
+            # Make action
+            for player_idx, player_action in action.items():
+                player = self.players[player_idx]
+                player.do_action(player_action)
+
+            # Process game
+            for _ in range(self.scenario_config["updates_per_action"]):
+                self.update()
+
+            # Get state for players.
+            states = {}
+            rewards = {}
+            terminals = {}
+            infos = {}
+            for player_idx, player_action in action.items():
+                player = self.players[player_idx]
+                s1 = player.get_state()
+                t, r = self.evaluate(player=player)
+                states[player_idx] = s1
+                rewards[player_idx] = r
+                terminals[player_idx] = t
+                infos[player_idx] = {}
+            return states, rewards, terminals, infos
+
+        else:
+            raise TypeError(f"Action type is incorrect. excpected list or str. Got {type(action)}")
+
+
+
+
+
+
+
+
         return s1, r, t, {}
 
     def render(self, mode='human'):
         if mode == "human":
-            self.game.view()
+            self.view()
 
-    @property
-    def players(self):
-        return self.game.players
+

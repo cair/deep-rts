@@ -189,7 +189,7 @@ bool Game::isTerminal(){
 
     int c = 0;
     for(auto &p : players) {
-        if(p.isDefeated()){
+        if(p.playerState() == Constants::PlayerState::Defeat){
             c++;
         }
     }
@@ -215,6 +215,18 @@ Player &Game::addPlayer() {
 
     return player;
 }
+
+void Game::insertPlayer(Player& player) {
+
+    players.push_back(player);
+
+    // Set initial
+    if(this->selectedPlayer == nullptr){
+        this->setSelectedPlayer(player);
+    }
+}
+
+
 
 Unit & Game::getUnit(int idx)
 {

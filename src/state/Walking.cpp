@@ -27,7 +27,7 @@ void Walking::update(Unit & unit){
     }
 
 
-    if (unit.walking_timer < unit.walking_interval) {
+    if (unit.walking_timer < unit.walking_interval * unit.tile->getWalkModifier()) {
         unit.walking_timer += 1;
         return;
     }

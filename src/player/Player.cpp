@@ -10,7 +10,7 @@
 #include <utility>
 #include <string>
 
-Player::Player(Game &game, int id) :
+Player::Player(Game &game, int id):
     game_(game),
     faction(0),
     config(game.config)
@@ -24,8 +24,6 @@ Player::Player(Game &game, int id) :
     setName("Player: " + std::to_string(id_));
     unitIndexes.reserve(1000);
     reset();
-
-
 
 }
 
@@ -127,7 +125,7 @@ void Player::spawnUnitNearSpawnPoint(Constants::Unit unitType) {
 }
 
 
-int Player::getFoodConsumption() const {
+[[maybe_unused]] int Player::getFoodConsumption() const {
     return foodConsumption;
 }
 
@@ -135,15 +133,15 @@ int Player::getFood() const {
     return food;
 }
 
-int Player::getGold() const {
+[[maybe_unused]] int Player::getGold() const {
     return gold;
 }
 
-int Player::getStone() const {
+[[maybe_unused]] int Player::getStone() const {
     return stone;
 }
 
-int Player::getLumber() const {
+[[maybe_unused]] int Player::getLumber() const {
     return lumber;
 }
 
@@ -207,10 +205,10 @@ void Player::removeUnit(Unit & unit) {
     getGame()._onUnitDestroy(unit);
 }
 
-bool Player::isDefeated() {
+Constants::PlayerState Player::playerState() {
 
     if (defeated){
-        return true;
+        return Constants::PlayerState::Defeat;
     }      // Defeated flag = True
 
     else if (
@@ -218,12 +216,12 @@ bool Player::isDefeated() {
             ((num_peasant + num_footman + num_archer > 0)) // Have remaining units
             )
     {
-        return false;
+        return Constants::PlayerState::Playing;
     }
 
 
     defeated = true;
-    return defeated;
+    return Constants::PlayerState::Playing;;
 }
 
 bool Player::canPlace(Unit & builder, Unit & unit, Tile &_tile) {

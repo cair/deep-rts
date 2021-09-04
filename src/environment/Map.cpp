@@ -54,9 +54,9 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
         auto walk_modifier = tileData["walk_modifier"].get<float>();
         auto harvestable = tileData["harvestable"].get<bool>();
         auto resources = tileData["resources"].get<int>();
-        auto lumber_yield = tileData["lumber_yield"].get<int>();
-        auto gold_yield = tileData["gold_yield"].get<int>();
-        auto stone_yield = tileData["stone_yield"].get<int>();
+        auto lumber_yield = tileData["lumber_yield"].get<float>();
+        auto gold_yield = tileData["gold_yield"].get<float>();
+        auto stone_yield = tileData["stone_yield"].get<float>();
 
         tilesData.emplace(tileId,TileData(
                 deplete_tile,

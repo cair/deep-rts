@@ -24,9 +24,9 @@ Tile::Tile(
 		bool depletedWalkable,
 		float depletedWalkModifier,
 		int depletedResources,
-		int lumberYield,
-		int goldYield,
-		int stoneYield
+        float lumberYield,
+        float goldYield,
+        float stoneYield
 ):
 tilemap(tilemap),
 
@@ -95,7 +95,7 @@ stoneYield(stoneYield)
 }
 
 
-bool Tile::hasOccupant()
+bool Tile::hasOccupant() const
 {
     return occupantID != -1;
 }
@@ -111,7 +111,7 @@ Unit* Tile::getOccupant()
 	return &occupant;
 }
 
-int Tile::getResources()
+int Tile::getResources() const
 {
 	return resources;
 }
@@ -149,7 +149,7 @@ void Tile::setOccupantID(int unitID) {
 	tilemap.game._onTileChange(*this);
 }
 
-int Tile::getOccupantID() {
+int Tile::getOccupantID() const {
 	return occupantID;
 }
 
@@ -160,7 +160,7 @@ bool Tile::isBuildable() const {
 }
 
 
-int Tile::distance(Tile &target) {
+int Tile::distance(Tile &target) const {
     return (int)hypot(x - target.x, y - target.y);
 }
 
@@ -216,7 +216,7 @@ void Tile::takeResource(uint8_t n) {
 	resources -= n;
 }
 
-Position Tile::getPosition() {
+Position Tile::getPosition() const {
     return {x, y};
 }
 
@@ -238,6 +238,10 @@ const std::string &Tile::getName() const {
 
 int Tile::getDepleteTile() const {
 	return depletedTypeId;
+}
+
+float Tile::getWalkModifier() const {
+    return walkModifier;
 }
 
 
