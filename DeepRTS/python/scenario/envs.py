@@ -4,6 +4,7 @@ from DeepRTS import Engine
 from python import Config
 
 
+<<<<<<< HEAD
 <<<<<<< refs/remotes/origin/wip_2021
 class GoldCollectFifteen(Scenario):
 
@@ -19,6 +20,10 @@ class GoldCollectFifteen(Scenario):
 =======
 class GeneralAI_1v1(Scenario,):
 
+=======
+class GeneralAI_1v1(Scenario,):
+
+>>>>>>> be93b9930c86aa5e78ad0cdeb181091998717d19
     def __init__(self,theMap):
         rlconf = {}
 
@@ -71,7 +76,10 @@ class GeneralAI_1v1(Scenario,):
             Scenario.footman_increment(10000),
             Scenario.damage_done_increment(10000),
             Scenario.game_end()
+<<<<<<< HEAD
 >>>>>>> Scenario Additions/Cleanup
+=======
+>>>>>>> be93b9930c86aa5e78ad0cdeb181091998717d19
         )
 
     def _optimal_play_sequence(self):

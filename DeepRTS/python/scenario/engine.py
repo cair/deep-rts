@@ -147,7 +147,10 @@ class Scenario(Game):
     def evaluate(self):
         success, reward = zip(*[scenario() for scenario in self.scenarios])
         return any(success), sum(reward)
+<<<<<<< HEAD
 >>>>>>> Scenario Additions/Cleanup
+=======
+>>>>>>> be93b9930c86aa5e78ad0cdeb181091998717d19
 
     def _optimal_play_sequence(self):
         raise NotImplementedError("The function '_optimal_play_sequence' must be implemented!")
@@ -512,4 +515,7 @@ class Scenario(Game):
     NUM_FARM = _num_farm
     NUM_BARRACKS = _num_barracks
     NUM_TOWN_HALL = _num_town_hall
+<<<<<<< HEAD
 >>>>>>> Scenario Additions/Cleanup
+=======
+>>>>>>> be93b9930c86aa5e78ad0cdeb181091998717d19
