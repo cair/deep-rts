@@ -1,18 +1,3 @@
-[submodule "include/rapidjson"]
-	path = include/rapidjson
-	url = https://github.com/Tencent/rapidjson.git
-[submodule "include/pybind11"]
-	path = include/pybind11
-	url = https://github.com/pybind/pybind11.git
-[submodule "include/spdlog"]
-	path = include/spdlog
-	url = https://github.com/gabime/spdlog.git
-[submodule "include/random"]
-	path = include/random
-	url = https://github.com/effolkronium/random.git
-[submodule "include/drogon"]
-	path = include/drogon
-	url = https://github.com/an-tao/drogon.git
-[submodule "include/json"]
-	path = include/json
-	url = https://github.com/nlohmann/json.git
+[submodule "docs/api/html"]
+	path = docs/api/html
+	url = git@github.com:cair/deep-rts.git
