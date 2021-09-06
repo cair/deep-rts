@@ -42,6 +42,13 @@ namespace Constants{
 	    Playing = 3
 	};
 
+	enum Resource{
+		Lumber = 1,
+		Gold = 2,
+		Stone = 3,
+		Food = 4
+	};
+
     const std::unordered_map<std::string, int> TypeToID = {
             {"Spawn", 1},
             {"Grass", 2},
@@ -55,7 +62,6 @@ namespace Constants{
 
 
 	enum State {
-		Idle = 8,
 		Spawning = 1,
 		Walking = 2,
 		Despawned = 3,
@@ -63,6 +69,7 @@ namespace Constants{
 		Building = 5,
 		Combat = 6,
 		Dead = 7,
+        Idle = 8,
 		Base = -1,
 	};
 
@@ -103,6 +110,17 @@ namespace Constants{
 		Build1 = 14,
 		Build2 = 15,
 		NoAction = 16,
+	};
+
+	class Map{
+	public:
+		[[maybe_unused]] inline static const std::string TEN = "10x10-2v2.json";
+		[[maybe_unused]] inline static const std::string FIFTEEN = "15x15-2v2.json";
+		[[maybe_unused]] inline static const std::string TWENTYONE = "21x21-2v2.json";
+		[[maybe_unused]] inline static const std::string THIRTYONE = "31x31-2v2.json";
+		[[maybe_unused]] inline static const std::string THIRTYONE_FOUR = "31x31-4v4.json";
+		[[maybe_unused]] inline static const std::string THIRTYONE_SIX = "31x31-6v6.json";
+		[[maybe_unused]] inline static const std::string FIND_GOLD = "scenario-find-gold.json";
 	};
 
     const std::map<int, std::string> ActionToName = {

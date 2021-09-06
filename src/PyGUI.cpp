@@ -2,10 +2,12 @@
 // Created by per on 06.06.18.
 //
 
-#include "../include/DeepRTS/PyGUI.h"
+#include "gui/PyGUI.h"
+#include "Tile.h"
+#include "Game.h"
 #include <pybind11/embed.h> // everything needed for embedding
 
-PyGUI::PyGUI(Game& game): game(game) {
+PyGUI::PyGUI(Game& game): BaseGUI(game) {
     pybind11::initialize_interpreter(); // start the interpreter and keep it alive
 
     PyGUI::initDependencies();
@@ -62,13 +64,14 @@ void PyGUI::initGUI(){
 
 }
 
-void PyGUI::onTileChange(Tile & tile){
+void PyGUI::onTileChange(const Tile& tile){
     //std::cout << "YES" << std::endl;
     gui_attr_on_tile_change(tile);
 
 }
 
-void PyGUI::view() {
+const cv::Mat& PyGUI::render()const {
     gui.attr("event")();
     gui_attr_view();
+    return renderData;
 }

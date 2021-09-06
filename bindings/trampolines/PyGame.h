@@ -14,11 +14,11 @@ class PyGame: public Game {
     }*/
 
 
-    void _render() override {
-        PYBIND11_OVERLOAD(void, Game, _render, );
+    const cv::Mat& _render() const override {
+        PYBIND11_OVERLOAD(const cv::Mat&, Game, _render, );
     }
 
-    void _caption() override {
+    void _caption()const override {
         PYBIND11_OVERLOAD(void, Game, _caption, );
     }
 
@@ -30,31 +30,31 @@ class PyGame: public Game {
         PYBIND11_OVERLOAD(void, Game, _reset, );
     }
 
-    void _onUnitCreate(Unit & unit) override {
+    void _onUnitCreate(const Unit & unit)const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_unit_create", _onUnitCreate, unit);
     }
 
-    void _onUnitDestroy(Unit & unit) override {
+    void _onUnitDestroy(const Unit & unit)const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_unit_destroy", _onUnitDestroy, unit);
     }
 
-    void _onTileChange(Tile & tile) override {
+    void _onTileChange(const Tile & tile)const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_tile_change", _onTileChange, tile);
     }
 
-    void _onEpisodeStart() override {
+    void _onEpisodeStart()const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_episode_start", _onEpisodeStart, );
     }
 
-    void _onEpisodeEnd() override {
+    void _onEpisodeEnd()const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_episode_end", _onEpisodeEnd, );
     }
 
-    void _onResourceGather(Tile& tile, Unit& unit) override {
+    void _onResourceGather(const Tile& tile, const Unit& unit)const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_resource_gather", _onResourceGather, tile, unit);
     }
 
-    void _onResourceDepleted(Tile& tile, Unit& unit) override {
+    void _onResourceDepleted(const Tile& tile, const Unit& unit)const override {
         PYBIND11_OVERLOAD_NAME(void, Game, "_on_resource_depleted", _onResourceDepleted, tile, unit);
     }
 

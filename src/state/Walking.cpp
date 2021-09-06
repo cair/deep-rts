@@ -15,7 +15,7 @@ Walking::Walking(Game &game)
 }
 
 
-void Walking::update(Unit & unit){
+void Walking::update(Unit& unit){
 	Tile *walkingGoal = unit.getTile(unit.walkingGoalID);
 
     if(!walkingGoal){
@@ -44,7 +44,9 @@ void Walking::update(Unit & unit){
         return;
     }
 
+
     unit.setPosition(*nextTile);
+    unit.animationCounter++;
     unit.walking_timer = 0;
 
     if(unit.stepsLeft == 1) {

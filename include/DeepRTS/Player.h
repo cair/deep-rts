@@ -10,7 +10,6 @@
 #include <memory>
 #include <deque>
 #include <cmath>
-
 #include "unit/Unit.h"
 #include "Tile.h"
 #include "Config.h"

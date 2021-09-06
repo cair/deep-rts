@@ -7,6 +7,8 @@
 
 #include <nlohmann/json.hpp>
 
+/// The TilePropertyData class holds json data in memory.
+/// The data stems from the json maps.
 struct TilePropertyData{
     std::unordered_map<int, std::string> tileID2Type;
     std::unordered_map<std::string, nlohmann::json> tileData;
@@ -18,22 +20,39 @@ struct TilePropertyData{
     }
 };
 
+/// The resourceLoader is primarily used to load maps.
 class ResourceLoader {
 public:
+    /// json object of the map
     nlohmann::json mapJSON;
+
+    /// json object of the tile metadata
     nlohmann::json tileJSON;
 
 
 private:
+    /// Get the filepath of the filename
+    /// \param fileName
+    /// \return fullpath
     static std::string getFilePath(const std::string& fileName);
+
+    /// Boolean if the map is loaded
     bool mapLoaded = false;
+
+    /// Boolean if the tiles metadata is loaded
     bool tilesLoaded = true;
+
+    /// Fucntion to load the tiles metadata json
     void loadTileJSON();
+
+    /// CONSTRUCTOR. Loads the TileJSON
     ResourceLoader(){
         loadTileJSON();
     }
 
 public:
+    /// The loadMapJSON function takes in a path to a file and loads the corresponding json
+    /// \param map_file
     void loadMapJSON(const std::string& map_file);
 
     // C++ 11

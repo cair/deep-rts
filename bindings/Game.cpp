@@ -43,16 +43,13 @@ void init_Game(py::module &m) {
             .def("get_ticks", &Game::getTicks)
             .def("get_episode_duration", &Game::getGameDuration)
             .def("get_fps", &Game::getFPS)
-            .def("get_ups", &Game::getUPS)
             .def("get_max_fps", &Game::getMaxFPS)
-            .def("get_max_ups", &Game::getMaxUPS)
             .def("get_ticks_modifier", &Game::getTicksModifier)
 
             .def("get_unit_by_name_id", &Game::getUnitByNameID, py::return_value_policy::reference)
 
                     /// Setters
             .def("set_max_fps", &Game::setMaxFPS)
-            .def("set_max_ups", &Game::setMaxUPS)
             .def("set_selected_player", &Game::setSelectedPlayer)
 
 

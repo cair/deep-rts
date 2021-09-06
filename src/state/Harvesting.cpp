@@ -68,6 +68,7 @@ void Harvesting::update(Unit & unit){
 
         // Callback
         unit.game->_onResourceGather(*harvestTarget, unit);
+        unit.animationCounter++;
 
         // No more resources // TODO constant parameter Config
         if(harvestTarget->getResources() <= 0) {

@@ -33,7 +33,7 @@ public:
     bool footmanEnabled = true;
     bool archerEnabled = false;
     bool pompd = false;
-    bool gui = false;  // No need to export because it is used to initiate gui on C++ side only
+    std::string gui = "Blend2DGui";  // No need to export because it is used to initiate gui on C++ side only
     int startGold = 0;
     int startStone = 0;
     int startLumber = 0;
@@ -42,11 +42,16 @@ public:
     float yieldModifierGold = 1.0;
     float yieldModifierStone = 1.0;
     float yieldModifierLumber = 1.0;
+    bool animationEnabled = true; // ~10% perf decay.
 
     /// Bool that determine print of FPS and UPS in console
     bool consoleCaptionEnabled = true;
 
-    void setGUI(bool b){
+    void setAnimationEnabled(bool v){
+        animationEnabled = v;
+    }
+
+    void setGUI(const std::string& b){
         gui = b;
     }
 
@@ -150,7 +155,7 @@ public:
         config.setPOMDP(false);
 
         // Engine only
-        config.setGUI(false);
+        config.setGUI("Blend2DGui");
         return config;
     }
 

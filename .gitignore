@@ -233,3 +233,7 @@ coding/private
 .DS_Store
 
 DeepRTS/.directory
+
+docs/api
+cmake-build-release
+cmake-build-debug

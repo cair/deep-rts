@@ -15,20 +15,20 @@
 #include "Tilemap.h"
 #include "Config.h"
 #include <xtensor/xarray.hpp>
+#include <cstdint>
+#include <opencv2/core/mat.hpp>
 
-class PyGUI;
+class BaseGUI;
+
 class Game {
     /// Game Clock
     std::chrono::high_resolution_clock::time_point now;
     std::chrono::high_resolution_clock::time_point _update_next;
-    std::chrono::high_resolution_clock::time_point _render_next;
     std::chrono::high_resolution_clock::time_point _stats_next;
 
     std::chrono::nanoseconds _update_interval{};
-    std::chrono::nanoseconds _render_interval{};
 
     uint32_t _update_delta = 0;
-    uint32_t _render_delta = 0;
 
     /// Initialize the game clock timers
     void timerInit();
@@ -42,11 +42,11 @@ class Game {
 
 public:
     /// GUI Pointer
-    PyGUI* GUI = nullptr;
+    std::unique_ptr<BaseGUI> gui;
 
     /// Game Constructor
     explicit Game(const std::string& map_file);
-    Game(const std::string& map_file, Config config);
+    Game(const std::string& map_file, Config  config);
     ~Game();
 
 
@@ -90,14 +90,10 @@ public:
     /// Game Max FPS
     uint32_t max_fps{};
 
-    /// Game Max UPS
-    uint32_t max_ups{};
 
     /// Game Current FPS
     uint32_t currentFPS = 0;
 
-    /// Game Current UPS
-    uint32_t currentUPS = 0;
 
     /// Game terminal flag
     bool terminal = false;
@@ -116,19 +112,17 @@ public:
 
     uint32_t getMaxFPS() const;
 
-    uint32_t getMaxUPS() const;
 
     uint32_t getFPS() const;
 
-    uint32_t getUPS() const;
 
     uint64_t getGameDuration() const;
 
     uint64_t getTicks() const ;
 
-    int getWidth() const;
+    uint32_t getWidth() const;
 
-    int getHeight() const;
+    uint32_t getHeight() const;
 
     uint32_t getEpisode() const;
 
@@ -146,9 +140,6 @@ public:
 
     /// Set the Game FPS
     void setMaxFPS(int fps_);
-
-    /// Set the Game UPS
-    void setMaxUPS(int ups_);
 
     /// Set selected player
     void setSelectedPlayer(Player &player);
@@ -168,19 +159,19 @@ public:
     void tick();
 
     /// Game Update Function
-    void update();
+    virtual void update();
     virtual void _update();
 
     /// Game Render Function
-    void render();
+    const cv::Mat& render();
 
     /// Game Render implementation
-    virtual void _render();
+    virtual const cv::Mat& _render() const;
 
     /// Print the Game Statistics
     void caption();
 
-    virtual void _caption();
+    virtual void _caption() const;
 
     // Enables the running flag and updates the clock
     void start();
@@ -201,17 +192,21 @@ public:
     ///
     ////////////////////////////////////////////////////
     // Unit Events
-    virtual void _onUnitCreate(Unit& unit);
-    virtual void _onUnitDestroy(Unit& unit);
+    virtual void _onUnitCreate(const Unit& unit) const;
+    virtual void _onUnitDestroy(const Unit& unit) const;
 
     // Resource Events
-    virtual void _onResourceGather(Tile& tile, Unit& unit);
-    virtual void _onResourceDepleted(Tile& tile, Unit& unit);
+    virtual void _onResourceGather(const Tile& tile, const Unit& unit) const;
+    virtual void _onResourceDepleted(const Tile& tile, const Unit& unit) const;
 
-    virtual void _onEpisodeStart();
-    virtual void _onEpisodeEnd();
+    virtual void _onEpisodeStart() const;
+    virtual void _onEpisodeEnd() const;
 
-    virtual void _onTileChange(Tile &);
+    virtual void _onTileChange(const Tile &) const;
+    virtual void _onUnitAttack(const Unit& unit) const;
+
+    /// empty opencv container in case of no GUI
+    const cv::Mat renderPlaceholder;
 
 
 };

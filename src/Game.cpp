@@ -2,8 +2,11 @@
 // Created by Per-Arne on 23.02.2017.
 //
 
+#include <gui/Blend2DGUI.h>
+#include <cstdint>
+#include <utility>
 #include "Game.h"
-#include "PyGUI.h"
+#include "gui/PyGUI.h"
 
 
 Game::Game(const std::string& map_file):
@@ -21,7 +24,7 @@ Game::Game(const std::string& map_file):
 
 
 Game::Game(const std::string& map_file, Config config):
-        config(config),
+        config(std::move(config)),
         map(map_file),
         state(xt::xarray<double>::shape_type{
                 static_cast<unsigned long>(map.MAP_WIDTH),
@@ -39,32 +42,32 @@ void Game::_internalInit(){
     units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
 
     setMaxFPS(60);
-    setMaxUPS(10);
     timerInit();
-
-    if(config.gui) {
-        GUI = new PyGUI(*this);
-        tilemap.reset();
+    if(config.gui.empty()){
+        gui = nullptr;
     }
+    else if(config.gui == "Blend2DGui") {
+        gui = std::make_unique<Blend2DGUI>(*this);
+
+    }else if(config.gui == "PyGUI"){
+        gui = std::make_unique<PyGUI>(*this);
+    }else{
+        throw std::runtime_error("Unknown GUI type: " + config.gui);
+    }
+
+    tilemap.reset();
 }
 
 void Game::setMaxFPS(int fps_){
     max_fps = fps_;
-    if(fps_ < 0){
-        _render_interval = std::chrono::nanoseconds(0);
-        return;
-    }
-    _render_interval = std::chrono::nanoseconds(1000000000 /  max_fps);
-}
-
-void Game::setMaxUPS(int ups_){
-    max_ups = ups_;
-    if(ups_ < 0){
+    if(fps_ <= 0){
         _update_interval = std::chrono::nanoseconds(0);
         return;
     }
-    _update_interval = std::chrono::nanoseconds(1000000000 /  max_ups);
+    _update_interval = std::chrono::nanoseconds(1000000000 /  max_fps);
 }
+
+
 
 void Game::start(){
     timerInit();
@@ -130,12 +133,9 @@ void Game::update(){
 }
 
 
-void Game::render(){
-    if (now >= _render_next) {
-        _render();
-        _render_next += _render_interval;
-        _render_delta += 1;
-    }}
+const cv::Mat&  Game::render() {
+    return _render();
+}
 
 
 void Game::caption() {
@@ -143,14 +143,12 @@ void Game::caption() {
         _caption();
 
         if (config.consoleCaptionEnabled) {
-            std::cout << "[FPS=" << this->currentFPS << ", UPS=" << this->currentUPS << "]" << std::endl;
+            std::cout << "[FPS=" << this->currentFPS << "]" << std::endl;
         }
 
-        currentFPS = _render_delta;
-        currentUPS = _update_delta;
-        _render_delta = 0;
+        currentFPS = _update_delta;
         _update_delta = 0;
-        _stats_next += std::chrono::nanoseconds(1000000000);    // 1 Second
+        _stats_next += std::chrono::seconds (1);    // 1 Second
     }
 }
 
@@ -160,13 +158,12 @@ void Game::tick() {
 
 void Game::timerInit() {
     tick();
-    _render_next = now + _render_interval;
     _update_next = now + _update_interval;
     _stats_next = now + std::chrono::nanoseconds(0);
 }
 
 
-bool Game::isTerminal(){
+bool Game::isTerminal() {
 
     if(!config.terminalSignal) {
         return false;
@@ -233,11 +230,11 @@ Unit* Game::getUnitByNameID(const std::string& nameID) {
     return f->second;
 }
 
-int Game::getWidth() const{
+uint32_t Game::getWidth() const{
     return map.MAP_WIDTH;
 }
 
-int Game::getHeight() const{
+uint32_t Game::getHeight() const{
     return map.MAP_HEIGHT;
 }
 
@@ -245,16 +242,10 @@ uint32_t Game::getMaxFPS() const {
     return max_fps;
 }
 
-uint32_t Game::getMaxUPS() const {
-    return max_ups;
-}
+
 
 uint32_t Game::getFPS() const {
     return currentFPS;
-}
-
-uint32_t Game::getUPS() const {
-    return currentUPS;
 }
 
 uint32_t Game::getEpisode() const {
@@ -282,48 +273,60 @@ void Game::setSelectedPlayer(Player &player) {
 
 }
 
-void Game::_onUnitCreate(Unit& unit) {
+void Game::_onUnitCreate(const Unit& unit) const{
     (void)(unit);
     //DEBUG("Unit Created: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
 
-void Game::_onEpisodeStart() {
+void Game::_onEpisodeStart()const {
     //DEBUG("Episode " + std::to_string(episode) + " started.\n");
 }
 
-void Game::_onEpisodeEnd() {
+void Game::_onEpisodeEnd() const{
     //DEBUG("Episode " + std::to_string(episode) + " ended.\n");
 }
 
-void Game::_onUnitDestroy(Unit& unit) {
+void Game::_onUnitDestroy(const Unit& unit) const{
     (void)(unit);
     //DEBUG("Unit Destroyed: " + unit.name + " | " + unit.player_.getName() + "\n");
 }
 
-void Game::_onTileChange(Tile& tile){
-    if(GUI) {
-        GUI->onTileChange(tile);
+void Game::_onTileChange(const Tile& tile) const{
+    if(gui) {
+        gui->onTileChange(tile);
     }
 }
 
 
-void Game::_onResourceGather(Tile& tile, Unit& unit) {
+void Game::_onResourceGather(const Tile& tile, const Unit& unit) const{
     (void)(tile);
     (void)(unit);
+    if(config.animationEnabled && gui) {
+        _onTileChange(*unit.tile);
+    }
 }
-void Game::_onResourceDepleted(Tile& tile, Unit& unit) {
+void Game::_onResourceDepleted(const Tile& tile, const Unit& unit)const {
     (void)(tile);
     (void)(unit);
 }
 
-
-void Game::_render(){
-    if(GUI) {
-        GUI->view();
+void Game::_onUnitAttack(const Unit& unit) const {
+    if(config.animationEnabled && gui) {
+        _onTileChange(*unit.tile);
     }
 }
 
-void Game::_caption(){}
+
+
+const cv::Mat& Game::_render() const{
+    if(gui) {
+        return gui->render();
+    }
+    return renderPlaceholder;
+}
+
+void Game::_caption() const{}
 void Game::_update(){}
 void Game::_reset() {}
+

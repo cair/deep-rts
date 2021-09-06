@@ -5,6 +5,7 @@
 #include "state/Combat.h"
 #include "unit/Unit.h"
 #include "Player.h"
+#include "Game.h"
 #include <algorithm>    // std::max
 
 void Combat::update(Unit & unit){
@@ -42,6 +43,8 @@ void Combat::update(Unit & unit){
             unit.player_.sDamageDone += myDamage;
             combatTarget->player_.sDamageTaken += myDamage;
             unit.combatTimer = 0;
+            unit.animationCounter++;
+            unit.game->_onUnitAttack(unit);
 
 
             if(combatTarget->isDead()){

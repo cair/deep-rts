@@ -1,0 +1,17 @@
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_SOURCE_DIR@/docs/api/
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include/ @CMAKE_CURRENT_SOURCE_DIR@/src
+DOXYFILE_ENCODING      = UTF-8
+RECURSIVE              = YES
+PROJECT_NAME           = "Deep RTS"
+PROJECT_LOGO           = @CMAKE_CURRENT_SOURCE_DIR@/docs/logo.png
+EXTRACT_ALL = YES
+FILE_PATTERNS          = *.c \
+                         *.cc \
+                         *.cxx \
+                         *.cpp \
+                         *.c++ \
+                         *.h \
+                         *.hh \
+                         *.hxx \
+                         *.hpp \
+                         *.h++

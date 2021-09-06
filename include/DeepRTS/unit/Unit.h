@@ -52,18 +52,18 @@ public:
 	Constants::Unit typeId;
 
 	/// Unit Current Health
-    int health{};
+    int health;
 
 	/// Unit Max Health
-    int health_max{};
+    int health_max;
 
 	/// Unit Direction
-    int direction{};
+    int direction;
 
 
-    [[maybe_unused]] int groundUnit{};
+    int groundUnit;
 
-    [[maybe_unused]] int waterUnit{};
+    int waterUnit;
 
     int damageMin = -1;
     int damageMax = -1;
@@ -76,25 +76,25 @@ public:
     float stoneCarry = 0;
     float carryCapacity = 10;
     std::vector<Constants::Unit> buildInventory;
-    int speed{};
-    int sight{};
+    int speed;
+    int sight;
 
-    bool canHarvest{};
-    bool canAttack{};
-    bool canMove{};
-    bool military{};
-    bool structure{};
+    bool canHarvest;
+    bool canAttack;
+    bool canMove;
+    bool military;
+    bool structure;
     bool recallable = false;
 
-    int lumberCost{};
-    int goldCost{};
-    int stoneCost{};
+    int lumberCost;
+    int goldCost;
+    int stoneCost;
 
-    int foodProduction{};
-    int foodConsumption{};
+    int foodProduction;
+    int foodConsumption;
 
-    int width{};
-    int height{};
+    int width;
+    int height;
 
     std::string name;
 
@@ -105,9 +105,14 @@ public:
     // State attributes
 
 	// Spawning
-	int spawnDuration{};
+	int spawnDuration;
 	int spawnTileID = -1;
 	int builtByID = -1;
+
+
+
+
+
 	[[nodiscard]] Unit &getBuiltBy() const;
 	[[nodiscard]] Tile &getSpawnTile() const;
 

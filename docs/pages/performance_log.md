@@ -1,18 +1,4 @@
-# Performance v1.3 vs v2.0
-
-
-
-# Performance Prior v2.0
-
-So, i've had a few issues with python not processing fast enough. I did some considerations on switching to C++ for better performance.
-
-Prof. Ole Christoffer Granmo notified me about a library for python called _cython_
-What cython does is that it compiles python code to C/C++ using for example GCC.
-I expected some performance gain, but when i first started to convert my game i saw BIG improvements:
-
-Using Cython, i achieved a relatively good performance boost, however it was not sufficient for tree-search algorithms
-I ported the game to C++ using the same logic and game mechanics and the performance boost
-
+# Performance Log of DeepRTS
 | Version | Date | UPS | maxfps | Reason |
 |-------|----------|-------------|----------|------|
 |Early game version| 27.01.17| x25 500| 1| Fewer game logics|
@@ -28,5 +14,7 @@ I ported the game to C++ using the same logic and game mechanics and the perform
 |Cython 1.0 | 24.02.17 | x500 000 | 1 | Full Cython stack. However, all stacktrace gone
 |C++ | 27.02.17 | x2 700 000 | 60 | Early version of the game in C++
 |C++ | 10.03.17 | x8 500 000 | 60 | Version 1.0 (Heap)
-|C++ | 13.03.17 | x52 000 000 | 60 | Version 1.1 (Stack)
+|C++ | 13.03.17 | x52 000 000 | 60 | Version 1.1 (Stack) (NoGui) (Simple Engine)
+|C++ | 06.09.21 | x6 500 000 | x6 500 000 | Version 3.0 (Stack) (NoGui) (Full Engine))
+|C++ | 06.09.21 | x3 000 000 | x3 000 000 | Version 3.0 (Stack) (GUI) (Full Engine))
 These tests were done on 2x Intel(R) Xeon(R) CPU X5660 @ 2.80GHz where tests ran on a single core

@@ -20,9 +20,11 @@ Unit::Unit(Player &player):
         combatTimer(combatInterval),
         walking_interval(1 * config.tickModifier),
         id(player.getGame().units.size()),
-        state(stateManager->despawnedState),
-        stateList(50)
-{}
+        state(stateManager->despawnedState)
+
+{
+    stateList.reserve(50);
+}
 
 void Unit::spawn(Tile &_toSpawnOn, int initValue) {
     spawnTimer = initValue;
@@ -279,10 +281,11 @@ void Unit::enqueueState(const std::shared_ptr<BaseState>& state_) {
 }
 
 void Unit::transitionState() {
+    animationCounter = 0;
     if(stateList.empty()) {
         // No states to transition to, enter idle state
         std::shared_ptr<BaseState> nextState = stateManager->idleState;
-        //std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
+//        std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
         state->end(*this);
         state = nextState;
         state->init(*this);
@@ -294,7 +297,7 @@ void Unit::transitionState() {
 
     state->end(*this);
     auto nextState = stateManager->getByID(nextStateId);
-    //std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
+//    std::cout << id<< " State Transition: " << state->name << " ==> " << nextState->name << std::endl;
     state = nextState;
     stateList.pop_back();
     //state->init(*this);

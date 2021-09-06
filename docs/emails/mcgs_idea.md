@@ -1,8 +1,5 @@
 # MCGS Idea
 
-Heia!
-
-Jeg driver å lurer på om jeg skal spisse meg litt inn på MCTS for den virker å være ganske så åpen når det kommer til research:
 
 http://www.cameronius.com/research/mcts/about/index.html
 

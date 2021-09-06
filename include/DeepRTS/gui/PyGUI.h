@@ -4,9 +4,11 @@
 #pragma once
 
 #include <pybind11/pytypes.h>
-#include "Game.h"
+#include "BaseGUI.h"
 
-class PyGUI {
+class Tile;
+
+class PyGUI: public BaseGUI{
 private:
     pybind11::object gui;
     pybind11::object gui_attr_on_tile_change;
@@ -18,11 +20,13 @@ private:
     static void initArgv();
     static void initCython();
     void initGUI();
-    Game &game;
+
 public:
-    explicit PyGUI(Game &game);
+    cv::Mat renderData; // TODO
+    PyGUI(Game&);
+
     ~PyGUI();
 
-    void view();
-    void onTileChange(Tile &tile);
+    const cv::Mat& render()const override;
+    void onTileChange(const Tile &tile);
 };
