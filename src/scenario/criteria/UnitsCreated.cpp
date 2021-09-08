@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "UnitsCreated.h"
+#include "scenario/criterias/UnitsCreated.h"
 #include "Player.h"
 DeepRTS::Criteria::UnitsCreated::UnitsCreated(int unitsCreatedLimit, int rewardSuccess, int rewardFailure)
         : ScenarioCriteria(rewardSuccess, rewardFailure)

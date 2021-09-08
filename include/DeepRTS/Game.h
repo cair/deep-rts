@@ -19,8 +19,10 @@
 #include <opencv2/core/mat.hpp>
 
 class BaseGUI;
+using StateType = xt::xarray<double, xt::layout_type::row_major>;
 
 class Game {
+
     /// Game Clock
     std::chrono::high_resolution_clock::time_point now;
     std::chrono::high_resolution_clock::time_point _update_next;
@@ -62,7 +64,7 @@ public:
     Map map;
 
     /// Game state (Order 2)
-    xt::xarray<double, xt::layout_type::row_major> state;
+    StateType state;
 
     /// Game Tilemap (Order 3)
     Tilemap tilemap;

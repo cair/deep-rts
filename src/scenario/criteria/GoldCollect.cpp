@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "GoldCollect.h"
+#include "scenario/criterias/GoldCollect.h"
 #include "Player.h"
 
 

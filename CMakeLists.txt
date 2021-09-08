@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.17)
 project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
+# Lock this section so that parallel CMake runs won't clash on checkout in the same directory
+file(LOCK ${CMAKE_SOURCE_DIR} DIRECTORY GUARD FILE)
+
 # Includes
 include(cmake/CMakeRC.cmake)
 include(cmake/CPM.cmake)
@@ -26,13 +29,22 @@ if (UNIX)
 endif ()
 
 
-if (CMAKE_BUILD_TYPE EQUAL "RELEASE")
-        if (WIN32)
-                add_compile_options(/Ox /utf-8)
-        else ()
-                add_compile_options(-Ofast -march=native -ffast-math -Wall)
-        endif ()
+if (WIN32)
+        set(OPTIMIZATIONS_RELEASE /Ox)
+        set(OPTIMIZATIONS_DEBUG /O0)
+else ()
+        set(OPTIMIZATIONS_RELEASE -Ofast -march=native -ffast-math -Wall)
+        set(OPTIMIZATIONS_DEBUG -Wall -O0)
 endif ()
+
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_compile_options(${OPTIMIZATIONS_RELEASE})
+else()
+        add_compile_options(${OPTIMIZATIONS_DEBUG})
+        add_compile_definitions(DEBUG=1)
+        add_compile_options(-gdwarf-4)  # This allows per to debug with llvm
+endif()
 
 
 if (IS_PYBIND_BUILD)
@@ -105,7 +117,7 @@ find_library(blend2d blend2d REQUIRED)
 find_path(blend2d_INCLUDES blend2d.h)
 
 find_package(Doxygen)
-if (DOXYGEN_FOUND)
+if (DOXYGEN_FOUND AND NOT PYTHON_BUILD)
         # set input and output files
         set(DOXYGEN_IN Doxyfile.in)
         set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
@@ -120,9 +132,9 @@ if (DOXYGEN_FOUND)
                 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                 COMMENT "Generating API documentation with Doxygen"
                 VERBATIM )
-else (DOXYGEN_FOUND)
+else ()
         message("Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)
+endif ()
 
 
 set(DEEPRTS_LINK_TARGETS
@@ -139,6 +151,10 @@ set(DEEPRTS_LINK_TARGETS
         opencv_core  # todo remove
         opencv_highgui  # todo remove
 )
+
+
+
+
 
 set(DEEPRTS_INCLUDES
         ${blend2d_INCLUDES}
@@ -194,7 +210,7 @@ set(BINDING_SOURCES
         bindings/Config.cpp
         bindings/DeepRTS.cpp
         bindings/Webserver.cpp
-        )
+        bindings/utilities/ndarray_converter.cpp bindings/Scenarios.cpp bindings/trampolines/PyScenarioCriteria.h)
 
 set(SOURCE_FILES
         # Header-Only Libs
@@ -244,7 +260,7 @@ set(SOURCE_FILES
 
         ${BINDING_SOURCES}
         ${WEBSERVER_SOURCES}
-        include/DeepRTS/gui/Blend2DGUI.h include/DeepRTS/unit/Footman.h include/DeepRTS/gui/BaseGUI.h src/gui/BaseGUI.cpp src/gui/Blend2DGUI.cpp include/DeepRTS/gui/Blend2DSprites.h include/DeepRTS/scenario/Scenario.cpp include/DeepRTS/scenario/Scenario.h include/DeepRTS/scenario/criterias/ScenarioCriteria.cpp include/DeepRTS/scenario/criterias/ScenarioCriteria.h include/DeepRTS/scenario/criterias/GoldCollect.cpp include/DeepRTS/scenario/criterias/GoldCollect.h include/DeepRTS/scenario/criterias/LumberCollect.cpp include/DeepRTS/scenario/criterias/LumberCollect.h include/DeepRTS/scenario/criterias/StoneCollect.cpp include/DeepRTS/scenario/criterias/StoneCollect.h include/DeepRTS/scenario/criterias/FoodConsumption.cpp include/DeepRTS/scenario/criterias/FoodConsumption.h include/DeepRTS/scenario/criterias/FoodCount.cpp include/DeepRTS/scenario/criterias/FoodCount.h include/DeepRTS/scenario/criterias/DamageDone.cpp include/DeepRTS/scenario/criterias/DamageDone.h include/DeepRTS/scenario/criterias/DamageToken.cpp include/DeepRTS/scenario/criterias/DamageToken.h include/DeepRTS/scenario/criterias/UnitsCreated.cpp include/DeepRTS/scenario/criterias/UnitsCreated.h include/DeepRTS/scenario/criterias/NumUnitTypeCreated.cpp include/DeepRTS/scenario/criterias/NumUnitTypeCreated.h include/DeepRTS/scenario/scenarios/GoldCollectFifteen.cpp include/DeepRTS/scenario/scenarios/GoldCollectFifteen.h include/DeepRTS/scenario/scenarios/GeneralAIOneVersusOne.cpp include/DeepRTS/scenario/scenarios/GeneralAIOneVersusOne.h include/DeepRTS/scenario/criterias/ResourceIncrement.cpp include/DeepRTS/scenario/criterias/ResourceIncrement.h include/DeepRTS/scenario/criterias/UnitIncrement.cpp include/DeepRTS/scenario/criterias/UnitIncrement.h include/DeepRTS/scenario/criterias/DamageDoneIncrement.cpp include/DeepRTS/scenario/criterias/DamageDoneIncrement.h include/DeepRTS/scenario/criterias/DamageTakenIncrement.cpp include/DeepRTS/scenario/criterias/DamageTakenIncrement.h)
+        include/DeepRTS/gui/Blend2DGUI.h include/DeepRTS/unit/Footman.h include/DeepRTS/gui/BaseGUI.h src/gui/BaseGUI.cpp src/gui/Blend2DGUI.cpp include/DeepRTS/gui/Blend2DSprites.h src/scenario/Scenario.cpp include/DeepRTS/scenario/Scenario.h src/scenario/criteria/ScenarioCriteria.cpp include/DeepRTS/scenario/criterias/ScenarioCriteria.h src/scenario/criteria/GoldCollect.cpp include/DeepRTS/scenario/criterias/GoldCollect.h src/scenario/criteria/LumberCollect.cpp include/DeepRTS/scenario/criterias/LumberCollect.h src/scenario/criteria/StoneCollect.cpp include/DeepRTS/scenario/criterias/StoneCollect.h src/scenario/criteria/FoodConsumption.cpp include/DeepRTS/scenario/criterias/FoodConsumption.h src/scenario/criteria/FoodCount.cpp include/DeepRTS/scenario/criterias/FoodCount.h src/scenario/criteria/DamageDone.cpp include/DeepRTS/scenario/criterias/DamageDone.h src/scenario/criteria/DamageTaken.cpp include/DeepRTS/scenario/criterias/DamageTaken.h src/scenario/criteria/UnitsCreated.cpp include/DeepRTS/scenario/criterias/UnitsCreated.h src/scenario/criteria/NumUnitTypeCreated.cpp include/DeepRTS/scenario/criterias/NumUnitTypeCreated.h src/scenario/scenarios/GoldCollectFifteen.cpp include/DeepRTS/scenario/scenarios/GoldCollectFifteen.h src/scenario/scenarios/GeneralAIOneVersusOne.cpp include/DeepRTS/scenario/scenarios/GeneralAIOneVersusOne.h src/scenario/criteria/ResourceIncrement.cpp include/DeepRTS/scenario/criterias/ResourceIncrement.h src/scenario/criteria/UnitIncrement.cpp include/DeepRTS/scenario/criterias/UnitIncrement.h src/scenario/criteria/DamageDoneIncrement.cpp include/DeepRTS/scenario/criterias/DamageDoneIncrement.h src/scenario/criteria/DamageTakenIncrement.cpp include/DeepRTS/scenario/criterias/DamageTakenIncrement.h)
 
 
 
@@ -268,14 +284,32 @@ set(DEEPRTS_PYBIND_SOURCES
 
 if (NOT DEFINED PYTHON_BUILD)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")
-        find_package(Python ${PYTHON_REQUIRED_VERSION} REQUIRED COMPONENTS Interpreter Development)
+
 endif ()
 
 
+if(PYTHON_BUILD)
+        CPMADDPackage(
+                NAME xtensor_py
+                GIT_REPOSITORY "https://github.com/xtensor-stack/xtensor-python"
+                GIT_TAG 0.25.3
+        )
+
+
+
+find_package(Python ${PYTHON_REQUIRED_VERSION} REQUIRED COMPONENTS Interpreter Development NumPy)
+set_property(TARGET DeepRTSResources PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET DeepRTSAssets PROPERTY POSITION_INDEPENDENT_CODE ON)
 pybind11_add_module(Engine ${DEEPRTS_PYBIND_SOURCES})
-target_link_libraries(Engine PRIVATE ${LIBRARIES})
-
-
+target_link_libraries(Engine INTERFACE xtensor-python PRIVATE                Python::NumPy ${DEEPRTS_LINK_TARGETS})
+target_include_directories(Engine PRIVATE
+        include/DeepRTS
+        ${DEEPRTS_INCLUDES}
+        ${xtensor_py_SOURCE_DIR}/include
+        )
+else()
+        find_package(Python ${PYTHON_REQUIRED_VERSION} REQUIRED COMPONENTS Interpreter Development)
+endif()
 # Dont create C++ Executable for Python builds (saves time)
 if (NOT DEFINED PYTHON_BUILD)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)

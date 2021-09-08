@@ -947,12 +947,7 @@ public:
         if (err) {
             throw std::runtime_error("Could not load the tileset texture");
         }
-
-        BLImageCodec codec;
-        codec.findByName("BMP");
-
-        tileset.writeToFile("lol.bmp", codec);
-
+        
         load(tileset);
     }
 

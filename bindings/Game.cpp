@@ -1,9 +1,11 @@
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
 
-namespace py = pybind11;
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
+#include "utilities/ndarray_converter.h"
 #include "./trampolines/PyGame.h"
+#include <xtensor-python/pyarray.hpp>     // Numpy bindings
+namespace py = pybind11;
 
 void init_Game(py::module &m) {
     py::class_<Game, PyGame>(m, "Game")
@@ -13,7 +15,7 @@ void init_Game(py::module &m) {
                     // Functions
             .def_readonly("config", &Game::config)
             .def("tick", &Game::tick)
-            .def("update", &Game::update)
+            .def("update", &Game::update, py::return_value_policy::reference)
             .def("_update", &Game::update)
             .def("render", &Game::render)
             .def("_render", &Game::render)

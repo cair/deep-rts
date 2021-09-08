@@ -229,6 +229,7 @@ python/DeepRTS/assets
 test/assets
 code/assets
 coding/private
+samples/private/
 
 .DS_Store
 
@@ -238,3 +239,4 @@ DeepRTS/.directory
 cmake-build-release
 cmake-build-debug
 docs/api/latex/
+

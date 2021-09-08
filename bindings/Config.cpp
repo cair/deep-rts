@@ -26,6 +26,7 @@ void init_Config(py::module &m) {
             .def("set_start_food", &Config::setStartFood)
             .def("set_terminal_signal", &Config::setTerminalSignal)
             .def("set_pomdp", &Config::setPOMDP)
+            .def("set_gui", &Config::setGUI)
 
 
             // Properties

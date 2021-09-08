@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "DamageToken.h"
+#include "scenario/criterias/DamageTaken.h"
 #include "Player.h"
 DeepRTS::Criteria::DamageTaken::DamageTaken(int damageTakenLimit, int rewardSuccess, int rewardFailure)
         : ScenarioCriteria(rewardSuccess, rewardFailure)

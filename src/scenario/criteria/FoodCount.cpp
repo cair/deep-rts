@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "FoodCount.h"
+#include "scenario/criterias/FoodCount.h"
 #include "Player.h"
 
 DeepRTS::Criteria::FoodCount::FoodCount(int foodCountLimit, int rewardSuccess, int rewardFailure)

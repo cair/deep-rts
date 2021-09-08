@@ -52,7 +52,7 @@ void Game::_internalInit(){
     }else if(config.gui == "PyGUI"){
         gui = std::make_unique<PyGUI>(*this);
     }else{
-        throw std::runtime_error("Unknown GUI type: " + config.gui);
+        throw std::runtime_error("Unknown GUI type: " + config.gui + ". Available: Blend2DGui, PyGUI");
     }
 
     tilemap.reset();

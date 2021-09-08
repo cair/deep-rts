@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "Scenario.h"
+#include "scenario/Scenario.h"
 
 #include <utility>
 #include "Player.h"

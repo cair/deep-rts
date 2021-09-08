@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "UnitIncrement.h"
+#include "scenario/criterias/UnitIncrement.h"
 #include "Player.h"
 DeepRTS::Criteria::UnitIncrement::UnitIncrement(Constants::Unit unitType, int amount, int rewardSuccess, int rewardFailure)
         : ScenarioCriteria(rewardSuccess, rewardFailure)

@@ -5,7 +5,7 @@
 #include <scenario/criterias/ResourceIncrement.h>
 #include <scenario/criterias/UnitIncrement.h>
 #include <scenario/criterias/DamageDoneIncrement.h>
-#include "GeneralAIOneVersusOne.h"
+#include "scenario/scenarios/GeneralAIOneVersusOne.h"
 #include "Config.h"
 
 

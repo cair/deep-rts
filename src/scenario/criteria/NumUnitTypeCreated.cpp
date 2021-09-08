@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "NumUnitTypeCreated.h"
+#include "scenario/criterias/NumUnitTypeCreated.h"
 #include "Player.h"
 
 bool DeepRTS::Criteria::NumUnitTypeCreated::evaluate(const Player &player) {

@@ -1,6 +1,7 @@
 
 # Run setup.py install in sources/python to build source files.
-
+from DeepRTS import Engine
+print(Engine)
 from DeepRTS.python import scenario
 from DeepRTS.Engine import Random
 

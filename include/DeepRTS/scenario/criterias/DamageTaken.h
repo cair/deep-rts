@@ -2,8 +2,8 @@
 // Created by per on 9/6/21.
 //
 
-#ifndef DEEPRTS_DAMAGETOKEN_H
-#define DEEPRTS_DAMAGETOKEN_H
+#ifndef DEEPRTS_DAMAGETAKEN_H
+#define DEEPRTS_DAMAGETAKEN_H
 
 
 #include "ScenarioCriteria.h"
@@ -27,4 +27,4 @@ namespace DeepRTS::Criteria{
 
 
 
-#endif //DEEPRTS_DAMAGETOKEN_H
+#endif //DEEPRTS_DAMAGETAKEN_H

@@ -40,7 +40,7 @@ int main() {
             player1.do_action(Random::get(Constants::ACTION_MIN, Constants::ACTION_MAX));
 
             g.update();
-            auto& image = g.render();
+            auto image = g.render();
             g.caption();
 
 

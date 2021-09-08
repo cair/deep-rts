@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "GoldCollectFifteen.h"
+#include "scenario/scenarios/GoldCollectFifteen.h"
 #include "Constants.h"
 #include "scenario/criterias/GoldCollect.h"
 

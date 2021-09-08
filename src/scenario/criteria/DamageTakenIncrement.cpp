@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "DamageTakenIncrement.h"
+#include "scenario/criterias/DamageTakenIncrement.h"
 #include "Player.h"
 
 DeepRTS::Criteria::DamageTakenIncrement::DamageTakenIncrement(int amount, int rewardSuccess, int rewardFailure)

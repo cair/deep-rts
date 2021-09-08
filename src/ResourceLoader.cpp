@@ -16,6 +16,8 @@
 #define GetCurrentDir getcwd
 #endif
 
+#include <cmrc/cmrc.hpp>
+CMRC_DECLARE(DeepRTSAssets);
 
 std::string GetCurrentWorkingDir()
 {
@@ -42,34 +44,54 @@ std::string ResourceLoader::getFilePath(const std::string& fileName) {
 
 
 void ResourceLoader::loadMapJSON(const std::string& mapFile) {
-
     // If map is already loaded
     if(mapLoaded) {
         return;
     }
 
-    // Retrieve map file location
-	auto mapFilePath = getFilePath("maps/" + mapFile);
+    try{
+        auto fs = cmrc::DeepRTSAssets::get_filesystem();
+        std::string fileName = "assets/maps/" + mapFile;
+        auto tilePropertiesFile = fs.open(fileName);
+        std::string tilePropertiesData = std::string(tilePropertiesFile.begin(), tilePropertiesFile.size());
 
-    // Read Map data
-    std::ifstream map(mapFilePath);
+        try{
+            mapJSON = nlohmann::json::parse(tilePropertiesData);
+        }catch(const nlohmann::json::exception&){
+            throw std::runtime_error("Failed to parse: " + mapFile + " (" + fileName + ").");
+        }
+        mapLoaded = true;
 
-	if (map.is_open()) {
-	    try{
-            mapJSON = nlohmann::json::parse(map);
-	    }catch(const nlohmann::json::exception&){
-            throw std::runtime_error("Failed to parse: " + mapFile + " (" + mapFilePath + ").");
-	    }
-		mapLoaded = true;
-	}
-	else {
-		throw std::runtime_error("File Error: Could not find: " + mapFile + " (" + mapFilePath + ").\nEnsure that the data directory exists!");
-	}
+    }catch(const std::exception& err){
+
+
+        // Retrieve map file location
+        auto mapFilePath = getFilePath("maps/" + mapFile);
+
+        // Read Map data
+        std::ifstream map(mapFilePath);
+
+        if (map.is_open()) {
+            try{
+                mapJSON = nlohmann::json::parse(map);
+            }catch(const nlohmann::json::exception&){
+                throw std::runtime_error("Failed to parse: " + mapFile + " (" + mapFilePath + ").");
+            }
+            mapLoaded = true;
+        }
+        else {
+            throw std::runtime_error("File Error: Could not find: " + mapFile + " (" + mapFilePath + ").\nEnsure that the data directory exists!");
+        }
+
+    }
+
+
+
+
 
 }
 
 TilePropertyData ResourceLoader::loadMAPJson(const nlohmann::json& tJSON){
-
     TilePropertyData data;
     // Parse tile types
     for(auto &item : tJSON["tile_types"].items()){
@@ -99,23 +121,19 @@ TilePropertyData ResourceLoader::loadMAPJson(const nlohmann::json& tJSON){
 }
 
 void ResourceLoader::loadTileJSON() {
+    auto fs = cmrc::DeepRTSAssets::get_filesystem();
+    std::string fileName = "assets/tile_properties.json";
+    auto tilePropertiesFile = fs.open(fileName);
+    std::string tilePropertiesData = std::string(tilePropertiesFile.begin(), tilePropertiesFile.size());
 
-	std::string fileName = "tile_properties.json";
-	std::string filePath = getFilePath(fileName);
+    try{
+        tileJSON = nlohmann::json::parse(tilePropertiesData);
+    }catch(const nlohmann::json::exception&){
+        throw std::runtime_error("Failed to parse: " + fileName + ".");
+    }
+    tileData = ResourceLoader::loadMAPJson(tileJSON);
+    tilesLoaded = true;
 
-    std::ifstream map(filePath);
-	if (map.is_open()) {
-	    try{
-            tileJSON = nlohmann::json::parse(map);
-        }catch(const nlohmann::json::exception&){
-            throw std::runtime_error("Failed to parse: " + fileName + " (" + filePath + ").");
-	    }
-	    tileData = ResourceLoader::loadMAPJson(tileJSON);
-
-        tilesLoaded = true;
-	}else{
-        throw std::runtime_error("File Error: Could not find: " + fileName + "(" + filePath + ").\nEnsure that the data directory exists!");
-	}
 
 }
 

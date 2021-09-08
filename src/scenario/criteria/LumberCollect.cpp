@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "LumberCollect.h"
+#include "scenario/criterias/LumberCollect.h"
 #include "Player.h"
 DeepRTS::Criteria::LumberCollect::LumberCollect(int lumberCollectLimit, int rewardSuccess, int rewardFailure)
         : ScenarioCriteria(rewardSuccess, rewardFailure)

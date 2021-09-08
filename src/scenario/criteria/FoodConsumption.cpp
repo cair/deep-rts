@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "FoodConsumption.h"
+#include "scenario/criterias/FoodConsumption.h"
 #include "Player.h"
 
 DeepRTS::Criteria::FoodConsumption::FoodConsumption(int foodConsumptionLimit, int rewardSuccess, int rewardFailure)

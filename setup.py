@@ -1,16 +1,12 @@
-import os
 import re
-import shutil
+
 import sys
 import platform
 import subprocess
-
 import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-assets_root = os.path.join(dir_path, "assets")
-assets_py = os.path.join(dir_path, "DeepRTS", "python", "assets")
 
-print(assets_root, assets_py)
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
@@ -75,19 +71,10 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', dir_path] + cmake_args, cwd=self.build_temp, env=env) # ext.sourcedir
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
 
-try:
-    shutil.copytree(assets_root, assets_py)
-except:
-    pass
-
-pygm = 'pygame' 
-if is_mac_os():
-    pygm = "pygame==2.0.0.dev6"
-
 setup(
     name='DeepRTS',
-    version_format='{tag}.dev{commitcount}',  # +{gitsha}
-    setup_requires=['pybind11'],
+    version_config=True,
+    setup_requires=['setuptools-git-versioning'],
     author='Per-Arne Andersen',
     author_email='per@sysx.no',
     url='https://github.com/cair/deep-rts',
@@ -95,7 +82,9 @@ setup(
     long_description='',
     include_package_data=True,
     packages=find_packages(
-        exclude=["experiments", "docs", "include", "test"]
+        exclude=["coding"],
+        include=["DeepRTS"]
+
     ),
     ext_modules=[
         CMakeExtension('Engine')
@@ -103,6 +92,6 @@ setup(
     cmdclass=dict(
         build_ext=CMakeBuild,
     ),
-    install_requires=['pygame', 'numpy', 'pillow'],
+    install_requires=['numpy'],
     zip_safe=False,
 )

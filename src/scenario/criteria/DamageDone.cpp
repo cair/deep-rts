@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "DamageDone.h"
+#include "scenario/criterias/DamageDone.h"
 #include "Player.h"
 DeepRTS::Criteria::DamageDone::DamageDone(int damageDone, int rewardSuccess, int rewardFailure)
 : ScenarioCriteria(rewardSuccess, rewardFailure)

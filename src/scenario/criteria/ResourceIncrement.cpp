@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "ResourceIncrement.h"
+#include "scenario/criterias/ResourceIncrement.h"
 #include "Player.h"
 
 DeepRTS::Criteria::ResourceIncrement::ResourceIncrement(Constants::Resource resourceType, int amount, int rewardSuccess, int rewardFailure)

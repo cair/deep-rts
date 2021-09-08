@@ -2,7 +2,7 @@
 // Created by per on 9/6/21.
 //
 
-#include "StoneCollect.h"
+#include "scenario/criterias/StoneCollect.h"
 #include "Player.h"
 
 DeepRTS::Criteria::StoneCollect::StoneCollect(int stoneCollectLimit, int rewardSuccess, int rewardFailure)
