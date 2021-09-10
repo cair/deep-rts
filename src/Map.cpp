@@ -44,17 +44,16 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
         else if(tileData["gold_yield"].is_null()){std::cout << "gold_yield" << std::endl;}
         else if(tileData["stone_yield"].is_null()){std::cout << "stone_yield" << std::endl;}
 
-        //std::cout << tileId << " - " << tileData.dump() << std::endl;
-
         auto deplete_tile = tileData["deplete_tile"].get<int>();
         auto name = tileData["name"].get<std::string>();
         auto walkable = tileData["walkable"].get<bool>();
-        auto walk_modifier = tileData["walk_modifier"].get<float>();
+        auto walk_modifier = tileData["walk_modifier"].get<double>();
         auto harvestable = tileData["harvestable"].get<bool>();
         auto resources = tileData["resources"].get<int>();
-        auto lumber_yield = tileData["lumber_yield"].get<float>();
-        auto gold_yield = tileData["gold_yield"].get<float>();
-        auto stone_yield = tileData["stone_yield"].get<float>();
+        auto lumber_yield = tileData["lumber_yield"].get<double>();
+        auto gold_yield = tileData["gold_yield"].get<double>();
+        auto stone_yield = tileData["stone_yield"].get<double>();
+        auto damage_modifier = tileData["damage_modifier"].get<double>();
 
         tilesData.emplace(tileId,TileData(
                 deplete_tile,
@@ -65,7 +64,8 @@ Map::Map(const std::string& map_file): mapFile(map_file) {
                 resources,
                 lumber_yield,
                 gold_yield,
-                stone_yield
+                stone_yield,
+                damage_modifier
         ));
 
     }

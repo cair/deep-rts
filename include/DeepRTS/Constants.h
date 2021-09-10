@@ -58,6 +58,7 @@ namespace Constants{
             {"Lumber", 6},
             {"Gold", 7},
             {"Stone", 8},
+            {"Lava", 9}
     };
 
 

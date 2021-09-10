@@ -80,7 +80,7 @@ set(DEEPRTS_DEPENDENCIES
         drogon
         nlohmann-json
         Blend2d
-        opencv
+        #opencv
 )
 
 

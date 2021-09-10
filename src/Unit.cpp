@@ -101,6 +101,10 @@ void Unit::setPosition(Tile &newTile) {
 
 void Unit::update() {
     state->update(*this);
+
+    if(tile){
+        tile->update(*this);
+    }
 }
 
 Tile *Unit::centerTile() const {

@@ -21,11 +21,65 @@ class Tilemap;
 class Tile{
 private:
 
-	//////////////////////////////////////////////////////////////////////////////////
-	///
-	/// Properties: Current
-	///
-	//////////////////////////////////////////////////////////////////////////////////
+
+
+    //////////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Properties: Before Depletion
+    ///
+    //////////////////////////////////////////////////////////////////////////////////
+    /// Original tile state: is it harvestable?
+    const bool newHarvestable;
+
+    /// Original tile state: is it walkable?
+    const bool newWalkable;
+
+    /// Original tile walk modifier
+    const double newWalkModifier;
+
+    /// Original tile state: the tile type
+    const int newTypeId;
+
+    /// Original tile state: resource count
+    const int newResources;
+
+    /// Original tile state: the name of the tile
+    const std::string newName;
+    
+    /// Original damage
+    const double newDamageModifier;
+
+    //////////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Properties: After Depletion
+    ///
+    //////////////////////////////////////////////////////////////////////////////////
+    /// Depleted state: is it harvestable?
+    const bool depletedHarvestable;
+
+    /// Depleted state: is it walkable?
+    const bool depletedWalkable;
+
+    /// Depleted state: walk modifier
+    const double depletedWalkModifier;
+
+    /// Depleted state: type of the tile.
+    const int depletedTypeId;
+
+    /// Depleted state: number of resources
+    const int depletedResources;
+
+    /// Depleted state: name of the tile
+    const std::string depletedName;
+
+    /// Original damage
+    const double depletedDamageModifier;
+
+    //////////////////////////////////////////////////////////////////////////////////
+    ///
+    /// Properties: Current
+    ///
+    //////////////////////////////////////////////////////////////////////////////////
     /// Reference to the parent tilemap
     Tilemap &tilemap;
 
@@ -33,10 +87,10 @@ private:
     bool harvestable;
 
     /// Is this walkable?
-	bool walkable;
+    bool walkable;
 
     /// WalkModifier of a tile slows/accelerates the walk speed.
-    float walkModifier;
+    double walkModifier;
 
     /// Integer that signifies if a unit is occupying the tile
     int occupantID = -1;
@@ -53,57 +107,13 @@ private:
     /// If the tile resource is depleted or not.
     bool depleted;
 
-    //////////////////////////////////////////////////////////////////////////////////
-    ///
-    /// Properties: Before Depletion
-    ///
-    //////////////////////////////////////////////////////////////////////////////////
-    /// Original tile state: is it harvestable?
-    const bool newHarvestable;
-
-    /// Original tile state: is it walkable?
-    const bool newWalkable;
-
-    /// Original tile walk modifier
-    const float newWalkModifier;
-
-    /// Original tile state: the tile type
-    const int newTypeId;
-
-    /// Original tile state: resource count
-    const int newResources;
-
-    /// Original tile state: the name of the tile
-    const std::string newName;
-
-    //////////////////////////////////////////////////////////////////////////////////
-    ///
-    /// Properties: After Depletion
-    ///
-    //////////////////////////////////////////////////////////////////////////////////
-    /// Depleted state: is it harvestable?
-    const bool depletedHarvestable;
-
-    /// Depleted state: is it walkable?
-    const bool depletedWalkable;
-
-    /// Depleted state: walk modifier
-    const float depletedWalkModifier;
-
-    /// Depleted state: type of the tile.
-    const int depletedTypeId;
-
-    /// Depleted state: number of resources
-    const int depletedResources;
-
-    /// Depleted state: name of the tile
-    const std::string depletedName;
-
+    /// Damage MOdifier
+    double damageModifier;
 
 public:
     /// Get the walk modifier of the specified tile
     /// \return modifier value
-    [[nodiscard]] float getWalkModifier() const;
+    [[nodiscard]] double getWalkModifier() const;
 
     /// The TileID
 	const int id;
@@ -121,13 +131,13 @@ public:
 	const int height;
 
     /// The number of lumber the tile yields on harvesting
-	const float lumberYield;
+	const double lumberYield;
 
     /// The number of hgold the tile yields on harvesting
-	const float goldYield;
+	const double goldYield;
 
     /// The number of stone the tile yields on harvesting.
-	const float stoneYield;
+	const double stoneYield;
 
 	/// A horrible Tile constructor which requires all properties of a tile. Usually you dont want to touch this....
 	/// \param tilemap
@@ -158,21 +168,23 @@ public:
 			int y,
 			int w,
 			int h,
-            const std::string& newName,
+            std::string newName,
 			int newTypeId,
 			bool newHarvestable,
 			bool newWalkable,
-            float newWalkModifier,
+            double newWalkModifier,
 			int newResources,
-            const std::string& depletedName,
+            std::string depletedName,
             int depletedTypeId,
 			bool depletedHarvestable,
 			bool depletedWalkable,
-			float depletedWalkmMdifier,
+			double depletedWalkmMdifier,
             int depletedResources,
-            float lumberYield,
-            float goldYield,
-            float stoneYield
+            double lumberYield,
+            double goldYield,
+            double stoneYield,
+            double newDamageModifier,
+            double depletedDamageModifier
 	);
 
 
@@ -284,12 +296,7 @@ public:
     void reset();
 
 
-
-
-
-
-
-
+    void update(Unit& unit) const;
 };
 
 

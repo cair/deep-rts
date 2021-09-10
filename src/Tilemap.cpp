@@ -17,11 +17,11 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
     {
         for(int x = 0; x < map.MAP_WIDTH; x++)
         {
-            int newTypeId = map.tileIDs[c];
+            int newTypeId = map.tileIDs.at(c);
 
-            auto newTileData = map.tilesData[newTypeId];
+            auto newTileData = map.tilesData.at(newTypeId);
             int depletedTypeId = newTileData.depleteTile;
-            auto depletedTileData = map.tilesData[depletedTypeId];
+            auto depletedTileData = map.tilesData.at(depletedTypeId);
 
             auto newName = newTileData.name;
             auto depletedName = depletedTileData.name;
@@ -37,6 +37,9 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
 
             auto newResources = newTileData.resources;
             auto depletedResources = depletedTileData.resources;
+
+            auto newDamageModifier = newTileData.damage_modifier;
+            auto depletedDamageModifier = depletedTileData.damage_modifier;
 
             auto lumberYield = newTileData.lumber_yield;
             auto goldYield = newTileData.gold_yield;
@@ -63,7 +66,9 @@ Tilemap::Tilemap(Map& map, Game &game): game(game){
                 depletedResources,
                 lumberYield,
                 goldYield,
-                stoneYield));
+                stoneYield,
+                newDamageModifier,
+                depletedDamageModifier));
 
             //Tile &tile = tiles.back();
             if(newName == "Spawn"){ // Constants::Tile::Spawn

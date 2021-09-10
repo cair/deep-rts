@@ -7,7 +7,8 @@
     "Stone": ["142-179"],
     "Water": ["300-333"],
     "Desert": ["180-205", "334-355"],
-    "Grass": ["238-269", "356-371"]
+    "Grass": ["238-269", "356-371"],
+    "Lava": [372]
   },
   "tile_metadata": {
     "Wall": {
@@ -19,7 +20,8 @@
       "lumber_yield": 0,
       "gold_yield": 0,
       "resources": 0,
-      "deplete_tile": 51
+      "deplete_tile": 51,
+      "damage_modifier": 0
     },
     "Lumber": {
       "name": "Lumber",
@@ -30,7 +32,8 @@
       "lumber_yield": 1,
       "gold_yield": 0,
       "resources": 1000,
-      "deplete_tile": 269
+      "deplete_tile": 269,
+      "damage_modifier": 0
     },
     "Water": {
       "name": "Water",
@@ -41,7 +44,8 @@
       "lumber_yield": 0,
       "gold_yield": 0,
       "resources": 0,
-      "deplete_tile": 334
+      "deplete_tile": 334,
+      "damage_modifier": 0
     },
     "Grass": {
       "name": "Grass",
@@ -52,7 +56,8 @@
       "lumber_yield": 0,
       "gold_yield": 0,
       "resources": 0,
-      "deplete_tile": 269
+      "deplete_tile": 269,
+      "damage_modifier": 0
     },
     "Desert": {
       "name": "Desert",
@@ -63,7 +68,8 @@
       "lumber_yield": 0,
       "gold_yield": 0,
       "resources": 0,
-      "deplete_tile": 269
+      "deplete_tile": 269,
+      "damage_modifier": 0
     },
     "Gold": {
       "name": "Gold",
@@ -74,7 +80,8 @@
       "lumber_yield": 0,
       "gold_yield": 1,
       "resources": 1000,
-      "deplete_tile": 269
+      "deplete_tile": 269,
+      "damage_modifier": 0
     },
     "Stone": {
       "name": "Stone",
@@ -85,7 +92,8 @@
       "lumber_yield": 0,
       "gold_yield": 0,
       "resources": 1000,
-      "deplete_tile": 269
+      "deplete_tile": 269,
+      "damage_modifier": 0
     },
     "Spawn": {
       "name": "Spawn",
@@ -96,7 +104,20 @@
       "lumber_yield": 0,
       "gold_yield": 0,
       "resources": 0,
-      "deplete_tile": 269
+      "deplete_tile": 269,
+      "damage_modifier": 0
+    },
+    "Lava": {
+      "name": "Lava",
+      "harvestable": false,
+      "walkable": true,
+      "walk_modifier": 0.5,
+      "stone_yield": 0,
+      "lumber_yield": 0,
+      "gold_yield": 0,
+      "resources": 0,
+      "deplete_tile": 372,
+      "damage_modifier": 1
     }
   }
 

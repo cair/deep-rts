@@ -2,6 +2,8 @@
 // Created by Per-Arne on 24.02.2017.
 //
 #include "Tile.h"
+
+#include <utility>
 #include "Player.h"
 #include "Game.h"
 
@@ -12,36 +14,24 @@ Tile::Tile(
 		int y,
 		int width,
 		int height,
-		const std::string& newName,
+        std::string newName,
 		int newTypeID,
 		bool newHarvestable,
         bool newWalkable,
-        float newWalkModifier,
+        double newWalkModifier,
 		int newResources,
-		const std::string& depletedName,
+        std::string depletedName,
 		int depletedTypeID,
 		bool depletedHarvestable,
 		bool depletedWalkable,
-		float depletedWalkModifier,
+		double depletedWalkModifier,
 		int depletedResources,
-        float lumberYield,
-        float goldYield,
-        float stoneYield
+        double lumberYield,
+        double goldYield,
+        double stoneYield,
+        double newDamageModifier,
+        double depletedDamageModifier
 ):
-tilemap(tilemap),
-
-harvestable(newHarvestable),
-
-walkable(newWalkable),
-
-walkModifier(newWalkModifier),
-
-resources(newResources),
-
-name(newName),
-
-typeId(newTypeID),
-
 newHarvestable(newHarvestable),
 
 newWalkable(newWalkable),
@@ -52,7 +42,9 @@ newTypeId(newTypeID),
 
 newResources(newResources),
 
-newName(newName),
+newName(std::move(newName)),
+
+newDamageModifier(newDamageModifier),
 
 depletedHarvestable(depletedHarvestable),
 
@@ -64,9 +56,27 @@ depletedTypeId(depletedTypeID),
 
 depletedResources(depletedResources),
 
-depletedName(depletedName),
+depletedName(std::move(depletedName)),
+
+depletedDamageModifier(depletedDamageModifier),
+
+tilemap(tilemap),
+
+harvestable(newHarvestable),
+
+walkable(newWalkable),
+
+walkModifier(newWalkModifier),
+
+resources(newResources),
+
+name(this->newName),
+
+typeId(newTypeID),
 
 depleted(false),
+
+damageModifier(newDamageModifier),
 
 id(id),
 
@@ -181,6 +191,7 @@ void Tile::reset()
     name = newName;
     typeId = newTypeId;
     depleted = false;
+    damageModifier = newDamageModifier;
 
 	tilemap.game.state(x, y, 0) = Constants::TypeToID.at(name);
     if(resources <= 0) {
@@ -243,8 +254,17 @@ const std::string &Tile::getName() const {
 	return depletedTypeId;
 }
 
-float Tile::getWalkModifier() const {
+double Tile::getWalkModifier() const {
     return walkModifier;
+}
+
+void Tile::update(Unit& unit) const {
+    // TODO - does not handle multi-tile blocks (for example Town-Hall)
+    // TODO - maybe this is OK?
+    if(hasOccupant() && damageModifier > 0){
+        unit.afflictDamage(std::ceil(damageModifier));
+    }
+
 }
 
 
