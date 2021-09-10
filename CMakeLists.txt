@@ -127,14 +127,13 @@ find_path(blend2d_INCLUDES blend2d.h)
 
 message(${PYTHON_EXECUTABLE})
 
-
-CPMADDPackage(
-        NAME xtensor_py
-        GIT_REPOSITORY "https://github.com/xtensor-stack/xtensor-python"
-        GIT_TAG 0.25.3
-)
-
-
+if (NOT TARGET xtensor-python)
+        CPMADDPackage(
+                NAME xtensor_py
+                GIT_REPOSITORY "https://github.com/xtensor-stack/xtensor-python"
+                GIT_TAG 0.25.3
+        )
+endif()
 set(DEEPRTS_LINK_TARGETS
         spdlog::spdlog
         DeepRTSResources
