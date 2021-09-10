@@ -3,7 +3,7 @@ project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
 
 set(BUILD_DOCS "OFF" CACHE STRING "Helpstring")
-SET(ENABLE_LOCK "ON" CACHE STRING "If locking of cmake setup should be enabled. this should be disabled for third party builds.)
+SET(ENABLE_LOCK "ON" CACHE STRING "If locking of cmake setup should be enabled. this should be disabled for third party builds.")
 
 # Lock this section so that parallel CMake runs won't clash on checkout in the same directory
 if(ENABLE_LOCK)
