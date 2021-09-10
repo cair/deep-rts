@@ -9,7 +9,7 @@
 void Dead::update(Unit & unit){
     unit.despawn();
     unit.player_.removeUnit(unit);
-    unit.player_.playerState();
+    unit.player_.setState(unit.player_.evaluatePlayerState());
     unit.player_.getGame().isTerminal();
 }
 

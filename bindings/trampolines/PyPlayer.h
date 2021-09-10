@@ -8,12 +8,12 @@
 class PyPlayer: public Player {
     using Player::Player;
 
-    Constants::PlayerState playerState() override {
-        PYBIND11_OVERLOAD(Constants::PlayerState, Player, playerState, );
+    [[nodiscard]] Constants::PlayerState evaluatePlayerState() const override {
+        PYBIND11_OVERRIDE(Constants::PlayerState, Player, evaluatePlayerState , );
     }
 
-    [[nodiscard]] int getScore() const override {
-        PYBIND11_OVERLOAD(int, Player, getScore, );
+    [[nodiscard]] double getScore() const override {
+        PYBIND11_OVERRIDE(int, Player, getScore, );
     }
 
 

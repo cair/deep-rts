@@ -45,17 +45,16 @@ private:
 	/// ID of targeted unit (-1 = None)
 	int targetedUnitID = -1;
 
-	/// Determines if the player is defeated or not
-	bool defeated = false;
-
-	/// Selects next unit in players units list
+    /// Selects next unit in players units list
 	void nextUnit();
 
 	/// Selects previous unit in players units list
 	void previousUnit();
 
 
-
+protected:
+/// Determines if the player is defeated or not
+Constants::PlayerState playerState;
 public:
 	const Config &config;
 
@@ -78,6 +77,10 @@ public:
 
 	/// Select a unit
 	void setTargetedUnitID(int targetedUnitID);
+
+    /// Sets the state of the player.
+    /// \param state
+    void setState(Constants::PlayerState state);
 
 	////////////////////////////////////////////////////
 	///
@@ -107,7 +110,7 @@ public:
     [[maybe_unused]] [[nodiscard]] int getLumber() const;
 
 	[[nodiscard]] virtual /// Get the score
- 	int getScore() const;
+ 	double getScore() const;
 
 	/// Get the unit count for this player
     [[maybe_unused]] [[nodiscard]] int getUnitCount() const;
@@ -118,8 +121,13 @@ public:
 	/// Get the targeted unit ID (-1 if none)
 	[[nodiscard]] int getTargetedUnitID() const;
 
-    virtual /// Check if player is defeated
-	Constants::PlayerState playerState();
+    [[nodiscard]] virtual /// Check if player is defeated
+	Constants::PlayerState evaluatePlayerState() const;
+
+    /// Gets the state of the player
+    /// \return the state
+    Constants::PlayerState getState() const;
+
 
 	/// Get the player name
 	[[nodiscard]] const std::string &getName() const;

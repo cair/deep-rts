@@ -14,14 +14,19 @@ DeepRTS::Scenario::Scenario::Scenario(
         Config config,
         Criteria::ScenarioCriteria::ScenarioContainer &&criteriaList)
 : Game(map, std::move(config))
+, criteriaListTemplate(criteriaList)
 {
-    for(int i =0; i < 8; i++){
+    createCriterionsForPlayers();
+}
 
+void DeepRTS::Scenario::Scenario::createCriterionsForPlayers(){
+    for(int i =0; i < 8; i++){
         Criteria::ScenarioCriteria::ScenarioContainer copied;
-        std::transform(criteriaList.begin(), criteriaList.end(), std::back_inserter(copied), [](std::shared_ptr<Criteria::ScenarioCriteria>& item){
+        std::transform(criteriaListTemplate.begin(), criteriaListTemplate.end(), std::back_inserter(copied), [](
+                std::shared_ptr<Criteria::ScenarioCriteria>& item){
             return item->clone();
         });
-        this->criteriaList[i] = copied;
+        criteriaList[i] = copied;
     }
 }
 
@@ -117,4 +122,9 @@ void DeepRTS::Scenario::Scenario::update() {
         }
 
     }
+}
+
+void DeepRTS::Scenario::Scenario::reset(){
+    Game::reset();
+    createCriterionsForPlayers(); // Create new criterions (dont care to reset em manually)
 }

@@ -20,6 +20,8 @@
 #include "scenario/criterias/StoneCollect.h"
 #include "scenario/criterias/UnitIncrement.h"
 #include "scenario/criterias/UnitsCreated.h"
+#include "scenario/criterias/GameEnd.h"
+
 #include "trampolines/PyScenarioCriteria.h"
 
 namespace py = pybind11;
@@ -40,6 +42,7 @@ using DeepRTS::Criteria::ResourceIncrement;
 using DeepRTS::Criteria::StoneCollect;
 using DeepRTS::Criteria::UnitIncrement;
 using DeepRTS::Criteria::UnitsCreated;
+using DeepRTS::Criteria::GameEnd;
 
 
 
@@ -137,6 +140,10 @@ void init_scenarios(py::module &m) {
             ScenarioFunctionsMacro()
 
     py::class_<UnitsCreated, ScenarioCriteria, std::shared_ptr<UnitsCreated>>(criteria_module, "UnitsCreated")
+            .def(py::init<int, int>())
+            ScenarioFunctionsMacro()
+
+    py::class_<GameEnd, ScenarioCriteria, std::shared_ptr<GameEnd>>(criteria_module, "GameEnd")
             .def(py::init<int, int>())
             ScenarioFunctionsMacro()
 

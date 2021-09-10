@@ -182,7 +182,7 @@ public:
     void stop();
 
     // Resets the game
-    void reset();
+    virtual void reset();
     virtual void _reset();
 
     // Returns true if the game is in an terminal state

@@ -33,8 +33,8 @@ void init_Player(py::module &m) {
 
             .def("get_name", &Player::getName)
             .def("set_name", &Player::setName)
-
-            .def("player_state", &Player::playerState)
+            .def("set_state", &Player::setState)
+            .def("evaluate_player_state", &Player::evaluatePlayerState)
             .def("get_score", &Player::getScore)
 
             .def("get_id", &Player::getId)

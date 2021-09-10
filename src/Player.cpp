@@ -13,6 +13,7 @@
 Player::Player(Game &game, int id):
     game_(game),
     faction(0),
+    playerState(Constants::PlayerState::Playing),
     config(game.config)
 {
     if(id < 0){
@@ -69,7 +70,7 @@ void Player::reset()
     stone = game_.config.startStone;
     foodConsumption = 0;
     food = game_.config.startFood;
-    defeated = false;
+    playerState = Constants::PlayerState::Playing;
 
     sGatheredGold = 0;
     sGatheredLumber = 0;
@@ -165,23 +166,20 @@ void Player::addStone(int n) {
     stone += n;
 }
 
-int Player::getScore() const {
-    uint8_t GOLD_VALUE = 2;
-    uint8_t LUMBER_VALUE = 1;
-    //uint8_t OIL_VALUE = 3;
+double Player::getScore() const {
+    auto GOLD_VALUE = 2.0;
+    auto LUMBER_VALUE = 1.0;
+    auto STONE_VALUE = 3.0;
 
+    auto gatherScore = (sGatheredGold * GOLD_VALUE + sGatheredLumber * LUMBER_VALUE + sGatheredStone * STONE_VALUE) * .5;
+    auto builtScore = sUnitsCreated * 2.0;
+    auto damageScore = std::max(0.0, (sDamageDone * .6) - (sDamageTaken * .5));
+    auto unitScore = double(unitIndexes.size());
 
-    double_t gatherScore = (sGatheredGold * GOLD_VALUE + sGatheredLumber * LUMBER_VALUE) * .5;
-    double_t builtScore = sUnitsCreated * 2;
-    double_t damageScore = std::max(0.0, (sDamageDone * .6) - (sDamageTaken * .5));
-    double_t unitScore = unitIndexes.size();
+    auto militaryScore = 0.0;
+    auto defenceScore = 0.0;
 
-
-    double_t militaryScore = 0;
-    double_t defenceScore = 0;
-
-
-    return static_cast<uint32_t>(gatherScore + builtScore + unitScore + militaryScore + defenceScore + damageScore);
+    return gatherScore + builtScore + unitScore + militaryScore + defenceScore + damageScore;
 
 }
 
@@ -205,28 +203,38 @@ void Player::removeUnit(Unit & unit) {
     getGame()._onUnitDestroy(unit);
 }
 
-Constants::PlayerState Player::playerState() {
 
-    if (defeated){
+Constants::PlayerState Player::getState() const{
+    return playerState;
+}
+
+Constants::PlayerState Player::evaluatePlayerState() const {
+
+    if (playerState == Constants::PlayerState::Defeat){
         return Constants::PlayerState::Defeat;
-    }      // Defeated flag = True
+    }
 
-    else if (
-            ((num_town_hall > 0 && gold >= 400) || (num_barrack > 0 && gold >= 600)) || // No units, but can purchase footman or peasant
-            ((num_peasant + num_footman + num_archer > 0)) // Have remaining units
-            )
-    {
+    auto hasTownHallAndSufficientGold = (num_town_hall > 0 && gold >= 400);
+    auto hasBarracksAndSufficientGold = (num_barrack > 0 && gold >= 600);
+    auto hasRemainingUnits = unitIndexes.size() > +0;
+
+    if (hasTownHallAndSufficientGold || hasBarracksAndSufficientGold || hasRemainingUnits){
         return Constants::PlayerState::Playing;
     }
 
 
-    defeated = true;
-    return Constants::PlayerState::Playing;;
+    return Constants::PlayerState::Defeat;
+}
+
+void Player::setState(Constants::PlayerState state){
+    playerState = state;
 }
 
 bool Player::canPlace(Unit & builder, Unit & unit, Tile &_tile) {
 
-    for (auto &tile : game_.tilemap.getTileArea(_tile, unit.width, unit.height)) {
+    auto tileArea = game_.tilemap.getTileArea(_tile, unit.width, unit.height);
+
+    for (auto &tile :tileArea) {
         if (tile == builder.tile) // Ignore tile of the builder, this is handled in Unit::Build when builder despawns
             continue;
 

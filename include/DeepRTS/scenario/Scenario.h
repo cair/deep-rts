@@ -12,6 +12,8 @@ class Player;
 namespace DeepRTS::Scenario {
     class Scenario: public Game {
     public:
+
+        Criteria::ScenarioCriteria::ScenarioContainer criteriaListTemplate;
         using ActionSequenceContainer = std::vector<std::tuple<Constants::Action, const std::string>>;
 
         std::array<Criteria::ScenarioCriteria::ScenarioContainer, 8> criteriaList;
@@ -28,6 +30,11 @@ namespace DeepRTS::Scenario {
         [[maybe_unused]] virtual ActionSequenceContainer optimalStrategy();
         std::tuple<int, int, bool> computeOptimalStrategy(Player& player);
         std::tuple<int, int, bool> optimalPlayGameStep(Player &player);
+
+        void reset();
+
+        void createCriterionsForPlayers();
+
     };
 }
 

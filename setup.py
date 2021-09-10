@@ -73,7 +73,11 @@ class CMakeBuild(build_ext):
 
 setup(
     name='DeepRTS',
-    version_config=True,
+    version_config={
+        "template": "2021.{tag}.{sha}",
+        "dev_template": "2021.{tag}.{sha}.dev",
+        "dirty_template": "2021.{tag}.{sha}.dirty",
+    },
     setup_requires=['setuptools-git-versioning'],
     author='Per-Arne Andersen',
     author_email='per@sysx.no',

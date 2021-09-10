@@ -545,6 +545,11 @@ namespace JPS {
                     : _storageRef(storage), _buckets(storage._user)
             {}
 
+            ~NodeMap()
+            {
+                dealloc();
+            }
+
             void dealloc()
             {
                 for(SizeT i = 0; i < _buckets.size(); ++i)

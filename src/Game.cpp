@@ -176,7 +176,7 @@ bool Game::isTerminal() {
 
     int c = 0;
     for(auto &p : players) {
-        if(p.playerState() == Constants::PlayerState::Defeat){
+        if(p.evaluatePlayerState() == Constants::PlayerState::Defeat){
             c++;
         }
     }
