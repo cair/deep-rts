@@ -18,7 +18,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(PYBIND11_CPP_STANDARD /std:c++20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
-
+option(BUILD_DOCS "Build documentaion", OFF)
 
 if (LIBRARY_TYPE STREQUAL "SHARED")
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -348,7 +348,7 @@ endif()
 #############################################################################################
 find_package(Doxygen)
 
-if (DOXYGEN_FOUND AND NOT PYTHON_BUILD)
+if (DOXYGEN_FOUND AND NOT PYTHON_BUILD AND BUILD_DOCS)
         # set input and output files
         set(DOXYGEN_IN Doxyfile.in)
         set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
