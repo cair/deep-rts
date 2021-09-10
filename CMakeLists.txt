@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.17)
 project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
-# Lock this section so that parallel CMake runs won't clash on checkout in the same directory
-file(LOCK ${CMAKE_SOURCE_DIR} DIRECTORY GUARD FILE)
 
+set(BUILD_DOCS "OFF" CACHE STRING "Helpstring")
+SET(ENABLE_LOCK "ON" CACHE STRING "If locking of cmake setup should be enabled. this should be disabled for third party builds.)
+
+# Lock this section so that parallel CMake runs won't clash on checkout in the same directory
+if(ENABLE_LOCK)
+        file(LOCK ${CMAKE_SOURCE_DIR} DIRECTORY GUARD FILE)
+endif()
 # Includes
 include(cmake/CMakeRC.cmake)
 include(cmake/CPM.cmake)
@@ -18,7 +23,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(PYBIND11_CPP_STANDARD /std:c++20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
-set(BUILD_DOCS "OFF" CACHE STRING "Helpstring")
+
 
 if (LIBRARY_TYPE STREQUAL "SHARED")
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -81,7 +86,7 @@ set(DEEPRTS_DEPENDENCIES
         nlohmann-json
         Blend2d
         #opencv
-)
+        )
 
 
 
@@ -143,12 +148,12 @@ set(DEEPRTS_LINK_TARGETS
         ${blend2d}
         opencv_core  # todo remove
         opencv_highgui  # todo remove
-)
+        )
 
 
 set(DEEPRTS_INCLUDES
         ${blend2d_INCLUDES}
-)
+        )
 
 
 #####################################
@@ -170,7 +175,7 @@ cmrc_add_resource_library(DeepRTSAssets ALIAS deeprts::assets
         WHENCE
         DeepRTS/python
         ${deeprts_assets}
-)
+        )
 
 set_property(TARGET DeepRTSResources PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_property(TARGET DeepRTSAssets PROPERTY POSITION_INDEPENDENT_CODE ON)
@@ -180,7 +185,7 @@ set(WEBSERVER_SOURCES
         src/contrib/webserver/Webserver.h
         src/contrib/webserver/Websockets.cpp
         src/contrib/webserver/Websockets.h
-)
+        )
 
 set(DEEPRTS_SOURCE_FILES
         # Header-Only Libs
@@ -280,7 +285,7 @@ set(DEEPRTS_PYBIND_SOURCES
         bindings/Player.cpp
         bindings/Config.cpp
         bindings/DeepRTS.cpp
-)
+        )
 
 
 if (NOT DEFINED PYTHON_BUILD)
@@ -298,14 +303,14 @@ if(PYTHON_BUILD)
                 xtensor-python
                 PRIVATE
                 Python::NumPy ${DEEPRTS_LINK_TARGETS}
-        )
+                )
 
         target_include_directories(Engine
                 PRIVATE
                 include/DeepRTS
                 ${DEEPRTS_INCLUDES}
                 ${xtensor_py_SOURCE_DIR}/include
-        )
+                )
 
 else()
 
@@ -313,25 +318,37 @@ endif()
 
 # Dont create C++ Executable for Python builds (saves time)
 if (NOT DEFINED PYTHON_BUILD)
-        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
-        add_executable(DeepRTSGame src/main.cpp ${DEEPRTS_SOURCE_FILES})
-        target_include_directories(DeepRTSGame
-                PRIVATE
+        add_library(DeepRTSLib STATIC ${DEEPRTS_SOURCE_FILES})
+        target_include_directories(
+                DeepRTSLib
+                PUBLIC
                 include/DeepRTS
                 ${DEEPRTS_INCLUDES}
         )
-        target_compile_definitions(DeepRTSGame
-                PRIVATE
+        target_compile_definitions(DeepRTSLib
+                PUBLIC
                 EMBEDDED=1
                 WEBDEV=1
-        )
-        target_compile_definitions(DeepRTSGame PRIVATE )
-        target_link_libraries(DeepRTSGame
-                PRIVATE
+                )
+        target_link_libraries(DeepRTSLib
+                PUBLIC
                 xtensor-python
                 pybind11::embed
                 ${DEEPRTS_LINK_TARGETS}
+                )
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")  # Creates Engine in DeepRTS package (instead of root)
+        add_executable(DeepRTSGame src/main.cpp)
+
+        #target_include_directories(DeepRTSGame
+        #        PRIVATE
+        #        DeepRTSLib
+        #        )
+
+        target_link_libraries(DeepRTSGame
+                PRIVATE
+                DeepRTSLib
         )
+
 
         # make python source the build dir.
         execute_process(
