@@ -29,7 +29,7 @@ month={Aug},}
 ```
 
 
-<img src="./docs/images/deep_rts_gif.gif" width="400" height="400">
+<img src="./docs/images/deeprts_gif.gif" width="400" height="400">
 
 
 ## Dependencies
