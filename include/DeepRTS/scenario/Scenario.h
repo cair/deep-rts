@@ -11,7 +11,7 @@ namespace DeepRTS{
     class Player;
 }
 
-namespace DeepRTS::Scenario {
+namespace DeepRTS::Scenarios {
     class Scenario: public Game {
     public:
 
@@ -33,7 +33,7 @@ namespace DeepRTS::Scenario {
         std::tuple<int, int, bool> computeOptimalStrategy(Player& player);
         std::tuple<int, int, bool> optimalPlayGameStep(Player &player);
 
-        void reset();
+        void reset() override;
 
         void createCriterionsForPlayers();
 

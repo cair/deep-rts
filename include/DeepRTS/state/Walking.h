@@ -4,7 +4,10 @@
 #pragma once
 
 #include "BaseState.h"
-#include "../util/JPS.h"
+
+
+#include "util/JPS.h"
+
 namespace DeepRTS {
 
 

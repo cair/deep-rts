@@ -6,6 +6,7 @@ namespace py = pybind11;
 #include "unit/Unit.h"
 #include "../include/DeepRTS/Game.h"
 #include "./trampolines/PyPlayer.h"
+using DeepRTS::Player;
 
 
 void init_Player(py::module &m) {

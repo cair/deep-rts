@@ -5,10 +5,11 @@ namespace py = pybind11;
 #include "../include/DeepRTS/Tile.h"
 #include "../include/DeepRTS/Tilemap.h"
 #include "unit/Unit.h"
-
+using DeepRTS::Tile;
+using DeepRTS::Tilemap;
 void init_Tile(py::module &m) {
     py::class_<Tile>(m, "Tile")
-            .def(py::init<Tilemap &, int, int, int, int, int, std::string &, int, bool, bool, bool, int, std::string &, int, bool, bool, bool, int, int, int, int>())
+            .def(py::init<Tilemap &, int, int, int, int, int, std::string &, int, bool, bool, bool, int, std::string &, int, bool, bool, bool, int, int, int, int, double, double>())
             .def_readonly("id", &Tile::id)
             .def_readonly("stone_yield", &Tile::stoneYield)
             .def_readonly("lumber_yield", &Tile::lumberYield)

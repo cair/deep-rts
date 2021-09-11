@@ -6,6 +6,8 @@ namespace py = pybind11;
 #include "unit/Unit.h"
 #include "../include/DeepRTS/Player.h"
 #include "../include/DeepRTS/Tile.h"
+using DeepRTS::Unit;
+using DeepRTS::Player;
 
 void init_Unit(py::module &m) {
     py::class_<Unit>(m, "Unit")

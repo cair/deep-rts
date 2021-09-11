@@ -6,17 +6,18 @@
 #include "Constants.h"
 #include "scenario/criterias/GoldCollect.h"
 
-DeepRTS::Scenario::GoldCollectFifteen::GoldCollectFifteen()
+DeepRTS::Scenarios::GoldCollectFifteen::GoldCollectFifteen()
 : Scenario(
-        Constants::Map::TEN,
+        Constants::Map::EBLIL,
         Config::defaults(),
         {
             std::make_shared<Criteria::GoldCollect>(10)
         }
 ){
+    addPlayer();
 }
 
-DeepRTS::Scenario::Scenario::ActionSequenceContainer DeepRTS::Scenario::GoldCollectFifteen::optimalStrategy() {
+DeepRTS::Scenarios::Scenario::ActionSequenceContainer DeepRTS::Scenarios::GoldCollectFifteen::optimalStrategy() {
     return {
             {Constants::MoveRight, "Peasant0"},
             {Constants::MoveRight, "Peasant0"},

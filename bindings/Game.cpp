@@ -6,6 +6,8 @@
 #include "./trampolines/PyGame.h"
 #include <xtensor-python/pyarray.hpp>     // Numpy bindings
 namespace py = pybind11;
+using DeepRTS::Game;
+using DeepRTS::Config;
 
 void init_Game(py::module &m) {
     py::class_<Game, PyGame>(m, "Game")

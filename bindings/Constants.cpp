@@ -2,6 +2,7 @@
 namespace py = pybind11;
 
 #include "../include/DeepRTS/Constants.h"
+using namespace DeepRTS;
 
 void init_Constants(py::module &m) {
 

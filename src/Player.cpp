@@ -218,8 +218,10 @@ Constants::PlayerState Player::evaluatePlayerState() const {
     auto hasTownHallAndSufficientGold = (num_town_hall > 0 && gold >= 400);
     auto hasBarracksAndSufficientGold = (num_barrack > 0 && gold >= 600);
     auto hasRemainingUnits = unitIndexes.size() > +0;
+    auto hasMovableUnits = num_archer + num_footman + num_peasant;
 
-    if (hasTownHallAndSufficientGold || hasBarracksAndSufficientGold || hasRemainingUnits){
+
+    if (hasTownHallAndSufficientGold || hasBarracksAndSufficientGold || (hasMovableUnits && hasRemainingUnits)){
         return Constants::PlayerState::Playing;
     }
 

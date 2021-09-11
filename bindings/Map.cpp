@@ -8,6 +8,7 @@ namespace py = pybind11;
 
 #include <string>
 #include "../include/DeepRTS/Map.h"
+using DeepRTS::Map;
 
 
 void init_Map(py::module &m) {

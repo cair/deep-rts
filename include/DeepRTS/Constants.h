@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err58-cpp"
 //
 // Created by Per-Arne on 24.02.2017.
 //
@@ -116,13 +118,17 @@ namespace DeepRTS {
 
         class Map {
         public:
-            [[maybe_unused]] inline static const std::string TEN = "10x10-2v2.json";
-            [[maybe_unused]] inline static const std::string FIFTEEN = "15x15-2v2.json";
-            [[maybe_unused]] inline static const std::string TWENTYONE = "21x21-2v2.json";
-            [[maybe_unused]] inline static const std::string THIRTYONE = "31x31-2v2.json";
-            [[maybe_unused]] inline static const std::string THIRTYONE_FOUR = "31x31-4v4.json";
-            [[maybe_unused]] inline static const std::string THIRTYONE_SIX = "31x31-6v6.json";
-            [[maybe_unused]] inline static const std::string FIND_GOLD = "scenario-find-gold.json";
+            [[maybe_unused]] inline static const std::string EBLIL = "10x10-2p-ffa-Eblil.json";
+            [[maybe_unused]] inline static const std::string UTHA = "15x15-1p-ffa-Utha-Lava.json";
+            [[maybe_unused]] inline static const std::string CRESAL = "15x15-2p-ffa-Cresal.json";
+            [[maybe_unused]] inline static const std::string GONDOR = "21x21-1p-scenario-Gondor.json";
+            [[maybe_unused]] inline static const std::string EFLINES = "21x21-2p-ffa-Eflines.json";
+            [[maybe_unused]] inline static const std::string VASTRANA = "21x21-2p-ffa-FindGold-Vastrana.json";
+            [[maybe_unused]] inline static const std::string BLOILOR = "30x30-4p-ffa-Bloilor-Lava.json";
+            [[maybe_unused]] inline static const std::string THELOR_1 = "31x31-2p-ffa-Thelor.json";
+            [[maybe_unused]] inline static const std::string THELOR_2 = "31x31-4p-ffa-Thelor.json";
+            [[maybe_unused]] inline static const std::string THELOR_3 = "31x31-6p-ffa-Thelor.json";
+
         };
 
         const std::map<int, std::string> ActionToName = {
@@ -147,3 +153,4 @@ namespace DeepRTS {
 
     }
 }
+#pragma clang diagnostic pop

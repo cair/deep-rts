@@ -6,6 +6,11 @@
 #include <pybind11/pybind11.h>
 #include "../../include/DeepRTS/Game.h"
 #include "unit/Unit.h"
+using DeepRTS::Game;
+using DeepRTS::Unit;
+using DeepRTS::Game;
+using DeepRTS::Tile;
+
 class PyGame: public Game {
     using Game::Game;
 

@@ -4,6 +4,7 @@ namespace py = pybind11;
 #include "../include/DeepRTS/Player.h"
 #include "../include/DeepRTS/UnitManager.h"
 
+using DeepRTS::UnitManager;
 
 
 void init_UnitManager(py::module &m) {

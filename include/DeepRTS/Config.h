@@ -11,7 +11,7 @@ namespace DeepRTS{
     class Config {
     private:
 
-        float _boundLimits(float v, float min, float max){
+        double _boundLimits(double v, double min, double max){
             if(v > max){
                 v = max;
                 SPDLOG_WARN("Yield modifier can not be above 10.0");
@@ -42,10 +42,17 @@ namespace DeepRTS{
         int startLumber = 0;
         int startFood = 1;
         int terminalSignal = true;
-        float yieldModifierGold = 1.0;
-        float yieldModifierStone = 1.0;
-        float yieldModifierLumber = 1.0;
+        double yieldModifierGold = 1.0;
+        double yieldModifierStone = 1.0;
+        double yieldModifierLumber = 1.0;
         bool animationEnabled = true; // ~10% perf decay.
+        double tileDamageModifier = 1.0;
+
+
+        [[nodiscard]] double getTileDamageModifier() const{
+            return tileDamageModifier;
+        }
+
 
         /// Bool that determine print of FPS and UPS in console
         bool consoleCaptionEnabled = true;
@@ -58,15 +65,15 @@ namespace DeepRTS{
             gui = b;
         }
 
-        void setYieldModifierGold(float mod){
+        void setYieldModifierGold(double mod){
             yieldModifierGold = _boundLimits(mod, 0.0, 10.0);
         }
 
-        void setYieldModifierStone(float mod){
+        void setYieldModifierStone(double mod){
             yieldModifierStone = _boundLimits(mod, 0.0, 10.0);
         }
 
-        void setYieldModifierLumber(float mod){
+        void setYieldModifierLumber(double mod){
             yieldModifierLumber = _boundLimits(mod, 0.0, 10.0);
         }
 
@@ -138,6 +145,7 @@ namespace DeepRTS{
             terminalSignal = b;
         }
 
+
         static Config defaults(){
             Config config;
             config.setTickModifier(10);
@@ -163,7 +171,9 @@ namespace DeepRTS{
         }
 
 
-
+        void setTileDamageModifier(double value) {
+            tileDamageModifier = value;
+        }
     };
 
 

@@ -25,7 +25,6 @@
 #include "trampolines/PyScenarioCriteria.h"
 
 namespace py = pybind11;
-using DeepRTS::Scenario::Scenario;
 
 // Criterias
 using DeepRTS::Criteria::ScenarioCriteria;
@@ -44,11 +43,16 @@ using DeepRTS::Criteria::UnitIncrement;
 using DeepRTS::Criteria::UnitsCreated;
 using DeepRTS::Criteria::GameEnd;
 
-
+using namespace DeepRTS;
 
 // Scenarios
-using DeepRTS::Scenario::GeneralAIOneVersusOne;
-using DeepRTS::Scenario::GoldCollectFifteen;
+using DeepRTS::Scenarios::GeneralAIOneVersusOne;
+using DeepRTS::Scenarios::GoldCollectFifteen;
+using DeepRTS::Scenarios::Scenario;
+
+using DeepRTS::Config;
+using DeepRTS::Game;
+
 
 void init_scenarios(py::module &m) {
     auto scenario_module = m.def_submodule("scenario");

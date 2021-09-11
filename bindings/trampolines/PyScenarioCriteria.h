@@ -7,6 +7,8 @@
 #include <pybind11/pybind11.h>
 #include "scenario/criterias/ScenarioCriteria.h"
 using DeepRTS::Criteria::ScenarioCriteria;
+using DeepRTS::Game;
+using DeepRTS::Player;
 
 class PyScenarioCriteria: public ScenarioCriteria {
     using ScenarioCriteria::ScenarioCriteria;

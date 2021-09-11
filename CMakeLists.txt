@@ -150,9 +150,6 @@ set(DEEPRTS_LINK_TARGETS
         )
 
 
-set(DEEPRTS_INCLUDES
-        ${blend2d_INCLUDES}
-        )
 
 
 #####################################
@@ -262,7 +259,7 @@ set(DEEPRTS_SOURCE_FILES
         src/scenario/criteria/UnitIncrement.cpp include/DeepRTS/scenario/criterias/UnitIncrement.h
         src/scenario/criteria/DamageDoneIncrement.cpp include/DeepRTS/scenario/criterias/DamageDoneIncrement.h
         src/scenario/criteria/DamageTakenIncrement.cpp include/DeepRTS/scenario/criterias/DamageTakenIncrement.h
-        include/DeepRTS/scenario/criterias/GameEnd.cpp include/DeepRTS/scenario/criterias/GameEnd.h)
+        include/DeepRTS/scenario/criterias/GameEnd.cpp include/DeepRTS/scenario/criterias/GameEnd.h src/scenario/scenarios/LavaMaze.cpp include/DeepRTS/scenario/scenarios/LavaMaze.h)
 
 
 
@@ -286,6 +283,12 @@ set(DEEPRTS_PYBIND_SOURCES
         bindings/DeepRTS.cpp
         )
 
+set(DEEPRTS_INCLUDES
+        ${blend2d_INCLUDES}
+        include/DeepRTS
+        ${xtensor_py_SOURCE_DIR}/include
+        )
+
 
 if (NOT DEFINED PYTHON_BUILD)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/DeepRTS")
@@ -302,14 +305,12 @@ if(PYTHON_BUILD)
                 xtensor-python
                 PRIVATE
                 Python::NumPy ${DEEPRTS_LINK_TARGETS}
-                )
+        )
 
         target_include_directories(Engine
                 PRIVATE
-                include/DeepRTS
                 ${DEEPRTS_INCLUDES}
-                ${xtensor_py_SOURCE_DIR}/include
-                )
+        )
 
 else()
 

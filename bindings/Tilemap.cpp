@@ -6,6 +6,9 @@ namespace py = pybind11;
 #include "../include/DeepRTS/Tilemap.h"
 #include "../include/DeepRTS/Game.h"
 
+using DeepRTS::Tilemap;
+using DeepRTS::Game;
+using DeepRTS::Map;
 void init_Tilemap(py::module &m) {
     py::class_<Tilemap>(m, "Tilemap")
             .def(py::init<Map&, Game&>())

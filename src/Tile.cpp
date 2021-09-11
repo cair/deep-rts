@@ -260,10 +260,11 @@ double Tile::getWalkModifier() const {
 }
 
 void Tile::update(Unit& unit) const {
+
     // TODO - does not handle multi-tile blocks (for example Town-Hall)
     // TODO - maybe this is OK?
     if(hasOccupant() && damageModifier > 0){
-        unit.afflictDamage(std::ceil(damageModifier));
+        unit.afflictDamage(std::ceil(damageModifier * tilemap.game.config.getTileDamageModifier()));
     }
 
 }

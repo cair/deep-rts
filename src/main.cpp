@@ -5,11 +5,12 @@
 #include <effolkronium/random.hpp>
 #include <opencv2/highgui.hpp>
 #include "scenario/scenarios/GoldCollectFifteen.h"
+#include "scenario/scenarios/LavaMaze.h"
 
 using Random = effolkronium::random_static;
 using DeepRTS::Config;
 using DeepRTS::Player;
-using DeepRTS::Scenario::GoldCollectFifteen;
+using DeepRTS::Scenarios::GoldCollectFifteen;
 int main() {
     //auto webServer = Webserver("0.0.0.0", 4300, true);
     //webServer.start();
@@ -19,7 +20,7 @@ int main() {
 
 //    auto g = Game("10x10-2v2.json", config);
 
-    auto g = DeepRTS::Scenario::GoldCollectFifteen();
+    auto g = DeepRTS::Scenarios::LavaMaze();
 
     Player &player0 = g.addPlayer();
     Player &player1 = g.addPlayer();

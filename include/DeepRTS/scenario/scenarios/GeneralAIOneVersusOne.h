@@ -6,7 +6,7 @@
 #define DEEPRTS_GENERALAIONEVERSUSONE_H
 #include "scenario/Scenario.h"
 
-namespace DeepRTS::Scenario{
+namespace DeepRTS::Scenarios{
 
     class GeneralAIOneVersusOne: public Scenario{
 

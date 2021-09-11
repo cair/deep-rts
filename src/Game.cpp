@@ -192,6 +192,10 @@ bool Game::isTerminal() {
 
 
 Player &Game::addPlayer() {
+    if(tilemap.spawnTiles.size() <= players.size()){
+        SPDLOG_WARN("Could not add player. No spawn tiles!. Returning last player in player list.");
+        return players.back();
+    }
 
     players.emplace_back(*this, players.size());
     Player &player = players.back();

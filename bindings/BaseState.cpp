@@ -5,6 +5,7 @@ namespace py = pybind11;
 #include "../include/DeepRTS/state/BaseState.h"
 #include "../include/DeepRTS/state/Walking.h"
 #include "../include/DeepRTS/Constants.h"
+using DeepRTS::BaseState;
 
 void init_BaseState(py::module &m) {
 

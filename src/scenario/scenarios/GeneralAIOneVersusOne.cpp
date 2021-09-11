@@ -10,9 +10,9 @@
 
 using DeepRTS::Config;
 
-DeepRTS::Scenario::GeneralAIOneVersusOne::GeneralAIOneVersusOne()
+DeepRTS::Scenarios::GeneralAIOneVersusOne::GeneralAIOneVersusOne()
         : Scenario(
-        Constants::Map::FIND_GOLD,
+        Constants::Map::VASTRANA,
         getConfig(),
         {
                 std::make_shared<Criteria::ResourceIncrement>(Constants::Resource::Lumber, 10000),
@@ -28,9 +28,11 @@ DeepRTS::Scenario::GeneralAIOneVersusOne::GeneralAIOneVersusOne()
                 std::make_shared<Criteria::DamageDoneIncrement>(10000)
         }
 ){
+    addPlayer();
+    addPlayer();
 }
 
-Config DeepRTS::Scenario::GeneralAIOneVersusOne::getConfig(){
+Config DeepRTS::Scenarios::GeneralAIOneVersusOne::getConfig(){
     Config config;
     config.setBarracks(true);
     config.setFootman(true);

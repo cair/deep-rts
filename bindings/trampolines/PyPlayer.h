@@ -5,6 +5,10 @@
 #pragma once
 
 #include "../../include/DeepRTS/Player.h"
+using DeepRTS::Player;
+
+using namespace DeepRTS;
+
 class PyPlayer: public Player {
     using Player::Player;
 

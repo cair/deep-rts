@@ -4,9 +4,10 @@
 
 #ifndef DEEPRTS_GOLDCOLLECTFIFTEEN_H
 #define DEEPRTS_GOLDCOLLECTFIFTEEN_H
-#include "DeepRTS/scenario/Scenario.h"
 
-namespace DeepRTS::Scenario{
+#include <scenario/Scenario.h>
+
+namespace DeepRTS::Scenarios{
 
     class GoldCollectFifteen: public Scenario{
 

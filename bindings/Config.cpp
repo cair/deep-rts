@@ -4,6 +4,7 @@
 #include <pybind11/pybind11.h>
 namespace py = pybind11;
 #include "../include/DeepRTS/Config.h"
+using DeepRTS::Config;
 
 void init_Config(py::module &m) {
     py::class_<Config>(m, "Config")

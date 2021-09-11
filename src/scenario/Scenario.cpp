@@ -9,7 +9,7 @@
 #include "unit/Unit.h"
 #include "Game.h"
 
-DeepRTS::Scenario::Scenario::Scenario(
+DeepRTS::Scenarios::Scenario::Scenario(
         const std::string& map,
         Config config,
         Criteria::ScenarioCriteria::ScenarioContainer &&criteriaList)
@@ -19,7 +19,7 @@ DeepRTS::Scenario::Scenario::Scenario(
     createCriterionsForPlayers();
 }
 
-void DeepRTS::Scenario::Scenario::createCriterionsForPlayers(){
+void DeepRTS::Scenarios::Scenario::createCriterionsForPlayers(){
     for(int i =0; i < 8; i++){
         Criteria::ScenarioCriteria::ScenarioContainer copied;
         std::transform(criteriaListTemplate.begin(), criteriaListTemplate.end(), std::back_inserter(copied), [](
@@ -30,7 +30,7 @@ void DeepRTS::Scenario::Scenario::createCriterionsForPlayers(){
     }
 }
 
-bool DeepRTS::Scenario::Scenario::evaluate(const Player &player){
+bool DeepRTS::Scenarios::Scenario::evaluate(const Player &player){
     auto& criterias = criteriaList.at(player.getId());
 
     return std::all_of(criterias.begin(), criterias.end(), [&player](auto& criteria){
@@ -39,7 +39,7 @@ bool DeepRTS::Scenario::Scenario::evaluate(const Player &player){
 }
 
 
-int DeepRTS::Scenario::Scenario::reward(const Player &player) {
+int DeepRTS::Scenarios::Scenario::reward(const Player &player) {
     auto& criterias = criteriaList.at(player.getId());
     return std::all_of(criterias.begin(), criterias.end(), [](auto& criteria){
         return criteria->reward();
@@ -47,12 +47,12 @@ int DeepRTS::Scenario::Scenario::reward(const Player &player) {
 }
 
 
-[[maybe_unused]] DeepRTS::Scenario::Scenario::ActionSequenceContainer DeepRTS::Scenario::Scenario::optimalStrategy() {
+[[maybe_unused]] DeepRTS::Scenarios::Scenario::ActionSequenceContainer DeepRTS::Scenarios::Scenario::optimalStrategy() {
     return {
     };
 }
 
-std::tuple<int, int, bool> DeepRTS::Scenario::Scenario::computeOptimalStrategy(Player& player) {
+std::tuple<int, int, bool> DeepRTS::Scenarios::Scenario::computeOptimalStrategy(Player& player) {
     auto optimalActionSet = optimalStrategy();
 
     // Set selected player
@@ -104,7 +104,7 @@ std::tuple<int, int, bool> DeepRTS::Scenario::Scenario::computeOptimalStrategy(P
 
 }
 
-std::tuple<int, int, bool> DeepRTS::Scenario::Scenario::optimalPlayGameStep(Player &player) {
+std::tuple<int, int, bool> DeepRTS::Scenarios::Scenario::optimalPlayGameStep(Player &player) {
     update();
     bool success = evaluate(player);
     int accumulatedReward = reward(player);
@@ -112,10 +112,10 @@ std::tuple<int, int, bool> DeepRTS::Scenario::Scenario::optimalPlayGameStep(Play
     return {steps, accumulatedReward, success};
 }
 
-void DeepRTS::Scenario::Scenario::update() {
+void DeepRTS::Scenarios::Scenario::update() {
     Game::update();
     for(auto& player: players){
-        auto terminal = evaluate(player);
+        auto terminal = evaluate(player) || player.evaluatePlayerState() == Constants::Defeat;
 
         if(terminal){
             this->terminal = terminal;
@@ -124,7 +124,7 @@ void DeepRTS::Scenario::Scenario::update() {
     }
 }
 
-void DeepRTS::Scenario::Scenario::reset(){
+void DeepRTS::Scenarios::Scenario::reset(){
     Game::reset();
     createCriterionsForPlayers(); // Create new criterions (dont care to reset em manually)
 }
