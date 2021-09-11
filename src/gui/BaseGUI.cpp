@@ -3,6 +3,7 @@
 //
 #include "gui/BaseGUI.h"
 #include "Game.h"
+using namespace DeepRTS;
 
 BaseGUI::BaseGUI(Game &game)
 : game(game){

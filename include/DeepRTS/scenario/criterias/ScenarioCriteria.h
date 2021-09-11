@@ -7,7 +7,12 @@
 #include <vector>
 #include "ScenarioCriteria.h"
 #include <memory>
-class Player;
+
+namespace DeepRTS{
+    class Player;
+}
+
+
 
 
 namespace DeepRTS::Criteria {

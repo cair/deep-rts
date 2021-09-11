@@ -7,18 +7,21 @@
 
 
 #include "BaseState.h"
+namespace DeepRTS {
 
-class Unit;
+    class Unit;
 
-class Harvesting: public BaseState {
-public:
-    Harvesting():BaseState(Constants::State::Harvesting){
-        name = "Harvesting";
-    }
+    class Harvesting : public BaseState {
+    public:
+        Harvesting() : BaseState(Constants::State::Harvesting) {
+            name = "Harvesting";
+        }
 
-    void update(Unit & unit) override;
-    void init(Unit & unit) override;
-    void end(Unit & unit) override;
-};
+        void update(Unit &unit) override;
 
+        void init(Unit &unit) override;
+
+        void end(Unit &unit) override;
+    };
+}
 #endif //WARC2SIM_HARVESTING_H

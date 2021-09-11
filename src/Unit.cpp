@@ -9,17 +9,18 @@
 #include "UnitManager.h"
 #include <effolkronium/random.hpp>
 using Random = effolkronium::random_static;
+using namespace DeepRTS;
 
 Unit::Unit(Player &player):
         game(&player.getGame()),
         config(player.config),
+        id(int(player.getGame().units.size())),
         player_(player),
-        stateManager(&player.getGame().stateManager),
         harvestInterval(.5 * config.tickModifier),
         combatInterval(1 * config.tickModifier),
         combatTimer(combatInterval),
         walking_interval(1 * config.tickModifier),
-        id(player.getGame().units.size()),
+        stateManager(&player.getGame().stateManager),
         state(stateManager->despawnedState)
 
 {

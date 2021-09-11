@@ -7,6 +7,7 @@
 #include "unit/Unit.h"
 #include "util/Pathfinder.h"
 #include "Player.h"
+using namespace DeepRTS;
 
 void Spawning::update(Unit& unit){
 

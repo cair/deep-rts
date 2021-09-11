@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "Game.h"
 #include <pybind11/embed.h> // everything needed for embedding
+using namespace DeepRTS;
 
 PyGUI::PyGUI(Game& game): BaseGUI(game) {
     pybind11::initialize_interpreter(); // start the interpreter and keep it alive

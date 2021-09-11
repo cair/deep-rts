@@ -8,17 +8,21 @@
 
 
 #include "BaseState.h"
+namespace DeepRTS {
 
-class Spawning: public BaseState{
+    class Spawning : public BaseState {
 
-public:
-    Spawning():BaseState(Constants::State::Spawning){
-        name = "Spawning";
-    }
-    void update(Unit & unit) override;
-    void init(Unit & unit) override;
-    void end(Unit & unit) override;
-};
+    public:
+        Spawning() : BaseState(Constants::State::Spawning) {
+            name = "Spawning";
+        }
 
+        void update(Unit &unit) override;
+
+        void init(Unit &unit) override;
+
+        void end(Unit &unit) override;
+    };
+}
 
 #endif //WARC2SIM_SPAWNING_H

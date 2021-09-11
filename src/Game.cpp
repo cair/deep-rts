@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "gui/PyGUI.h"
 
+using namespace DeepRTS;
 
 Game::Game(const std::string& map_file):
         config(Config::defaults()),

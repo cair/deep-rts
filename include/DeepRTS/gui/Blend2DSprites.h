@@ -4,16 +4,18 @@
 
 #ifndef DEEPRTS_BLEND2DSPRITES_H
 #define DEEPRTS_BLEND2DSPRITES_H
-class BaseSprite{
+namespace DeepRTS {
 
-};
+    class BaseSprite {
 
-
-class FootmanSprite{
-
-};
+    };
 
 
+    class FootmanSprite {
+
+    };
+
+}
 
 
 #endif //DEEPRTS_BLEND2DSPRITES_H

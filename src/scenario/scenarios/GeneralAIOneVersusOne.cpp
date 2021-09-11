@@ -8,6 +8,7 @@
 #include "scenario/scenarios/GeneralAIOneVersusOne.h"
 #include "Config.h"
 
+using DeepRTS::Config;
 
 DeepRTS::Scenario::GeneralAIOneVersusOne::GeneralAIOneVersusOne()
         : Scenario(

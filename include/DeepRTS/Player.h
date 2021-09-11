@@ -13,210 +13,215 @@
 #include "unit/Unit.h"
 #include "Tile.h"
 #include "Config.h"
+namespace DeepRTS {
 
-class Game;
-class Player {
-private:
+    class Game;
 
-	/// Players game reference
-	Game &game_;
+    class Player {
+    private:
 
-private:
-    void spawnPlayer();
+        /// Players game reference
+        Game &game_;
 
-	/// Player id
-	int id_;
+    private:
+        void spawnPlayer();
 
-	/// Player name
-    std::string name = "[NO NAME]";
+        /// Player id
+        int id_;
 
-	/// Get index of next or previous unit
-	int _getNextPrevUnitIdx();
+        /// Player name
+        std::string name = "[NO NAME]";
 
-	/// Faction of the Player
-	int faction; // 0 = Human, 1 = Orc
+        /// Get index of next or previous unit
+        int _getNextPrevUnitIdx();
 
-	///////////////////////////////////////////////////////////
-	///
-	/// Player State variables
-	///
-	///////////////////////////////////////////////////////////
+        /// Faction of the Player
+        int faction; // 0 = Human, 1 = Orc
 
-	/// ID of targeted unit (-1 = None)
-	int targetedUnitID = -1;
+        ///////////////////////////////////////////////////////////
+        ///
+        /// Player State variables
+        ///
+        ///////////////////////////////////////////////////////////
 
-    /// Selects next unit in players units list
-	void nextUnit();
+        /// ID of targeted unit (-1 = None)
+        int targetedUnitID = -1;
 
-	/// Selects previous unit in players units list
-	void previousUnit();
+        /// Selects next unit in players units list
+        void nextUnit();
+
+        /// Selects previous unit in players units list
+        void previousUnit();
 
 
-protected:
+    protected:
 /// Determines if the player is defeated or not
-Constants::PlayerState playerState;
-public:
-	const Config &config;
+        Constants::PlayerState playerState;
+    public:
+        const Config &config;
 
-    void spawnUnitNearSpawnPoint(Constants::Unit unitType);
-	/// List of all unit Ids belonging to this player. The object itself is located in Game class units list
-	std::vector<int> unitIndexes;
+        void spawnUnitNearSpawnPoint(Constants::Unit unitType);
 
-	/// Constructor
-	Player(Game &game, int id);
+        /// List of all unit Ids belonging to this player. The object itself is located in Game class units list
+        std::vector<int> unitIndexes;
 
-
-	////////////////////////////////////////////////////
-	///
-	/// Setters
-	///
-	////////////////////////////////////////////////////
-
-	/// Set the name of the player
-	void setName(std::string name);
-
-	/// Select a unit
-	void setTargetedUnitID(int targetedUnitID);
-
-    /// Sets the state of the player.
-    /// \param state
-    void setState(Constants::PlayerState state);
-
-	////////////////////////////////////////////////////
-	///
-	/// Getters
-	///
-	////////////////////////////////////////////////////
-
-	/// Get the game instance
-	[[nodiscard]] Game &getGame() const;
-
-	/// Get Player's ID
-	[[nodiscard]] int getId() const;
-
-	/// Get the food consumption
-    [[maybe_unused]] [[nodiscard]] int getFoodConsumption() const;
-
-    [[maybe_unused]] /// Get Max Food
-	[[nodiscard]] int getFood() const;
-
-	/// Get the gold resource
-    [[maybe_unused]] [[nodiscard]] int getGold() const;
-
-	/// Get the oil resource
-    [[maybe_unused]] [[nodiscard]] int getStone() const;
-
-	/// Get the lumber resource
-    [[maybe_unused]] [[nodiscard]] int getLumber() const;
-
-	[[nodiscard]] virtual /// Get the score
- 	double getScore() const;
-
-	/// Get the unit count for this player
-    [[maybe_unused]] [[nodiscard]] int getUnitCount() const;
-
-	/// Get the targeted unit (Returns null if none)
-	Unit *getTargetedUnit();
-
-	/// Get the targeted unit ID (-1 if none)
-	[[nodiscard]] int getTargetedUnitID() const;
-
-    [[nodiscard]] virtual /// Check if player is defeated
-	Constants::PlayerState evaluatePlayerState() const;
-
-    /// Gets the state of the player
-    /// \return the state
-    Constants::PlayerState getState() const;
+        /// Constructor
+        Player(Game &game, int id);
 
 
-	/// Get the player name
-	[[nodiscard]] const std::string &getName() const;
+        ////////////////////////////////////////////////////
+        ///
+        /// Setters
+        ///
+        ////////////////////////////////////////////////////
+
+        /// Set the name of the player
+        void setName(std::string name);
+
+        /// Select a unit
+        void setTargetedUnitID(int targetedUnitID);
+
+        /// Sets the state of the player.
+        /// \param state
+        void setState(Constants::PlayerState state);
+
+        ////////////////////////////////////////////////////
+        ///
+        /// Getters
+        ///
+        ////////////////////////////////////////////////////
+
+        /// Get the game instance
+        [[nodiscard]] Game &getGame() const;
+
+        /// Get Player's ID
+        [[nodiscard]] int getId() const;
+
+        /// Get the food consumption
+        [[maybe_unused]] [[nodiscard]] int getFoodConsumption() const;
+
+        [[maybe_unused]] /// Get Max Food
+        [[nodiscard]] int getFood() const;
+
+        /// Get the gold resource
+        [[maybe_unused]] [[nodiscard]] int getGold() const;
+
+        /// Get the oil resource
+        [[maybe_unused]] [[nodiscard]] int getStone() const;
+
+        /// Get the lumber resource
+        [[maybe_unused]] [[nodiscard]] int getLumber() const;
+
+        [[nodiscard]] virtual /// Get the score
+        double getScore() const;
+
+        /// Get the unit count for this player
+        [[maybe_unused]] [[nodiscard]] int getUnitCount() const;
+
+        /// Get the targeted unit (Returns null if none)
+        Unit *getTargetedUnit();
+
+        /// Get the targeted unit ID (-1 if none)
+        [[nodiscard]] int getTargetedUnitID() const;
+
+        [[nodiscard]] virtual /// Check if player is defeated
+        Constants::PlayerState evaluatePlayerState() const;
+
+        /// Gets the state of the player
+        /// \return the state
+        Constants::PlayerState getState() const;
 
 
-	////////////////////////////////////////////////////
-	///
-	/// Functions
-	///
-	////////////////////////////////////////////////////
-
-	/// Add a unit to the player
-	Unit &addUnit(Constants::Unit unitType);
-
-	//
-    Unit &spawnUnit(Unit &unit, Tile &tile, int select);
-
-	/// Removes a unit from the player
-	void removeUnit(Unit & unit);
-
-	/// Spawns a unit on a tile
-	Unit &spawn(Tile &spawnPoint);
-
-	/// Reset the player state
-	void reset();
-
-	/// Remove N gold from the player
-	void removeGold(int n);
-
-	/// Remove N lumber from the player
-	void removeLumber(int n);
-
-	/// Remove N oil from the player
-	void removeStone(int n);
-
-	/// Add N gold to the player
-	void addGold(int n);
-
-	/// Add N lumber to the player
-	void addLumber(int n);
-
-	/// Add N oil to the player
-	void addStone(int n);
-
-	///////////////////////////////////////////////////////////
-	///
-	/// Player Resources
-	///
-	///////////////////////////////////////////////////////////
-	int stone = 0;
-	int gold = 0;
-	int lumber = 0;
-	int foodConsumption = 0;
-	int food = 0;
-
-	/// Counters for buildings
-	int num_archer = 0;
-	int num_peasant = 0;
-	int num_footman = 0;
-	int num_town_hall = 0;
-	int num_farm = 0;
-	int num_barrack = 0;
-
-	///////////////////////////////////////////////////////////
-	///
-	/// Player Statistics
-	///
-	///////////////////////////////////////////////////////////
-	int sGatheredGold = 0;
-	int sGatheredLumber = 0;
-	int sGatheredStone = 0;
-	int sDamageDone = 0;
-	int sDamageTaken = 0;
-	int sUnitsCreated = 0;
+        /// Get the player name
+        [[nodiscard]] const std::string &getName() const;
 
 
-	void do_action(int actionID);
-	void do_manual_action(int manual_action_id, int x, int y);
+        ////////////////////////////////////////////////////
+        ///
+        /// Functions
+        ///
+        ////////////////////////////////////////////////////
 
-	void leftClick(int x, int y);
-	void rightClick(int x, int y);
+        /// Add a unit to the player
+        Unit &addUnit(Constants::Unit unitType);
 
-	/// TODO move these to Unit.h?
-    bool canPlace(Unit & builder, Unit & unit, Tile &tile);
-    bool canAfford(Unit & unit) const;
+        //
+        Unit &spawnUnit(Unit &unit, Tile &tile, int select);
+
+        /// Removes a unit from the player
+        void removeUnit(Unit &unit);
+
+        /// Spawns a unit on a tile
+        Unit &spawn(Tile &spawnPoint);
+
+        /// Reset the player state
+        void reset();
+
+        /// Remove N gold from the player
+        void removeGold(int n);
+
+        /// Remove N lumber from the player
+        void removeLumber(int n);
+
+        /// Remove N oil from the player
+        void removeStone(int n);
+
+        /// Add N gold to the player
+        void addGold(int n);
+
+        /// Add N lumber to the player
+        void addLumber(int n);
+
+        /// Add N oil to the player
+        void addStone(int n);
+
+        ///////////////////////////////////////////////////////////
+        ///
+        /// Player Resources
+        ///
+        ///////////////////////////////////////////////////////////
+        int stone = 0;
+        int gold = 0;
+        int lumber = 0;
+        int foodConsumption = 0;
+        int food = 0;
+
+        /// Counters for buildings
+        int num_archer = 0;
+        int num_peasant = 0;
+        int num_footman = 0;
+        int num_town_hall = 0;
+        int num_farm = 0;
+        int num_barrack = 0;
+
+        ///////////////////////////////////////////////////////////
+        ///
+        /// Player Statistics
+        ///
+        ///////////////////////////////////////////////////////////
+        int sGatheredGold = 0;
+        int sGatheredLumber = 0;
+        int sGatheredStone = 0;
+        int sDamageDone = 0;
+        int sDamageTaken = 0;
+        int sUnitsCreated = 0;
 
 
+        void do_action(int actionID);
 
-};
+        void do_manual_action(int manual_action_id, int x, int y);
+
+        void leftClick(int x, int y);
+
+        void rightClick(int x, int y);
+
+        /// TODO move these to Unit.h?
+        bool canPlace(Unit &builder, Unit &unit, Tile &tile);
+
+        bool canAfford(Unit &unit) const;
 
 
+    };
+
+}
 #endif //WARC2SIM_PLAYER_H

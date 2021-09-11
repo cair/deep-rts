@@ -5,6 +5,8 @@
 #include "../../include/DeepRTS/gamestate/AddUnit.h"
 #include "unit/Unit.h"
 #include "../../include/DeepRTS/Game.h"
+using namespace DeepRTS;
+
 
 void AddUnit::apply(Game * game){
     auto &player = game->players.at(player_id);

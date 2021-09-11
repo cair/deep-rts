@@ -6,22 +6,26 @@
 #define DEEPRTS_BASEGUI_H
 
 #include <opencv2/core/mat.hpp>
+namespace DeepRTS {
 
-class Game;
-class Tile;
+    class Game;
+
+    class Tile;
 
 
-class BaseGUI{
+    class BaseGUI {
 
-protected:
-    const Game& game;
-public:
-    cv::Mat renderData;
-    explicit BaseGUI(Game& game);
+    protected:
+        const Game &game;
+    public:
+        cv::Mat renderData;
 
-    virtual const cv::Mat& render()const  = 0;
-    virtual void onTileChange(const Tile&) = 0;
-};
+        explicit BaseGUI(Game &game);
 
+        virtual const cv::Mat &render() const = 0;
+
+        virtual void onTileChange(const Tile &) = 0;
+    };
+}
 
 #endif //DEEPRTS_BASEGUI_H

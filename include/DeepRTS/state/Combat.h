@@ -6,16 +6,20 @@
 
 #include "../Constants.h"
 #include "BaseState.h"
-class Unit;
+namespace DeepRTS {
 
-class Combat: public BaseState {
-public:
-    Combat():BaseState(Constants::State::Combat){
-        name = "Combat";
-    }
+    class Unit;
 
-    void update(Unit & unit) override;
-    void init(Unit & unit) override;
-    void end(Unit & unit) override;
-};
+    class Combat : public BaseState {
+    public:
+        Combat() : BaseState(Constants::State::Combat) {
+            name = "Combat";
+        }
 
+        void update(Unit &unit) override;
+
+        void init(Unit &unit) override;
+
+        void end(Unit &unit) override;
+    };
+}

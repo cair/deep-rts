@@ -10,19 +10,29 @@
 #include <iostream>
 #include <memory>
 #include "../Constants.h"
-class Unit;
-class BaseState {
+
+namespace DeepRTS {
+
+    class Unit;
+
+    class BaseState {
 
 
-public:
-    Constants::State id = Constants::State::Base;
-    std::string name = "**ERR**";
-    BaseState(Constants::State id): id(id){
+    public:
+        Constants::State id = Constants::State::Base;
+        std::string name = "**ERR**";
+
+        BaseState(Constants::State id) : id(id) {
+        };
+
+        virtual ~BaseState() = 0;
+
+        virtual void update(Unit &unit);
+
+        virtual void init(Unit &unit);
+
+        virtual void end(Unit &unit);
     };
-    virtual ~BaseState() = 0;
-    virtual void update(Unit & unit);
-    virtual void init(Unit & unit);
-    virtual void end(Unit & unit);
-};
+}
 
 

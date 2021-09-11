@@ -4,6 +4,7 @@
 #include "Tilemap.h"
 #include "unit/Unit.h"
 #include "Game.h"
+using namespace DeepRTS;
 
 Tilemap::Tilemap(Map& map, Game &game): game(game){
 

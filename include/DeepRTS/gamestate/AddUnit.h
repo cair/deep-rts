@@ -7,20 +7,22 @@
 
 
 #include "StateChange.h"
+namespace DeepRTS {
 
-class Game;
-class AddUnit: StateChange{
-    int id;
-    int type;
-    int player_id;
+    class Game;
 
-    AddUnit(int id, int type, int player_id): id(id), type(type), player_id(player_id){}
+    class AddUnit : StateChange {
+        int id;
+        int type;
+        int player_id;
 
-
-    void apply(Game *game);
-
-    void apply_reverse(Game *game);
-};
+        AddUnit(int id, int type, int player_id) : id(id), type(type), player_id(player_id) {}
 
 
+        void apply(Game *game);
+
+        void apply_reverse(Game *game);
+    };
+
+}
 #endif //DEEPRTS_ADDUNIT_H

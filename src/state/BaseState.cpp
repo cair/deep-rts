@@ -3,6 +3,7 @@
 //
 
 #include "state/BaseState.h"
+using namespace DeepRTS;
 
 void BaseState::update(Unit& unit){
     (void)(unit);

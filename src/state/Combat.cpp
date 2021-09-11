@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Game.h"
 #include <algorithm>    // std::max
+using namespace DeepRTS;
 
 void Combat::update(Unit & unit){
 

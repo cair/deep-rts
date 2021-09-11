@@ -7,7 +7,9 @@
 
 #include <Game.h>
 #include "criterias/ScenarioCriteria.h"
-class Player;
+namespace DeepRTS{
+    class Player;
+}
 
 namespace DeepRTS::Scenario {
     class Scenario: public Game {

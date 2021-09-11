@@ -5,6 +5,7 @@
 #include "Game.h"
 #include <opencv2/highgui.hpp>
 #include "Constants.h"
+using namespace DeepRTS;
 
 const cv::Mat& Blend2DGUI::render() const {
     return renderData;

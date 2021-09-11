@@ -18,6 +18,7 @@
 
 #include <cmrc/cmrc.hpp>
 CMRC_DECLARE(DeepRTSAssets);
+using namespace DeepRTS;
 
 std::string GetCurrentWorkingDir()
 {

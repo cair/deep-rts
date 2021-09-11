@@ -6,6 +6,7 @@
 #include "unit/Unit.h"
 #include "util/Pathfinder.h"
 #include "Player.h"
+using namespace DeepRTS;
 
 
 void Building::update(Unit & unit){

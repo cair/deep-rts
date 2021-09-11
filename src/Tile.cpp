@@ -6,6 +6,7 @@
 #include <utility>
 #include "Player.h"
 #include "Game.h"
+using namespace DeepRTS;
 
 Tile::Tile(
 		Tilemap &tilemap,

@@ -5,6 +5,7 @@
 #include "state/Dead.h"
 #include "unit/Unit.h"
 #include "Game.h"
+using namespace DeepRTS;
 
 void Dead::update(Unit & unit){
     unit.despawn();

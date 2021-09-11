@@ -4,6 +4,7 @@
 
 #include "state/Idle.h"
 #include "Player.h"
+using namespace DeepRTS;
 
 void Idle::update(Unit & unit){
     (void)(unit);

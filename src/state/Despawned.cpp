@@ -3,6 +3,9 @@
 //
 
 #include "state/Despawned.h"
+using namespace DeepRTS;
+
+
 void Despawned::update(Unit & unit){
     (void)(unit);
 }

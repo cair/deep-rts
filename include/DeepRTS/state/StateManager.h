@@ -10,21 +10,24 @@
 #include "Building.h"
 #include "Combat.h"
 #include "Dead.h"
+namespace DeepRTS {
 
-class Game;
-class StateManager {
+    class Game;
 
-public:
-    explicit StateManager(Game &game);
-	std::shared_ptr<BaseState> walkingState;
-	std::shared_ptr<BaseState> spawnState;
-	std::shared_ptr<BaseState> idleState;
-	std::shared_ptr<BaseState> despawnedState;
-	std::shared_ptr<BaseState> harvestingState;
-	std::shared_ptr<BaseState> buildingState;
-	std::shared_ptr<BaseState> combatState;
-	std::shared_ptr<BaseState> deadState;
+    class StateManager {
 
-	std::shared_ptr<BaseState> getByID(int id) const;
-};
+    public:
+        explicit StateManager(Game &game);
 
+        std::shared_ptr<BaseState> walkingState;
+        std::shared_ptr<BaseState> spawnState;
+        std::shared_ptr<BaseState> idleState;
+        std::shared_ptr<BaseState> despawnedState;
+        std::shared_ptr<BaseState> harvestingState;
+        std::shared_ptr<BaseState> buildingState;
+        std::shared_ptr<BaseState> combatState;
+        std::shared_ptr<BaseState> deadState;
+
+        std::shared_ptr<BaseState> getByID(int id) const;
+    };
+}

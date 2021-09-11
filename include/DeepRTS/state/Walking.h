@@ -5,17 +5,23 @@
 
 #include "BaseState.h"
 #include "../util/JPS.h"
+namespace DeepRTS {
 
 
-class Tilemap;
-class Game;
-class Walking: public BaseState {
-    JPS::Searcher<Tilemap&> search;
+    class Tilemap;
 
-public:
-    explicit Walking(Game & game);
-    void update(Unit & unit) override;
-    void init(Unit & unit) override;
-    void end(Unit & unit) override;
-};
+    class Game;
 
+    class Walking : public BaseState {
+        JPS::Searcher<Tilemap &> search;
+
+    public:
+        explicit Walking(Game &game);
+
+        void update(Unit &unit) override;
+
+        void init(Unit &unit) override;
+
+        void end(Unit &unit) override;
+    };
+}

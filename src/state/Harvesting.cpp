@@ -6,6 +6,7 @@
 #include "util/Pathfinder.h"
 #include "Player.h"
 #include "Game.h"
+using namespace DeepRTS;
 
 void Harvesting::update(Unit & unit){
 

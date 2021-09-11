@@ -7,18 +7,22 @@
 
 
 #include "BaseState.h"
+namespace DeepRTS {
 
-class Idle: public BaseState {
+    class Idle : public BaseState {
 
-public:
-    Idle():BaseState(Constants::State::Idle){
-        name = "Idle";
-    }
-    void update(Unit & unit) override;
-    void init(Unit & unit) override;
-    void end(Unit & unit) override;
+    public:
+        Idle() : BaseState(Constants::State::Idle) {
+            name = "Idle";
+        }
 
-};
+        void update(Unit &unit) override;
 
+        void init(Unit &unit) override;
 
+        void end(Unit &unit) override;
+
+    };
+
+}
 #endif //WARC2SIM_IDLE_H

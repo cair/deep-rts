@@ -4,7 +4,7 @@
 
 #ifndef DEEPRTS_GOLDCOLLECTFIFTEEN_H
 #define DEEPRTS_GOLDCOLLECTFIFTEEN_H
-#include "scenario/Scenario.h"
+#include "DeepRTS/scenario/Scenario.h"
 
 namespace DeepRTS::Scenario{
 

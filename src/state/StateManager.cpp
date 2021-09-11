@@ -5,6 +5,7 @@
 #include "state/StateManager.h"
 #include "Game.h"
 
+using namespace DeepRTS;
 
 StateManager::StateManager(Game &game)
 {

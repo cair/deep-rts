@@ -7,10 +7,11 @@
 #include "StateChange.h"
 #include <list>
 
+namespace DeepRTS {
 
-class GameState {
-    std::list<StateChange> changes;
-};
-
+    class GameState {
+        std::list<StateChange> changes;
+    };
+}
 
 #endif //DEEPRTS_GAMESTATE_H

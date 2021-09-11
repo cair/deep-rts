@@ -7,7 +7,9 @@
 #include "scenario/scenarios/GoldCollectFifteen.h"
 
 using Random = effolkronium::random_static;
-
+using DeepRTS::Config;
+using DeepRTS::Player;
+using DeepRTS::Scenario::GoldCollectFifteen;
 int main() {
     //auto webServer = Webserver("0.0.0.0", 4300, true);
     //webServer.start();
@@ -36,8 +38,8 @@ int main() {
         while(!g.isTerminal())
         {
 
-            player0.do_action(Random::get(Constants::ACTION_MIN, Constants::ACTION_MAX));
-            player1.do_action(Random::get(Constants::ACTION_MIN, Constants::ACTION_MAX));
+            player0.do_action(Random::get(DeepRTS::Constants::ACTION_MIN, DeepRTS::Constants::ACTION_MAX));
+            player1.do_action(Random::get(DeepRTS::Constants::ACTION_MIN, DeepRTS::Constants::ACTION_MAX));
 
             g.update();
             auto image = g.render();

@@ -6,6 +6,7 @@
 #include "ResourceLoader.h"
 
 
+using namespace DeepRTS;
 
 
 

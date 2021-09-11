@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "util/Pathfinder.h"
 #include "util/JPS.h"
+using namespace DeepRTS;
 
 Walking::Walking(Game &game)
 : BaseState(Constants::State::Walking)

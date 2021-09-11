@@ -8,18 +8,22 @@
 
 #include "../Constants.h"
 #include "BaseState.h"
-class Unit;
+namespace DeepRTS {
 
-class Despawned: public BaseState {
-public:
-    Despawned():BaseState(Constants::State::Despawned){
-        name = "Despawned";
-    }
+    class Unit;
 
-    void update(Unit & unit) override;
-    void init(Unit & unit) override;
-    void end(Unit & unit) override;
-};
+    class Despawned : public BaseState {
+    public:
+        Despawned() : BaseState(Constants::State::Despawned) {
+            name = "Despawned";
+        }
 
+        void update(Unit &unit) override;
 
+        void init(Unit &unit) override;
+
+        void end(Unit &unit) override;
+    };
+
+}
 #endif //WARC2SIM_DESPAWNED_H

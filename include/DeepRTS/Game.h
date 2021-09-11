@@ -17,201 +17,211 @@
 #include <xtensor/xarray.hpp>
 #include <cstdint>
 #include <opencv2/core/mat.hpp>
+namespace DeepRTS {
 
-class BaseGUI;
-using StateType = xt::xarray<double, xt::layout_type::row_major>;
+    class BaseGUI;
 
-class Game {
+    using StateType = xt::xarray<double, xt::layout_type::row_major>;
 
-    /// Game Clock
-    std::chrono::high_resolution_clock::time_point now;
-    std::chrono::high_resolution_clock::time_point _update_next;
-    std::chrono::high_resolution_clock::time_point _stats_next;
+    class Game {
 
-    std::chrono::nanoseconds _update_interval{};
+        /// Game Clock
+        std::chrono::high_resolution_clock::time_point now;
+        std::chrono::high_resolution_clock::time_point _update_next;
+        std::chrono::high_resolution_clock::time_point _stats_next;
 
-    uint32_t _update_delta = 0;
+        std::chrono::nanoseconds _update_interval{};
 
-    /// Initialize the game clock timers
-    void timerInit();
+        uint32_t _update_delta = 0;
 
-    ///
-    bool running{};
+        /// Initialize the game clock timers
+        void timerInit();
 
+        ///
+        bool running{};
 
-    /// Inits neccerary memory in stack vectors
-    void _internalInit();
 
-public:
-    /// GUI Pointer
-    std::unique_ptr<BaseGUI> gui;
+        /// Inits neccerary memory in stack vectors
+        void _internalInit();
 
-    /// Game Constructor
-    explicit Game(const std::string& map_file);
-    Game(const std::string& map_file, Config  config);
-    ~Game();
+    public:
+        /// GUI Pointer
+        std::unique_ptr<BaseGUI> gui;
 
+        /// Game Constructor
+        explicit Game(const std::string &map_file);
 
-    ////////////////////////////////////////////
-    ///
-    /// Properties
-    ///
-    ////////////////////////////////////////////////////
-    /// Const Config (Order 0)
-    const Config config;
+        Game(const std::string &map_file, Config config);
 
-    /// Const Map (Order 1)
-    Map map;
+        ~Game();
 
-    /// Game state (Order 2)
-    StateType state;
 
-    /// Game Tilemap (Order 3)
-    Tilemap tilemap;
+        ////////////////////////////////////////////
+        ///
+        /// Properties
+        ///
+        ////////////////////////////////////////////////////
+        /// Const Config (Order 0)
+        const Config config;
 
-    /// Game State Manager
-    StateManager stateManager;
+        /// Const Map (Order 1)
+        Map map;
 
-    /// List of Players inside the game session
-    std::vector<Player> players;
+        /// Game state (Order 2)
+        StateType state;
 
-    /// List of Units inside the game session
-    std::vector<Unit> units;
+        /// Game Tilemap (Order 3)
+        Tilemap tilemap;
 
-    std::unordered_map<std::string, Unit*> unitsNameMap;
+        /// Game State Manager
+        StateManager stateManager;
 
-    /// Game Identification
-    uint32_t id{};
+        /// List of Players inside the game session
+        std::vector<Player> players;
 
-    /// Game Episode Ticks
-    uint64_t ticks = 0;
+        /// List of Units inside the game session
+        std::vector<Unit> units;
 
-    /// Game Episode
-    uint32_t episode = 1;
+        std::unordered_map<std::string, Unit *> unitsNameMap;
 
-    /// Game Max FPS
-    uint32_t max_fps{};
+        /// Game Identification
+        uint32_t id{};
 
+        /// Game Episode Ticks
+        uint64_t ticks = 0;
 
-    /// Game Current FPS
-    uint32_t currentFPS = 0;
+        /// Game Episode
+        uint32_t episode = 1;
 
+        /// Game Max FPS
+        uint32_t max_fps{};
 
-    /// Game terminal flag
-    bool terminal = false;
 
-    /// Selected player
-    Player* selectedPlayer{};
+        /// Game Current FPS
+        uint32_t currentFPS = 0;
 
-    ////////////////////////////////////////////////////
-    ///
-    /// Getters
-    ///
-    ////////////////////////////////////////////////////
 
-    /// Get a Unit via index
-    Unit &getUnit(int idx);
+        /// Game terminal flag
+        bool terminal = false;
 
-    uint32_t getMaxFPS() const;
+        /// Selected player
+        Player *selectedPlayer{};
 
+        ////////////////////////////////////////////////////
+        ///
+        /// Getters
+        ///
+        ////////////////////////////////////////////////////
 
-    uint32_t getFPS() const;
+        /// Get a Unit via index
+        Unit &getUnit(int idx);
 
+        uint32_t getMaxFPS() const;
 
-    uint64_t getGameDuration() const;
 
-    uint64_t getTicks() const ;
+        uint32_t getFPS() const;
 
-    uint32_t getWidth() const;
 
-    uint32_t getHeight() const;
+        uint64_t getGameDuration() const;
 
-    uint32_t getEpisode() const;
+        uint64_t getTicks() const;
 
-    uint32_t getId() const;
+        uint32_t getWidth() const;
 
-    long getTicksModifier() const;
+        uint32_t getHeight() const;
 
-    Unit* getUnitByNameID(const std::string& nameID);
+        uint32_t getEpisode() const;
 
-    ////////////////////////////////////////////////////
-    ///
-    /// Setters
-    ///
-    ////////////////////////////////////////////////////
+        uint32_t getId() const;
 
-    /// Set the Game FPS
-    void setMaxFPS(int fps_);
+        long getTicksModifier() const;
 
-    /// Set selected player
-    void setSelectedPlayer(Player &player);
+        Unit *getUnitByNameID(const std::string &nameID);
 
-    ////////////////////////////////////////////////////
-    ///
-    /// Engine Functions
-    ///
-    ////////////////////////////////////////////////////
-    // Add a player to the game
-    Player &addPlayer();
+        ////////////////////////////////////////////////////
+        ///
+        /// Setters
+        ///
+        ////////////////////////////////////////////////////
 
-    // Insert a player using a precreated object. specifically useful for python
-    void insertPlayer(Player &player);
+        /// Set the Game FPS
+        void setMaxFPS(int fps_);
 
-    /// Game Tick Function
-    void tick();
+        /// Set selected player
+        void setSelectedPlayer(Player &player);
 
-    /// Game Update Function
-    virtual void update();
-    virtual void _update();
+        ////////////////////////////////////////////////////
+        ///
+        /// Engine Functions
+        ///
+        ////////////////////////////////////////////////////
+        // Add a player to the game
+        Player &addPlayer();
 
-    /// Game Render Function
-    const cv::Mat& render();
+        // Insert a player using a precreated object. specifically useful for python
+        void insertPlayer(Player &player);
 
-    /// Game Render implementation
-    virtual const cv::Mat& _render() const;
+        /// Game Tick Function
+        void tick();
 
-    /// Print the Game Statistics
-    void caption();
+        /// Game Update Function
+        virtual void update();
 
-    virtual void _caption() const;
+        virtual void _update();
 
-    // Enables the running flag and updates the clock
-    void start();
+        /// Game Render Function
+        const cv::Mat &render();
 
-    // Disables the running flag
-    void stop();
+        /// Game Render implementation
+        virtual const cv::Mat &_render() const;
 
-    // Resets the game
-    virtual void reset();
-    virtual void _reset();
+        /// Print the Game Statistics
+        void caption();
 
-    // Returns true if the game is in an terminal state
-    bool isTerminal();
+        virtual void _caption() const;
 
-    ////////////////////////////////////////////////////
-    ///
-    /// Callback Functions
-    ///
-    ////////////////////////////////////////////////////
-    // Unit Events
-    virtual void _onUnitCreate(const Unit& unit) const;
-    virtual void _onUnitDestroy(const Unit& unit) const;
+        // Enables the running flag and updates the clock
+        void start();
 
-    // Resource Events
-    virtual void _onResourceGather(const Tile& tile, const Unit& unit) const;
-    virtual void _onResourceDepleted(const Tile& tile, const Unit& unit) const;
+        // Disables the running flag
+        void stop();
 
-    virtual void _onEpisodeStart() const;
-    virtual void _onEpisodeEnd() const;
+        // Resets the game
+        virtual void reset();
 
-    virtual void _onTileChange(const Tile &) const;
-    virtual void _onUnitAttack(const Unit& unit) const;
+        virtual void _reset();
 
-    /// empty opencv container in case of no GUI
-    const cv::Mat renderPlaceholder;
+        // Returns true if the game is in an terminal state
+        bool isTerminal();
 
+        ////////////////////////////////////////////////////
+        ///
+        /// Callback Functions
+        ///
+        ////////////////////////////////////////////////////
+        // Unit Events
+        virtual void _onUnitCreate(const Unit &unit) const;
 
-};
+        virtual void _onUnitDestroy(const Unit &unit) const;
 
+        // Resource Events
+        virtual void _onResourceGather(const Tile &tile, const Unit &unit) const;
+
+        virtual void _onResourceDepleted(const Tile &tile, const Unit &unit) const;
+
+        virtual void _onEpisodeStart() const;
+
+        virtual void _onEpisodeEnd() const;
+
+        virtual void _onTileChange(const Tile &) const;
+
+        virtual void _onUnitAttack(const Unit &unit) const;
+
+        /// empty opencv container in case of no GUI
+        const cv::Mat renderPlaceholder;
+
+
+    };
+}
 
 #endif //WARC2SIM_GAME_H

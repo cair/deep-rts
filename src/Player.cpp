@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <utility>
 #include <string>
+using namespace DeepRTS;
 
 Player::Player(Game &game, int id):
     game_(game),

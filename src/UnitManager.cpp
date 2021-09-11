@@ -4,6 +4,7 @@
 
 #include "UnitManager.h"
 #include "Game.h"
+using namespace DeepRTS;
 
 Unit UnitManager::constructUnit(Constants::Unit unitType, Player& player)
 {

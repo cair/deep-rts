@@ -13,6 +13,7 @@
 #include "Constants.h"
 #include "Tilemap.h"
 
+using namespace DeepRTS;
 
 
 bool Pathfinder::aStar(std::vector<Tile *> &constructedPath, Tile *start, Tile *goal)
