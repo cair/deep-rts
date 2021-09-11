@@ -321,6 +321,7 @@ if (NOT DEFINED PYTHON_BUILD)
         target_include_directories(
                 DeepRTSLib
                 PUBLIC
+                include/
                 include/DeepRTS
                 ${DEEPRTS_INCLUDES}
         )
