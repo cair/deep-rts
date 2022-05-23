@@ -28,7 +28,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@ng-bootstrap/ng-bootstrap": "^8.0.1",
     "bootstrap": "^4.5.3",
-    "dexie": "^3.0.3",
+    "dexie": "^3.2.2",
     "git-describe": "^4.0.4",
     "ngx-vis": "^3.1.0",
     "reconnecting-websocket": "^4.4.0",
