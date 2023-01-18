@@ -7,14 +7,13 @@ import os
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 from distutils.version import LooseVersion
 
+
 def is_mac_os():
     return platform.system() == "Darwin"
-
 
 
 class CMakeExtension(Extension):
@@ -54,7 +53,7 @@ class CMakeBuild(build_ext):
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
-            if sys.maxsize > 2**32:
+            if sys.maxsize > 2 ** 32:
                 cmake_args += ['-A', 'x64']
             build_args += ['--', '/m']
         else:
@@ -68,17 +67,12 @@ class CMakeBuild(build_ext):
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
-        subprocess.check_call(['cmake', dir_path] + cmake_args, cwd=self.build_temp, env=env) # ext.sourcedir
+        subprocess.check_call(['cmake', dir_path] + cmake_args, cwd=self.build_temp, env=env)  # ext.sourcedir
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
+
 
 setup(
     name='DeepRTS',
-    version_config={
-        "template": "2021.{tag}.{sha}",
-        "dev_template": "2021.{tag}.{sha}.dev",
-        "dirty_template": "2021.{tag}.{sha}.dirty",
-    },
-    setup_requires=['setuptools-git-versioning'],
     author='Per-Arne Andersen',
     author_email='per@sysx.no',
     url='https://github.com/cair/deep-rts',

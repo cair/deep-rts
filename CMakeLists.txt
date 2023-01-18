@@ -85,8 +85,8 @@ set(DEEPRTS_DEPENDENCIES
         drogon
         nlohmann-json
         Blend2d
-        #opencv
-        )
+        opencv
+)
 
 
 
@@ -97,7 +97,7 @@ pmm(
         VERBOSE
         DEBUG
         VCPKG
-        REVISION master
+        REVISION 2022.11.14
         REQUIRES ${DEEPRTS_DEPENDENCIES}
         TRIPLET ${VCPKG_TARGET_TRIPLET}
 )
@@ -109,15 +109,11 @@ pmm(
 ##### CMAKE - Find Packages
 #####
 #############################################################################################
+find_package(Drogon CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED )
 find_package(OpenSSL REQUIRED)
-find_package(Drogon CONFIG REQUIRED)
-
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-
 find_package(effolkronium_random CONFIG REQUIRED)
-
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
 find_package(pybind11 CONFIG REQUIRED)
