@@ -4,7 +4,7 @@ project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
 set(BUILD_DOCS "OFF" CACHE STRING "Helpstring")
 SET(ENABLE_LOCK "ON" CACHE STRING "If locking of cmake setup should be enabled. this should be disabled for third party builds.")
-
+set(PYBIND11_FINDPYTHON "OFF")
 # Lock this section so that parallel CMake runs won't clash on checkout in the same directory
 if(ENABLE_LOCK)
         file(LOCK ${CMAKE_SOURCE_DIR} DIRECTORY GUARD FILE)
@@ -89,9 +89,6 @@ set(DEEPRTS_DEPENDENCIES
 )
 
 
-
-
-
 # VCPKG - Install Depedencies
 pmm(
         VERBOSE
@@ -109,19 +106,29 @@ pmm(
 ##### CMAKE - Find Packages
 #####
 #############################################################################################
+
+find_package(Python  REQUIRED COMPONENTS Interpreter Development NumPy)
+set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})  # xtensor has some troubles. fix
+if(NOT Python_NumPy_FOUND)
+        execute_process(
+                COMMAND bash -c "curl -L https://bootstrap.pypa.io/get-pip.py | ${Python3_EXECUTABLE} && ${Python3_EXECUTABLE} -m pip install numpy"
+        )
+        find_package(Python REQUIRED COMPONENTS Interpreter Development NumPy)
+endif()
+
+
 find_package(Drogon CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED )
 find_package(OpenSSL REQUIRED)
 find_package(effolkronium_random CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(xtensor CONFIG REQUIRED)
 find_library(blend2d blend2d REQUIRED)
 find_path(blend2d_INCLUDES blend2d.h)
 
-message(${PYTHON_EXECUTABLE})
+
 
 if (NOT TARGET xtensor-python)
         CPMADDPackage(
@@ -135,7 +142,7 @@ set(DEEPRTS_LINK_TARGETS
         DeepRTSResources
         DeepRTSAssets
         effolkronium_random
-        Python3::Python
+        Python::Python
         xtensor::optimize
         xtensor::use_xsimd
         Drogon::Drogon
@@ -179,85 +186,9 @@ set(WEBSERVER_SOURCES
         src/contrib/webserver/Websockets.h
         )
 
-set(DEEPRTS_SOURCE_FILES
-        # Header-Only Libs
-        include/DeepRTS/Constants.h
-        include/DeepRTS/Config.h
 
 
-        # Engine
-        src/Game.cpp
-        src/ResourceLoader.cpp
-
-        # Player
-        src/Player.cpp
-
-        # Unit
-        src/Unit.cpp
-        src/UnitManager.cpp
-
-        # Environment/Map
-        src/Tile.cpp
-        src/Tilemap.cpp
-        src/Map.cpp
-
-        # State
-        src/state/BaseState.cpp
-        src/state/Idle.cpp
-        src/state/Walking.cpp
-        src/state/Spawning.cpp
-        src/state/StateManager.cpp
-        src/state/Despawned.cpp
-        src/state/Harvesting.cpp
-        src/state/Building.cpp
-        src/state/Combat.cpp
-        src/state/Dead.cpp
-        src/state/StateManager.cpp
-
-        # Utilities
-        include/DeepRTS/util/ColorConverter.hpp
-        include/DeepRTS/util/Position.h
-        src/util/Pathfinder.cpp
-        include/DeepRTS/util/PriorityQueue.hpp
-
-        include/DeepRTS/util/String.h
-
-        src/PyGUI.cpp
-        include/DeepRTS/gui/PyGUI.h
-
-        ${BINDING_SOURCES}
-        ${WEBSERVER_SOURCES}
-        include/DeepRTS/gui/Blend2DGUI.h
-        include/DeepRTS/unit/Footman.h
-        include/DeepRTS/gui/BaseGUI.h
-        src/gui/BaseGUI.cpp
-        src/gui/Blend2DGUI.cpp
-        include/DeepRTS/gui/Blend2DSprites.h
-        src/scenario/Scenario.cpp
-        include/DeepRTS/scenario/Scenario.h
-        src/scenario/criteria/ScenarioCriteria.cpp
-        include/DeepRTS/scenario/criterias/ScenarioCriteria.h
-        src/scenario/criteria/GoldCollect.cpp
-        include/DeepRTS/scenario/criterias/GoldCollect.h
-        src/scenario/criteria/LumberCollect.cpp
-        include/DeepRTS/scenario/criterias/LumberCollect.h
-        src/scenario/criteria/StoneCollect.cpp
-        include/DeepRTS/scenario/criterias/StoneCollect.h
-        src/scenario/criteria/FoodConsumption.cpp include/DeepRTS/scenario/criterias/FoodConsumption.h
-        src/scenario/criteria/FoodCount.cpp include/DeepRTS/scenario/criterias/FoodCount.h
-        src/scenario/criteria/DamageDone.cpp include/DeepRTS/scenario/criterias/DamageDone.h
-        src/scenario/criteria/DamageTaken.cpp include/DeepRTS/scenario/criterias/DamageTaken.h
-        src/scenario/criteria/UnitsCreated.cpp include/DeepRTS/scenario/criterias/UnitsCreated.h
-        src/scenario/criteria/NumUnitTypeCreated.cpp include/DeepRTS/scenario/criterias/NumUnitTypeCreated.h
-        src/scenario/scenarios/GoldCollectFifteen.cpp include/DeepRTS/scenario/scenarios/GoldCollectFifteen.h
-        src/scenario/scenarios/GeneralAIOneVersusOne.cpp include/DeepRTS/scenario/scenarios/GeneralAIOneVersusOne.h
-        src/scenario/criteria/ResourceIncrement.cpp include/DeepRTS/scenario/criterias/ResourceIncrement.h
-        src/scenario/criteria/UnitIncrement.cpp include/DeepRTS/scenario/criterias/UnitIncrement.h
-        src/scenario/criteria/DamageDoneIncrement.cpp include/DeepRTS/scenario/criterias/DamageDoneIncrement.h
-        src/scenario/criteria/DamageTakenIncrement.cpp include/DeepRTS/scenario/criterias/DamageTakenIncrement.h
-        include/DeepRTS/scenario/criterias/GameEnd.cpp include/DeepRTS/scenario/criterias/GameEnd.h src/scenario/scenarios/LavaMaze.cpp include/DeepRTS/scenario/scenarios/LavaMaze.h)
-
-
+file(GLOB_RECURSE DEEPRTS_SOURCE_FILES src/*.cpp)
 
 
 set(DEEPRTS_PYBIND_SOURCES
@@ -293,8 +224,6 @@ endif ()
 
 
 if(PYTHON_BUILD)
-        find_package(Python  REQUIRED COMPONENTS Interpreter Development NumPy)
-
         pybind11_add_module(Engine ${DEEPRTS_PYBIND_SOURCES} ${DEEPRTS_SOURCE_FILES})
         target_link_libraries(Engine
                 INTERFACE

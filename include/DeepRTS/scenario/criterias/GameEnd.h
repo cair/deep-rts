@@ -10,7 +10,7 @@
 namespace DeepRTS::Criteria{
     class GameEnd: public ScenarioCriteria {
 
-        bool rewardable;
+        bool rewardable{};
     public:
         explicit GameEnd(int rewardSuccess=0.01, int rewardFailure=-0.01);
 

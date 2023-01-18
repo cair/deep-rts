@@ -12,7 +12,7 @@ if __name__ == "__main__":
     config.set_console_caption_enabled(True)
     config.set_gui("Blend2DGui")
 
-    game: Engine.Game = Engine.Game("10x10-2v2.json", config)
+    game: Engine.Game = Engine.Game("10x10-2p-ffa-Eblil.json", config)
     player0: Engine.Player = game.add_player()
     player1: Engine.Player = game.add_player()
 
