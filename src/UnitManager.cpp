@@ -101,7 +101,7 @@ Unit UnitManager::constructFarm(Player &player) {
 
     u.lumberCost = 250;
     u.goldCost = 500;
-    u.stoneCarry = 0;
+    u.stoneCost = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -157,7 +157,7 @@ Unit UnitManager::constructBarracks(Player &player) {
 
     u.lumberCost = 450;
     u.goldCost = 700;
-    u.stoneCarry = 0;
+    u.stoneCost = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -221,7 +221,7 @@ Unit UnitManager::constructTownHall(Player &player) {
 
     u.lumberCost = 250;
     u.goldCost = 500;
-    u.stoneCarry = 0;
+    u.stoneCost = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -278,7 +278,7 @@ Unit UnitManager::constructPeasant(Player &player)
 
     u.lumberCost = 0;
     u.goldCost = 400;
-    u.stoneCarry = 0;
+    u.stoneCost = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -343,7 +343,7 @@ Unit UnitManager::constructFootman(Player &player) {
 
     u.lumberCost = 0;
     u.goldCost = 600;
-    u.stoneCarry = 0;
+    u.stoneCost = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
@@ -399,7 +399,7 @@ Unit UnitManager::constructArcher(Player &player) {
 
     u.lumberCost = 50;
     u.goldCost = 500;
-    u.stoneCarry = 0;
+    u.stoneCost = 0;
 
     if(u.config.instantBuilding) {
         u.spawnDuration = 0;
