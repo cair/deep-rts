@@ -39,6 +39,7 @@ Game::Game(const std::string& map_file, Config config):
 Game::~Game() = default;
 
 void Game::_internalInit(){
+    state.fill(-1.);
     players.reserve(Constants::MAX_PLAYERS);
     units.reserve(Constants::MAX_PLAYERS * Constants::MAX_UNITS);
 
