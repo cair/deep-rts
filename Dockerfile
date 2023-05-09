@@ -1,5 +1,4 @@
 FROM ubuntu:18.04
-MAINTAINER Per-Arne Andersen
 
 RUN apt-get update && apt-get install -y apt-utils python3 python3-pip git xvfb build-essential cmake
 

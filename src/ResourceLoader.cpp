@@ -4,8 +4,8 @@
 
 #include <fstream>
 #include <iostream>
-#include "ResourceLoader.h"
 #include "util/String.h"
+#include "ResourceLoader.h"
 #include <cstdio>
 #include <string>
 #ifdef _WIN32
@@ -102,11 +102,12 @@ TilePropertyData ResourceLoader::loadMAPJson(const nlohmann::json& tJSON){
             if(ele.is_string()){
                 auto range = StringUtil::split(ele.get<std::string>(), "-");
                 for(auto i = std::stoi(range[0]); i <= std::stoi(range[1]); i++){
-                    data.tileID2Type.try_emplace(i, item.key());
+            
+                    data.tileID2Type.insert(std::make_pair(i, item.key()));
                 }
             }else if(ele.is_number_integer()){
-
-                data.tileID2Type.try_emplace(ele.get<int>(), item.key());
+                
+                data.tileID2Type.insert(std::make_pair(ele.get<int>(), item.key()));
 
             }
 
@@ -116,7 +117,7 @@ TilePropertyData ResourceLoader::loadMAPJson(const nlohmann::json& tJSON){
     // Parse tile data
     for(auto &item : tJSON["tile_metadata"].items()){
         //std::cout << item.key() << std::endl;
-        data.tileData.try_emplace(item.key(), item.value());
+        data.tileData.insert(std::make_pair(item.key(), item.value()));
     }
     return data;
 }

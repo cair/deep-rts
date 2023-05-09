@@ -19,26 +19,32 @@ include(cmake/pmm.cmake)
 ##### C++ Compiler Setup
 #####
 #############################################################################################
-set(CMAKE_CXX_STANDARD 20)
-set(PYBIND11_CPP_STANDARD /std:c++20)
+set(CMAKE_CXX_STANDARD 17)
+set(PYBIND11_CPP_STANDARD /std:c++17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
+
 
 
 if (LIBRARY_TYPE STREQUAL "SHARED")
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif ()
 
-if (UNIX)
-        set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-endif ()
+find_program(CCACHE_FOUND ccache)
+    if(CCACHE_FOUND)
+        set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_FOUND})
+    else()
+        message(WARNING "ccache not found, compilation will not be cached.")
+endif()
+
+
 
 
 if (WIN32)
         set(OPTIMIZATIONS_RELEASE /Ox)
         set(OPTIMIZATIONS_DEBUG /O0)
 else ()
-        set(OPTIMIZATIONS_RELEASE -Ofast -march=native -ffast-math -Wall)
+        set(OPTIMIZATIONS_RELEASE -Ofast -ffast-math -Wall) # -march=native
         set(OPTIMIZATIONS_DEBUG -Wall -O0)
 endif ()
 
@@ -67,37 +73,42 @@ endif ()
 if (WIN32)
         set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)  # -static ?
         set(VCPKG_STATIC_LINKING ON)
-elseif (UNIX)
+elseif (LINUX)
         set(VCPKG_TARGET_TRIPLET x64-linux)
-endif ()
+elseif(APPLE)
+        # Get the macOS version
+        execute_process(
+            COMMAND sw_vers -productVersion
+            OUTPUT_VARIABLE MACOS_VERSION
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        # Extract the major and minor versions
+        string(REGEX REPLACE "^([0-9]+\\.[0-9]+).*" "\\1" MACOS_VERSION ${MACOS_VERSION})
+        # Set the deployment target
+        set(CMAKE_OSX_DEPLOYMENT_TARGET ${MACOS_VERSION} CACHE STRING "Minimum OS X deployment version")
+    endif()
+    
 
 #############################################################################################
 #####
 ##### VCPKG - Dependencies
 #####
 #############################################################################################
-set(DEEPRTS_DEPENDENCIES
-        spdlog
-        effolkronium-random
-        python3
-        xtensor[xsimd]
-        pybind11
-        drogon
-        nlohmann-json
-        Blend2d
-        opencv
-)
+# Read the contents of the file into a list
 
+if(NOT (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg"))
+        file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/vcpkg_dependencies.txt" DEEPRTS_DEPENDENCIES)
 
-# VCPKG - Install Depedencies
-pmm(
-        VERBOSE
-        DEBUG
-        VCPKG
-        REVISION 2022.11.14
-        REQUIRES ${DEEPRTS_DEPENDENCIES}
-        TRIPLET ${VCPKG_TARGET_TRIPLET}
-)
+        # VCPKG - Install Depedencies
+        pmm(
+                VERBOSE
+                DEBUG
+                VCPKG
+                REVISION 2023.04.15
+                REQUIRES ${DEEPRTS_DEPENDENCIES}
+                TRIPLET ${VCPKG_TARGET_TRIPLET}
+        )
+endif()
 
 
 
@@ -107,20 +118,19 @@ pmm(
 #####
 #############################################################################################
 
-find_package(Python  REQUIRED COMPONENTS Interpreter Development NumPy)
+find_package(Python REQUIRED COMPONENTS Interpreter Development)
 set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})  # xtensor has some troubles. fix
+
+find_package(Python COMPONENTS NumPy)
 if(NOT Python_NumPy_FOUND)
         execute_process(
-                COMMAND bash -c "curl -L https://bootstrap.pypa.io/get-pip.py | ${Python3_EXECUTABLE} && ${Python3_EXECUTABLE} -m pip install numpy"
+                COMMAND bash -c "curl -L https://bootstrap.pypa.io/get-pip.py | ${Python_EXECUTABLE} && ${Python_EXECUTABLE} -m pip install numpy"
         )
-        find_package(Python REQUIRED COMPONENTS Interpreter Development NumPy)
+        find_package(Python REQUIRED COMPONENTS NumPy)
 endif()
 
-
-find_package(Drogon CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED )
-find_package(OpenSSL REQUIRED)
 find_package(effolkronium_random CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
@@ -145,12 +155,11 @@ set(DEEPRTS_LINK_TARGETS
         Python::Python
         xtensor::optimize
         xtensor::use_xsimd
-        Drogon::Drogon
-        rt  # asmjit
+        #rt  # asmjit
         ${blend2d}
         opencv_core  # todo remove
         opencv_highgui  # todo remove
-        )
+)
 
 
 
@@ -166,7 +175,7 @@ cmrc_add_resource_library(DeepRTSResources ALIAS deeprts::rc
         WHENCE
         src/contrib
         ${web_resources}
-        )
+)
 
 
 FILE(GLOB_RECURSE deeprts_assets RELATIVE ${PROJECT_SOURCE_DIR} DeepRTS/python/assets/*)
@@ -174,17 +183,10 @@ cmrc_add_resource_library(DeepRTSAssets ALIAS deeprts::assets
         WHENCE
         DeepRTS/python
         ${deeprts_assets}
-        )
+)
 
 set_property(TARGET DeepRTSResources PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_property(TARGET DeepRTSAssets PROPERTY POSITION_INDEPENDENT_CODE ON)
-
-set(WEBSERVER_SOURCES
-        src/contrib/webserver/Webserver.cpp
-        src/contrib/webserver/Webserver.h
-        src/contrib/webserver/Websockets.cpp
-        src/contrib/webserver/Websockets.h
-        )
 
 
 
@@ -193,7 +195,6 @@ file(GLOB_RECURSE DEEPRTS_SOURCE_FILES src/*.cpp)
 
 set(DEEPRTS_PYBIND_SOURCES
         bindings/Random.cpp
-        bindings/Webserver.cpp
         bindings/utilities/ndarray_converter.cpp
         bindings/Scenarios.cpp
         bindings/trampolines/PyScenarioCriteria.h
@@ -208,13 +209,13 @@ set(DEEPRTS_PYBIND_SOURCES
         bindings/Player.cpp
         bindings/Config.cpp
         bindings/DeepRTS.cpp
-        )
+)
 
 set(DEEPRTS_INCLUDES
         ${blend2d_INCLUDES}
         include/DeepRTS
         ${xtensor_py_SOURCE_DIR}/include
-        )
+)
 
 
 if (NOT DEFINED PYTHON_BUILD)
@@ -236,9 +237,6 @@ if(PYTHON_BUILD)
                 PRIVATE
                 ${DEEPRTS_INCLUDES}
         )
-
-else()
-
 endif()
 
 # Dont create C++ Executable for Python builds (saves time)
@@ -254,7 +252,6 @@ if (NOT DEFINED PYTHON_BUILD)
         target_compile_definitions(DeepRTSLib
                 PUBLIC
                 EMBEDDED=1
-                WEBDEV=1
                 )
         target_link_libraries(DeepRTSLib
                 PUBLIC
@@ -307,5 +304,7 @@ if (DOXYGEN_FOUND AND NOT PYTHON_BUILD AND BUILD_DOCS)
                 COMMENT "Generating API documentation with Doxygen"
                 VERBATIM )
 else ()
-        message("Doxygen need to be installed to generate the doxygen documentation")
+        message(WARNING "Doxygen need to be installed to generate the doxygen documentation")
 endif ()
+
+

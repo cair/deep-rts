@@ -1,6 +1,21 @@
 [build-system]
-requires = [ "setuptools>=41", "wheel", "setuptools-git-versioning<2", "numpy"]
+requires = [
+    "setuptools>=41", 
+    "wheel", 
+    "setuptools-git-versioning<2", 
+    "numpy"
+]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools-git-versioning]
 enabled = true
+
+[tool.cibuildwheel]
+build = "cp38-*"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64",  "arm64"] #"universal2",
+
+repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
+
+

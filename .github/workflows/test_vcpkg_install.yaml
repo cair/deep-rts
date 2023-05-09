@@ -1,0 +1,24 @@
+name: Validate VCPKG install script
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Script
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies and Run Script
+      run: |
+        chmod +x vcpkg/vcpkg_install.sh
+        ./vcpkg/vcpkg_install.sh

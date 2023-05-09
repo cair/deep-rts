@@ -5,6 +5,8 @@
 #ifndef WARC2SIM_GAME_H
 #define WARC2SIM_GAME_H
 
+
+#include "defs.h"
 #include <memory>
 #include <map>
 #include <unordered_map>

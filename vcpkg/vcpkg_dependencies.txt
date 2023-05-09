@@ -1,0 +1,6 @@
+spdlog
+effolkronium-random
+xtensor[xsimd]
+nlohmann-json
+opencv
+blend2d
