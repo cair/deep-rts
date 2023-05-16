@@ -30,7 +30,7 @@ std::string GetCurrentWorkingDir()
 
 std::string ResourceLoader::getFilePath(const std::string& fileName) {
     std::string workingDir = GetCurrentWorkingDir();
-    std::string assetLocation = "DeepRTS/python";
+    std::string assetLocation = "python";
 
     if (workingDir.find(assetLocation) != std::string::npos) {
         // asset location is included (happens in python runtime)

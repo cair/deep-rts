@@ -8,6 +8,7 @@
 #include "Tile.h"
 #include "util/Position.h"
 #include "Constants.h"
+#include <cstdint>
 
 namespace DeepRTS {
 

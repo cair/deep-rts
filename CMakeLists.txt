@@ -97,9 +97,8 @@ elseif(APPLE)
 # Read the contents of the file into a list
 
 if(NOT (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg"))
-        file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/vcpkg_dependencies.txt" DEEPRTS_DEPENDENCIES)
-
-        # VCPKG - Install Depedencies
+        file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_dependencies.txt" DEEPRTS_DEPENDENCIES)
+        # VCPKG - Install Dependencies
         pmm(
                 VERBOSE
                 DEBUG
@@ -118,7 +117,7 @@ endif()
 #####
 #############################################################################################
 
-find_package(Python REQUIRED COMPONENTS Interpreter Development)
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})  # xtensor has some troubles. fix
 
 find_package(Python COMPONENTS NumPy)
@@ -149,13 +148,11 @@ if (NOT TARGET xtensor-python)
 endif()
 set(DEEPRTS_LINK_TARGETS
         spdlog::spdlog
-        DeepRTSResources
         DeepRTSAssets
         effolkronium_random
-        Python::Python
+
         xtensor::optimize
         xtensor::use_xsimd
-        #rt  # asmjit
         ${blend2d}
         opencv_core  # todo remove
         opencv_highgui  # todo remove
@@ -169,13 +166,6 @@ set(DEEPRTS_LINK_TARGETS
 ## CMRC - Assets for game
 ##
 ######################################
-# CMRC
-FILE(GLOB_RECURSE web_resources RELATIVE ${PROJECT_SOURCE_DIR} src/contrib/webclient/dist/webclient/*)
-cmrc_add_resource_library(DeepRTSResources ALIAS deeprts::rc
-        WHENCE
-        src/contrib
-        ${web_resources}
-)
 
 
 FILE(GLOB_RECURSE deeprts_assets RELATIVE ${PROJECT_SOURCE_DIR} DeepRTS/python/assets/*)
@@ -185,7 +175,6 @@ cmrc_add_resource_library(DeepRTSAssets ALIAS deeprts::assets
         ${deeprts_assets}
 )
 
-set_property(TARGET DeepRTSResources PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_property(TARGET DeepRTSAssets PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 
@@ -225,15 +214,15 @@ endif ()
 
 
 if(PYTHON_BUILD)
-        pybind11_add_module(Engine ${DEEPRTS_PYBIND_SOURCES} ${DEEPRTS_SOURCE_FILES})
-        target_link_libraries(Engine
+        pybind11_add_module(libdeeprts ${DEEPRTS_PYBIND_SOURCES} ${DEEPRTS_SOURCE_FILES})
+        target_link_libraries(libdeeprts
                 INTERFACE
                 xtensor-python
                 PRIVATE
                 Python::NumPy ${DEEPRTS_LINK_TARGETS}
         )
 
-        target_include_directories(Engine
+        target_include_directories(libdeeprts
                 PRIVATE
                 ${DEEPRTS_INCLUDES}
         )

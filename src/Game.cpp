@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <utility>
 #include "Game.h"
-#include "gui/PyGUI.h"
 
 using namespace DeepRTS;
 
@@ -50,9 +49,6 @@ void Game::_internalInit(){
     }
     else if(config.gui == "Blend2DGui") {
         gui = std::make_unique<Blend2DGUI>(*this);
-
-    }else if(config.gui == "PyGUI"){
-        gui = std::make_unique<PyGUI>(*this);
     }else{
         throw std::runtime_error("Unknown GUI type: " + config.gui + ". Available: Blend2DGui, PyGUI");
     }

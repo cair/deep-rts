@@ -35,9 +35,9 @@ void init_version(py::module &m) {
 
 
 
-PYBIND11_MODULE(Engine, m) {
+PYBIND11_MODULE(libdeeprts, m) {
     NDArrayConverter::init_numpy();
-    m.doc() = "DeepRTS Engine";
+    m.doc() = "DeepRTS Game Engine Library";
     init_Random(m);
     init_Constants(m);
     init_BaseState(m);
@@ -50,12 +50,11 @@ PYBIND11_MODULE(Engine, m) {
     init_version(m);
     init_Config(m);
     init_UnitManager(m);
-    init_Webserver(m);
     init_scenarios(m);
 }
 #else
-PYBIND11_EMBEDDED_MODULE(Engine, m){
-    m.doc() = "DeepRTS Engine";
+PYBIND11_EMBEDDED_MODULE(libdeeprts, m){
+    m.doc() = "DeepRTS Game Engine Library";
     init_Random(m);
     init_Constants(m);
     init_BaseState(m);
