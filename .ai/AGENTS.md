@@ -236,6 +236,7 @@ For deeper context, see the following files in this directory:
 
 | File | Description |
 |------|-------------|
+| [quickstart.md](quickstart.md) | **Start here!** Installation, demos, training examples |
 | [architecture.md](architecture.md) | System design, game loop, component relationships |
 | [api-reference.md](api-reference.md) | Complete API for Game, Player, Unit, Tile, Config |
 | [scenarios.md](scenarios.md) | Training scenarios and criteria system |
