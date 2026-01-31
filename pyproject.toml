@@ -1,5 +1,8 @@
 [project]
+name = "DeepRTS"
+version = "3.0.0"
 requires-python = ">=3.8"
+description = "A Real-Time-Strategy game for Deep Learning research"
 
 [build-system]
 requires = [

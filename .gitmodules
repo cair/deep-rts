@@ -1,3 +1,6 @@
 [submodule "docs/api/html"]
 	path = docs/api/html
 	url = git@github.com:cair/deep-rts.git
+[submodule ".aiagent-config"]
+	path = .aiagent-config
+	url = git@github.com:rastko-vukasinovic/agents-setup.git

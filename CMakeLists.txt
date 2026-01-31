@@ -1,4 +1,11 @@
 cmake_minimum_required(VERSION 3.17)
+
+# Fix compatibility with older CMake minimum version requirements in dependencies
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "Minimum CMake policy version")
+if(POLICY CMP0148)
+  cmake_policy(SET CMP0148 OLD)
+endif()
+
 project(DeepRTS VERSION 1.1.0 LANGUAGES CXX)
 
 
@@ -44,8 +51,9 @@ if (WIN32)
         set(OPTIMIZATIONS_RELEASE /Ox)
         set(OPTIMIZATIONS_DEBUG /O0)
 else ()
-        set(OPTIMIZATIONS_RELEASE -Ofast -ffast-math -Wall) # -march=native
-        set(OPTIMIZATIONS_DEBUG -Wall -O0)
+        # -Wno-class-memaccess suppresses warnings in JPS.h about realloc on non-trivially copyable types
+        set(OPTIMIZATIONS_RELEASE -Ofast -ffast-math -Wall -Wno-class-memaccess) # -march=native
+        set(OPTIMIZATIONS_DEBUG -Wall -Wno-class-memaccess -O0)
 endif ()
 
 
@@ -139,18 +147,19 @@ find_path(blend2d_INCLUDES blend2d.h)
 
 
 
+# Use xtensor-python from CPM - must be compatible version with vcpkg xtensor
 if (NOT TARGET xtensor-python)
         CPMADDPackage(
                 NAME xtensor_py
                 GIT_REPOSITORY "https://github.com/xtensor-stack/xtensor-python"
-                GIT_TAG 0.25.3
+                GIT_TAG master
         )
 endif()
 set(DEEPRTS_LINK_TARGETS
         spdlog::spdlog
         DeepRTSAssets
         effolkronium_random
-
+        xtensor
         xtensor::optimize
         xtensor::use_xsimd
         ${blend2d}
@@ -200,10 +209,14 @@ set(DEEPRTS_PYBIND_SOURCES
         bindings/DeepRTS.cpp
 )
 
+# Get xtensor include directory from the target
+get_target_property(XTENSOR_INCLUDE_DIR xtensor INTERFACE_INCLUDE_DIRECTORIES)
+
 set(DEEPRTS_INCLUDES
         ${blend2d_INCLUDES}
         include/DeepRTS
         ${xtensor_py_SOURCE_DIR}/include
+        ${XTENSOR_INCLUDE_DIR}
 )
 
 
@@ -218,6 +231,8 @@ if(PYTHON_BUILD)
         target_link_libraries(libdeeprts
                 INTERFACE
                 xtensor-python
+                PUBLIC
+                xtensor
                 PRIVATE
                 Python::NumPy ${DEEPRTS_LINK_TARGETS}
         )

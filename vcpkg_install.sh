@@ -118,4 +118,4 @@ while read library; do
   $vcpkg_target_dir/vcpkg/vcpkg install $library
 done < $CURRENT_DIR/vcpkg_dependencies.txt
 
-cat /project/build/temp.linux-x86_64-cpython-38/vcpkg/buildtrees/gtk3/config-x64-linux-dbg-out.log
+# Dependencies installed successfully

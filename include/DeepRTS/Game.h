@@ -16,7 +16,7 @@
 #include "Map.h"
 #include "Tilemap.h"
 #include "Config.h"
-#include <xtensor/xarray.hpp>
+#include <xtensor/containers/xarray.hpp>
 #include <cstdint>
 #include <opencv2/core/mat.hpp>
 namespace DeepRTS {
